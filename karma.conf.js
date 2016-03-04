@@ -16,7 +16,7 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       './node_modules/cs-core-sdk/dist/cs-core-sdk.sfx.js',  
-      './build/cs-transparent-acc-sdk.sfx.js',
+      './build/cs-netbanking-sdk.sfx.js',
       './spec/build/tests.sfx.js'
       //'./spec/build/tests.sfx.js.map'
     ],
