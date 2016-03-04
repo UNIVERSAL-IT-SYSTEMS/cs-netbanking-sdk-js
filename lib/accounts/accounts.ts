@@ -1,24 +1,16 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
-import {Signed, AccountNo, Amount} from '../common';
+import {Signed, AccountNumber, Amount} from '../common';
 
-export interface AccountList extends CSCoreSDK.PaginatedListResponse<Account> {}
+export interface AccountList extends CSCoreSDK.PaginatedListResponse<MainAccount> {}
 
-export interface Account {
-    id: string,
-    accountno: AccountNo,
+export interface MainAccount {
     alias?: string,
     description?: string,
-    balance: Amount,
     disposable?: Amount,
-    type: string,
-    subtype: string,
-    productI18N: string,
-    product: string,
     overdraft?: OverdraftAmount,
     flags?: [string],
     subaccounts?: [SubAccount],
-    creditInterestRate?: number,
     debitInterestRate?: number,
     penaltyInterestRate?: number,
     loan?: Loan,
@@ -26,23 +18,26 @@ export interface Account {
     ownTransferReceivers?: TransferReceivers, 
 }
 
-export interface SignedAccount extends Account, Signed {}
+export interface SignedAccount extends MainAccount, Signed {}
 
 export interface OverdraftAmount extends Amount {
     dueDate?: Date
 }
 
-export interface SubAccount {
+export interface SubAccount extends Account {
+    // cz-interestRateOverLimit?: string,
+    // cz-interestRateLimit?: Amount,
+}
+
+export interface Account {
     id: string,
-    accountno: AccountNo,
+    accountno: AccountNumber,
     type: string,
     subtype: string,
     product: string,
     productI18N: string,
     balance: Amount,
     creditInterestRate: number,
-    // cz-interestRateOverLimit?: string,
-    // cz-interestRateLimit?: Amount,
 }
 
 export interface Loan {
@@ -74,7 +69,7 @@ export interface Saving {
 
 export interface TransferReceivers {
     id: number,
-    accountno: AccountNo
+    accountno: AccountNumber
 }
 
 export interface ChangeAccountSettingsRequest {

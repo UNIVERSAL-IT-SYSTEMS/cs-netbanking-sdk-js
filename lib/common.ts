@@ -10,7 +10,7 @@ export interface SignInfo {
     signId?: number
 }
 
-export interface AccountNo {
+export interface AccountNumber {
     number: string,
     bankCode: string,
     countryCode?: string,
