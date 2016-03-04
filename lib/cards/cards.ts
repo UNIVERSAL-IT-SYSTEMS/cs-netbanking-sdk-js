@@ -1,8 +1,8 @@
-import {Pagination, Amount, AccountNo, Signed} from '../accounts/accounts';
+/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
+import CSCoreSDK = require('cs-core-sdk');
+import {Amount, AccountNo, Signed} from '../common';
 
-export interface CardsListing extends Pagination {
-    cards: [Card]
-}
+export interface CardsListing extends CSCoreSDK.PaginatedListResponse<Card> {}
 
 export interface Card {
     id: string,

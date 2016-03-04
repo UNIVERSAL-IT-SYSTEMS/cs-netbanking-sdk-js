@@ -1,17 +1,3 @@
-import {Signed} from './accounts';
-
-export interface TransactionsListing {
-    transaction: Transaction,
-    signInfo: Signed
-}
-
-export interface Transaction {
-    id: string,
-    note?: string,
-    flags?: [string]
-}
-
-export interface AddNoteAndMarkTransactionsRequest {
-    note?: string,
-    flags?: [string]
-}
+/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
+import CSCoreSDK = require('cs-core-sdk');
+import {Signed, TransactionList} from '../common';

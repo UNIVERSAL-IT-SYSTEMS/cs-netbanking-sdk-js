@@ -1,4 +1,6 @@
-import {AccountNo, Amount, Signed} from '../accounts/accounts';
+/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
+import CSCoreSDK = require('cs-core-sdk');
+import {AccountNo, Amount, Signed} from '../common';
 
 export interface PayUpCreditCardRequest {
     type: string,
@@ -11,6 +13,4 @@ export interface Sender {
     accountno: AccountNo
 }
 
-export interface PayUpCreditCardResponse {
-    signInfo: Signed   
-}
+export interface PayUpCreditCardResponse extends Signed {}

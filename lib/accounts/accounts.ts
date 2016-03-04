@@ -1,6 +1,8 @@
-export interface AccountsListing extends Pagination {
-    accounts?: [Account]
-}
+/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
+import CSCoreSDK = require('cs-core-sdk');
+import {Signed, AccountNo, Amount} from '../common';
+
+export interface AccountList extends CSCoreSDK.PaginatedListResponse<Account> {}
 
 export interface Account {
     id: string,
@@ -24,36 +26,13 @@ export interface Account {
     ownTransferReceivers?: TransferReceivers, 
 }
 
-export interface SignedAccount extends Account {
-    signInfo: Signed
-}
-
-export interface SignInfo {
-    state: string,
-    signId?: number
-}
-
-export interface AccountNo {
-    number: string,
-    bankCode: string,
-    countryCode?: string,
-    // cz-iban: string,
-    // cz-bic: string,
-}
-
-export interface Amount {
-    value: number,
-    precision: number,
-    currency: string
-}
+export interface SignedAccount extends Account, Signed {}
 
 export interface OverdraftAmount extends Amount {
-    // check in production
     dueDate?: Date
 }
 
 export interface SubAccount {
-    // check in production
     id: string,
     accountno: AccountNo,
     type: string,
@@ -96,29 +75,6 @@ export interface Saving {
 export interface TransferReceivers {
     id: number,
     accountno: AccountNo
-}
-
-export interface DigestAccountsListing extends Pagination {
-    accounts?: [DigestAccount]
-}
-
-export interface DigestAccount {
-    number?: string
-    bankCode?: string,
-    countryCode?: string,
-    // cz-iban?: string,
-    // cz-bic?: string
-}
-
-export interface Pagination {
-    pageNumber?: number,
-    pageCount?: number,
-    pageSize?: number,
-    nextPage?: number,
-}
-
-export interface Signed {
-    signInfo?: SignInfo
 }
 
 export interface ChangeAccountSettingsRequest {

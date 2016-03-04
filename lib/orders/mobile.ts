@@ -1,4 +1,6 @@
-import {Amount, Signed} from '../accounts/accounts';
+/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
+import CSCoreSDK = require('cs-core-sdk');
+import {Amount, Signed} from '../common';
 import {Person} from './orders';
 
 export interface MobilePaymentsRequest {
@@ -10,6 +12,6 @@ export interface MobilePaymentsRequest {
     confirmationPhoneNumber: string   
 }
 
-export interface MobilePaymentsResponse extends MobilePaymentsRequest{
+export interface MobilePaymentsResponse extends MobilePaymentsRequest {
     signInfo: Signed            
 }

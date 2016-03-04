@@ -1,4 +1,6 @@
-import {Signed} from '../accounts/accounts'
+/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
+import CSCoreSDK = require('cs-core-sdk');
+import {Signed} from '../common';
 
 export interface DeliveryListing {
     cardDeliveryMode: string,
@@ -21,11 +23,8 @@ export interface Confirmation {
     language: string
 }
 
-export interface ChangeDeliverySettingsResponse extends DeliveryListing {
-    signInfo: Signed
-}
+export interface ChangeDeliverySettingsResponse extends DeliveryListing, Signed {}
 
-export interface ChangeDeliverySettingsRequest {
+export interface ChangeDeliverySettingsRequest extends CSCoreSDK.PaginatedListResponse<Confirmation> {
     cardDeliveryMode: string,
-    confirmations: [Confirmation]
 }

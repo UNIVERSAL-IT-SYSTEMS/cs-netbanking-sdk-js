@@ -1,8 +1,8 @@
-import {Pagination, Amount} from './accounts';
+/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
+import CSCoreSDK = require('cs-core-sdk');
+import {Amount} from '../common';
 
-export interface ReservationsListing extends Pagination {
-    reservations?: Reservation   
-}
+export interface ReservationList extends CSCoreSDK.PaginatedListResponse<Reservation> {}
 
 export interface Reservation {
     type: string,

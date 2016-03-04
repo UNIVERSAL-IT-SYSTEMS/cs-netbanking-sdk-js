@@ -1,10 +1,10 @@
-import {Pagination, Amount, Signed} from '../accounts/accounts';
+/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
+import CSCoreSDK = require('cs-core-sdk');
+import {Amount, Signed} from '../common';
 
-export interface OrdersListing extends Pagination {
-    orders: [Order]    
-}
+export interface OrdersListing extends CSCoreSDK.PaginatedListResponse<Order> {}
 
-export interface Order {
+export interface Order extends Signed {
     id: string,
     referenceId?: string,
     orderCategory: string,
@@ -30,8 +30,6 @@ export interface Order {
     channelId?: string,
     receiverAddress?: string,
     flags?: [string],
-    // ¯\_(ツ)_/¯ not signable according to the documentation checkmark
-    signInfo?: Signed    
 }
 
 export interface Person {
@@ -52,6 +50,4 @@ export interface Info {
     text4x35?: [string]
 }
 
-export interface RemovePaymentOrderResponse {
-    signInfo: Signed
-}
+export interface RemovePaymentOrderResponse extends Signed {}
