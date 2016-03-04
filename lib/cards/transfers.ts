@@ -3,13 +3,33 @@ import CSCoreSDK = require('cs-core-sdk');
 import {AccountNumber, Amount, Signed} from '../common';
 
 export interface PayUpCreditCardRequest {
+    
+    /**
+    * Type of the transfer. Currently only DEBT_REPAYMENT is supported.
+    */
     type: string,
+    
+    /**
+    * Information about the sender
+    */
     sender: Sender,
+    
+    /**
+    * Amount which should be transfered.
+    */
     amount: Amount    
 }
 
 export interface Sender {
+    
+    /**
+    * Identification of the source account for the transfer.
+    */
     id?: string,
+    
+    /**
+    * Account number of the source account for the transfer.
+    */
     accountno: AccountNumber
 }
 
