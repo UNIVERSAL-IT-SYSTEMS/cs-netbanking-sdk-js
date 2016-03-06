@@ -10,7 +10,7 @@ var outputFilename;
 var plugins = [];
 if(args.indexOf('--target-browser') != -1){
   console.log('Targeting browser');
-  outputFilename = 'cs-places-sdk.sfx.js';
+  outputFilename = 'cs-netbanking-sdk.sfx.js';
   target = 'web';
   libraryTarget = 'var'
   nodeModules = {};
@@ -20,7 +20,7 @@ if(args.indexOf('--target-browser') != -1){
   nodeModules = {};
   target = 'node';
   libraryTarget = 'commonjs2'
-  outputFilename = 'cs-places-sdk.node.js'
+  outputFilename = 'cs-netbanking-sdk.node.js'
   fs.readdirSync('node_modules')
     .filter(function(x) {
       return ['.bin'].indexOf(x) === -1;
@@ -36,11 +36,11 @@ if(args.indexOf('--target-browser') != -1){
 
 
 module.exports = {
-  entry: './lib/places.ts',
+  entry: './lib/netbanking.ts',
   output: {
     path: path.join(__dirname, 'build'),
     filename: outputFilename,
-    library: "CSPlacesSDK",
+    library: "CSNetbankingSDK",
     libraryTarget: libraryTarget
   },
   target: target,

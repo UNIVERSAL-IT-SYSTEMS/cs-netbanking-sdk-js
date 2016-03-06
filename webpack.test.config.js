@@ -28,14 +28,14 @@ if(args.indexOf('--target-browser') != -1){
   libraryTarget = 'var'
   externals = {};
   externals['cs-core-sdk'] = 'CSCoreSDK'
-  externals['../build/cs-places-sdk.node.js'] = 'CSPlacesSDK'  
+  externals['../build/cs-netbanking-sdk.node.js'] = 'CSNetbankingSDK'  
 }else{
   console.log('Targeting node.js');
   externals = {};
   target = 'node';
   libraryTarget = 'commonjs2'
   outputFilename = 'tests.node.js'
-  externals['../build/cs-places-sdk.node.js'] = '../../build/cs-places-sdk.node.js'
+  externals['../build/cs-netbanking-sdk.node.js'] = '../../build/cs-netbanking-sdk.node.js'
   mapExternals(['./node_modules'],externals);
     plugins.push(new webpack.BannerPlugin('require("source-map-support").install();',
                            { raw: true, entryOnly: false }));
@@ -53,7 +53,7 @@ module.exports = {
   output: {
     path: path.join(__dirname,'spec','build'),
     filename: outputFilename,
-    library: "CSPlacesSDKTests",
+    library: "CSNetbankingSDKTests",
     libraryTarget: libraryTarget
   },
   target: target,
