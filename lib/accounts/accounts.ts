@@ -2,9 +2,38 @@
 import CSCoreSDK = require('cs-core-sdk');
 import {Signed, AccountNumber, Amount} from '../common';
 
+export class AccountsResource extends CSCoreSDK.Resource 
+implements CSCoreSDK.HasInstanceResource<AccountResource>, CSCoreSDK.PaginatedListEnabled<MainAccount> {
+     
+    list = (params?) : Promise<AccountList> => {
+        return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'accounts', params, response => {
+            response.items.forEach(item => {
+                resourcifyListing(<MainAccount>item, this.withId((<MainAccount>item).id));
+            })
+            return response;
+        });
+    }
+    
+    withId = (id: string|number) : AccountResource => {
+        return new AccountResource(id, this.getPath(), this._client);
+    }
+}
+
+export class AccountResource extends CSCoreSDK.InstanceResource
+implements CSCoreSDK.GetEnabled<MainAccount>, CSCoreSDK.UpdateEnabled<ChangeAccountSettingsRequest, ChangeAccountSettingsResponse> {
+    
+    get = (): Promise<MainAccount> => {
+        return CSCoreSDK.ResourceUtils.CallGet(this, null);
+    }
+}
+
+function resourcifyListing(accountListing: MainAccount, account: AccountResource) : void {
+    accountListing.get = account.get;
+}
+
 export interface AccountList extends CSCoreSDK.PaginatedListResponse<MainAccount> {}
 
-export interface MainAccount {
+export interface MainAccount extends Account {
     
     /**
     * User defined account name. Max. 50 characters
@@ -65,9 +94,14 @@ export interface MainAccount {
     * 
     */
     ownTransferReceivers?: TransferReceivers, 
+    
+    /**
+     * Convenience method for getting detail of the account right from the list 
+     */
+    get: () => Promise<MainAccount>
 }
 
-export interface SignedAccount extends MainAccount, Signed {}
+export interface ChangeAccountSettingsResponse extends MainAccount, Signed {}
 
 export interface OverdraftAmount extends Amount {
     
