@@ -26,13 +26,13 @@ export class NetbankingClient extends CSCoreSDK.WebApiClient {
      * @param context WebApiContext object that allows for data sharing between clients
      */
     constructor(config: CSCoreSDK.WebApiConfiguration, context: CSCoreSDK.WebApiContext) {
-        super(config, context, '/api/v3/netbanking');
+        super(config, context, '/api/v3/netbanking/my');
     }
     
    /**
     * List all accounts and get information about them.
     */
     get accounts() {
-        return new AccountsResource(this.getPath(), this);
+        return new AccountsResource(this.getPath() + '/accounts', this);
     }
 }
