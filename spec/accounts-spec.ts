@@ -223,7 +223,6 @@ describe("Netbanking SDK",function(){
             });
             
             expectToBe(statements.items[0], {
-                // přidat date
                 id: '201302520130621161819',
                 number: 25,
                 periodicity: 'MONTHLY',
