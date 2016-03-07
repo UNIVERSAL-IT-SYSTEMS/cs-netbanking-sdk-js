@@ -9,7 +9,7 @@ export class AccountsBalanceResource extends CSCoreSDK.Resource
 implements CSCoreSDK.GetEnabled<BalanceListing> {
     
     /**
-    * Fetches the balance and returns a promise
+    * Fetches the balance and returns them in a promise
     */
     get = (): Promise<BalanceListing> => {
         return CSCoreSDK.ResourceUtils.CallGet(this, null);

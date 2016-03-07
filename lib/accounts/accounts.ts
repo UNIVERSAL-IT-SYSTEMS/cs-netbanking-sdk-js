@@ -2,6 +2,7 @@
 import CSCoreSDK = require('cs-core-sdk');
 import {Signed, AccountNumber, Amount} from '../common';
 import {AccountsBalanceResource} from './balance';
+import {AccountsServicesResource} from './services';
 
 /**
 * List all accounts and get individual account instance resource 
@@ -48,13 +49,21 @@ implements CSCoreSDK.GetEnabled<MainAccount>, CSCoreSDK.UpdateEnabled<ChangeAcco
     * Get information about the account's balance
     */
     get balance() {
-        return new AccountsBalanceResource(this.getPath(), this._client);
+        return new AccountsBalanceResource(this.getPath() + '/balance', this._client);
+    }
+    
+    /**
+    * Get information about the account's services
+    */
+    get services() {
+        return new AccountsServicesResource(this.getPath() + '/services', this._client);
     }
 }
 
 function resourcifyListing(accountListing: MainAccount, account: AccountResource) : void {
     accountListing.get = account.get;
     
+    // transform ISO dates to native Date objects
     CSCoreSDK.EntityUtils.addDatesFromISO(['overdraftDueDate'], accountListing);
     CSCoreSDK.EntityUtils.addDatesFromISO(['nextProlongation'], accountListing.saving);
     CSCoreSDK.EntityUtils.addDatesFromISO(['maturityDate', 'drawdownToDate', 'installmentDay', 'nextRateDate'], accountListing.loan);
