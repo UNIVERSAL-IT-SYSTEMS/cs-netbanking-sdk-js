@@ -1,29 +1,54 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
 import {Signed, AccountNumber, Amount} from '../common';
+import {AccountsBalanceResource} from './balance';
 
+/**
+* List all accounts and get individual account instance resource 
+*/
 export class AccountsResource extends CSCoreSDK.Resource 
 implements CSCoreSDK.HasInstanceResource<AccountResource>, CSCoreSDK.PaginatedListEnabled<MainAccount> {
-     
+    
+   /**
+    * List all accounts
+    */
     list = (params?) : Promise<AccountList> => {
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'accounts', params, response => {
             response.items.forEach(item => {
+                
+                // add convenience get method to fetch account's detail
                 resourcifyListing(<MainAccount>item, this.withId((<MainAccount>item).id));
             })
             return response;
         });
     }
     
+    /**
+    * Get the detail of the account with a given id
+    */
     withId = (id: string|number) : AccountResource => {
         return new AccountResource(id, this.getPath(), this._client);
     }
 }
 
+/**
+* Get detail of the individual account and additional information about it 
+*/
 export class AccountResource extends CSCoreSDK.InstanceResource
 implements CSCoreSDK.GetEnabled<MainAccount>, CSCoreSDK.UpdateEnabled<ChangeAccountSettingsRequest, ChangeAccountSettingsResponse> {
     
+    /**
+    * Get account detail
+    */
     get = (): Promise<MainAccount> => {
         return CSCoreSDK.ResourceUtils.CallGet(this, null);
+    }
+    
+    /**
+    * Get information about the account's balance
+    */
+    get balance() {
+        return new AccountsBalanceResource(this.getPath(), this._client);
     }
 }
 
@@ -295,12 +320,12 @@ export interface TransferReceivers {
 export interface ChangeAccountSettingsRequest {
     
     /**
-    * 
+    * Account indentifier
     */
     id?: string,
     
     /**
-    * 
+    * User defined account name. Max. 50 characters 
     */
     alias?: string
 }

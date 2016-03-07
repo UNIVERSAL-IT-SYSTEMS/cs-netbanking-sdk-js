@@ -2,6 +2,20 @@
 import CSCoreSDK = require('cs-core-sdk');
 import {Amount} from '../common';
 
+/**
+* Get information about the account's balance
+*/
+export class AccountsBalanceResource extends CSCoreSDK.Resource
+implements CSCoreSDK.GetEnabled<BalanceListing> {
+    
+    /**
+    * Fetches the balance and returns a promise
+    */
+    get = (): Promise<BalanceListing> => {
+        return CSCoreSDK.ResourceUtils.CallGet(this, null);
+    }
+}
+
 export interface BalanceListing {
     
     /**
