@@ -7,6 +7,7 @@ import {AccountsReservationsResource} from './reservations';
 import {AccountsRepaymentsResource} from './repayments';
 import {AccountsStatementsResource} from './statements';
 import {AccountsSubAccountsResource} from './subAccounts';
+import {AccountsTransactionsResource} from './transactions';
 
 /**
 * List all accounts and get individual account instance resource 
@@ -89,6 +90,13 @@ implements CSCoreSDK.GetEnabled<MainAccount>, CSCoreSDK.UpdateEnabled<ChangeAcco
     */
     get subAccounts() {
         return new AccountsSubAccountsResource(this.getPath() + '/subaccounts', this._client);
+    }
+    
+    /**
+    * Get information about the account's transactions
+    */
+    get transactions() {
+        return new AccountsTransactionsResource(this.getPath() + '/transactions', this._client);
     }
 }
 
