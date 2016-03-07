@@ -4,6 +4,7 @@ import {Signed, AccountNumber, Amount} from '../common';
 import {AccountsBalanceResource} from './balance';
 import {AccountsServicesResource} from './services';
 import {AccountsReservationsResource} from './reservations';
+import {AccountsRepaymentsResource} from './repayments';
 
 /**
 * List all accounts and get individual account instance resource 
@@ -65,6 +66,13 @@ implements CSCoreSDK.GetEnabled<MainAccount>, CSCoreSDK.UpdateEnabled<ChangeAcco
     */
     get reservations() {
         return new AccountsReservationsResource(this.getPath() + '/reservations', this._client);
+    }
+    
+    /**
+    * Get information about the account's repayments
+    */
+    get repayments() {
+        return new AccountsRepaymentsResource(this.getPath() + '/repayments', this._client);
     }
 }
 
