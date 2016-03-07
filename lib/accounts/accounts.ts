@@ -54,6 +54,14 @@ implements CSCoreSDK.GetEnabled<MainAccount>, CSCoreSDK.UpdateEnabled<ChangeAcco
 
 function resourcifyListing(accountListing: MainAccount, account: AccountResource) : void {
     accountListing.get = account.get;
+    
+    CSCoreSDK.EntityUtils.addDatesFromISO(['overdraftDueDate'], accountListing);
+    CSCoreSDK.EntityUtils.addDatesFromISO(['nextProlongation'], accountListing.saving);
+    CSCoreSDK.EntityUtils.addDatesFromISO(['maturityDate', 'drawdownToDate', 'installmentDay', 'nextRateDate'], accountListing.loan);
+    
+    accountListing.subaccounts.forEach(account => {
+        CSCoreSDK.EntityUtils.addDatesFromISO(['overdraftDueDate'], account); 
+    });
 }
 
 export interface AccountList extends CSCoreSDK.PaginatedListResponse<MainAccount> {}
