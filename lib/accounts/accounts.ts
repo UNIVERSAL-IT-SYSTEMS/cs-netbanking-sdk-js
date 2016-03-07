@@ -8,6 +8,7 @@ import {AccountsRepaymentsResource} from './repayments';
 import {AccountsStatementsResource} from './statements';
 import {AccountsSubAccountsResource} from './subAccounts';
 import {AccountsTransactionsResource} from './transactions';
+import {AccountsTransfersResource} from './transfers';
 
 /**
 * List all accounts and get individual account instance resource 
@@ -97,6 +98,13 @@ implements CSCoreSDK.GetEnabled<MainAccount>, CSCoreSDK.UpdateEnabled<ChangeAcco
     */
     get transactions() {
         return new AccountsTransactionsResource(this.getPath() + '/transactions', this._client);
+    }
+    
+    /**
+    * Revolve a loan
+    */
+    get transfers() {
+        return new AccountsTransfersResource(this.getPath() + '/transfer', this._client);
     }
 }
 

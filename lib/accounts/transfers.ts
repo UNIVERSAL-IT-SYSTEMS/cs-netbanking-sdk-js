@@ -2,9 +2,17 @@
 import CSCoreSDK = require('cs-core-sdk');
 import {Signed, Amount} from '../common';
 
-export interface TransfersResponse extends Signed {}
+/**
+* Revolve a loan
+*/
+export class AccountsTransfersResource extends CSCoreSDK.Resource
+implements CSCoreSDK.UpdateEnabled<TransferRequest, TransferResponse> {
+    
+}
 
-export interface TransfersRequest {
+export interface TransferResponse extends Signed {}
+
+export interface TransferRequest {
     
    /**
     * Type of the transfer. Currently only REVOLVING_LOAN_DISBURSEMENT is supported.
