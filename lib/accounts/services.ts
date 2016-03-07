@@ -8,10 +8,12 @@ export class AccountsServicesResource extends CSCoreSDK.Resource
 implements CSCoreSDK.PaginatedListEnabled<Service> {
     
     /**
-    * Fetches the services and returns then in a promise
+    * Fetches the services and returns them in a promise
     */
     list = (params?): Promise<ServiceList> => {
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'services', params, response => {
+            
+            // transform ISO dates to native Date objects
             response.items.forEach(item => {
                 CSCoreSDK.EntityUtils.addDatesFromISO(['dateFrom', 'dateTo'], item);
             });

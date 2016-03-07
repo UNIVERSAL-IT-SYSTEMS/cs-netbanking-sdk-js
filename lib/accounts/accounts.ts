@@ -3,6 +3,7 @@ import CSCoreSDK = require('cs-core-sdk');
 import {Signed, AccountNumber, Amount} from '../common';
 import {AccountsBalanceResource} from './balance';
 import {AccountsServicesResource} from './services';
+import {AccountsReservationsResource} from './reservations';
 
 /**
 * List all accounts and get individual account instance resource 
@@ -57,6 +58,13 @@ implements CSCoreSDK.GetEnabled<MainAccount>, CSCoreSDK.UpdateEnabled<ChangeAcco
     */
     get services() {
         return new AccountsServicesResource(this.getPath() + '/services', this._client);
+    }
+    
+    /**
+    * Get information about the account's reservations
+    */
+    get reservations() {
+        return new AccountsReservationsResource(this.getPath() + '/reservations', this._client);
     }
 }
 
