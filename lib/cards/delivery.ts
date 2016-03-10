@@ -2,9 +2,15 @@
 import CSCoreSDK = require('cs-core-sdk');
 import {Signed} from '../common';
 
+/**
+ * Get current delivery settings
+ */
 export class CardDeliveryResource extends CSCoreSDK.Resource
 implements CSCoreSDK.GetEnabled<DeliveryListing>, CSCoreSDK.UpdateEnabled<ChangeDeliverySettingsRequest, ChangeDeliverySettingsResponse> {
     
+    /**
+     * Returns current delivery settings  
+     */ 
     get = () : Promise<DeliveryListing> => {
         return CSCoreSDK.ResourceUtils.CallGet(this, null);
     }

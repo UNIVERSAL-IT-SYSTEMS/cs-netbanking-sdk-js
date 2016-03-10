@@ -3,6 +3,9 @@ import CSCoreSDK = require('cs-core-sdk');
 import {Signed} from '../common';
 import {Confirmation} from './delivery';
 
+/**
+ * Issue various actions on a single card. 
+ */
 export class CardActionsResource extends CSCoreSDK.Resource
 implements CSCoreSDK.CreateEnabled<IssueCardActionRequest, IssueCardActionResponse> {
     

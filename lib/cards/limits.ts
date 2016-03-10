@@ -3,9 +3,15 @@ import CSCoreSDK = require('cs-core-sdk');
 import {Amount, Signed} from '../common';
 import {Confirmation} from './delivery';
 
+/**
+* Get information about different limits
+*/
 export class CardLimitsResource extends CSCoreSDK.Resource
 implements CSCoreSDK.ListEnabled<Limit>, CSCoreSDK.UpdateEnabled<ChangeCardLimitsRequest, ChangeCardLimitsResponse> {
     
+    /**
+     * List all limits  
+     */ 
     list = () : Promise<LimitList> => {
         return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'limits');
     }

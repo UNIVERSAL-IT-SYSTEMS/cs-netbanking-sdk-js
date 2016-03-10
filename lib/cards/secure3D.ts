@@ -1,9 +1,15 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
 
+/**
+ * Get the 3D secure online shopping status
+ */
 export class CardSecure3DResource extends CSCoreSDK.Resource
 implements CSCoreSDK.GetEnabled<SecureSettings> {
     
+    /**
+     * Returns 3D secure online shopping status
+     */ 
     get = () : Promise<SecureSettings> => {
         return CSCoreSDK.ResourceUtils.CallGet(this, null);
     }

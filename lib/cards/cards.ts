@@ -9,18 +9,31 @@ import {CardSecure3DResource} from './secure3D';
 import {CardTransfersResource} from './transfers';
 import {CardAccountsResource} from './statements';
 
+    
+/**
+* Represents list of payment cards (either debet or credit) for current user. Every card was issued for current user or belongs to one of his accounts.
+*/
 export class CardsResource extends CSCoreSDK.Resource
 implements CSCoreSDK.ListEnabled<Card>, CSCoreSDK.HasInstanceResource<CardResource> {
     
+    /**
+    * List all cards 
+    */  
     list = (params?) : Promise<CardListing> => {
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'cards', params, response => {
+            
             response.items.forEach(item => {
+                
+                // add convenience get method to fetch detail of the card
                 resourcifyListing(item, this.withId((<Card>item).id));
             })
             return response;
         });
     }
     
+    /**
+    * Get a resource for card with a given id 
+    */  
     withId = (id: string) : CardResource => {
         return new CardResource(id, this.getPath(), this.getClient());
     }
@@ -29,34 +42,59 @@ implements CSCoreSDK.ListEnabled<Card>, CSCoreSDK.HasInstanceResource<CardResour
 export class CardResource extends CSCoreSDK.InstanceResource
 implements CSCoreSDK.GetEnabled<Card>, CSCoreSDK.UpdateEnabled<ChangeCardSettingsRequest, ChangeCardSettingsResponse> {
     
+    /**
+    * Get detail of the card 
+    */  
     get = () : Promise<Card> => {
         return CSCoreSDK.ResourceUtils.CallGet(this, null);
     }
     
+    /**
+    * Get current delivery settings
+    */  
     get delivery() {
         return new CardDeliveryResource(this.getPath() + '/delivery', this._client);
     }
     
+    /**
+    * Allows to add or change a client's personal note and mark/star the card transaction as favorite/important for one specific transaction
+    */
     get transactions() {
         return new CardTransactionsResource(this.getPath() + '/transactions', this._client);
     }
     
+    /**
+    * Issue various actions on a single card. Currently supported actions are: 
+    * reissue pin, lock card, unlock card, activate card, set automatic card replacement on, set automatic card replacement off, replacement card request
+    */
     get actions() {
         return new CardActionsResource(this.getPath() + '/states', this._client);
     }
     
+    /**
+    * Get information about different limits
+    */
     get limits() {
         return new CardLimitsResource(this.getPath() + '/card-limits', this._client);
     }
     
+    /**
+    * Get the 3D secure online shopping status
+    */
     get secure3d() {
         return new CardSecure3DResource(this.getPath() + '/secure-online-shopping', this._client);
     }
     
+    /**
+    * Resource for paying up credit card debt
+    */
     get transfers() {
         return new CardTransfersResource(this.getPath() + '/transfer', this._client);
     }
     
+    /**
+    * Account resource for listing statements
+    */
     get account() {
         return new CardAccountsResource(this.getPath() + '/mainaccount', this._client);
     }

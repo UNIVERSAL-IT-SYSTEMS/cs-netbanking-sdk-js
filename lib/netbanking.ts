@@ -45,6 +45,9 @@ export class NetbankingClient extends CSCoreSDK.WebApiClient {
         return new ProfileResource(this.getPath() + '/profile', this);
     }
     
+    /**
+    * Represents list of payment cards (either debet or credit) for current user. Every card was issued for current user or belongs to one of his accounts.
+    */
     get cards() {
         return new CardsResource(this.getPath() + '/cards', this);
     }
