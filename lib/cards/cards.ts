@@ -2,7 +2,36 @@
 import CSCoreSDK = require('cs-core-sdk');
 import {Amount, AccountNumber, Signed} from '../common';
 
-export interface CardsListing extends CSCoreSDK.PaginatedListResponse<Card> {}
+export class CardsResource extends CSCoreSDK.Resource
+implements CSCoreSDK.ListEnabled<Card>, CSCoreSDK.HasInstanceResource<CardResource> {
+    
+    list = (params?) : Promise<CardListing> => {
+        return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'cards', params, response => {
+            response.items.forEach(item => {
+                resourcifyListing(item, this.withId((<Card>item).id));
+            })
+            return response;
+        });
+    }
+    
+    withId = (id: string) : CardResource => {
+        return new CardResource(id, this.getPath(), this.getClient());
+    }
+}
+
+export class CardResource extends CSCoreSDK.InstanceResource
+implements CSCoreSDK.GetEnabled<Card>, CSCoreSDK.UpdateEnabled<ChangeCardSettingsRequest, ChangeCardSettingsResponse> {
+    
+    get = () : Promise<Card> => {
+        return CSCoreSDK.ResourceUtils.CallGet(this, null);
+    }
+}
+
+function resourcifyListing(itemListing: Card, itemResource: CardResource) {
+    itemListing.get = itemResource.get;
+}
+
+export interface CardListing extends CSCoreSDK.PaginatedListResponse<Card> {}
 
 export interface Card {
     
@@ -124,7 +153,12 @@ export interface Card {
     /**
     * Array of optional Flag values depends on Card type.
     */
-    flags?: [string]
+    flags?: [string],
+    
+    /**
+     * Convenience method for getting detail of the card right from the list 
+     */
+    get: () => Promise<Card>
 }
 
 export interface CardAccountLimits {
