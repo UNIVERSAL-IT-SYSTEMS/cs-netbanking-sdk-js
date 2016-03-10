@@ -3,7 +3,12 @@ import CSCoreSDK = require('cs-core-sdk');
 import {Amount, Signed, AccountNumber} from '../common';
 import {Info, Symbols, Payment} from './orders';
 
-export interface DomesticPaymentRequest extends Signed {
+export class PaymentsDomesticResource extends CSCoreSDK.Resource
+implements CSCoreSDK.UpdateEnabled<DomesticPaymentUpdateRequest, DomesticPaymentUpdateResponse>, CSCoreSDK.CreateEnabled<> {
+    
+}
+
+export interface DomesticPaymentUpdateRequest extends Signed {
     
     /**
     * Internal identifier of payment order. Note that after signing of the order the id could change.
@@ -61,4 +66,4 @@ export interface DomesticPaymentRequest extends Signed {
     flags?: [string] 
 }
 
-export interface DomesticPaymentResponse extends Payment {}
+export interface DomesticPaymentUpdateResponse extends Payment {}
