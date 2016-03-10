@@ -4,6 +4,7 @@ import {Amount, AccountNumber, Signed} from '../common';
 import {CardDeliveryResource} from './delivery';
 import {CardTransactionsResource} from './transactions';
 import {CardActionsResource} from './actions';
+import {CardLimitsResource} from './limits';
 
 export class CardsResource extends CSCoreSDK.Resource
 implements CSCoreSDK.ListEnabled<Card>, CSCoreSDK.HasInstanceResource<CardResource> {
@@ -39,6 +40,10 @@ implements CSCoreSDK.GetEnabled<Card>, CSCoreSDK.UpdateEnabled<ChangeCardSetting
     
     get actions() {
         return new CardActionsResource(this.getPath() + '/states', this._client);
+    }
+    
+    get limits() {
+        return new CardLimitsResource(this.getClient() + '/card-limits', this._client);
     }
 }
 

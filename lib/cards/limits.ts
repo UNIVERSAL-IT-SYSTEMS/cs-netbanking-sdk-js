@@ -3,6 +3,14 @@ import CSCoreSDK = require('cs-core-sdk');
 import {Amount, Signed} from '../common';
 import {Confirmation} from './delivery';
 
+export class CardLimitsResource extends CSCoreSDK.Resource
+implements CSCoreSDK.ListEnabled<Limit>, CSCoreSDK.UpdateEnabled<ChangeCardLimitsRequest, ChangeCardLimitsResponse> {
+    
+    list = () : Promise<LimitList> => {
+        return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'limits');
+    }
+}
+
 export interface LimitList extends CSCoreSDK.PaginatedListResponse<Limit> {}
 
 export interface Limit {
