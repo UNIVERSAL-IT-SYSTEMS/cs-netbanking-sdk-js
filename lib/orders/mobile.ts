@@ -2,6 +2,9 @@
 import CSCoreSDK = require('cs-core-sdk');
 import {Amount, Signed, AccountNumber} from '../common';
 
+/**
+* Recharging the credit available on prepaid cards provided by Vodafone, T-Mobile or O2.
+*/
 export class PaymentsMobileResource extends CSCoreSDK.Resource
 implements CSCoreSDK.CreateEnabled<MobilePaymentsRequest, MobilePaymentsResponse> {
     

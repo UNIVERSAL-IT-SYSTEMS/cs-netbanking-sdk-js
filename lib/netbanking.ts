@@ -53,6 +53,9 @@ export class NetbankingClient extends CSCoreSDK.WebApiClient {
         return new CardsResource(this.getPath() + '/cards', this);
     }
     
+    /**
+    * Get information about payments orders
+    */
     get orders() {
         return new OrdersResource(this.getPath() + '/orders', this);
     }

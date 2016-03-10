@@ -3,6 +3,9 @@ import CSCoreSDK = require('cs-core-sdk');
 import {Amount, Signed, AccountNumber} from '../common';
 import {Info, Symbols, Payment} from './orders';
 
+/**
+* Create domestic payment order
+*/
 export class PaymentsDomesticResource extends CSCoreSDK.Resource
 implements CSCoreSDK.UpdateEnabled<DomesticPaymentUpdateRequest, DomesticPaymentUpdateResponse>, CSCoreSDK.CreateEnabled<> {
     

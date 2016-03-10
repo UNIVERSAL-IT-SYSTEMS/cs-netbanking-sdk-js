@@ -2,9 +2,15 @@
 import CSCoreSDK = require('cs-core-sdk');
 import {Amount} from '../common';
 
+/**
+* Get remaining amounts for payment orders
+*/
 export class PaymentsLimitsResource extends CSCoreSDK.Resource
 implements CSCoreSDK.ListEnabled<Limit> {
     
+    /**
+    * List all limits for payment orders
+    */  
     list = (): Promise<PaymentsLimitList> => {
         return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'remainingLimits', null);
     }

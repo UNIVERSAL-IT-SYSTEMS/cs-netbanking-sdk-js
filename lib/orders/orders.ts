@@ -6,16 +6,28 @@ import {PaymentsDomesticResource} from './domestic';
 import {PaymentsLimitsResource} from './limits';
 import {PaymentsMobileResource} from './mobile';
 
+/**
+* Get information about payments orders
+*/
 export class OrdersResource extends CSCoreSDK.Resource {
     
+    /**
+    * Returns PaymentsResource for listing, deleting and accessing other information about payments
+    */  
     get payments() {
         return new PaymentsResource(this.getPath() + '/payments', this._client);
     }
 }
 
+/**
+* List payments, get individual payment and other resources
+*/
 export class PaymentsResource extends CSCoreSDK.Resource
 implements CSCoreSDK.HasInstanceResource<PaymentResource>, CSCoreSDK.PaginatedListEnabled<Payment> {
     
+    /**
+    * List all payments
+    */  
     list = (params?): Promise<PaymentList> => {
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'orders', params, response => {
             
@@ -26,30 +38,51 @@ implements CSCoreSDK.HasInstanceResource<PaymentResource>, CSCoreSDK.PaginatedLi
         })
     }
     
+    /**
+    * Get individual payment with a given id
+    */
     withId = (id: string|number): PaymentResource => {
         return new PaymentResource(id, this.getPath(), this._client); 
     }
     
+    /**
+    * Get currently available booking date
+    */
     get bookingDate() {
         return new PaymentsBookingDateResource(this.getPath() + '/bookingdate', this._client);
     }
     
+    /**
+    * Create domestic payment order
+    */
     get domestic() {
         return new PaymentsDomesticResource(this.getPath() + '/domestic', this._client);
     }
     
+    /**
+    * Get remaining amounts for payment orders
+    */
     get limits() {
         return new PaymentsLimitsResource(this.getPath() + '/limits', this._client);
     }
     
+    /**
+    * Recharging the credit available on prepaid cards provided by Vodafone, T-Mobile or O2.
+    */
     get mobile() {
         return new PaymentsMobileResource(this.getPath() + '/mobile', this._client);
     }
 }
 
+/**
+* Individual Payment order resource
+*/
 export class PaymentResource extends CSCoreSDK.InstanceResource
 implements CSCoreSDK.GetEnabled<Payment>, CSCoreSDK.DeleteEnabled<RemovePaymentOrderResponse> {
     
+    /**
+    * Get detail of the payment
+    */  
     get = (): Promise<Payment> => {
         return CSCoreSDK.ResourceUtils.CallGet(this, null);
     }

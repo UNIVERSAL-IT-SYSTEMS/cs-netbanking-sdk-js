@@ -2,6 +2,9 @@
 import CSCoreSDK = require('cs-core-sdk');
 import {AccountNumber} from '../common';
 
+/**
+* Get currently available booking date
+*/
 export class PaymentsBookingDateResource extends CSCoreSDK.Resource
 implements CSCoreSDK.UpdateEnabled<PaymentBookingDateRequest, PaymentBookingDateResponse> {
     
