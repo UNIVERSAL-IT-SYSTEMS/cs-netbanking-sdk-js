@@ -6,6 +6,7 @@ import {CardTransactionsResource} from './transactions';
 import {CardActionsResource} from './actions';
 import {CardLimitsResource} from './limits';
 import {CardSecure3DResource} from './secure3D';
+import {CardTransfersResource} from './transfers';
 
 export class CardsResource extends CSCoreSDK.Resource
 implements CSCoreSDK.ListEnabled<Card>, CSCoreSDK.HasInstanceResource<CardResource> {
@@ -49,6 +50,10 @@ implements CSCoreSDK.GetEnabled<Card>, CSCoreSDK.UpdateEnabled<ChangeCardSetting
     
     get secure3d() {
         return new CardSecure3DResource(this.getPath() + '/secure-online-shopping', this._client);
+    }
+    
+    get transfers() {
+        return new CardTransfersResource(this.getPath() + '/transfer', this._client);
     }
 }
 

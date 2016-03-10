@@ -2,6 +2,11 @@
 import CSCoreSDK = require('cs-core-sdk');
 import {AccountNumber, Amount, Signed} from '../common';
 
+export class CardTransfersResource extends CSCoreSDK.Resource
+implements CSCoreSDK.UpdateEnabled<PayUpCreditCardRequest, PayUpCreditCardResponse> {
+    
+}
+
 export interface PayUpCreditCardRequest {
     
     /**
