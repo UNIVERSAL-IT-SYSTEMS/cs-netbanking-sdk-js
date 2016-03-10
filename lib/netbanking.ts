@@ -37,6 +37,9 @@ export class NetbankingClient extends CSCoreSDK.WebApiClient {
         return new AccountsResource(this.getPath() + '/accounts', this);
     }
     
+    /**
+    * Get information about the profile and past logins.
+    */
     get profile() {
         return new ProfileResource(this.getPath() + '/profile', this);
     }

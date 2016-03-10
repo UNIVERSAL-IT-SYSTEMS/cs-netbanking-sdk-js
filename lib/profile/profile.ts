@@ -2,13 +2,22 @@
 import CSCoreSDK = require('cs-core-sdk');
 import {LastLoginResource} from './lastLogin';
 
+/**
+* Get information about the profile and past logins.
+*/
 export class ProfileResource extends CSCoreSDK.Resource
 implements CSCoreSDK.GetEnabled<Profile> {
     
+    /** 
+     * Returns information about the profile 
+     */  
     get = (): Promise<Profile> => {
         return CSCoreSDK.ResourceUtils.CallGet(this, null);
     }
     
+    /** 
+     * Returns LastLoginResource for listing past logins
+     */
     get lastLogin() {
         return new LastLoginResource(this.getPath() + '/logininfo', this.getClient());
     }
