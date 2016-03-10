@@ -2,6 +2,14 @@
 import CSCoreSDK = require('cs-core-sdk');
 import {Amount} from '../common';
 
+export class PaymentsLimitsResource extends CSCoreSDK.Resource
+implements CSCoreSDK.ListEnabled<Limit> {
+    
+    list = (): Promise<PaymentsLimitList> => {
+        return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'remainingLimits', null);
+    }
+}
+
 export interface PaymentsLimitList extends CSCoreSDK.PaginatedListResponse<Limit> {}
 
 export interface Limit {

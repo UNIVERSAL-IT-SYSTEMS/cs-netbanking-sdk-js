@@ -3,6 +3,7 @@ import CSCoreSDK = require('cs-core-sdk');
 import {Amount, Signed, AccountNumber} from '../common';
 import {PaymentsBookingDateResource} from './bookingDate';
 import {PaymentsDomesticResource} from './domestic';
+import {PaymentsLimitsResource} from './limits';
 
 export class OrdersResource extends CSCoreSDK.Resource {
     
@@ -34,6 +35,10 @@ implements CSCoreSDK.HasInstanceResource<PaymentResource>, CSCoreSDK.PaginatedLi
     
     get domestic() {
         return new PaymentsDomesticResource(this.getPath() + '/domestic', this._client);
+    }
+    
+    get limits() {
+        return new PaymentsLimitsResource(this.getPath() + '/limits', this._client);
     }
 }
 
