@@ -4,6 +4,7 @@ import {Amount, Signed, AccountNumber} from '../common';
 import {PaymentsBookingDateResource} from './bookingDate';
 import {PaymentsDomesticResource} from './domestic';
 import {PaymentsLimitsResource} from './limits';
+import {PaymentsMobileResource} from './mobile';
 
 export class OrdersResource extends CSCoreSDK.Resource {
     
@@ -39,6 +40,10 @@ implements CSCoreSDK.HasInstanceResource<PaymentResource>, CSCoreSDK.PaginatedLi
     
     get limits() {
         return new PaymentsLimitsResource(this.getPath() + '/limits', this._client);
+    }
+    
+    get mobile() {
+        return new PaymentsMobileResource(this.getPath() + '/mobile', this._client);
     }
 }
 

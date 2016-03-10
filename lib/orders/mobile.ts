@@ -2,6 +2,11 @@
 import CSCoreSDK = require('cs-core-sdk');
 import {Amount, Signed, AccountNumber} from '../common';
 
+export class PaymentsMobileResource extends CSCoreSDK.Resource
+implements CSCoreSDK.CreateEnabled<MobilePaymentsRequest, MobilePaymentsResponse> {
+    
+}
+
 export interface MobilePaymentsRequest {
     
     /**
