@@ -2,6 +2,8 @@
 import CSCoreSDK = require('cs-core-sdk');
 import {Amount, AccountNumber, Signed} from '../common';
 import {CardDeliveryResource} from './delivery';
+import {CardTransactionsResource} from './transactions';
+import {CardActionsResource} from './actions';
 
 export class CardsResource extends CSCoreSDK.Resource
 implements CSCoreSDK.ListEnabled<Card>, CSCoreSDK.HasInstanceResource<CardResource> {
@@ -29,6 +31,14 @@ implements CSCoreSDK.GetEnabled<Card>, CSCoreSDK.UpdateEnabled<ChangeCardSetting
     
     get delivery() {
         return new CardDeliveryResource(this.getPath() + '/delivery', this._client);
+    }
+    
+    get transactions() {
+        return new CardTransactionsResource(this.getPath() + '/transactions', this._client);
+    }
+    
+    get actions() {
+        return new CardActionsResource(this.getPath() + '/states', this._client);
     }
 }
 

@@ -3,6 +3,11 @@ import CSCoreSDK = require('cs-core-sdk');
 import {Signed} from '../common';
 import {Confirmation} from './delivery';
 
+export class CardActionsResource extends CSCoreSDK.Resource
+implements CSCoreSDK.CreateEnabled<IssueCardActionRequest, IssueCardActionResponse> {
+    
+}
+
 export interface IssueCardActionResponse extends Signed {}
 
 export interface IssueCardActionRequest {
