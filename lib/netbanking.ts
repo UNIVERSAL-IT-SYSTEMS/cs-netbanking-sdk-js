@@ -1,6 +1,7 @@
 /// <reference path="../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
 import {AccountsResource} from './accounts/accounts';
+import {ProfileResource} from './profile/profile';
 
 var sharedClient : NetbankingClient = null;
 
@@ -34,5 +35,9 @@ export class NetbankingClient extends CSCoreSDK.WebApiClient {
     */
     get accounts() {
         return new AccountsResource(this.getPath() + '/accounts', this);
+    }
+    
+    get profile() {
+        return new ProfileResource(this.getPath() + '/profile', this);
     }
 }
