@@ -1,6 +1,6 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
-import {Signed, AccountNumber, Amount} from '../common';
+import {Signed, AccountNumber, Amount, Parameters} from '../common';
 import {AccountsBalanceResource} from './balance';
 import {AccountsServicesResource} from './services';
 import {AccountsReservationsResource} from './reservations';
@@ -19,7 +19,7 @@ implements CSCoreSDK.HasInstanceResource<AccountResource>, CSCoreSDK.PaginatedLi
    /**
     * List all accounts
     */
-    list = (params?) : Promise<AccountList> => {
+    list = (params?: Parameters) : Promise<AccountList> => {
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'accounts', params, response => {
             response.items.forEach(item => {
                 
@@ -393,4 +393,12 @@ export interface ChangeAccountSettingsRequest {
     * User defined account name. Max. 50 characters 
     */
     alias?: string
+}
+
+export interface AccountsParameters extends Parameters {
+    
+    /**
+    * Example: CURRENT.
+    */
+    type?: string
 }

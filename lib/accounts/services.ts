@@ -10,7 +10,7 @@ implements CSCoreSDK.PaginatedListEnabled<Service> {
     /**
     * Fetches the services and returns them in a promise
     */
-    list = (params?): Promise<ServiceList> => {
+    list = (params?: ServicesParameters): Promise<ServiceList> => {
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'services', params, response => {
             
             // transform ISO dates to native Date objects
@@ -51,3 +51,5 @@ export interface Service {
     */
     dateTo?: Date   
 }
+
+export interface ServicesParameters extends CSCoreSDK.Paginated {}

@@ -1,6 +1,6 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
-import {Amount, AccountNumber, Signed} from '../common';
+import {Amount, AccountNumber, Signed, Parameters} from '../common';
 import {CardDeliveryResource} from './delivery';
 import {CardTransactionsResource} from './transactions';
 import {CardActionsResource} from './actions';
@@ -19,7 +19,7 @@ implements CSCoreSDK.ListEnabled<Card>, CSCoreSDK.HasInstanceResource<CardResour
     /**
     * List all cards 
     */  
-    list = (params?) : Promise<CardListing> => {
+    list = (params?: Parameters) : Promise<CardListing> => {
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'cards', params, response => {
             
             response.items.forEach(item => {

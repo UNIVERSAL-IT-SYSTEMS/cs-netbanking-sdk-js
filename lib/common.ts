@@ -144,3 +144,16 @@ export interface Transaction {
     */
     flags?: [string]
 }
+
+export interface Parameters extends CSCoreSDK.Paginated {
+    
+    /**
+    * Comma separated list of fields which should be used for sorting. Sort priorities are left to right. Example: statementDate.
+    */
+    sort?: string,
+    
+    /**
+    * The optional sorting order can be either asc or desc (case insensitive), with asc as default. If sort field contains multiple fields then desc field should contain comma separated list of orders for these fields. Example: desc.
+    */
+    order?: string
+}

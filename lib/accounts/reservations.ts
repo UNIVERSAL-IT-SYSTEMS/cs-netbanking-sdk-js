@@ -11,7 +11,7 @@ implements CSCoreSDK.PaginatedListEnabled<Reservation> {
     /**
     * Fetches the reservations and returns them in a promise
     */
-    list = (params?) : Promise<ReservationList> => {
+    list = (params?: ReservationsResource) : Promise<ReservationList> => {
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'reservations', params, response => {
             
             // transform ISO dates to native Date objects
@@ -73,3 +73,5 @@ export interface Reservation {
     */
     amountSender?: Amount     
 }
+
+export interface ReservationsResource extends CSCoreSDK.Paginated {}
