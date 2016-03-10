@@ -2,7 +2,7 @@
 import CSCoreSDK = require('cs-core-sdk');
 import {Amount} from '../common';
 
-export interface OrdersLimitList extends CSCoreSDK.PaginatedListResponse<Limit> {}
+export interface PaymentsLimitList extends CSCoreSDK.PaginatedListResponse<Limit> {}
 
 export interface Limit {
     

@@ -2,9 +2,47 @@
 import CSCoreSDK = require('cs-core-sdk');
 import {Amount, Signed, AccountNumber} from '../common';
 
-export interface OrdersListing extends CSCoreSDK.PaginatedListResponse<Order> {}
+export class OrdersResource extends CSCoreSDK.Resource {
+    
+    get payments() {
+        return new PaymentsResource(this.getPath() + '/payments', this._client);
+    }
+}
 
-export interface Order extends Signed {
+export class PaymentsResource extends CSCoreSDK.Resource
+implements CSCoreSDK.HasInstanceResource<PaymentResource>, CSCoreSDK.PaginatedListEnabled<Payment> {
+    
+    list = (params?): Promise<PaymentList> => {
+        return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'orders', params, response => {
+            
+            response.items.forEach(item => {
+                resourcifyListing(item, this.withId((<Payment>item).id));
+            })
+            return response;
+        })
+    }
+    
+    withId = (id: string|number): PaymentResource => {
+        return new PaymentResource(id, this.getPath(), this._client);
+    }
+}
+
+export class PaymentResource extends CSCoreSDK.InstanceResource
+implements CSCoreSDK.GetEnabled<Payment>, CSCoreSDK.DeleteEnabled<RemovePaymentOrderResponse> {
+    
+    get = (): Promise<Payment> => {
+        return CSCoreSDK.ResourceUtils.CallGet(this, null);
+    }
+    
+} 
+
+function resourcifyListing(paymentListing: Payment, paymentResource: PaymentResource) {
+    paymentListing.get = paymentResource.get;
+}
+
+export interface PaymentList extends CSCoreSDK.PaginatedListResponse<Payment> {}
+
+export interface Payment extends Signed {
     
     /**
     * Internal identifier of payment order. Note that after signing of the order the id could change.
@@ -130,6 +168,11 @@ export interface Order extends Signed {
     * Array of optional Flag values depends on Payment order category, type.
     */
     flags?: [string],
+    
+    /**
+    * Convenience method for retrieving payment's detail
+    */
+    get: () => Promise<Payment>
 }
 
 export interface Symbols {

@@ -2,7 +2,7 @@
 import CSCoreSDK = require('cs-core-sdk');
 import {AccountNumber} from '../common';
 
-export interface PaymentOrderBookingDateRequest {
+export interface PaymentBookingDateRequest {
     
     /**
     * Receiver's account number
@@ -15,7 +15,7 @@ export interface PaymentOrderBookingDateRequest {
     priority?: string
 }
 
-export interface PaymentOrderBookingDateResponse {
+export interface PaymentBookingDateResponse {
     
     /**
     * booking date value for provided account ID and payment order.
