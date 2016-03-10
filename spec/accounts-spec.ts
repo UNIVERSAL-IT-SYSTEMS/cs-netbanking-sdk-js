@@ -6,15 +6,15 @@ var netbanking  = require('../build/cs-netbanking-sdk.node.js');
 var judge : CSCoreSDK.Judge = null;
 var judgeSession : CSCoreSDK.JudgeSession = null;
 var client : CSNetbankingSDK.NetbankingClient = null;
-var expectToBe = CSCoreSDK.TestUtils.expectToBe;
+var expectToBe = CoreSDK.TestUtils.expectToBe;
 describe("Netbanking SDK",function(){
     var originalTimeoutInterval = null;
     
     beforeAll(function(){
-        judge = new CoreSDK.Judge();
+        judge = new CoreSDK.Judge('http://localhost:3001');
         //Because Judge starts slowly on the first request
         originalTimeoutInterval = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 2000;
     })
     
     afterAll(function(){
@@ -22,7 +22,7 @@ describe("Netbanking SDK",function(){
     });    
     
     beforeEach(function(){
-        CoreSDK.useWebApiKey("TEST_API_KEY").useEnvironment(CoreSDK.Judge.DefaultTestEnvironment)
+        CoreSDK.useWebApiKey("TEST_API_KEY").useEnvironment(judge.testEnvironment)
         client =  netbanking.getClient();	
         judgeSession = judge.startNewSession();
     })
@@ -79,8 +79,8 @@ describe("Netbanking SDK",function(){
            }).then(services => {
                
                expect(services.items.length).toBe(2);
-               expect(services.items[0].dateFrom.toString()).toBe(new Date(CSCoreSDK.EntityUtils.parseISODate('2014-07-31+0100')).toString());
-               expect(services.items[0].dateTo.toString()).toBe(new Date(CSCoreSDK.EntityUtils.parseISODate('2014-08-31+0100')).toString());
+               expect(services.items[0].dateFrom.toString()).toBe(new Date(CoreSDK.EntityUtils.parseISODate('2014-07-31+0100')).toString());
+               expect(services.items[0].dateTo.toString()).toBe(new Date(CoreSDK.EntityUtils.parseISODate('2014-08-31+0100')).toString());
                
                expectToBe(services.pagination, {
                    pageNumber: 0,
@@ -117,8 +117,8 @@ describe("Netbanking SDK",function(){
         }).then(reservations => {
             
             expect(reservations.items.length).toBe(2);
-            expect(reservations.items[0].creationDate.toString()).toBe(new Date(CSCoreSDK.EntityUtils.parseISODate('2015-09-18T21:43:53Z')).toString());
-            expect(reservations.items[0].expirationDate.toString()).toBe(new Date(CSCoreSDK.EntityUtils.parseISODate('2015-09-25T21:43:53Z')).toString());
+            expect(reservations.items[0].creationDate.toString()).toBe(new Date(CoreSDK.EntityUtils.parseISODate('2015-09-18T21:43:53Z')).toString());
+            expect(reservations.items[0].expirationDate.toString()).toBe(new Date(CoreSDK.EntityUtils.parseISODate('2015-09-25T21:43:53Z')).toString());
             
             expectToBe(reservations.pagination, {
                 pageNumber: 0,
@@ -151,8 +151,8 @@ describe("Netbanking SDK",function(){
        }).then(repayments => {
           
            expect(repayments.items.length).toBe(2);
-           expect(repayments.items[0].repaymentDate.toString()).toBe(new Date(CSCoreSDK.EntityUtils.parseISODate('2016-01-18')).toString());
-           expect(repayments.items[1].repaymentDate.toString()).toBe(new Date(CSCoreSDK.EntityUtils.parseISODate('2016-01-18')).toString());
+           expect(repayments.items[0].repaymentDate.toString()).toBe(new Date(CoreSDK.EntityUtils.parseISODate('2016-01-18')).toString());
+           expect(repayments.items[1].repaymentDate.toString()).toBe(new Date(CoreSDK.EntityUtils.parseISODate('2016-01-18')).toString());
            
            expectToBe(repayments.items[0].amount, {
                value: 32500,
@@ -181,7 +181,7 @@ describe("Netbanking SDK",function(){
        }).then(statements => {
            
            expect(statements.items.length).toBe(2);
-           expect(statements.items[0].statementDate.toString()).toBe(new Date(CSCoreSDK.EntityUtils.parseISODate('2013-06-21T14:18:19Z')).toString());
+           expect(statements.items[0].statementDate.toString()).toBe(new Date(CoreSDK.EntityUtils.parseISODate('2013-06-21T14:18:19Z')).toString());
            
            expectToBe(statements.pagination, {
                pageNumber: 0,
@@ -206,14 +206,14 @@ describe("Netbanking SDK",function(){
     
     it('retrieves list of statements on the sub account', done => {
         judgeSession.setNextCase('accounts.withId.subAccount.withId.statements.list').then(() => {
-            return client.accounts.withId('D2C8C1DCC51A3738538A40A4863CA288E0225E52').subAccount.withId('0D5F82464A77DF093858A8A5B938BEE410B4409C').statements.list({
+            return client.accounts.withId('D2C8C1DCC51A3738538A40A4863CA288E0225E52').subAccounts.withId('0D5F82464A77DF093858A8A5B938BEE410B4409C').statements.list({
                 pageNumber: 0,
                 pageSize: 2
             });            
         }).then(statements => {
             
             expect(statements.items.length).toBe(2);
-            expect(statements.items[0].statementDate.toString()).toBe(new Date(CSCoreSDK.EntityUtils.parseISODate('2013-06-21T14:18:19Z')).toString());
+            expect(statements.items[0].statementDate.toString()).toBe(new Date(CoreSDK.EntityUtils.parseISODate('2013-06-21T14:18:19Z')).toString());
             
             expectToBe(statements.pagination, {
                 pageNumber: 0,
