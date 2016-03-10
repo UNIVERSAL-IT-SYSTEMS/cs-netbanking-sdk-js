@@ -2,6 +2,11 @@
 import CSCoreSDK = require('cs-core-sdk');
 import {AccountNumber} from '../common';
 
+export class PaymentsBookingDateResource extends CSCoreSDK.Resource
+implements CSCoreSDK.UpdateEnabled<PaymentBookingDateRequest, PaymentBookingDateResponse> {
+    
+}
+
 export interface PaymentBookingDateRequest {
     
     /**

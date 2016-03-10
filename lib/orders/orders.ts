@@ -1,6 +1,7 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
 import {Amount, Signed, AccountNumber} from '../common';
+import {PaymentsBookingDateResource} from './bookingDate';
 
 export class OrdersResource extends CSCoreSDK.Resource {
     
@@ -23,7 +24,11 @@ implements CSCoreSDK.HasInstanceResource<PaymentResource>, CSCoreSDK.PaginatedLi
     }
     
     withId = (id: string|number): PaymentResource => {
-        return new PaymentResource(id, this.getPath(), this._client);
+        return new PaymentResource(id, this.getPath(), this._client); 
+    }
+    
+    get bookingDate() {
+        return new PaymentsBookingDateResource(this.getPath() + '/bookingdate', this._client);
     }
 }
 
