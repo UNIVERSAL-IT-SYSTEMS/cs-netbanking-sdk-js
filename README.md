@@ -1,5 +1,5 @@
 #CSNetbankingSDK
-This SDK allows you to access information about Česká spořitelna a.s. transparent accounts [Transparent Accounts API](https://developers.csas.cz/html/devs/transparent-accounts.html).
+This SDK allows you to access information about Česká spořitelna a.s. Netbanking API [Netbanking API](http://docs.netbankingv3.apiary.io/).
 
 #[CHANGELOG](CHANGELOG.md)
 
@@ -10,27 +10,27 @@ If you just want to use the SDK, there are compiled files ready to be used in th
 You can just copy these files directly from the repository or preferably, use `npm` to install it into your project:
 
 ```
-npm instal git+ssh://git@github.com:Ceskasporiteln/cs-transparent-acc-sdk-js.git --save
+npm install git+ssh://git@github.com:Ceskasporiteln/cs-netbanking-sdk-js.git --save
 ```
 **IMPORTANT!** You need to have your SSH keys registered with the GitHub since this repository is private.
 
 ##Usage in browser
 For usage in browser, pickup the following files from the `/dist` folder:
-* `cs-transparent-acc-sdk.sfx.js` - CSCoreSDK packaged for browsers
-* `cs-transparent-acc-sdk.sfx.d.ts` - CSCoreSDK typings for browsers
-* `cs-transparent-acc-sdk.sfx.js.map` - CSCoreSDK sourcemap for browsers
+* `cs-netbanking-sdk.sfx.js` - CSNetbankingSDK packaged for browsers
+* `cs-netbanking-sdk.sfx.d.ts` - CSNetbankingSDK typings for browsers
+* `cs-netbanking-sdk.sfx.js.map` - CSNetbankingSDK sourcemap for browsers
 
 
-TransparentAcc SDK is dependent on the [CSCoreSDK](https://github.com/Ceskasporiteln/cs-core-sdk-js). 
-You can find the appropriate verion of CSCoreSDK in `node_modeules` of Uniforms SDK if you installed it through `npm`.
-Include the `cs-core-sdk.sfx.js` in your page **before** the `cs-uniforms-sdk.sfx.js`:
+Netbanking SDK is dependent on the [CSCoreSDK](https://github.com/Ceskasporiteln/cs-core-sdk-js). 
+You can find the appropriate verion of CSCoreSDK in `node_modules` of Netbanking SDK if you installed it through `npm`.
+Include the `cs-core-sdk.sfx.js` in your page **before** the `cs-netbanking-sdk.sfx.js`:
 
 ```html
-  <script src="./node_modules/cs-transparent-acc-sdk/node_modules/cs-core-sdk/dist/cs-core-sdk.sfx.js"></script>
-  <script src="./node_modules/cs-transparent-acc-sdk/dist/cs-transparent-acc-sdk.sfx.js"></script>
+  <script src="./node_modules/cs-netbanking-sdk/node_modules/cs-core-sdk/dist/cs-core-sdk.sfx.js"></script>
+  <script src="./node_modules/cs-netbanking-sdk/dist/cs-netbanking-sdk.sfx.js"></script>
 ```
 
-The TransparentAcc SDK will be available in global variable `CSTransparentSDK`.
+The Netbanking SDK will be available in global variable `CSNetbankingSDK`.
 
 **IMPORTANT!** CSAS SDKs depend on a native ES6 Promise implementation to be [supported](http://caniuse.com/promises).
 If your environment doesn't support ES6 Promises, you can [polyfill](https://github.com/jakearchibald/es6-promise).
@@ -38,7 +38,7 @@ If your environment doesn't support ES6 Promises, you can [polyfill](https://git
 ##Usage in node
 For usage in node, install it through `npm` (see above). You can then require it by:
 ```javascript
-var CSTransparentAccSDK = require('cs-transparentAcc-sdk');
+var CSNetbankingSDK = require('cs-netbanking-sdk');
 ``` 
 
 
@@ -46,13 +46,13 @@ var CSTransparentAccSDK = require('cs-transparentAcc-sdk');
 Before using any CSAS SDKs in your application, you need to initialize CSCoreSDK by providing it your WebApiKey.
 ```javascript
 CSCoreSDK.useWebApiKey( "YourApiKey" )
-//Get the uniforms client
-var transparentAccountsClient = CSTransparentAccSDK.getClient();
+//Get the netbanking client
+var netbankingClient = CSTransparentAccSDK.getClient();
 ```
 **See [CoreSDK configuration guide](https://github.com/Ceskasporiteln/cs-core-sdk-js/blob/master/docs/configuration.md)** for all the available configuration options.
 
 ##Usage Guide
-**See [Usage Guide](./docs/transparent-acc.md)** for usage instructions.
+**See [Usage Guide](./docs/netbanking.md)** for usage instructions.
 
 #Development
 The SDK itself is written in **TypeScript**, packaged by **webpack**, tested by **jasmine** & **karma** and distributed thorugh **npm**. It uses **tsd** for TypeScript definitions.
