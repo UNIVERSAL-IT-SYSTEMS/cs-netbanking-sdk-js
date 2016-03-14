@@ -31,47 +31,47 @@ export interface Reservation {
     /**
     * Type of reservation. Possible values are CASH_WITHDRAWAL, PAYMENT, CARD_PAYMENT, OTHER
     */
-    type: string,
+    type: string;
     
     /**
     * Reservation status. Possible values are RESERVED, CANCELLED, EXPIRED. Currently only reservations with status RESERVED are supported.
     */
-    status: string,
+    status: string;
     
     /**
     * Transaction date and time.
     */
-    creationDate: Date,
+    creationDate: Date;
     
     /**
     * Reservation expiration date.
     */
-    expirationDate?: Date,
+    expirationDate?: Date;
     
     /**
     * Merchant Name / ATM.
     */
-    merchantName?: string,
+    merchantName?: string;
     
     /**
     * Merchant address.
     */
-    // cz-merchantAddress?: string,
+    // cz-merchantAddress?: string;
     
     /**
     * Reservation description, additional info.
     */
-    description: string,
+    description: string;
     
     /**
     * The amount of reservation in account's currency
     */
-    amount: Amount,
+    amount: Amount;
     
     /**
     * The amount of the reservation in transaction currency
     */
-    amountSender?: Amount     
+    amountSender?: Amount; 
 }
 
 export interface ReservationsResource extends CSCoreSDK.Paginated {}

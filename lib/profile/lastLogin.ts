@@ -22,10 +22,10 @@ export interface LastLoginInfo {
     /**
     * Channel of the last login.
     */
-    channel: string,
+    channel: string;
     
     /**
     * Date of the last login.
     */
-    lastlogin: Date
+    lastlogin: Date;
 }

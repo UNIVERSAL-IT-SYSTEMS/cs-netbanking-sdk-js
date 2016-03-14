@@ -56,10 +56,10 @@ export interface DownloadStatementsParameters {
     /**
      * Format of statements file. Example: PDF_A4.
      */ 
-    format: string,
+    format: string;
     
     /**
      * Statement identifier. Example: 201302520130621161819.
      */ 
-    statementId: string
+    statementId: string;
 }

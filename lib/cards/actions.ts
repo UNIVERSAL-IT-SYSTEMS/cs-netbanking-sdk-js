@@ -18,15 +18,15 @@ export interface IssueCardActionRequest {
    /**
     * Action which should be issued. Possible values are "REISSUE_PIN", "LOCK_CARD", "UNLOCK_CARD", "REPLACE_CARD", "ACTIVATE_CARD", "SET_AUTOMATIC_REPLACEMENT_ON", "SET_AUTOMATIC_REPLACEMENT_OFF".
     */
-    action: string,
+    action: string;
     
     /**
     * Reason why card should be locked. Possible values are "THEFT" and "LOSS". Relevant only for action "LOCK_CARD".
     */
-    lockReason?: string,
+    lockReason?: string;
     
     /**
     * Information about the confirmation
     */
-    confirmations: [Confirmation]
+    confirmations: [Confirmation];
 }

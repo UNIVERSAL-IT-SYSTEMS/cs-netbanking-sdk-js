@@ -20,20 +20,20 @@ export interface SecureSettings {
     /**
     * 3D secure functionality status. Possible Values: OK, NOT_ACTIVATED
     */
-    status?: string,
+    status?: string;
     
     /**
     * Personal Assurance Message (PAM) that user chose when activate 3D secure
     */
-    pam?: string,
+    pam?: string;
     
     /**
     * Phone (used for OTP authentification) number Id coming from Contacts
     */
-    phoneNumber?: string,
+    phoneNumber?: string;
     
     /**
     * 3D Secure language
     */
-    language?: string
+    language?: string;
 }

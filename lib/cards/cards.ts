@@ -111,127 +111,127 @@ export interface Card {
     /**
     * unique product id
     */
-    id: string,
+    id: string;
     
     /**
     * Users product name. Max. 50 characters.
     */
-    alias?: string,
+    alias?: string;
     
     /**
     * product owner
     */
-    owner: string,
+    owner: string;
     
     /**
     * card number
     */
-    number: string,
+    number: string;
     
     /**
     * Card sequence number. The number distinguishing between separate cards (different plastic cards) with the same Primary Account Number (PAN)
     */
-    sequenceNumber: string,
+    sequenceNumber: string;
     
     /**
     * Localized product name.
     */
-    productI18N: string,
+    productI18N: string;
     
     /**
     * Internal product code.
     */
-    productCode?: string,
+    productCode?: string;
     
     /**
     * Expiration date of particular plastic card
     */
-    expiryDate?: Date,
+    expiryDate?: Date;
     
     /**
     * Date from which this particular plastic card is valid
     */
-    validFromDate?: Date,
+    validFromDate?: Date;
     
     /**
     * Current state of card. Possible values: ACTIVE, INACTIVE (issued card not activated yet), TEMPORARY_BLOCKED.
     */
-    state: string,
+    state: string;
     
     /**
     * Type of card: credit, debit/bankcard. Possible Values: BANK_CARD (used for debit card too), CREDIT
     */
-    type: string,
+    type: string;
     
     /**
     * Credit card provider/issuer: Erste Bank or external bank. Possible Values: ERSTE_BANK, EXTERNAL
     */
-    provider: string,
+    provider: string;
     
     /**
     * Indicates reason for locking the card. Possible Values: THEFT, LOSS, FRAUD, OTHER
     */
-    lockReason?: string,
+    lockReason?: string;
     
     /**
     * Card characteristics. Possible values: MAIN, AUTHORIZED
     */
-    characteristics?: string,
+    characteristics?: string;
     
     /**
     * For credit card: Loan limit for card (shadow) account.
     */
-    limit?: Amount,
+    limit?: Amount;
     
     /**
     * Disposable balance of current account linked to debit/bank card or Available balance of credit card (disposable balance of shadow account). Not available for all cards or states (locked, closed, unknown).
     */
-    balance?: Amount,
+    balance?: Amount;
     
     /**
     * Total outstanding/owed amount for credit card (the last known value).
     */
-    outstandingAmount?: Amount,
+    outstandingAmount?: Amount;
     
     /**
     * Minimal installment repayment amount for credit card (at previous cycle end date).
     */
-    minimalMonthlyAmount?: Amount,
+    minimalMonthlyAmount?: Amount;
     
     /**
     * Installment repayment due date.
     */
-    installmentDueDate?: Date,
+    installmentDueDate?: Date;
     
     /**
     * Information about the main account.
     */
-    mainAccount?: MainAccount,
+    mainAccount?: MainAccount;
     
     /**
     * Information about the main account's limits.
     */
-    // cz-overallCardAccountLimits?: CardAccountLimits,
+    // cz-overallCardAccountLimits?: CardAccountLimits;
     
     /**
     * Indicates how a client receives their card and pin. Possible values: BRANCH, HOME, OTHER_BRANCH, ADDRESS_ABROAD.
     */
-    cardDeliveryMode?: string,
+    cardDeliveryMode?: string;
     
     /**
     * Array of optional features valid for given card.
     */
-    features?: [string],
+    features?: [string];
     
     /**
     * Array of optional Flag values depends on Card type.
     */
-    flags?: [string],
+    flags?: [string];
     
     /**
      * Convenience method for getting detail of the card right from the list 
      */
-    get: () => Promise<Card>
+    get: () => Promise<Card>;
 }
 
 export interface CardAccountLimits {
@@ -239,12 +239,12 @@ export interface CardAccountLimits {
     /**
     * Daily ATM limit on credit line. Daily ATM limit for all credit cards issued to mainAccount.
     */
-    limitATM?: Amount,
+    limitATM?: Amount;
     
     /**
     * Daily POS limit on credit line. Daily POS limit for all credit cards issued to mainAccount.
     */
-    limitPOS?: Amount
+    limitPOS?: Amount;
 }
 
 export interface MainAccount {
@@ -252,17 +252,17 @@ export interface MainAccount {
     /**
     * Internal ID as reference for account provided by BE
     */
-    id?: string,
+    id?: string;
     
     /**
     * Full name of the main account's holder.
     */
-    holderName: string,
+    holderName: string;
     
     /**
     * Main account is credit card shadow account for credit card or linked main current account for bank/debit card.
     */
-    accountno: AccountNumber
+    accountno: AccountNumber;
 }
 
 export interface ChangeCardSettingsResponse extends Card, Signed {
@@ -270,12 +270,12 @@ export interface ChangeCardSettingsResponse extends Card, Signed {
     /**
     * Minimal installment repayment amount for credit card (at previous cycle end date).
     */
-    minimalMonthlyAmount?: Amount,
+    minimalMonthlyAmount?: Amount;
     
     /**
     * ID of the branch
     */
-    branchId?: string,
+    branchId?: string;
 } 
 
 export interface ChangeCardSettingsRequest {
@@ -283,10 +283,10 @@ export interface ChangeCardSettingsRequest {
     /**
     * ID of the card
     */
-    id?: string,
+    id?: string;
     
     /**
     * Alias of the card
     */
-    alias?: string
+    alias?: string;
 }

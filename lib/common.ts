@@ -3,9 +3,9 @@ import CSCoreSDK = require('cs-core-sdk');
 
 export interface Signed {
     /**
-    * 
+    * Infomation about the signing
     */
-    signInfo?: SignInfo
+    signInfo?: SignInfo;
 }
 
 export interface SignInfo {
@@ -13,12 +13,12 @@ export interface SignInfo {
     /**
     * State of signing process.
     */
-    state: string,
+    state: string;
     
     /**
     * Hash value.
     */
-    signId?: number
+    signId?: number;
 }
 
 export interface AccountNumber {
@@ -26,27 +26,27 @@ export interface AccountNumber {
     /**
     * Account number with possible prefix. Format is "XXXXXX-NNNNNNNNNN" if prefix is not null or "000000". If prefix is not provided then format is "NNNNNNNNNN" without leading zeros.
     */
-    number: string,
+    number: string;
     
     /**
     * Bank Code
     */
-    bankCode: string,
+    bankCode: string;
     
     /**
     * Code of the Country - 2 characters; mandatoryfor international orders.
     */
-    countryCode?: string,
+    countryCode?: string;
     
     /**
     * IBAN
     */
-    // cz-iban: string,
+    // cz-iban: string;
     
     /**
     * BIC
     */
-    // cz-bic: string,
+    // cz-bic: string;
 }
 
 export interface Amount {
@@ -54,17 +54,17 @@ export interface Amount {
     /**
     * Value of an amount. Number without decimal part.
     */
-    value: number,
+    value: number;
     
     /**
     * Precision of the amount. How many digits from value fields should be considered to be decimal.
     */
-    precision: number,
+    precision: number;
     
     /**
     * Currency of the amount.
     */
-    currency: string
+    currency: string;
 }
 
 export interface StatementList extends CSCoreSDK.PaginatedListResponse<Statement> {}
@@ -74,42 +74,42 @@ export interface Statement {
     /**
     * Identifier of statement in BE system.
     */
-    id: string,
+    id: string;
     
     /**
     * Statement sequence number.
     */
-    number: number,
+    number: number;
     
     /**
     * Timestamp of statement creation.
     */
-    statementDate: Date,
+    statementDate: Date;
     
     /**
     * Periodicity of account statement creation. Possible values are: DAILY, WEEKLY, BI_WEEKLY, MONTHLY, QUARTERLY, HALFYEARLY, YEARLY, 10_YAERLY, OTHER
     */
-    periodicity: string,
+    periodicity: string;
     
     /**
     * Statement format. Possible value is PDF_A4
     */
-    format?: string,
+    format?: string;
     
     /**
     * Language version of created statement. ISO 639-1 ENUM values: en, de, cs, sk, hr, sr, ro, hu, fr (fr is local specific)
     */
-    language: string,
+    language: string;
     
     /**
     * Number of files for of the whole statement.
     */
-    //cz-fileTotalNumber: string,
+    //cz-fileTotalNumber: string;
     
     /**
     * File number - to recognize order of the file if the statement is separated into several files.
     */
-    //cz-fileOrderNumber: string
+    //cz-fileOrderNumber: string;
 }
 
 export interface AddNoteAndMarkTransactionsRequest {
@@ -117,12 +117,12 @@ export interface AddNoteAndMarkTransactionsRequest {
     /**
     * Personal, user specific note for transaction. Max. 4 000 characters.
     */
-    note?: string,
+    note?: string;
     
     /**
     * List of flags.
     */
-    flags?: [string]
+    flags?: [string];
 }
 
 export interface TransactionList extends CSCoreSDK.PaginatedListResponse<Transaction>, Signed {}
@@ -132,17 +132,17 @@ export interface Transaction {
     /**
     * Transaction identifier.
     */
-    id: string,
+    id: string;
     
     /**
     * Personal, user specific note for transaction. Max. 4 000 characters.
     */
-    note?: string,
+    note?: string;
     
     /**
     * List of flags.
     */
-    flags?: [string]
+    flags?: [string];
 }
 
 export interface Parameters extends CSCoreSDK.Paginated {
@@ -150,10 +150,10 @@ export interface Parameters extends CSCoreSDK.Paginated {
     /**
     * Comma separated list of fields which should be used for sorting. Sort priorities are left to right. Example: statementDate.
     */
-    sort?: string,
+    sort?: string;
     
     /**
     * The optional sorting order can be either asc or desc (case insensitive), with asc as default. If sort field contains multiple fields then desc field should contain comma separated list of orders for these fields. Example: desc.
     */
-    order?: string
+    order?: string;
 }

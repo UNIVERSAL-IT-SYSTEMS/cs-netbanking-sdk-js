@@ -21,15 +21,15 @@ export interface BalanceListing {
     /**
     * Account balance for Current, Saved amount for Saving, Principal Outstanding for Loan/Mortgage.
     */
-    balance: Amount,
+    balance: Amount;
     
     /**
     * Disposable balance for Current account.
     */
-    disposable?: Amount,
+    disposable?: Amount;
     
     /**
     * Overdraft amount for Current account.
     */
-    overdraft?: Amount   
+    overdraft?: Amount; 
 }

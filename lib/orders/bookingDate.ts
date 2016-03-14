@@ -15,12 +15,12 @@ export interface PaymentBookingDateRequest {
     /**
     * Receiver's account number
     */
-    receiver?: AccountNumber,
+    receiver?: AccountNumber;
     
     /**
     * Payment order priority selected by user, ENUM values: URGENT (for express payments), STANDARD.
     */
-    priority?: string
+    priority?: string;
 }
 
 export interface PaymentBookingDateResponse {
@@ -28,5 +28,5 @@ export interface PaymentBookingDateResponse {
     /**
     * booking date value for provided account ID and payment order.
     */
-    bookingDate: Date
+    bookingDate: Date;
 }

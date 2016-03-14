@@ -21,17 +21,17 @@ export interface DeliveryListing {
     /**
     * Type of the delivery which should be set for this card. Possible values are BRANCH, OTHER_BRANCH, HOME, ADDRESS_ABROAD.
     */
-    cardDeliveryMode: string,
+    cardDeliveryMode: string;
     
     /**
     * Identification of the branch where card will be ready to takeover.
     */
-    branchId: string,
+    branchId: string;
     
     /**
     * Address where card should be sent.
     */
-    address: Address 
+    address: Address;
 }
 
 export interface Address {
@@ -39,37 +39,37 @@ export interface Address {
     /**
     * Street of the address.
     */
-    street: string,
+    street: string;
     
     /**
     * Number which is unique in street. Not all localities have streets.
     */
-    streetNumber?: number,
+    streetNumber?: number;
     
     /**
     * Number which is unique in locality/town/village.
     */
-    buildingApartment?: string,
+    buildingApartment?: string;
     
     /**
     * Zip code of the address.
     */
-    zipCode?: string,
+    zipCode?: string;
     
     /**
     * City
     */
-    city: string,
+    city: string;
     
     /**
     * Address country.
     */
-    country: string,
+    country: string;
     
     /**
     * Information about the confirmation
     */
-    confirmations?: [Confirmation]
+    confirmations?: [Confirmation];
 }
 
 export interface Confirmation {
@@ -77,12 +77,12 @@ export interface Confirmation {
     /**
     * Email
     */
-    email: string,
+    email: string;
     
     /**
     * Language
     */
-    language: string
+    language: string;
 }
 
 export interface ChangeDeliverySettingsResponse extends DeliveryListing, Signed {}
@@ -92,5 +92,5 @@ export interface ChangeDeliverySettingsRequest extends CSCoreSDK.PaginatedListRe
     /**
     * Indicates how a client receives their card and pin. Possible values: BRANCH, HOME, OTHER_BRANCH, ADDRESS_ABROAD.
     */
-    cardDeliveryMode: string,
+    cardDeliveryMode: string;
 }

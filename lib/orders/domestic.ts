@@ -16,57 +16,57 @@ export interface DomesticPaymentUpdateRequest extends Signed {
     /**
     * Internal identifier of payment order. Note that after signing of the order the id could change.
     */
-    id?: string,
+    id?: string;
     
     /**
     * Name of the sender
     */
-    senderName: string,
+    senderName: string;
     
     /**
     * Account number of the sender.
     */
-    sender: AccountNumber,
+    sender: AccountNumber;
     
     /**
     * Name of the payee
     */
-    receiverName: string,
+    receiverName: string;
     
     /**
     * Account number of payee
     */
-    receiver: AccountNumber,
+    receiver: AccountNumber;
     
     /**
     * Payment order amount.
     */
-    amount: Amount,
+    amount: Amount;
     
     /**
     * Optional date (in the future) when this payment has to be done
     */
-    transferDate?: Date,
+    transferDate?: Date;
     
     /**
     * Message for payee set during payment order creation. It is used to identify transaction on receiver side. Array of texts 4x35
     */
-    additionalInfo?: Info,
+    additionalInfo?: Info;
     
     /**
     * Message for me set during payment order creation.
     */
-    senderReference?: string,
+    senderReference?: string;
     
     /**
     * Information about the symbols
     */
-    symbols?: Symbols,
+    symbols?: Symbols;
     
     /**
     * Array of optional Flag values depends on Payment order category, type.
     */
-    flags?: [string] 
+    flags?: [string];
 }
 
 export interface DomesticPaymentUpdateResponse extends Payment {}

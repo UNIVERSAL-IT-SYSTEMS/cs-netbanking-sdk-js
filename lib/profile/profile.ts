@@ -28,40 +28,40 @@ export interface Profile {
     /**
     * user's first name
     */
-    firstName: string,
+    firstName: string;
     
     /**
     * user's last name
     */
-    lastName: string,
+    lastName: string;
     
     /**
     * user's name used for salutation
     */
-    salutation?: string,
+    salutation?: string;
     
     /**
     * customer's id
     */
-    customerId: string,
+    customerId: string;
     
     /**
     * number of institute
     */
-    institudeId: number,
+    institudeId: number;
     
     /**
     * Has the customer approved §107 telecommunication act. Possible values: ACCEPTED, NOT_ACCEPTED, UNKNOWN.
     */
-    marketingInfoAcceptance: string,
+    marketingInfoAcceptance: string;
     
     /**
     * user's gender. Possible values: MALE, FEMALE, UNKNOWN.
     */
-    gender: string,
+    gender: string;
     
     /**
     * Date and time of the last login of customer. Common last login for all client applications - George, QC, etc.
     */
-    lastlogin?: Date
+    lastlogin?: Date;
 }

@@ -31,15 +31,15 @@ export interface Repayment {
    /**
     * Date of the repayment.
     */
-    repaymentDate: Date,
+    repaymentDate: Date;
     
    /**
     * Repayment amount. What should be paid.
     */
-    amount: Amount,
+    amount: Amount;
     
    /**
     * Actual paid amount.
     */
-    paidAmount?: Amount   
+    paidAmount?: Amount;
 }

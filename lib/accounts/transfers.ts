@@ -17,20 +17,20 @@ export interface TransferRequest {
    /**
     * Type of the transfer. Currently only REVOLVING_LOAN_DISBURSEMENT is supported.
     */
-    type: string,
+    type: string;
     
     /**
     * Amount which should be transfered.
     */
-    amount: Amount,
+    amount: Amount;
     
     /**
     * Payment transfer date.
     */
-    transferDate: Date,
+    transferDate: Date;
     
     /**
     * Note for the recipient.
     */
-    recipientNote?: string
+    recipientNote?: string;
 }

@@ -15,17 +15,17 @@ export interface PayUpCreditCardRequest {
     /**
     * Type of the transfer. Currently only DEBT_REPAYMENT is supported.
     */
-    type: string,
+    type: string;
     
     /**
     * Information about the sender
     */
-    sender: Sender,
+    sender: Sender;
     
     /**
     * Amount which should be transfered.
     */
-    amount: Amount    
+    amount: Amount;   
 }
 
 export interface Sender {
@@ -33,12 +33,12 @@ export interface Sender {
     /**
     * Identification of the source account for the transfer.
     */
-    id?: string,
+    id?: string;
     
     /**
     * Account number of the source account for the transfer.
     */
-    accountno: AccountNumber
+    accountno: AccountNumber;
 }
 
 export interface PayUpCreditCardResponse extends Signed {}

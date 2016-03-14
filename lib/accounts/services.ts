@@ -29,27 +29,27 @@ export interface Service {
     /**
     * Service identifier.
     */
-    id: string,
+    id: string;
     
     /**
     * Localized name of the service.
     */
-    nameI18N: string,
+    nameI18N: string;
     
     /**
     * Information about service group. There is an icon defined for every group.
     */
-    iconGroup: string,
+    iconGroup: string;
     
     /**
     * Service is active from date.
     */
-    dateFrom?: Date,
+    dateFrom?: Date;
     
     /**
     * Service will be active till date.
     */
-    dateTo?: Date   
+    dateTo?: Date;
 }
 
 export interface ServicesParameters extends CSCoreSDK.Paginated {}

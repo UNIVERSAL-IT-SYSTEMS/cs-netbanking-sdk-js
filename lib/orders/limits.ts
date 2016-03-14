@@ -23,20 +23,20 @@ export interface Limit {
     /**
     * Authorization method type for which is limit defined. ENUM: tac, tan, sms, gridCard, eok, displayCard, mToken. Other local authorization type has to be defined.
     */
-    authorizationType: string,
+    authorizationType: string;
     
     /**
     * ID of the channel for which is limit defined. ENUM: netBanking, mobileBanking, homeBanking, thirdParty, and unknown - remaining limit amount valid for all channels, not particulary defined.
     */
-    channelId: string,
+    channelId: string;
     
     /**
     * ID of the application for which is limit defined. ENUM: George, InternetBanking and unknown - remaining limit amount valid for all applications, not particulary defined.
     */
-    applicationId: string,
+    applicationId: string;
     
     /**
     * Remaining Daily amount which can be transferred using particular authorization method and channel (_embedded AMOUNT type).
     */
-    remainingAmount: Amount   
+    remainingAmount: Amount;   
 }

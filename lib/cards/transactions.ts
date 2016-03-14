@@ -38,37 +38,37 @@ export interface CardTransactionsParameters {
     /**
      * Date from which transactions should be exported. Example: 1999-09-27T00%3A00%3A00%2B02%3A00.
      */ 
-    dateFrom: string,
+    dateFrom: string;
     
     // prověřit
     /**
      * Date to which transactions should be exported Example: 2000-09-27T00%3A00%3A00%2B02%3A00.
      */
-    dateTo: string,
+    dateTo: string;
     
     /**
      * Array of fields which should appear in export. Possible fields are: bookingDate, partner, amount, currency, variableSymbol, constantSymbol, specificSymbol, transactionType, note, paymentReference, senderReference, cardNumber, investmentInstrumentName, marked, valuationDate, referenceId, 
      * location Example: bookingDate,partner,amount,currency.
      */
-    fields: string,
+    fields: string;
     
     /**
      * Indication whether account name should be visible in export. Default is false. Example: true.
      */
-    showAccountName?: boolean,
+    showAccountName?: boolean;
     
     /**
      * Indication whether account number should be visible in export. Default is false. Example: true.
      */
-    showAccountNumber?: boolean,
+    showAccountNumber?: boolean;
     
     /**
      * Indication whether timespan of the export should be visible. Default is false. Example: true.
      */
-    showTimestamp?: boolean,
+    showTimestamp?: boolean;
     
     /**
      * Indication whether balance of the account should be visible in export. Default is false. Example: true.
      */
-    showBalance?: boolean
+    showBalance?: boolean;
 }
