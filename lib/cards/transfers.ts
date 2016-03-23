@@ -8,6 +8,12 @@ import {AccountNumber, Amount, Signed} from '../common';
 export class CardTransfersResource extends CSCoreSDK.Resource
 implements CSCoreSDK.UpdateEnabled<PayUpCreditCardRequest, PayUpCreditCardResponse> {
     
+    /**
+     * Pays up the credit card debt and returns sign info  
+     */ 
+    update = (payload: PayUpCreditCardRequest): Promise<PayUpCreditCardResponse> => {
+        return CSCoreSDK.ResourceUtils.CallUpdate(this, payload);
+    }
 }
 
 export interface PayUpCreditCardRequest {

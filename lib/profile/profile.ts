@@ -12,7 +12,12 @@ implements CSCoreSDK.GetEnabled<Profile> {
      * Returns information about the profile 
      */  
     get = (): Promise<Profile> => {
-        return CSCoreSDK.ResourceUtils.CallGet(this, null);
+        return CSCoreSDK.ResourceUtils.CallGet(this, null).then(profile => {
+            if((<Profile>profile).lastlogin) {
+                CSCoreSDK.EntityUtils.addDatesFromISO('lastlogin', profile);   
+            }
+            return profile;
+        });
     }
     
     /** 

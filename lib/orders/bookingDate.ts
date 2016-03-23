@@ -8,10 +8,25 @@ import {AccountNumber} from '../common';
 export class PaymentsBookingDateResource extends CSCoreSDK.Resource
 implements CSCoreSDK.UpdateEnabled<PaymentBookingDateRequest, PaymentBookingDateResponse> {
     
+    /**
+    * Returns current available booking date based on the provided account and optional payment order category parameters
+    */  
+    update = (payload: PaymentBookingDateRequest): Promise<PaymentBookingDateResponse> => {
+        var accountId = payload.accountId;
+        delete payload.accountId;
+        
+        this._path = this.getPath() + `?accountId=${accountId}`;
+        return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(bookingDate => {
+            
+            CSCoreSDK.EntityUtils.addDatesFromISO('bookingDate', bookingDate);
+            return bookingDate;
+        })
+    }
 }
 
 export interface PaymentBookingDateRequest {
     
+    accountId: string;
     /**
     * Receiver's account number
     */

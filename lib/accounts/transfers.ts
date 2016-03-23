@@ -8,6 +8,12 @@ import {Signed, Amount} from '../common';
 export class AccountsTransfersResource extends CSCoreSDK.Resource
 implements CSCoreSDK.UpdateEnabled<TransferRequest, TransferResponse> {
     
+    /**
+    * Revolves the loan. Currently only REVOLVING_LOAN subtype is supported.
+    */  
+    update = (payload: TransferRequest): Promise<TransferResponse> => {
+        return CSCoreSDK.ResourceUtils.CallCreate(this, payload);
+    }
 }
 
 export interface TransferResponse extends Signed {}

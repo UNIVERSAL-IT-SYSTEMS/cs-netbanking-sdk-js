@@ -7,8 +7,44 @@ import {Info, Symbols, Payment} from './orders';
 * Create domestic payment order
 */
 export class PaymentsDomesticResource extends CSCoreSDK.Resource
-implements CSCoreSDK.UpdateEnabled<DomesticPaymentUpdateRequest, DomesticPaymentUpdateResponse>, CSCoreSDK.CreateEnabled<> {
+implements CSCoreSDK.CreateEnabled<DomesticPaymentUpdateRequest, DomesticPaymentUpdateResponse> {
     
+    /**
+    * Creates domestic payment order and returns it in promise
+    */
+    create = (payload: DomesticPaymentUpdateRequest): Promise<DomesticPaymentUpdateResponse> => {
+        return CSCoreSDK.ResourceUtils.CallCreate(this, payload).then(response => {
+            
+            CSCoreSDK.EntityUtils.addDatesFromISO(['cz-orderingDate', 'executionDate', 'modificationDate', 'transferDate'], response);
+            return response;
+        });
+    }
+    
+    /**
+    * Returns PaymentDomesticResource resource for updating domestic payment
+    */
+    withId = (id: string): PaymentDomesticResource => {
+        return new PaymentDomesticResource(id, this.getPath(), this.getClient());
+    }
+    
+}
+
+/**
+* Update domestic payment
+*/
+export class PaymentDomesticResource extends CSCoreSDK.InstanceResource
+implements CSCoreSDK.UpdateEnabled<DomesticPaymentUpdateRequest, DomesticPaymentUpdateResponse> {
+    
+    /**
+    * Updates domestic payment and returns it in promise
+    */
+    update = (payload: DomesticPaymentUpdateRequest): Promise<DomesticPaymentUpdateResponse> => {
+        return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(response => {
+            
+            CSCoreSDK.EntityUtils.addDatesFromISO(['cz-orderingDate', 'executionDate', 'modificationDate', 'transferDate'], response);
+            return response;
+        });
+    }
 }
 
 export interface DomesticPaymentUpdateRequest extends Signed {
@@ -26,7 +62,7 @@ export interface DomesticPaymentUpdateRequest extends Signed {
     /**
     * Account number of the sender.
     */
-    sender: AccountNumber;
+    sender: DomesticPaymentAccount;
     
     /**
     * Name of the payee
@@ -36,7 +72,7 @@ export interface DomesticPaymentUpdateRequest extends Signed {
     /**
     * Account number of payee
     */
-    receiver: AccountNumber;
+    receiver: DomesticPaymentAccount;
     
     /**
     * Payment order amount.
@@ -70,3 +106,31 @@ export interface DomesticPaymentUpdateRequest extends Signed {
 }
 
 export interface DomesticPaymentUpdateResponse extends Payment {}
+
+export interface DomesticPaymentAccount {
+    
+    /**
+    * Account number with possible prefix. Format is "XXXXXX-NNNNNNNNNN" if prefix is not null or "000000". If prefix is not provided then format is "NNNNNNNNNN" without leading zeros.
+    */
+    number?: string;
+    
+    /**
+    * Bank Code
+    */
+    bankCode?: string;
+    
+    /**
+    * Code of the Country - 2 characters; mandatoryfor international orders.
+    */
+    countryCode?: string;
+    
+    /**
+    * IBAN
+    */
+    "cz-iban"?: string;
+    
+    /**
+    * BIC
+    */
+    "cz-bic"?: string;
+}

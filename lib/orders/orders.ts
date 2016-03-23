@@ -29,9 +29,10 @@ implements CSCoreSDK.HasInstanceResource<PaymentResource>, CSCoreSDK.PaginatedLi
     * List all payments
     */  
     list = (params?: Parameters): Promise<PaymentList> => {
-        return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'orders', params, response => {
+        return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'order', params, response => {
             
             response.items.forEach(item => {
+                CSCoreSDK.EntityUtils.addDatesFromISO(['cz-orderingDate', 'executionDate', 'modificationDate', 'transferDate'], item);
                 resourcifyListing(<Payment>item, this.withId((<Payment>item).id));
             })
             return response;
@@ -78,19 +79,31 @@ implements CSCoreSDK.HasInstanceResource<PaymentResource>, CSCoreSDK.PaginatedLi
 * Individual Payment order resource
 */
 export class PaymentResource extends CSCoreSDK.InstanceResource
-implements CSCoreSDK.GetEnabled<Payment>, CSCoreSDK.DeleteEnabled<RemovePaymentOrderResponse> {
+implements CSCoreSDK.GetEnabled<Payment>, CSCoreSDK.DeleteEnabled<void> {
     
     /**
     * Get detail of the payment
     */  
     get = (): Promise<Payment> => {
-        return CSCoreSDK.ResourceUtils.CallGet(this, null);
+        return CSCoreSDK.ResourceUtils.CallGet(this, null).then(payment => {
+            
+            CSCoreSDK.EntityUtils.addDatesFromISO(['cz-orderingDate', 'executionDate', 'modificationDate', 'transferDate'], payment);
+            return payment;
+        });
+    }
+    
+    /**
+    * Remove payment
+    */
+    delete = (): void => {
+        return CSCoreSDK.ResourceUtils.CallDelete(this, null);
     }
     
 } 
 
 function resourcifyListing(paymentListing: Payment, paymentResource: PaymentResource) {
     paymentListing.get = paymentResource.get;
+    paymentListing.delete = PaymentResource.delete;
 }
 
 export interface PaymentList extends CSCoreSDK.PaginatedListResponse<Payment> {}
@@ -226,6 +239,11 @@ export interface Payment extends Signed {
     * Convenience method for retrieving payment's detail
     */
     get: () => Promise<Payment>;
+    
+    /**
+    * Convenience method for removing payment
+    */
+    delete: () => void;
 }
 
 export interface Symbols {

@@ -1,9 +1,9 @@
-declare module CSPNetbankingSDK {
+declare module CSNetbankingSDK {
 	/// <reference path="../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	export interface Signed {
 	    /**
-	    *
+	    * Infomation about the signing
 	    */
 	    signInfo?: SignInfo;
 	}
@@ -30,6 +30,14 @@ declare module CSPNetbankingSDK {
 	    * Code of the Country - 2 characters; mandatoryfor international orders.
 	    */
 	    countryCode?: string;
+	    /**
+	    * IBAN
+	    */
+	    "cz-iban"?: string;
+	    /**
+	    * BIC
+	    */
+	    "cz-bic"?: string;
 	}
 	export interface Amount {
 	    /**
@@ -83,6 +91,12 @@ declare module CSPNetbankingSDK {
 	    */
 	    flags?: [string];
 	}
+	export interface AddNoteAndMarkTransactionsResponse extends Signed {
+	    /**
+	    * Transactions information
+	    */
+	    transaction: Transaction;
+	}
 	export interface TransactionList extends CSCoreSDK.PaginatedListResponse<Transaction>, Signed {
 	}
 	export interface Transaction {
@@ -111,7 +125,7 @@ declare module CSPNetbankingSDK {
 	}
 
 }
-declare module CSPNetbankingSDK {
+declare module CSNetbankingSDK {
 	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
@@ -140,7 +154,7 @@ declare module CSPNetbankingSDK {
 	}
 
 }
-declare module CSPNetbankingSDK {
+declare module CSNetbankingSDK {
 	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	/**
@@ -180,7 +194,7 @@ declare module CSPNetbankingSDK {
 	}
 
 }
-declare module CSPNetbankingSDK {
+declare module CSNetbankingSDK {
 	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
@@ -191,7 +205,7 @@ declare module CSPNetbankingSDK {
 	    /**
 	    * Fetches the reservations and returns them in a promise
 	    */
-	    list: (params?: ReservationsResource) => Promise<ReservationList>;
+	    list: (params?: ReservationsParameters) => Promise<ReservationList>;
 	}
 	export interface ReservationList extends CSCoreSDK.PaginatedListResponse<Reservation> {
 	}
@@ -232,11 +246,11 @@ declare module CSPNetbankingSDK {
 	    */
 	    amountSender?: Amount;
 	}
-	export interface ReservationsResource extends CSCoreSDK.Paginated {
+	export interface ReservationsParameters extends CSCoreSDK.Paginated {
 	}
 
 }
-declare module CSPNetbankingSDK {
+declare module CSNetbankingSDK {
 	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
@@ -267,7 +281,7 @@ declare module CSPNetbankingSDK {
 	}
 
 }
-declare module CSPNetbankingSDK {
+declare module CSNetbankingSDK {
 	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
@@ -282,7 +296,7 @@ declare module CSPNetbankingSDK {
 	}
 
 }
-declare module CSPNetbankingSDK {
+declare module CSNetbankingSDK {
 	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
@@ -315,23 +329,36 @@ declare module CSPNetbankingSDK {
 	}
 
 }
-declare module CSPNetbankingSDK {
+declare module CSNetbankingSDK {
 	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
+	
 	
 	/**
 	* Get individual AccountsTransactionsResource
 	*/
-	export class AccountsTransactionsResource extends CSCoreSDK.Resource implements CSCoreSDK.HasInstanceResource<AccountsTransactionResource> {
+	export class AccountsTransactionsResource extends CSCoreSDK.Resource implements CSCoreSDK.HasInstanceResource<AccountsTransactionResource>, CSCoreSDK.ListEnabled<Transaction> {
+	    /**
+	    * Returns list of transactions
+	    */
+	    list: (params?: Parameters) => Promise<TransactionList>;
 	    /**
 	    * Returns individual AccountsTransactionResource with a given id
 	    */
 	    withId: (id: string | number) => AccountsTransactionResource;
+	    export: (params: any) => Promise<{}>;
 	}
-	export class AccountsTransactionResource extends CSCoreSDK.InstanceResource implements CSCoreSDK.UpdateEnabled<> {
+	/**
+	* Allows to add or change a client's personal transaction note and mark the transaction as favorite/important for one specific transaction on selected account.
+	*/
+	export class AccountsTransactionResource extends CSCoreSDK.InstanceResource implements CSCoreSDK.UpdateEnabled<AddNoteAndMarkTransactionsRequest, AddNoteAndMarkTransactionsResponse> {
+	    /**
+	    * Adds, changes of marks transaction
+	    */
+	    update: (payload: AddNoteAndMarkTransactionsRequest) => Promise<AddNoteAndMarkTransactionsResponse>;
 	}
 
 }
-declare module CSPNetbankingSDK {
+declare module CSNetbankingSDK {
 	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
@@ -339,6 +366,10 @@ declare module CSPNetbankingSDK {
 	* Revolve a loan
 	*/
 	export class AccountsTransfersResource extends CSCoreSDK.Resource implements CSCoreSDK.UpdateEnabled<TransferRequest, TransferResponse> {
+	    /**
+	    * Revolves the loan. Currently only REVOLVING_LOAN subtype is supported.
+	    */
+	    update: (payload: TransferRequest) => Promise<TransferResponse>;
 	}
 	export interface TransferResponse extends Signed {
 	}
@@ -362,7 +393,7 @@ declare module CSPNetbankingSDK {
 	}
 
 }
-declare module CSPNetbankingSDK {
+declare module CSNetbankingSDK {
 	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
@@ -381,7 +412,7 @@ declare module CSPNetbankingSDK {
 	    /**
 	     * List all accounts
 	     */
-	    list: (params?: Parameters) => Promise<AccountList>;
+	    list: (params?: AccountsParameters) => Promise<AccountList>;
 	    /**
 	    * Get the detail of the account with a given id
 	    */
@@ -395,6 +426,10 @@ declare module CSPNetbankingSDK {
 	    * Get account detail
 	    */
 	    get: () => Promise<MainAccount>;
+	    /**
+	    * Update account's alias
+	    */
+	    update: (payload: ChangeAccountSettingsRequest) => Promise<ChangeAccountSettingsResponse>;
 	    /**
 	    * Get information about the account's balance
 	    */
@@ -483,6 +518,13 @@ declare module CSPNetbankingSDK {
 	     * Convenience method for getting detail of the account right from the list
 	     */
 	    get: () => Promise<MainAccount>;
+	    update: (payload: ChangeAccountSettingsRequest) => Promise<ChangeAccountSettingsResponse>;
+	    services: AccountsServicesResource;
+	    transactions: AccountsTransactionsResource;
+	    reservations: AccountsReservationsResource;
+	    transfers: AccountsTransfersResource;
+	    statements: AccountsStatementsResource;
+	    repayments: AccountsRepaymentsResource;
 	}
 	export interface ChangeAccountSettingsResponse extends MainAccount, Signed {
 	}
@@ -640,7 +682,7 @@ declare module CSPNetbankingSDK {
 	}
 
 }
-declare module CSPNetbankingSDK {
+declare module CSNetbankingSDK {
 	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	/**
@@ -666,7 +708,7 @@ declare module CSPNetbankingSDK {
 	}
 
 }
-declare module CSPNetbankingSDK {
+declare module CSNetbankingSDK {
 	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
@@ -719,7 +761,7 @@ declare module CSPNetbankingSDK {
 	}
 
 }
-declare module CSPNetbankingSDK {
+declare module CSNetbankingSDK {
 	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
@@ -731,6 +773,10 @@ declare module CSPNetbankingSDK {
 	     * Returns current delivery settings
 	     */
 	    get: () => Promise<DeliveryListing>;
+	    /**
+	     * Change current delivery settings
+	     */
+	    update: (payload: ChangeDeliverySettingsRequest) => Promise<ChangeDeliverySettingsResponse>;
 	}
 	export interface DeliveryListing {
 	    /**
@@ -796,7 +842,7 @@ declare module CSPNetbankingSDK {
 	}
 
 }
-declare module CSPNetbankingSDK {
+declare module CSNetbankingSDK {
 	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
@@ -816,7 +862,11 @@ declare module CSPNetbankingSDK {
 	/**
 	 * Add or change a client's personal note and mark/star the card transaction as favorite/important
 	 */
-	export class CardTransactionResource extends CSCoreSDK.InstanceResource implements CSCoreSDK.UpdateEnabled<AddNoteAndMarkTransactionsRequest, TransactionList> {
+	export class CardTransactionResource extends CSCoreSDK.InstanceResource implements CSCoreSDK.UpdateEnabled<AddNoteAndMarkTransactionsRequest, AddNoteAndMarkTransactionsResponse> {
+	    /**
+	    * Adds, changes of marks transaction
+	    */
+	    update: (payload: AddNoteAndMarkTransactionsRequest) => Promise<AddNoteAndMarkTransactionsResponse>;
 	}
 	export interface CardTransactionsParameters {
 	    /**
@@ -851,7 +901,7 @@ declare module CSPNetbankingSDK {
 	}
 
 }
-declare module CSPNetbankingSDK {
+declare module CSNetbankingSDK {
 	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
@@ -859,11 +909,15 @@ declare module CSPNetbankingSDK {
 	/**
 	 * Issue various actions on a single card.
 	 */
-	export class CardActionsResource extends CSCoreSDK.Resource implements CSCoreSDK.CreateEnabled<IssueCardActionRequest, IssueCardActionResponse> {
+	export class CardActionsResource extends CSCoreSDK.Resource implements CSCoreSDK.UpdateEnabled<CardsActionsRequest, CardsActionsResponse> {
+	    /**
+	     * Issues various actions on a single card
+	     */
+	    update: (payload: CardsActionsRequest) => Promise<CardsActionsResponse>;
 	}
-	export interface IssueCardActionResponse extends Signed {
+	export interface CardsActionsResponse extends Signed {
 	}
-	export interface IssueCardActionRequest {
+	export interface CardsActionsRequest {
 	    /**
 	     * Action which should be issued. Possible values are "REISSUE_PIN", "LOCK_CARD", "UNLOCK_CARD", "REPLACE_CARD", "ACTIVATE_CARD", "SET_AUTOMATIC_REPLACEMENT_ON", "SET_AUTOMATIC_REPLACEMENT_OFF".
 	     */
@@ -875,11 +929,11 @@ declare module CSPNetbankingSDK {
 	    /**
 	    * Information about the confirmation
 	    */
-	    confirmations: [Confirmation];
+	    confirmations?: [Confirmation];
 	}
 
 }
-declare module CSPNetbankingSDK {
+declare module CSNetbankingSDK {
 	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
@@ -887,15 +941,19 @@ declare module CSPNetbankingSDK {
 	/**
 	* Get information about different limits
 	*/
-	export class CardLimitsResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<Limit>, CSCoreSDK.UpdateEnabled<ChangeCardLimitsRequest, ChangeCardLimitsResponse> {
+	export class CardLimitsResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<CardsLimit>, CSCoreSDK.UpdateEnabled<ChangeCardLimitsRequest, ChangeCardLimitsResponse> {
 	    /**
 	     * List all limits
 	     */
-	    list: () => Promise<LimitList>;
+	    list: () => Promise<CardsLimitList>;
+	    /**
+	     * Update individual limits
+	     */
+	    update: (payload: ChangeCardLimitsRequest) => Promise<ChangeCardLimitsResponse>;
 	}
-	export interface LimitList extends CSCoreSDK.PaginatedListResponse<Limit> {
+	export interface CardsLimitList extends CSCoreSDK.PaginatedListResponse<CardsLimit> {
 	}
-	export interface Limit {
+	export interface CardsLimit {
 	    /**
 	    * Limit type defines ATM, POS, internet/eCommerce, total limits. Possible Values: ATM, POS, INTERNET
 	    */
@@ -921,13 +979,15 @@ declare module CSPNetbankingSDK {
 	    */
 	    bankLimit?: Amount;
 	}
-	export interface ChangeCardLimitsResponse extends LimitList, Signed {
+	export interface ChangeCardLimitsResponse extends Signed {
+	    limits?: [CardsLimit];
 	    /**
 	    * Information about the confirmation
 	    */
 	    confirmations?: [Confirmation];
 	}
-	export interface ChangeCardLimitsRequest extends LimitList {
+	export interface ChangeCardLimitsRequest {
+	    limits?: [CardsLimit];
 	    /**
 	    * Information about the confirmation
 	    */
@@ -935,7 +995,7 @@ declare module CSPNetbankingSDK {
 	}
 
 }
-declare module CSPNetbankingSDK {
+declare module CSNetbankingSDK {
 	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	/**
@@ -967,7 +1027,7 @@ declare module CSPNetbankingSDK {
 	}
 
 }
-declare module CSPNetbankingSDK {
+declare module CSNetbankingSDK {
 	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
@@ -975,6 +1035,10 @@ declare module CSPNetbankingSDK {
 	 * Resource for paying up credit card debt
 	 */
 	export class CardTransfersResource extends CSCoreSDK.Resource implements CSCoreSDK.UpdateEnabled<PayUpCreditCardRequest, PayUpCreditCardResponse> {
+	    /**
+	     * Pays up the credit card debt and returns sign info
+	     */
+	    update: (payload: PayUpCreditCardRequest) => Promise<PayUpCreditCardResponse>;
 	}
 	export interface PayUpCreditCardRequest {
 	    /**
@@ -1004,7 +1068,7 @@ declare module CSPNetbankingSDK {
 	}
 
 }
-declare module CSPNetbankingSDK {
+declare module CSNetbankingSDK {
 	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
@@ -1051,7 +1115,7 @@ declare module CSPNetbankingSDK {
 	}
 
 }
-declare module CSPNetbankingSDK {
+declare module CSNetbankingSDK {
 	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
@@ -1081,6 +1145,10 @@ declare module CSPNetbankingSDK {
 	    */
 	    get: () => Promise<Card>;
 	    /**
+	    * Update card's alias
+	    */
+	    update: (payload: ChangeCardSettingsRequest) => Promise<ChangeCardSettingsResponse>;
+	    /**
 	    * Get current delivery settings
 	    */
 	    delivery: CardDeliveryResource;
@@ -1108,7 +1176,7 @@ declare module CSPNetbankingSDK {
 	    /**
 	    * Account resource for listing statements
 	    */
-	    account: CardAccountsResource;
+	    accounts: CardAccountsResource;
 	}
 	export interface CardListing extends CSCoreSDK.PaginatedListResponse<Card> {
 	}
@@ -1212,6 +1280,38 @@ declare module CSPNetbankingSDK {
 	     * Convenience method for getting detail of the card right from the list
 	     */
 	    get: () => Promise<Card>;
+	    /**
+	    * Convenience method for updating card's settings
+	    */
+	    update: (payload: ChangeCardSettingsRequest) => Promise<ChangeCardSettingsResponse>;
+	    /**
+	    * Convenience getter for getting card's delivery resource
+	    */
+	    delivery: CardDeliveryResource;
+	    /**
+	    * Convenience getter for getting card's transactions resource
+	    */
+	    transactions: CardTransactionsResource;
+	    /**
+	    * Convenience getter for getting card's actions resource
+	    */
+	    actions: CardActionsResource;
+	    /**
+	    * Convenience getter for getting card's limits resource
+	    */
+	    limits: CardLimitsResource;
+	    /**
+	    * Convenience getter for getting card's 3D Secure resource
+	    */
+	    secure3d: CardSecure3DResource;
+	    /**
+	    * Convenience getter for getting card's transfers resource
+	    */
+	    transfers: CardTransfersResource;
+	    /**
+	    * Convenience getter for getting card's accounts resource
+	    */
+	    accounts: CardAccountsResource;
 	}
 	export interface CardAccountLimits {
 	    /**
@@ -1259,7 +1359,7 @@ declare module CSPNetbankingSDK {
 	}
 
 }
-declare module CSPNetbankingSDK {
+declare module CSNetbankingSDK {
 	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
@@ -1267,8 +1367,13 @@ declare module CSPNetbankingSDK {
 	* Get currently available booking date
 	*/
 	export class PaymentsBookingDateResource extends CSCoreSDK.Resource implements CSCoreSDK.UpdateEnabled<PaymentBookingDateRequest, PaymentBookingDateResponse> {
+	    /**
+	    * Returns current available booking date based on the provided account and optional payment order category parameters
+	    */
+	    update: (payload: PaymentBookingDateRequest) => Promise<PaymentBookingDateResponse>;
 	}
 	export interface PaymentBookingDateRequest {
+	    accountId: string;
 	    /**
 	    * Receiver's account number
 	    */
@@ -1286,7 +1391,7 @@ declare module CSPNetbankingSDK {
 	}
 
 }
-declare module CSPNetbankingSDK {
+declare module CSNetbankingSDK {
 	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
@@ -1294,7 +1399,24 @@ declare module CSPNetbankingSDK {
 	/**
 	* Create domestic payment order
 	*/
-	export class PaymentsDomesticResource extends CSCoreSDK.Resource implements CSCoreSDK.UpdateEnabled<DomesticPaymentUpdateRequest, DomesticPaymentUpdateResponse>, CSCoreSDK.CreateEnabled<> {
+	export class PaymentsDomesticResource extends CSCoreSDK.Resource implements CSCoreSDK.CreateEnabled<DomesticPaymentUpdateRequest, DomesticPaymentUpdateResponse> {
+	    /**
+	    * Creates domestic payment order and returns it in promise
+	    */
+	    create: (payload: DomesticPaymentUpdateRequest) => Promise<DomesticPaymentUpdateResponse>;
+	    /**
+	    * Returns PaymentDomesticResource resource for updating domestic payment
+	    */
+	    withId: (id: string) => PaymentDomesticResource;
+	}
+	/**
+	* Update domestic payment
+	*/
+	export class PaymentDomesticResource extends CSCoreSDK.InstanceResource implements CSCoreSDK.UpdateEnabled<DomesticPaymentUpdateRequest, DomesticPaymentUpdateResponse> {
+	    /**
+	    * Updates domestic payment and returns it in promise
+	    */
+	    update: (payload: DomesticPaymentUpdateRequest) => Promise<DomesticPaymentUpdateResponse>;
 	}
 	export interface DomesticPaymentUpdateRequest extends Signed {
 	    /**
@@ -1308,7 +1430,7 @@ declare module CSPNetbankingSDK {
 	    /**
 	    * Account number of the sender.
 	    */
-	    sender: AccountNumber;
+	    sender: DomesticPaymentAccount;
 	    /**
 	    * Name of the payee
 	    */
@@ -1316,7 +1438,7 @@ declare module CSPNetbankingSDK {
 	    /**
 	    * Account number of payee
 	    */
-	    receiver: AccountNumber;
+	    receiver: DomesticPaymentAccount;
 	    /**
 	    * Payment order amount.
 	    */
@@ -1344,24 +1466,46 @@ declare module CSPNetbankingSDK {
 	}
 	export interface DomesticPaymentUpdateResponse extends Payment {
 	}
+	export interface DomesticPaymentAccount {
+	    /**
+	    * Account number with possible prefix. Format is "XXXXXX-NNNNNNNNNN" if prefix is not null or "000000". If prefix is not provided then format is "NNNNNNNNNN" without leading zeros.
+	    */
+	    number?: string;
+	    /**
+	    * Bank Code
+	    */
+	    bankCode?: string;
+	    /**
+	    * Code of the Country - 2 characters; mandatoryfor international orders.
+	    */
+	    countryCode?: string;
+	    /**
+	    * IBAN
+	    */
+	    "cz-iban"?: string;
+	    /**
+	    * BIC
+	    */
+	    "cz-bic"?: string;
+	}
 
 }
-declare module CSPNetbankingSDK {
+declare module CSNetbankingSDK {
 	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
 	/**
 	* Get remaining amounts for payment orders
 	*/
-	export class PaymentsLimitsResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<Limit> {
+	export class PaymentsLimitsResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<PaymentsLimit> {
 	    /**
 	    * List all limits for payment orders
 	    */
 	    list: () => Promise<PaymentsLimitList>;
 	}
-	export interface PaymentsLimitList extends CSCoreSDK.PaginatedListResponse<Limit> {
+	export interface PaymentsLimitList extends CSCoreSDK.PaginatedListResponse<PaymentsLimit> {
 	}
-	export interface Limit {
+	export interface PaymentsLimit {
 	    /**
 	    * Authorization method type for which is limit defined. ENUM: tac, tan, sms, gridCard, eok, displayCard, mToken. Other local authorization type has to be defined.
 	    */
@@ -1381,7 +1525,7 @@ declare module CSPNetbankingSDK {
 	}
 
 }
-declare module CSPNetbankingSDK {
+declare module CSNetbankingSDK {
 	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
@@ -1389,6 +1533,7 @@ declare module CSPNetbankingSDK {
 	* Recharging the credit available on prepaid cards provided by Vodafone, T-Mobile or O2.
 	*/
 	export class PaymentsMobileResource extends CSCoreSDK.Resource implements CSCoreSDK.CreateEnabled<MobilePaymentsRequest, MobilePaymentsResponse> {
+	    create: (payload: MobilePaymentsRequest) => Promise<MobilePaymentsResponse>;
 	}
 	export interface MobilePaymentsRequest {
 	    /**
@@ -1402,7 +1547,7 @@ declare module CSPNetbankingSDK {
 	    /**
 	    * Sender name
 	    */
-	    sender: AccountNumber;
+	    sender: MobilePaymentSender;
 	    /**
 	    * Payment amount.
 	    */
@@ -1418,9 +1563,31 @@ declare module CSPNetbankingSDK {
 	}
 	export interface MobilePaymentsResponse extends MobilePaymentsRequest, Signed {
 	}
+	export interface MobilePaymentSender {
+	    /**
+	    * Account number with possible prefix. Format is "XXXXXX-NNNNNNNNNN" if prefix is not null or "000000". If prefix is not provided then format is "NNNNNNNNNN" without leading zeros.
+	    */
+	    number: string;
+	    /**
+	    * Bank Code
+	    */
+	    bankCode: string;
+	    /**
+	    * Code of the Country - 2 characters; mandatoryfor international orders.
+	    */
+	    countryCode?: string;
+	    /**
+	    * IBAN
+	    */
+	    iban: string;
+	    /**
+	    * BIC
+	    */
+	    bic: string;
+	}
 
 }
-declare module CSPNetbankingSDK {
+declare module CSNetbankingSDK {
 	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
@@ -1469,11 +1636,15 @@ declare module CSPNetbankingSDK {
 	/**
 	* Individual Payment order resource
 	*/
-	export class PaymentResource extends CSCoreSDK.InstanceResource implements CSCoreSDK.GetEnabled<Payment>, CSCoreSDK.DeleteEnabled<RemovePaymentOrderResponse> {
+	export class PaymentResource extends CSCoreSDK.InstanceResource implements CSCoreSDK.GetEnabled<Payment>, CSCoreSDK.DeleteEnabled<void> {
 	    /**
 	    * Get detail of the payment
 	    */
 	    get: () => Promise<Payment>;
+	    /**
+	    * Remove payment
+	    */
+	    delete: () => void;
 	}
 	export interface PaymentList extends CSCoreSDK.PaginatedListResponse<Payment> {
 	}
@@ -1580,6 +1751,10 @@ declare module CSPNetbankingSDK {
 	    * Convenience method for retrieving payment's detail
 	    */
 	    get: () => Promise<Payment>;
+	    /**
+	    * Convenience method for removing payment
+	    */
+	    delete: () => void;
 	}
 	export interface Symbols {
 	    /**
@@ -1605,7 +1780,7 @@ declare module CSPNetbankingSDK {
 	}
 
 }
-declare module CSPNetbankingSDK {
+declare module CSNetbankingSDK {
 	/// <reference path="../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	

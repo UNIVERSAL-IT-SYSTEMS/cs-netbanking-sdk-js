@@ -11,7 +11,12 @@ implements CSCoreSDK.ListEnabled<LastLoginInfo> {
      * Returns promise with a list of past logins
      */ 
     list = () : Promise<LastLoginList> => {
-        return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'lastlogin');
+        return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'lastlogin').then(response => {
+            
+            CSCoreSDK.EntityUtils.addDatesToItems('lastlogin', response);
+            
+            return response;
+        });
     }
 }
 

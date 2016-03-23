@@ -9,7 +9,7 @@
     "test": "npm run build && npm run test-node-run && npm run test-browser-run",
     "test-node": "npm run build && npm run test-node-run",
     "test-browser": "npm run build  && npm run test-browser-run",
-    "generate-tsd": "node node_modules/cs-core-sdk/tooling/generate-tsd cs-netbanking-sdk CSPNetbankingSDK netbanking",
+    "generate-tsd": "node node_modules/cs-core-sdk/tooling/generate-tsd cs-netbanking-sdk CSNetbankingSDK netbanking",
     "test-node-run": "webpack --config ./webpack.test.config.js && jasmine ./spec/build/tests.node.js",
     "test-browser-run": "webpack --config ./webpack.test.config.js --target-browser && node ./node_modules/karma/bin/karma start karma.conf.js --single-run",
     "preversion": "npm run build && npm run test-node-run && npm run test-browser-run",

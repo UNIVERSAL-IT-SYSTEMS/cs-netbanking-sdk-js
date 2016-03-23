@@ -7,13 +7,19 @@ import {Confirmation} from './delivery';
  * Issue various actions on a single card. 
  */
 export class CardActionsResource extends CSCoreSDK.Resource
-implements CSCoreSDK.CreateEnabled<IssueCardActionRequest, IssueCardActionResponse> {
+implements CSCoreSDK.UpdateEnabled<CardsActionsRequest, CardsActionsResponse> {
     
+    /**
+     * Issues various actions on a single card  
+     */ 
+    update = (payload: CardsActionsRequest): Promise<CardsActionsResponse> => {
+        return CSCoreSDK.ResourceUtils.CallUpdate(this, payload);
+    } 
 }
 
-export interface IssueCardActionResponse extends Signed {}
+export interface CardsActionsResponse extends Signed {}
 
-export interface IssueCardActionRequest {
+export interface CardsActionsRequest {
     
    /**
     * Action which should be issued. Possible values are "REISSUE_PIN", "LOCK_CARD", "UNLOCK_CARD", "REPLACE_CARD", "ACTIVATE_CARD", "SET_AUTOMATIC_REPLACEMENT_ON", "SET_AUTOMATIC_REPLACEMENT_OFF".
@@ -28,5 +34,5 @@ export interface IssueCardActionRequest {
     /**
     * Information about the confirmation
     */
-    confirmations: [Confirmation];
+    confirmations?: [Confirmation];
 }

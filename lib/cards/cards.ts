@@ -23,9 +23,9 @@ implements CSCoreSDK.ListEnabled<Card>, CSCoreSDK.HasInstanceResource<CardResour
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'cards', params, response => {
             
             response.items.forEach(item => {
-                
+                transformResponse(item);
                 // add convenience get method to fetch detail of the card
-                resourcifyListing(item, this.withId((<Card>item).id));
+                resourcifyListing(<Card>item, this.withId((<Card>item).id), true, false);
             })
             return response;
         });
@@ -46,7 +46,22 @@ implements CSCoreSDK.GetEnabled<Card>, CSCoreSDK.UpdateEnabled<ChangeCardSetting
     * Get detail of the card 
     */  
     get = () : Promise<Card> => {
-        return CSCoreSDK.ResourceUtils.CallGet(this, null);
+        return CSCoreSDK.ResourceUtils.CallGet(this, null).then(card => {
+            resourcifyListing(<Card>card, this, false, false);
+            transformResponse(card);
+            return card;
+        });
+    }
+    
+    /**
+    * Update card's alias 
+    */  
+    update = (payload: ChangeCardSettingsRequest): Promise<ChangeCardSettingsResponse> => {
+        return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(card => {
+            resourcifyListing(<Card>card, this, false, true);
+            transformResponse(card);
+            return card;
+        })
     }
     
     /**
@@ -95,13 +110,29 @@ implements CSCoreSDK.GetEnabled<Card>, CSCoreSDK.UpdateEnabled<ChangeCardSetting
     /**
     * Account resource for listing statements
     */
-    get account() {
+    get accounts() {
         return new CardAccountsResource(this.getPath() + '/mainaccount', this._client);
     }
 }
 
-function resourcifyListing(itemListing: Card, itemResource: CardResource) {
-    itemListing.get = itemResource.get;
+function resourcifyListing(itemListing: Card, itemResource: CardResource, isFromList: boolean, isFromUpdate: boolean) {
+    if(isFromList) {
+        itemListing.get = itemResource.get;    
+    }
+    if(!isFromUpdate) {
+        itemListing.update = itemResource.update;
+    }
+    itemListing.delivery = itemResource.delivery;
+    itemListing.transactions = itemResource.transactions;
+    itemListing.actions = itemResource.actions;
+    itemListing.limits = itemResource.limits;
+    itemListing.secure3d = itemResource.secure3d;
+    itemListing.transfers = itemResource.transfers;
+    itemListing.accounts = itemResource.accounts;
+}
+
+function transformResponse(response) {
+    CSCoreSDK.EntityUtils.addDatesFromISO(['expiryDate', 'validFromDate'], response);
 }
 
 export interface CardListing extends CSCoreSDK.PaginatedListResponse<Card> {}
@@ -232,6 +263,46 @@ export interface Card {
      * Convenience method for getting detail of the card right from the list 
      */
     get: () => Promise<Card>;
+    
+    /**
+    * Convenience method for updating card's settings
+    */
+    update: (payload: ChangeCardSettingsRequest) => Promise<ChangeCardSettingsResponse>;
+    
+    /**
+    * Convenience getter for getting card's delivery resource
+    */
+    delivery: CardDeliveryResource;
+    
+    /**
+    * Convenience getter for getting card's transactions resource
+    */
+    transactions: CardTransactionsResource;
+    
+    /**
+    * Convenience getter for getting card's actions resource
+    */
+    actions: CardActionsResource;
+    
+    /**
+    * Convenience getter for getting card's limits resource
+    */
+    limits: CardLimitsResource;
+    
+    /**
+    * Convenience getter for getting card's 3D Secure resource
+    */
+    secure3d: CardSecure3DResource;
+    
+    /**
+    * Convenience getter for getting card's transfers resource
+    */
+    transfers: CardTransfersResource;
+    
+    /**
+    * Convenience getter for getting card's accounts resource
+    */
+    accounts: CardAccountsResource;
 }
 
 export interface CardAccountLimits {

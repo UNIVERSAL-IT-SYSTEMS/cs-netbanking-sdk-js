@@ -14,6 +14,13 @@ implements CSCoreSDK.GetEnabled<DeliveryListing>, CSCoreSDK.UpdateEnabled<Change
     get = () : Promise<DeliveryListing> => {
         return CSCoreSDK.ResourceUtils.CallGet(this, null);
     }
+    
+    /**
+     * Change current delivery settings  
+     */ 
+    update = (payload: ChangeDeliverySettingsRequest): Promise<ChangeDeliverySettingsResponse> => {
+        return CSCoreSDK.ResourceUtils.CallUpdate(this, payload);
+    }
 } 
 
 export interface DeliveryListing {

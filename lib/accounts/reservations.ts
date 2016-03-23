@@ -11,13 +11,11 @@ implements CSCoreSDK.PaginatedListEnabled<Reservation> {
     /**
     * Fetches the reservations and returns them in a promise
     */
-    list = (params?: ReservationsResource) : Promise<ReservationList> => {
+    list = (params?: ReservationsParameters) : Promise<ReservationList> => {
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'reservations', params, response => {
             
             // transform ISO dates to native Date objects
-            response.items.forEach(item => {
-                CSCoreSDK.EntityUtils.addDatesFromISO(['creationDate', 'expirationDate'], item);
-            });
+            CSCoreSDK.EntityUtils.addDatesToItems(['creationDate', 'expirationDate'], response);
             
             return response;
         });
@@ -74,4 +72,4 @@ export interface Reservation {
     amountSender?: Amount; 
 }
 
-export interface ReservationsResource extends CSCoreSDK.Paginated {}
+export interface ReservationsParameters extends CSCoreSDK.Paginated {}

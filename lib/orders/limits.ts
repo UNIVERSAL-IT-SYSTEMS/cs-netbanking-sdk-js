@@ -6,7 +6,7 @@ import {Amount} from '../common';
 * Get remaining amounts for payment orders
 */
 export class PaymentsLimitsResource extends CSCoreSDK.Resource
-implements CSCoreSDK.ListEnabled<Limit> {
+implements CSCoreSDK.ListEnabled<PaymentsLimit> {
     
     /**
     * List all limits for payment orders
@@ -16,9 +16,9 @@ implements CSCoreSDK.ListEnabled<Limit> {
     }
 }
 
-export interface PaymentsLimitList extends CSCoreSDK.PaginatedListResponse<Limit> {}
+export interface PaymentsLimitList extends CSCoreSDK.PaginatedListResponse<PaymentsLimit> {}
 
-export interface Limit {
+export interface PaymentsLimit {
     
     /**
     * Authorization method type for which is limit defined. ENUM: tac, tan, sms, gridCard, eok, displayCard, mToken. Other local authorization type has to be defined.

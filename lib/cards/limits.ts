@@ -7,19 +7,26 @@ import {Confirmation} from './delivery';
 * Get information about different limits
 */
 export class CardLimitsResource extends CSCoreSDK.Resource
-implements CSCoreSDK.ListEnabled<Limit>, CSCoreSDK.UpdateEnabled<ChangeCardLimitsRequest, ChangeCardLimitsResponse> {
+implements CSCoreSDK.ListEnabled<CardsLimit>, CSCoreSDK.UpdateEnabled<ChangeCardLimitsRequest, ChangeCardLimitsResponse> {
     
     /**
      * List all limits  
      */ 
-    list = () : Promise<LimitList> => {
+    list = () : Promise<CardsLimitList> => {
         return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'limits');
+    }
+    
+    /**
+     * Update individual limits  
+     */ 
+    update = (payload: ChangeCardLimitsRequest): Promise<ChangeCardLimitsResponse> => {
+        return CSCoreSDK.ResourceUtils.CallUpdate(this, payload);
     }
 }
 
-export interface LimitList extends CSCoreSDK.PaginatedListResponse<Limit> {}
+export interface CardsLimitList extends CSCoreSDK.PaginatedListResponse<CardsLimit> {}
 
-export interface Limit {
+export interface CardsLimit {
     
     /**
     * Limit type defines ATM, POS, internet/eCommerce, total limits. Possible Values: ATM, POS, INTERNET
@@ -52,16 +59,18 @@ export interface Limit {
     bankLimit?: Amount;
 }
 
-export interface ChangeCardLimitsResponse extends LimitList, Signed {
+export interface ChangeCardLimitsResponse extends Signed {
     
+    limits?: [CardsLimit];
     /**
     * Information about the confirmation
     */
     confirmations?: [Confirmation];
 }
 
-export interface ChangeCardLimitsRequest extends LimitList {
+export interface ChangeCardLimitsRequest {
     
+    limits?: [CardsLimit]
     /**
     * Information about the confirmation
     */

@@ -19,13 +19,16 @@ implements CSCoreSDK.HasInstanceResource<AccountResource>, CSCoreSDK.PaginatedLi
    /**
     * List all accounts
     */
-    list = (params?: Parameters) : Promise<AccountList> => {
+    list = (params?: AccountsParameters) : Promise<AccountList> => {
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'accounts', params, response => {
             response.items.forEach(item => {
                 
-                // add convenience get method to fetch account's detail
-                resourcifyListing(<MainAccount>item, this.withId((<MainAccount>item).id));
-            })
+                // add convenience methods
+                resourcifyListing(<MainAccount>item, this.withId((<MainAccount>item).id), true, false);
+                
+                // transform ISO dates to native Date objects
+                transformResponse(<MainAccount>item);
+            });
             return response;
         });
     }
@@ -48,7 +51,32 @@ implements CSCoreSDK.GetEnabled<MainAccount>, CSCoreSDK.UpdateEnabled<ChangeAcco
     * Get account detail
     */
     get = (): Promise<MainAccount> => {
-        return CSCoreSDK.ResourceUtils.CallGet(this, null);
+        return CSCoreSDK.ResourceUtils.CallGet(this, null).then(response => {
+            
+            // add convenience methods
+            resourcifyListing(<MainAccount>response, this, false, false);
+            
+            // transform ISO dates to native Date objects
+            transformResponse(<MainAccount>response);
+            
+            return response;
+        });
+    }
+    
+    /**
+    * Update account's alias 
+    */  
+    update = (payload: ChangeAccountSettingsRequest): Promise<ChangeAccountSettingsResponse> => {
+        return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(response => {
+            
+            // add convenience methods
+            resourcifyListing(<MainAccount>response, this, false, true);
+            
+            // transform ISO dates to native Date objects
+            transformResponse(<MainAccount>response);
+            
+            return response;
+        });
     }
     
     /**
@@ -108,17 +136,34 @@ implements CSCoreSDK.GetEnabled<MainAccount>, CSCoreSDK.UpdateEnabled<ChangeAcco
     }
 }
 
-function resourcifyListing(accountListing: MainAccount, account: AccountResource) : void {
-    accountListing.get = account.get;
+function resourcifyListing(accountListing: MainAccount, account: AccountResource, isFromList: boolean, isFromUpdate: boolean) : void {
+    if(isFromList) {
+        accountListing.get = account.get;    
+    }
+    if(!isFromUpdate) {
+        accountListing.update = account.update;
+    }
     
-    // transform ISO dates to native Date objects
-    CSCoreSDK.EntityUtils.addDatesFromISO(['overdraftDueDate'], accountListing);
-    CSCoreSDK.EntityUtils.addDatesFromISO(['nextProlongation'], accountListing.saving);
-    CSCoreSDK.EntityUtils.addDatesFromISO(['maturityDate', 'drawdownToDate', 'installmentDay', 'nextRateDate'], accountListing.loan);
-    
-    accountListing.subaccounts.forEach(account => {
-        CSCoreSDK.EntityUtils.addDatesFromISO(['overdraftDueDate'], account); 
-    });
+    accountListing.update = account.update;
+    accountListing.services = account.services;
+    accountListing.transactions = account.transactions;
+    accountListing.reservations = account.reservations;
+    accountListing.transfers = account.transfers;
+    accountListing.statements = account.statements;
+    accountListing.repayments = account.repayments;
+}
+
+function transformResponse(accountListing) {
+    if(accountListing.saving) {
+        CSCoreSDK.EntityUtils.addDatesFromISO('nextProlongation', accountListing.saving);    
+    }
+    if(accountListing.loan) {
+        CSCoreSDK.EntityUtils.addDatesFromISO(['maturityDate', 'drawdownToDate', 'installmentDay', 'nextRateDate'], accountListing.loan);
+    }
+    if (accountListing.subaccounts) {
+        CSCoreSDK.EntityUtils.addDatesToItems('overdraftDueDate', accountListing, 'subaccounts');
+    }
+    CSCoreSDK.EntityUtils.addDatesFromISO('overdraftDueDate', accountListing);
 }
 
 export interface AccountList extends CSCoreSDK.PaginatedListResponse<MainAccount> {}
@@ -189,6 +234,20 @@ export interface MainAccount extends Account {
      * Convenience method for getting detail of the account right from the list 
      */
     get: () => Promise<MainAccount>;
+    
+    update: (payload: ChangeAccountSettingsRequest) => Promise<ChangeAccountSettingsResponse>;
+    
+    services: AccountsServicesResource;
+    
+    transactions: AccountsTransactionsResource;
+    
+    reservations: AccountsReservationsResource;
+    
+    transfers: AccountsTransfersResource;
+    
+    statements: AccountsStatementsResource;
+    
+    repayments: AccountsRepaymentsResource;
 }
 
 export interface ChangeAccountSettingsResponse extends MainAccount, Signed {}

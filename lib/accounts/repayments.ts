@@ -15,10 +15,8 @@ implements CSCoreSDK.ListEnabled<Repayment> {
         return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'repayments', null).then(response => {
             
             // transform ISO dates to native Date objects
-            response.items.forEach(item => {
-                CSCoreSDK.EntityUtils.addDatesFromISO(['repaymentDate'], item);
-            });
-            
+            CSCoreSDK.EntityUtils.addDatesToItems('repaymentDate', response)
+
             return response;
         });
     }

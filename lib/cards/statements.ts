@@ -39,7 +39,12 @@ implements CSCoreSDK.PaginatedListEnabled<Statement> {
      * List all statements
      */ 
     list = (params?: Parameters) : Promise<StatementList> => {
-        return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'statements', params);
+        return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'statements', params, response => {
+            
+            CSCoreSDK.EntityUtils.addDatesToItems('statementDate', response)
+            
+            return response;
+        });
     }
     
     /**

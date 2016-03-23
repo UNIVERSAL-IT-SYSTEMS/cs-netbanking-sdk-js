@@ -41,12 +41,12 @@ export interface AccountNumber {
     /**
     * IBAN
     */
-    // cz-iban: string;
+    "cz-iban"?: string;
     
     /**
     * BIC
     */
-    // cz-bic: string;
+    "cz-bic"?: string;
 }
 
 export interface Amount {
@@ -123,6 +123,15 @@ export interface AddNoteAndMarkTransactionsRequest {
     * List of flags.
     */
     flags?: [string];
+}
+
+export interface AddNoteAndMarkTransactionsResponse extends Signed {
+    
+    /**
+    * Transactions information
+    */
+    transaction: Transaction;
+   
 }
 
 export interface TransactionList extends CSCoreSDK.PaginatedListResponse<Transaction>, Signed {}

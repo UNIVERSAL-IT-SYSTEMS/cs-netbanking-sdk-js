@@ -15,9 +15,7 @@ implements CSCoreSDK.PaginatedListEnabled<Statement> {
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'statements', params, response => {
             
             // transform ISO dates to native Date objects
-            response.items.forEach(item => {
-                CSCoreSDK.EntityUtils.addDatesFromISO(['statementDate'], item);
-            })
+            CSCoreSDK.EntityUtils.addDatesToItems('statementDate', response);
             
             return response;
         })

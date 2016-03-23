@@ -168,8 +168,10 @@ module.exports =
 	        this.list = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'accounts', params, function (response) {
 	                response.items.forEach(function (item) {
-	                    // add convenience get method to fetch account's detail
-	                    resourcifyListing(item, _this.withId(item.id));
+	                    // add convenience methods
+	                    resourcifyListing(item, _this.withId(item.id), true, false);
+	                    // transform ISO dates to native Date objects
+	                    transformResponse(item);
 	                });
 	                return response;
 	            });
@@ -196,7 +198,25 @@ module.exports =
 	        * Get account detail
 	        */
 	        this.get = function () {
-	            return CSCoreSDK.ResourceUtils.CallGet(_this, null);
+	            return CSCoreSDK.ResourceUtils.CallGet(_this, null).then(function (response) {
+	                // add convenience methods
+	                resourcifyListing(response, _this, false, false);
+	                // transform ISO dates to native Date objects
+	                transformResponse(response);
+	                return response;
+	            });
+	        };
+	        /**
+	        * Update account's alias
+	        */
+	        this.update = function (payload) {
+	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (response) {
+	                // add convenience methods
+	                resourcifyListing(response, _this, false, true);
+	                // transform ISO dates to native Date objects
+	                transformResponse(response);
+	                return response;
+	            });
 	        };
 	    }
 	    Object.defineProperty(AccountResource.prototype, "balance", {
@@ -282,15 +302,32 @@ module.exports =
 	    return AccountResource;
 	}(CSCoreSDK.InstanceResource));
 	exports.AccountResource = AccountResource;
-	function resourcifyListing(accountListing, account) {
-	    accountListing.get = account.get;
-	    // transform ISO dates to native Date objects
-	    CSCoreSDK.EntityUtils.addDatesFromISO(['overdraftDueDate'], accountListing);
-	    CSCoreSDK.EntityUtils.addDatesFromISO(['nextProlongation'], accountListing.saving);
-	    CSCoreSDK.EntityUtils.addDatesFromISO(['maturityDate', 'drawdownToDate', 'installmentDay', 'nextRateDate'], accountListing.loan);
-	    accountListing.subaccounts.forEach(function (account) {
-	        CSCoreSDK.EntityUtils.addDatesFromISO(['overdraftDueDate'], account);
-	    });
+	function resourcifyListing(accountListing, account, isFromList, isFromUpdate) {
+	    if (isFromList) {
+	        accountListing.get = account.get;
+	    }
+	    if (!isFromUpdate) {
+	        accountListing.update = account.update;
+	    }
+	    accountListing.update = account.update;
+	    accountListing.services = account.services;
+	    accountListing.transactions = account.transactions;
+	    accountListing.reservations = account.reservations;
+	    accountListing.transfers = account.transfers;
+	    accountListing.statements = account.statements;
+	    accountListing.repayments = account.repayments;
+	}
+	function transformResponse(accountListing) {
+	    if (accountListing.saving) {
+	        CSCoreSDK.EntityUtils.addDatesFromISO('nextProlongation', accountListing.saving);
+	    }
+	    if (accountListing.loan) {
+	        CSCoreSDK.EntityUtils.addDatesFromISO(['maturityDate', 'drawdownToDate', 'installmentDay', 'nextRateDate'], accountListing.loan);
+	    }
+	    if (accountListing.subaccounts) {
+	        CSCoreSDK.EntityUtils.addDatesToItems('overdraftDueDate', accountListing, 'subaccounts');
+	    }
+	    CSCoreSDK.EntityUtils.addDatesFromISO('overdraftDueDate', accountListing);
 	}
 
 
@@ -352,9 +389,7 @@ module.exports =
 	        this.list = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'services', params, function (response) {
 	                // transform ISO dates to native Date objects
-	                response.items.forEach(function (item) {
-	                    CSCoreSDK.EntityUtils.addDatesFromISO(['dateFrom', 'dateTo'], item);
-	                });
+	                CSCoreSDK.EntityUtils.addDatesToItems(['dateFrom', 'dateTo'], response);
 	                return response;
 	            });
 	        };
@@ -390,9 +425,7 @@ module.exports =
 	        this.list = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'reservations', params, function (response) {
 	                // transform ISO dates to native Date objects
-	                response.items.forEach(function (item) {
-	                    CSCoreSDK.EntityUtils.addDatesFromISO(['creationDate', 'expirationDate'], item);
-	                });
+	                CSCoreSDK.EntityUtils.addDatesToItems(['creationDate', 'expirationDate'], response);
 	                return response;
 	            });
 	        };
@@ -428,9 +461,7 @@ module.exports =
 	        this.list = function () {
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'repayments', null).then(function (response) {
 	                // transform ISO dates to native Date objects
-	                response.items.forEach(function (item) {
-	                    CSCoreSDK.EntityUtils.addDatesFromISO(['repaymentDate'], item);
-	                });
+	                CSCoreSDK.EntityUtils.addDatesToItems('repaymentDate', response);
 	                return response;
 	            });
 	        };
@@ -466,9 +497,7 @@ module.exports =
 	        this.list = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'statements', params, function (response) {
 	                // transform ISO dates to native Date objects
-	                response.items.forEach(function (item) {
-	                    CSCoreSDK.EntityUtils.addDatesFromISO(['statementDate'], item);
-	                });
+	                CSCoreSDK.EntityUtils.addDatesToItems('statementDate', response);
 	                return response;
 	            });
 	        };
@@ -543,9 +572,7 @@ module.exports =
 	        this.list = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'statements', params, function (response) {
 	                // transform ISO dates to native Date objects
-	                response.items.forEach(function (item) {
-	                    CSCoreSDK.EntityUtils.addDatesFromISO(['statementDate'], item);
-	                });
+	                CSCoreSDK.EntityUtils.addDatesToItems('statementDate', response);
 	                return response;
 	            });
 	        };
@@ -576,19 +603,42 @@ module.exports =
 	        var _this = this;
 	        _super.apply(this, arguments);
 	        /**
+	        * Returns list of transactions
+	        */
+	        this.list = function (params) {
+	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'transactions', params, function (response) {
+	                CSCoreSDK.EntityUtils.addDatesToItems(['bookingDate', 'valuationDate', 'transactionDate'], response);
+	                return response;
+	            });
+	        };
+	        /**
 	        * Returns individual AccountsTransactionResource with a given id
 	        */
 	        this.withId = function (id) {
 	            return new AccountsTransactionResource(id, _this.getPath(), _this._client);
 	        };
+	        // nebude fungovat
+	        this.export = function (params) {
+	            return CSCoreSDK.ResourceUtils.CallCreateWithSuffix(_this, 'export', params);
+	        };
 	    }
 	    return AccountsTransactionsResource;
 	}(CSCoreSDK.Resource));
 	exports.AccountsTransactionsResource = AccountsTransactionsResource;
+	/**
+	* Allows to add or change a client's personal transaction note and mark the transaction as favorite/important for one specific transaction on selected account.
+	*/
 	var AccountsTransactionResource = (function (_super) {
 	    __extends(AccountsTransactionResource, _super);
 	    function AccountsTransactionResource() {
+	        var _this = this;
 	        _super.apply(this, arguments);
+	        /**
+	        * Adds, changes of marks transaction
+	        */
+	        this.update = function (payload) {
+	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload);
+	        };
 	    }
 	    return AccountsTransactionResource;
 	}(CSCoreSDK.InstanceResource));
@@ -613,7 +663,14 @@ module.exports =
 	var AccountsTransfersResource = (function (_super) {
 	    __extends(AccountsTransfersResource, _super);
 	    function AccountsTransfersResource() {
+	        var _this = this;
 	        _super.apply(this, arguments);
+	        /**
+	        * Revolves the loan. Currently only REVOLVING_LOAN subtype is supported.
+	        */
+	        this.update = function (payload) {
+	            return CSCoreSDK.ResourceUtils.CallCreate(_this, payload);
+	        };
 	    }
 	    return AccountsTransfersResource;
 	}(CSCoreSDK.Resource));
@@ -645,7 +702,12 @@ module.exports =
 	         * Returns information about the profile
 	         */
 	        this.get = function () {
-	            return CSCoreSDK.ResourceUtils.CallGet(_this, null);
+	            return CSCoreSDK.ResourceUtils.CallGet(_this, null).then(function (profile) {
+	                if (profile.lastlogin) {
+	                    CSCoreSDK.EntityUtils.addDatesFromISO('lastlogin', profile);
+	                }
+	                return profile;
+	            });
 	        };
 	    }
 	    Object.defineProperty(ProfileResource.prototype, "lastLogin", {
@@ -687,7 +749,10 @@ module.exports =
 	         * Returns promise with a list of past logins
 	         */
 	        this.list = function () {
-	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'lastlogin');
+	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'lastlogin').then(function (response) {
+	                CSCoreSDK.EntityUtils.addDatesToItems('lastlogin', response);
+	                return response;
+	            });
 	        };
 	    }
 	    return LastLoginResource;
@@ -728,8 +793,9 @@ module.exports =
 	        this.list = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'cards', params, function (response) {
 	                response.items.forEach(function (item) {
+	                    transformResponse(item);
 	                    // add convenience get method to fetch detail of the card
-	                    resourcifyListing(item, _this.withId(item.id));
+	                    resourcifyListing(item, _this.withId(item.id), true, false);
 	                });
 	                return response;
 	            });
@@ -753,7 +819,21 @@ module.exports =
 	        * Get detail of the card
 	        */
 	        this.get = function () {
-	            return CSCoreSDK.ResourceUtils.CallGet(_this, null);
+	            return CSCoreSDK.ResourceUtils.CallGet(_this, null).then(function (card) {
+	                resourcifyListing(card, _this, false, false);
+	                transformResponse(card);
+	                return card;
+	            });
+	        };
+	        /**
+	        * Update card's alias
+	        */
+	        this.update = function (payload) {
+	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (card) {
+	                resourcifyListing(card, _this, false, true);
+	                transformResponse(card);
+	                return card;
+	            });
 	        };
 	    }
 	    Object.defineProperty(CardResource.prototype, "delivery", {
@@ -817,7 +897,7 @@ module.exports =
 	        enumerable: true,
 	        configurable: true
 	    });
-	    Object.defineProperty(CardResource.prototype, "account", {
+	    Object.defineProperty(CardResource.prototype, "accounts", {
 	        /**
 	        * Account resource for listing statements
 	        */
@@ -830,8 +910,23 @@ module.exports =
 	    return CardResource;
 	}(CSCoreSDK.InstanceResource));
 	exports.CardResource = CardResource;
-	function resourcifyListing(itemListing, itemResource) {
-	    itemListing.get = itemResource.get;
+	function resourcifyListing(itemListing, itemResource, isFromList, isFromUpdate) {
+	    if (isFromList) {
+	        itemListing.get = itemResource.get;
+	    }
+	    if (!isFromUpdate) {
+	        itemListing.update = itemResource.update;
+	    }
+	    itemListing.delivery = itemResource.delivery;
+	    itemListing.transactions = itemResource.transactions;
+	    itemListing.actions = itemResource.actions;
+	    itemListing.limits = itemResource.limits;
+	    itemListing.secure3d = itemResource.secure3d;
+	    itemListing.transfers = itemResource.transfers;
+	    itemListing.accounts = itemResource.accounts;
+	}
+	function transformResponse(response) {
+	    CSCoreSDK.EntityUtils.addDatesFromISO(['expiryDate', 'validFromDate'], response);
 	}
 
 
@@ -860,6 +955,12 @@ module.exports =
 	         */
 	        this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null);
+	        };
+	        /**
+	         * Change current delivery settings
+	         */
+	        this.update = function (payload) {
+	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload);
 	        };
 	    }
 	    return CardDeliveryResource;
@@ -910,7 +1011,14 @@ module.exports =
 	var CardTransactionResource = (function (_super) {
 	    __extends(CardTransactionResource, _super);
 	    function CardTransactionResource() {
+	        var _this = this;
 	        _super.apply(this, arguments);
+	        /**
+	        * Adds, changes of marks transaction
+	        */
+	        this.update = function (payload) {
+	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload);
+	        };
 	    }
 	    return CardTransactionResource;
 	}(CSCoreSDK.InstanceResource));
@@ -935,7 +1043,14 @@ module.exports =
 	var CardActionsResource = (function (_super) {
 	    __extends(CardActionsResource, _super);
 	    function CardActionsResource() {
+	        var _this = this;
 	        _super.apply(this, arguments);
+	        /**
+	         * Issues various actions on a single card
+	         */
+	        this.update = function (payload) {
+	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload);
+	        };
 	    }
 	    return CardActionsResource;
 	}(CSCoreSDK.Resource));
@@ -967,6 +1082,12 @@ module.exports =
 	         */
 	        this.list = function () {
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'limits');
+	        };
+	        /**
+	         * Update individual limits
+	         */
+	        this.update = function (payload) {
+	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload);
 	        };
 	    }
 	    return CardLimitsResource;
@@ -1024,7 +1145,14 @@ module.exports =
 	var CardTransfersResource = (function (_super) {
 	    __extends(CardTransfersResource, _super);
 	    function CardTransfersResource() {
+	        var _this = this;
 	        _super.apply(this, arguments);
+	        /**
+	         * Pays up the credit card debt and returns sign info
+	         */
+	        this.update = function (payload) {
+	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload);
+	        };
 	    }
 	    return CardTransfersResource;
 	}(CSCoreSDK.Resource));
@@ -1094,7 +1222,10 @@ module.exports =
 	         * List all statements
 	         */
 	        this.list = function (params) {
-	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'statements', params);
+	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'statements', params, function (response) {
+	                CSCoreSDK.EntityUtils.addDatesToItems('statementDate', response);
+	                return response;
+	            });
 	        };
 	        /**
 	         * Download PDF with statements
@@ -1158,8 +1289,9 @@ module.exports =
 	        * List all payments
 	        */
 	        this.list = function (params) {
-	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'orders', params, function (response) {
+	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'order', params, function (response) {
 	                response.items.forEach(function (item) {
+	                    CSCoreSDK.EntityUtils.addDatesFromISO(['cz-orderingDate', 'executionDate', 'modificationDate', 'transferDate'], item);
 	                    resourcifyListing(item, _this.withId(item.id));
 	                });
 	                return response;
@@ -1227,7 +1359,16 @@ module.exports =
 	        * Get detail of the payment
 	        */
 	        this.get = function () {
-	            return CSCoreSDK.ResourceUtils.CallGet(_this, null);
+	            return CSCoreSDK.ResourceUtils.CallGet(_this, null).then(function (payment) {
+	                CSCoreSDK.EntityUtils.addDatesFromISO(['cz-orderingDate', 'executionDate', 'modificationDate', 'transferDate'], payment);
+	                return payment;
+	            });
+	        };
+	        /**
+	        * Remove payment
+	        */
+	        this.delete = function () {
+	            return CSCoreSDK.ResourceUtils.CallDelete(_this, null);
 	        };
 	    }
 	    return PaymentResource;
@@ -1235,6 +1376,7 @@ module.exports =
 	exports.PaymentResource = PaymentResource;
 	function resourcifyListing(paymentListing, paymentResource) {
 	    paymentListing.get = paymentResource.get;
+	    paymentListing.delete = PaymentResource.delete;
 	}
 
 
@@ -1256,7 +1398,20 @@ module.exports =
 	var PaymentsBookingDateResource = (function (_super) {
 	    __extends(PaymentsBookingDateResource, _super);
 	    function PaymentsBookingDateResource() {
+	        var _this = this;
 	        _super.apply(this, arguments);
+	        /**
+	        * Returns current available booking date based on the provided account and optional payment order category parameters
+	        */
+	        this.update = function (payload) {
+	            var accountId = payload.accountId;
+	            delete payload.accountId;
+	            _this._path = _this.getPath() + ("?accountId=" + accountId);
+	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (bookingDate) {
+	                CSCoreSDK.EntityUtils.addDatesFromISO('bookingDate', bookingDate);
+	                return bookingDate;
+	            });
+	        };
 	    }
 	    return PaymentsBookingDateResource;
 	}(CSCoreSDK.Resource));
@@ -1281,11 +1436,48 @@ module.exports =
 	var PaymentsDomesticResource = (function (_super) {
 	    __extends(PaymentsDomesticResource, _super);
 	    function PaymentsDomesticResource() {
+	        var _this = this;
 	        _super.apply(this, arguments);
+	        /**
+	        * Creates domestic payment order and returns it in promise
+	        */
+	        this.create = function (payload) {
+	            return CSCoreSDK.ResourceUtils.CallCreate(_this, payload).then(function (response) {
+	                CSCoreSDK.EntityUtils.addDatesFromISO(['cz-orderingDate', 'executionDate', 'modificationDate', 'transferDate'], response);
+	                return response;
+	            });
+	        };
+	        /**
+	        * Returns PaymentDomesticResource resource for updating domestic payment
+	        */
+	        this.withId = function (id) {
+	            return new PaymentDomesticResource(id, _this.getPath(), _this.getClient());
+	        };
 	    }
 	    return PaymentsDomesticResource;
 	}(CSCoreSDK.Resource));
 	exports.PaymentsDomesticResource = PaymentsDomesticResource;
+	/**
+	* Update domestic payment
+	*/
+	var PaymentDomesticResource = (function (_super) {
+	    __extends(PaymentDomesticResource, _super);
+	    function PaymentDomesticResource() {
+	        var _this = this;
+	        _super.apply(this, arguments);
+	        /**
+	        * Updates domestic payment and returns it in promise
+	        */
+	        this.update = function (payload) {
+	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (response) {
+	                CSCoreSDK.EntityUtils.addDatesFromISO(['cz-orderingDate', 'executionDate', 'modificationDate', 'transferDate'], response);
+	                return response;
+	            });
+	        };
+	    }
+	    return PaymentDomesticResource;
+	}(CSCoreSDK.InstanceResource));
+	exports.PaymentDomesticResource = PaymentDomesticResource;
 
 
 /***/ },
@@ -1338,7 +1530,11 @@ module.exports =
 	var PaymentsMobileResource = (function (_super) {
 	    __extends(PaymentsMobileResource, _super);
 	    function PaymentsMobileResource() {
+	        var _this = this;
 	        _super.apply(this, arguments);
+	        this.create = function (payload) {
+	            return CSCoreSDK.ResourceUtils.CallCreate(_this, payload);
+	        };
 	    }
 	    return PaymentsMobileResource;
 	}(CSCoreSDK.Resource));
