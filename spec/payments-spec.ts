@@ -67,6 +67,67 @@ describe("Netbanking SDK",function(){
             });
         });
         
+        it('tests pagination', done => {
+            var response;
+            judgeSession.setNextCase('payments.list.page0').then(() => {
+                return client.orders.payments.list({
+                    pageNumber: 0,
+                    pageSize: 1
+                });
+            }).then(payments => {
+                
+                var payment = payments.items[0];
+                expectToBe(payments.pagination, {
+                    pageNumber: 0,
+                    pageCount: 7,
+                    pageSize: 1,
+                    nextPage: 1     
+                });
+                
+                expectToBe(payment, {
+                    id: '1154226597',
+                    senderName: 'Vrba' 
+                });
+                
+                expectDate(payment, {
+                    executionDate: '2016-03-21T00:00:00+01:00',
+                    modificationDate: '2016-03-21T10:33:41+01:00',
+                    transferDate: '2016-03-23'
+                });
+                response = payments;
+            }).then(() => {
+                return judgeSession.setNextCase('payments.list.page1');
+            }).then(() => {
+                return response.nextPage();
+            }).then(payments => {
+                
+                var payment = payments.items[0];
+                
+                expectToBe(payments.pagination, {
+                    pageNumber: 1,
+                    pageCount: 7,
+                    pageSize: 1,
+                    nextPage: 2
+                });
+                
+                expectToBe(payment, {
+                    id: 'T4B2F9EBE742BCAE1E98A78E12F6FBC62464A74EE_1XZ1XZO5o0VZB',
+                    state: 'CLOSED',
+                    stateDetail: 'FIN',
+                    stateOk: true
+                });
+                
+                expectDate(payment, {
+                    executionDate: '2016-03-22T00:00:00+01:00',
+                    transferDate: '2016-03-22',
+                });
+                
+                done();
+            }).catch(e => {
+                logJudgeError(e);
+            });
+        });
+        
         it('retrieves payment with a given id', done => {
             judgeSession.setNextCase('payments.withId.get').then(() => {
                 return client.orders.payments.withId('1023464260').get();
