@@ -84,6 +84,67 @@ describe("Netbanking SDK",function(){
             });
         });
         
+        it('tests pagination', done => {
+            var response;
+            judgeSession.setNextCase('cards.list.page0').then(() => {
+                return client.cards.list({
+                    pageNumber: 0,
+                    pageSize: 1
+                });
+            }).then(cards => {
+                
+                var card = cards.items[0];
+                
+                expectToBe(cards.pagination, {
+                    pageNumber: 0,
+                    pageCount: 2,
+                    pageSize: 1,
+                    nextPage: 1 
+                });
+                
+                expectToBe(card, {
+                    id: 'A705433CFCD205249F4B816F2C63D309AEEFF4C9',
+                    number: '451161XXXXXX7982',
+                    alias: 'moje karta'
+                });
+                
+                expectDate(card, {
+                    expiryDate: '2017-11-30',
+                    validFromDate: '2014-12-01',
+                });
+                response = cards;
+            }).then(() => {
+                return judgeSession.setNextCase('cards.list.page1');
+            }).then(() => {
+                return response.nextPage();
+            }).then(cards => {
+                
+                var card = cards.items[0];
+                
+                expectToBe(cards.pagination, {
+                    pageNumber: 1,
+                    pageCount: 2,
+                    pageSize: 1 
+                });
+                
+                expectToBe(card, {
+                    id: 'FAFBFBDCAE6465F6DB8058746A828E195922CB15',
+                    owner: 'VRBA ALEŠ',
+                    number: '451161XXXXXX6026',
+                    state: 'ACTIVE'
+                });
+                
+                expectDate(card, {
+                    expiryDate: '2018-03-31',
+                    validFromDate: '2015-04-01'
+                });
+                
+                done();
+            }).catch(e => {
+              logJudgeError(e);
+            });
+       });
+        
         it('retrieves cards detail with a given id', done => {
             judgeSession.setNextCase('cards.withId.get').then(() => {
                 return client.cards.withId('33A813886442D946122C78305EC4E482DE9F574D').get();
