@@ -1,6 +1,6 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
-import {Amount, Signed, AccountNumber} from '../common';
+import {Amount, Signable, AccountNumber} from '../common';
 import {Info, Symbols, Payment} from './orders';
 
 /**
@@ -47,7 +47,7 @@ implements CSCoreSDK.UpdateEnabled<DomesticPaymentUpdateRequest, DomesticPayment
     }
 }
 
-export interface DomesticPaymentUpdateRequest extends Signed {
+export interface DomesticPaymentUpdateRequest extends Signable {
     
     /**
     * Internal identifier of payment order. Note that after signing of the order the id could change.

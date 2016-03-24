@@ -1,6 +1,6 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
-import {Amount, Signed} from '../common';
+import {Amount, Signable} from '../common';
 import {Confirmation} from './delivery';
 
 /**
@@ -59,7 +59,7 @@ export interface CardsLimit {
     bankLimit?: Amount;
 }
 
-export interface ChangeCardLimitsResponse extends Signed {
+export interface ChangeCardLimitsResponse extends Signable {
     
     limits?: [CardsLimit];
     /**

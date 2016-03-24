@@ -1,6 +1,6 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
-import {Amount, AccountNumber, Signed, Parameters} from '../common';
+import {Amount, AccountNumber, Signable, Parameters} from '../common';
 import {CardDeliveryResource} from './delivery';
 import {CardTransactionsResource} from './transactions';
 import {CardActionsResource} from './actions';
@@ -336,7 +336,7 @@ export interface MainAccount {
     accountno: AccountNumber;
 }
 
-export interface ChangeCardSettingsResponse extends Card, Signed {
+export interface ChangeCardSettingsResponse extends Card, Signable {
     
     /**
     * Minimal installment repayment amount for credit card (at previous cycle end date).

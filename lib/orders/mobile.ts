@@ -1,6 +1,6 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
-import {Amount, Signed} from '../common';
+import {Amount, Signable} from '../common';
 
 /**
 * Recharging the credit available on prepaid cards provided by Vodafone, T-Mobile or O2.
@@ -46,7 +46,7 @@ export interface MobilePaymentsRequest {
     confirmationPhoneNumber: string;   
 }
 
-export interface MobilePaymentsResponse extends MobilePaymentsRequest, Signed {}
+export interface MobilePaymentsResponse extends MobilePaymentsRequest, Signable {}
 
 export interface MobilePaymentSender {
     

@@ -1,7 +1,7 @@
 /// <reference path="../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
 
-export interface Signed {
+export interface Signable {
     /**
     * Infomation about the signing
     */
@@ -125,7 +125,7 @@ export interface AddNoteAndMarkTransactionsRequest {
     flags?: [string];
 }
 
-export interface AddNoteAndMarkTransactionsResponse extends Signed {
+export interface AddNoteAndMarkTransactionsResponse extends Signable {
     
     /**
     * Transactions information
@@ -134,7 +134,7 @@ export interface AddNoteAndMarkTransactionsResponse extends Signed {
    
 }
 
-export interface TransactionList extends CSCoreSDK.PaginatedListResponse<Transaction>, Signed {}
+export interface TransactionList extends CSCoreSDK.PaginatedListResponse<Transaction>, Signable {}
 
 export interface Transaction {
     

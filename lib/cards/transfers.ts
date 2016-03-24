@@ -1,6 +1,6 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
-import {AccountNumber, Amount, Signed} from '../common';
+import {AccountNumber, Amount, Signable} from '../common';
 
 /**
  * Resource for paying up credit card debt  
@@ -47,4 +47,4 @@ export interface Sender {
     accountno: AccountNumber;
 }
 
-export interface PayUpCreditCardResponse extends Signed {}
+export interface PayUpCreditCardResponse extends Signable {}

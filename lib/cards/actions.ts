@@ -1,6 +1,6 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
-import {Signed} from '../common';
+import {Signable} from '../common';
 import {Confirmation} from './delivery';
 
 /**
@@ -17,7 +17,7 @@ implements CSCoreSDK.UpdateEnabled<CardsActionsRequest, CardsActionsResponse> {
     } 
 }
 
-export interface CardsActionsResponse extends Signed {}
+export interface CardsActionsResponse extends Signable {}
 
 export interface CardsActionsRequest {
     

@@ -1,6 +1,6 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
-import {Signed} from '../common';
+import {Signable} from '../common';
 
 /**
  * Get current delivery settings
@@ -92,7 +92,7 @@ export interface Confirmation {
     language: string;
 }
 
-export interface ChangeDeliverySettingsResponse extends DeliveryListing, Signed {}
+export interface ChangeDeliverySettingsResponse extends DeliveryListing, Signable {}
 
 export interface ChangeDeliverySettingsRequest extends CSCoreSDK.PaginatedListResponse<Confirmation> {
     

@@ -1,6 +1,6 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
-import {Signed, TransactionList, Transaction, Parameters, AddNoteAndMarkTransactionsRequest, AddNoteAndMarkTransactionsResponse} from '../common';
+import {TransactionList, Transaction, Parameters, AddNoteAndMarkTransactionsRequest, AddNoteAndMarkTransactionsResponse} from '../common';
 
 /**
 * Get individual AccountsTransactionsResource

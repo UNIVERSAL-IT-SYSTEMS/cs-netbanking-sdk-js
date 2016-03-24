@@ -1,6 +1,6 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
-import {Amount, Signed, AccountNumber, Parameters} from '../common';
+import {Amount, Signable, AccountNumber, Parameters} from '../common';
 import {PaymentsBookingDateResource} from './bookingDate';
 import {PaymentsDomesticResource} from './domestic';
 import {PaymentsLimitsResource} from './limits';
@@ -108,7 +108,7 @@ function resourcifyListing(paymentListing: Payment, paymentResource: PaymentReso
 
 export interface PaymentList extends CSCoreSDK.PaginatedListResponse<Payment> {}
 
-export interface Payment extends Signed {
+export interface Payment extends Signable {
     
     /**
     * Internal identifier of payment order. Note that after signing of the order the id could change.
@@ -272,4 +272,4 @@ export interface Info {
     text4x35?: [string];
 }
 
-export interface RemovePaymentOrderResponse extends Signed {}
+export interface RemovePaymentOrderResponse extends Signable {}

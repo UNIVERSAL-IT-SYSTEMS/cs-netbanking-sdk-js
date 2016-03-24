@@ -1,6 +1,6 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
-import {Signed, Amount} from '../common';
+import {Signable, Amount} from '../common';
 
 /**
 * Revolve a loan
@@ -16,7 +16,7 @@ implements CSCoreSDK.UpdateEnabled<TransferRequest, TransferResponse> {
     }
 }
 
-export interface TransferResponse extends Signed {}
+export interface TransferResponse extends Signable {}
 
 export interface TransferRequest {
     
