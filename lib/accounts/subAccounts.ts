@@ -39,6 +39,7 @@ implements CSCoreSDK.PaginatedListEnabled<Statement> {
     * Returns all subaccount's statements in a promise
     */
     list = (params?: Parameters): Promise<StatementList> => {
+        this._path = this.getPath().replace('/my', '/cz/my');
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'statements', params, response => {
             
             // transform ISO dates to native Date objects

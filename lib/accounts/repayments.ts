@@ -12,6 +12,7 @@ implements CSCoreSDK.ListEnabled<Repayment> {
     * Fetches the repayments and returns them in a promise
     */
     list = (): Promise<RepaymentList> => {
+        this._path = this.getPath().replace('/my', '/cz/my');
         return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'repayments', null).then(response => {
             
             // transform ISO dates to native Date objects
