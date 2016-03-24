@@ -12,10 +12,14 @@ implements CSCoreSDK.UpdateEnabled<PaymentBookingDateRequest, PaymentBookingDate
     * Returns current available booking date based on the provided account and optional payment order category parameters
     */  
     update = (payload: PaymentBookingDateRequest): Promise<PaymentBookingDateResponse> => {
+        
+        // get account's ID from passed object
         var accountId = payload.accountId;
         delete payload.accountId;
         
-        this._path = this.getPath() + `?accountId=${accountId}`;
+        // add accountId to query
+        this._path = `${this.getPath()}?accountId=${accountId}`;
+        
         return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(bookingDate => {
             
             CSCoreSDK.EntityUtils.addDatesFromISO('bookingDate', bookingDate);

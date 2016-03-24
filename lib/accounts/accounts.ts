@@ -23,7 +23,7 @@ implements CSCoreSDK.HasInstanceResource<AccountResource>, CSCoreSDK.PaginatedLi
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'accounts', params, response => {
             response.items.forEach(item => {
                 
-                // add convenience methods
+                // add convenient methods
                 resourcifyListing(<MainAccount>item, this.withId((<MainAccount>item).id), true, false);
                 
                 // transform ISO dates to native Date objects
@@ -235,18 +235,39 @@ export interface MainAccount extends Account {
      */
     get: () => Promise<MainAccount>;
     
+    /**
+    * Convenience method for updating account's details
+    */
     update: (payload: ChangeAccountSettingsRequest) => Promise<ChangeAccountSettingsResponse>;
     
+    /**
+    * Convenience getter for getting accounts's services resource
+    */
     services: AccountsServicesResource;
     
+    /**
+    * Convenience getter for getting accounts's transactions resource
+    */
     transactions: AccountsTransactionsResource;
     
+    /**
+    * Convenience getter for getting accounts's reservations resource
+    */
     reservations: AccountsReservationsResource;
     
+    /**
+    * Convenience getter for getting accounts's transfers resource
+    */
     transfers: AccountsTransfersResource;
     
+    /**
+    * Convenience getter for getting accounts's statements resource
+    */
     statements: AccountsStatementsResource;
     
+    /**
+    * Convenience getter for getting accounts's repayments resource
+    */
     repayments: AccountsRepaymentsResource;
 }
 

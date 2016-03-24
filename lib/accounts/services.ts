@@ -11,6 +11,8 @@ implements CSCoreSDK.PaginatedListEnabled<Service> {
     * Fetches the services and returns them in a promise
     */
     list = (params?: ServicesParameters): Promise<ServiceList> => {
+        
+        // insert 'cz' resource into the resource's path because the api requires it in some resources
         this._path = this.getPath().replace('/my', '/cz/my');
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'services', params, response => {
             

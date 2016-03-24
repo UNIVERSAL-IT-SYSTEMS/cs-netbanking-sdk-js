@@ -9,6 +9,8 @@ export class PaymentsMobileResource extends CSCoreSDK.Resource
 implements CSCoreSDK.CreateEnabled<MobilePaymentsRequest, MobilePaymentsResponse> {
     
     create = (payload: MobilePaymentsRequest): Promise<MobilePaymentsResponse> => {
+        
+        // insert 'cz' resource into the resource's path because the api requires it in some resources
         this._path = this.getPath().replace('/my', '/cz/my');
         return CSCoreSDK.ResourceUtils.CallCreate(this, payload);
     }

@@ -23,10 +23,13 @@ implements CSCoreSDK.ListEnabled<Card>, CSCoreSDK.HasInstanceResource<CardResour
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'cards', params, response => {
             
             response.items.forEach(item => {
-                transformResponse(item);
-                // add convenience get method to fetch detail of the card
+                
+                // add convenient methods to items in the list
                 resourcifyListing(<Card>item, this.withId((<Card>item).id), true, false);
-            })
+                
+                // transform ISO dates to native Date objects
+                transformResponse(item);
+            });
             return response;
         });
     }
@@ -47,7 +50,11 @@ implements CSCoreSDK.GetEnabled<Card>, CSCoreSDK.UpdateEnabled<ChangeCardSetting
     */  
     get = () : Promise<Card> => {
         return CSCoreSDK.ResourceUtils.CallGet(this, null).then(card => {
+            
+            // add convenient methods to items in the list
             resourcifyListing(<Card>card, this, false, false);
+            
+            // transform ISO dates to native Date objects
             transformResponse(card);
             return card;
         });
@@ -58,7 +65,11 @@ implements CSCoreSDK.GetEnabled<Card>, CSCoreSDK.UpdateEnabled<ChangeCardSetting
     */  
     update = (payload: ChangeCardSettingsRequest): Promise<ChangeCardSettingsResponse> => {
         return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(card => {
+            
+            // add convenient methods to items in the list
             resourcifyListing(<Card>card, this, false, true);
+            
+            // transform ISO dates to native Date objects
             transformResponse(card);
             return card;
         })
@@ -131,8 +142,8 @@ function resourcifyListing(itemListing: Card, itemResource: CardResource, isFrom
     itemListing.accounts = itemResource.accounts;
 }
 
-function transformResponse(response) {
-    CSCoreSDK.EntityUtils.addDatesFromISO(['expiryDate', 'validFromDate'], response);
+function transformResponse(item) {
+    CSCoreSDK.EntityUtils.addDatesFromISO(['expiryDate', 'validFromDate'], item);
 }
 
 export interface CardListing extends CSCoreSDK.PaginatedListResponse<Card> {}

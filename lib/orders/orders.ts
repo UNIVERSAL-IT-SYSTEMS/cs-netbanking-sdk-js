@@ -33,6 +33,8 @@ implements CSCoreSDK.HasInstanceResource<PaymentResource>, CSCoreSDK.PaginatedLi
             
             response.items.forEach(item => {
                 CSCoreSDK.EntityUtils.addDatesFromISO(['cz-orderingDate', 'executionDate', 'modificationDate', 'transferDate'], item);
+                
+                // add convenient get and delete methods for fetching order's detail and removing order
                 resourcifyListing(<Payment>item, this.withId((<Payment>item).id));
             })
             return response;
