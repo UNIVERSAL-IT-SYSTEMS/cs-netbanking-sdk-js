@@ -54,6 +54,49 @@ describe("Netbanking SDK",function(){
             countryCode: 'CZ' 
         });
     }
+    
+    function processCardsFromPage0(cards) {
+        var card = cards.items[0];
+                
+        expectToBe(cards.pagination, {
+            pageNumber: 0,
+            pageCount: 2,
+            pageSize: 1,
+            nextPage: 1 
+        });
+        
+        expectToBe(card, {
+            id: 'A705433CFCD205249F4B816F2C63D309AEEFF4C9',
+            number: '451161XXXXXX7982',
+            alias: 'moje karta'
+        });
+        
+        expectDate(card, {
+            expiryDate: '2017-11-30',
+            validFromDate: '2014-12-01',
+        });
+    }
+    
+    function processStatementsFromPage0(statements) {
+        var statement = statements.items[0];
+        expectToBe(statements.pagination, {
+            pageNumber: 0,
+            pageCount: 2,
+            pageSize: 1,
+            nextPage: 1 
+        });
+        
+        expectDate(statement, {
+            statementDate: '2016-02-29T00:00:00+01:00'
+        });
+        
+        expectToBe(statement, {
+            id: '06029392819b0198',
+            number: 2,
+            periodicity: 'MONTHLY',
+            language: 'cs'
+        });
+    }
    
    describe('cards', () => {
         
@@ -84,7 +127,7 @@ describe("Netbanking SDK",function(){
             });
         });
         
-        it('tests pagination', done => {
+        it('tests pagination for cards list', done => {
             var response;
             judgeSession.setNextCase('cards.list.page0').then(() => {
                 return client.cards.list({
@@ -93,25 +136,7 @@ describe("Netbanking SDK",function(){
                 });
             }).then(cards => {
                 
-                var card = cards.items[0];
-                
-                expectToBe(cards.pagination, {
-                    pageNumber: 0,
-                    pageCount: 2,
-                    pageSize: 1,
-                    nextPage: 1 
-                });
-                
-                expectToBe(card, {
-                    id: 'A705433CFCD205249F4B816F2C63D309AEEFF4C9',
-                    number: '451161XXXXXX7982',
-                    alias: 'moje karta'
-                });
-                
-                expectDate(card, {
-                    expiryDate: '2017-11-30',
-                    validFromDate: '2014-12-01',
-                });
+                processCardsFromPage0(cards);
                 response = cards;
             }).then(() => {
                 return judgeSession.setNextCase('cards.list.page1');
@@ -139,9 +164,18 @@ describe("Netbanking SDK",function(){
                     validFromDate: '2015-04-01'
                 });
                 
+                response = cards;
+            }).then(() => {
+                return judgeSession.setNextCase('cards.list.page0');
+            }).then(() => {
+                return response.prevPage();
+            }).then(cards => {
+                
+                processCardsFromPage0(cards)
+                
                 done();
             }).catch(e => {
-              logJudgeError(e);
+                logJudgeError(e);
             });
        });
         
@@ -352,6 +386,58 @@ describe("Netbanking SDK",function(){
                 });
                 
                 done();
+            }).catch(e => {
+                logJudgeError(e);
+            });
+        });
+        
+        it('tests pagination for statements', done => {
+            var response;
+            
+            judgeSession.setNextCase('cards.withId.accounts.withId.statements.list.page0').then(() => {
+                return client.cards.withId('33A813886442D946122C78305EC4E482DE9F574D').accounts.withId('076E1DBCCCD38729A99D93AC8D3E8273237C7E36').statements.list({
+                    pageNumber: 0,
+                    pageSize: 1
+                });
+            }).then(statements => {
+                
+                processStatementsFromPage0(statements);
+                
+                response = statements;
+            }).then(() => {
+                return judgeSession.setNextCase('cards.withId.accounts.withId.statements.list.page1');
+            }).then(() => {
+                return response.nextPage();
+            }).then(statements => {
+                
+                var statement = statements.items[0];
+                expectToBe(statements.pagination, {
+                    pageNumber: 1,
+                    pageCount: 2,
+                    pageSize: 1                    
+                });
+                
+                expectDate(statement, {
+                    statementDate: '2016-01-29T00:00:00+01:00'
+                });
+                
+                expectToBe(statement, {
+                    id: '96029392819b0198',
+                    number: 8,
+                    periodicity: 'MONTHLY',
+                    language: 'cs'
+                });
+                
+                response = statements;
+            }).then(() => {
+                return judgeSession.setNextCase('cards.withId.accounts.withId.statements.list.page0');
+            }).then(() => {
+                return response.prevPage();
+            }).then(statements => {
+                
+                processStatementsFromPage0(statements);
+                
+                done();                
             }).catch(e => {
                 logJudgeError(e);
             });
