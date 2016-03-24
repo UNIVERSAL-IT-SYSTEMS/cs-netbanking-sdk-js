@@ -331,7 +331,7 @@ describe("Netbanking SDK",function(){
     it('tests pagination for accounts services', done => {
         var response;
         judgeSession.setNextCase('accounts.withId.services.list.page0').then(() => {
-            return client.accounts.list({
+            return client.accounts.withId('076E1DBCCCD38729A99D93AC8D3E8273237C7E36').services.list({
                 pageNumber: 0,
                 pageSize: 1
             });
@@ -653,7 +653,7 @@ describe("Netbanking SDK",function(){
             
             response = statements;
         }).then(() => {
-            return judgeSession.setNextCase('accounts.withId.subAccounts.withId.statements.list.page0');
+            return judgeSession.setNextCase('accounts.withId.subAccounts.withId.statements.list.page1');
         }).then(() => {
             return response.nextPage();
         }).then(statements => {
@@ -678,7 +678,7 @@ describe("Netbanking SDK",function(){
             
             response = statements;
         }).then(() => {
-            return judgeSession.setNextCase('accounts.withId.subAccounts.withId.statements.list.page1');
+            return judgeSession.setNextCase('accounts.withId.subAccounts.withId.statements.list.page0');
         }).then(() => {
             return response.prevPage();
         }).then(statements => {
