@@ -265,12 +265,12 @@ export interface SubAccount extends Account {
     /**
     * In case of interest rate bands this is the interest rate which applies to value over limit.
     */
-    // cz-interestRateOverLimit?: string;
+    "cz-interestRateOverLimit"?: string;
     
     /**
     * Limit amount for basic credit interest rate used for some saving accounts.
     */
-    // cz-interestRateLimit?: Amount;
+    "cz-interestRateLimit"?: Amount;
 }
 
 export interface Account {
@@ -357,7 +357,7 @@ export interface Loan {
     /**
     * Amount of money to onetime repay whole loan.
     */
-    // cz-lumpsumRepayment?: Amount;
+    "cz-lumpsumRepayment"?: Amount;
     
     /**
     * Frequency of the repayment. Possible values are MONTHLY, QUARTERLY, HALFYEARLY, YEARLY, WEEKLY.
@@ -395,7 +395,7 @@ export interface Saving {
     /**
     * Bonus interest rates which can be gained if certain conditions are met.
     */
-    //cz-bonusInterestRate?: number;
+    "cz-bonusInterestRate"?: number;
     
     /**
     * Saving purpose code (for some savings accounts). Possible values are ELECTRONICS, WHITE_GOODS, HOLIDAYS, SPORT_EQUIPMENT, FURNITURE, CARS_AND_ACCESSORIES, HOBBIES_AND_GARDEN, GIFTS_AND_PARTIES, HEALTH, STUDIES, HOUSING, PERSONAL.
@@ -425,7 +425,7 @@ export interface Saving {
     /**
     * Maximum amount of own transfer from current (master) to saving account (slave, this) used only for some saving accounts. Currently used only for Individualni sporeni. Field contains maximum possible amount for all months (regardless already created payments).
     */
-    //cz-extraSavingMaximumMonthly?: Amount;
+    "cz-extraSavingMaximumMonthly"?: Amount;
 }
 
 export interface TransferReceivers {

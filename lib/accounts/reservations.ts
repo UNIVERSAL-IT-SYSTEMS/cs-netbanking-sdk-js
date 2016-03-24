@@ -54,7 +54,7 @@ export interface Reservation {
     /**
     * Merchant address.
     */
-    // cz-merchantAddress?: string;
+    "cz-merchantAddress"?: string;
     
     /**
     * Reservation description, additional info.

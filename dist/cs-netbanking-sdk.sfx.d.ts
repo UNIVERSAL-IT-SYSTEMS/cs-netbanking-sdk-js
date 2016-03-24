@@ -80,6 +80,14 @@ declare module CSNetbankingSDK {
 	    * Language version of created statement. ISO 639-1 ENUM values: en, de, cs, sk, hr, sr, ro, hu, fr (fr is local specific)
 	    */
 	    language: string;
+	    /**
+	    * Number of files for of the whole statement.
+	    */
+	    "cz-fileTotalNumber": string;
+	    /**
+	    * File number - to recognize order of the file if the statement is separated into several files.
+	    */
+	    "cz-fileOrderNumber": string;
 	}
 	export interface AddNoteAndMarkTransactionsRequest {
 	    /**
@@ -233,6 +241,7 @@ declare module CSNetbankingSDK {
 	    /**
 	    * Merchant address.
 	    */
+	    "cz-merchantAddress"?: string;
 	    /**
 	    * Reservation description, additional info.
 	    */
@@ -535,6 +544,14 @@ declare module CSNetbankingSDK {
 	    dueDate?: Date;
 	}
 	export interface SubAccount extends Account {
+	    /**
+	    * In case of interest rate bands this is the interest rate which applies to value over limit.
+	    */
+	    "cz-interestRateOverLimit"?: string;
+	    /**
+	    * Limit amount for basic credit interest rate used for some saving accounts.
+	    */
+	    "cz-interestRateLimit"?: Amount;
 	}
 	export interface Account {
 	    /**
@@ -604,6 +621,7 @@ declare module CSNetbankingSDK {
 	    /**
 	    * Amount of money to onetime repay whole loan.
 	    */
+	    "cz-lumpsumRepayment"?: Amount;
 	    /**
 	    * Frequency of the repayment. Possible values are MONTHLY, QUARTERLY, HALFYEARLY, YEARLY, WEEKLY.
 	    */
@@ -633,6 +651,7 @@ declare module CSNetbankingSDK {
 	    /**
 	    * Bonus interest rates which can be gained if certain conditions are met.
 	    */
+	    "cz-bonusInterestRate"?: number;
 	    /**
 	    * Saving purpose code (for some savings accounts). Possible values are ELECTRONICS, WHITE_GOODS, HOLIDAYS, SPORT_EQUIPMENT, FURNITURE, CARS_AND_ACCESSORIES, HOBBIES_AND_GARDEN, GIFTS_AND_PARTIES, HEALTH, STUDIES, HOUSING, PERSONAL.
 	    */
@@ -653,6 +672,10 @@ declare module CSNetbankingSDK {
 	    * Maximum amount of own transfer from current (master) to saving account (slave, this) used only for some saving accounts. Currently used only for Individualní spoření. Field contains maximum amount for current month (maximum for month minus already executed payments in current month).
 	    */
 	    extraSavingMaximum?: Amount;
+	    /**
+	    * Maximum amount of own transfer from current (master) to saving account (slave, this) used only for some saving accounts. Currently used only for Individualni sporeni. Field contains maximum possible amount for all months (regardless already created payments).
+	    */
+	    "cz-extraSavingMaximumMonthly"?: Amount;
 	}
 	export interface TransferReceivers {
 	    /**
@@ -1264,6 +1287,7 @@ declare module CSNetbankingSDK {
 	    /**
 	    * Information about the main account's limits.
 	    */
+	    "cz-overallCardAccountLimits"?: CardAccountLimits;
 	    /**
 	    * Indicates how a client receives their card and pin. Possible values: BRANCH, HOME, OTHER_BRANCH, ADDRESS_ABROAD.
 	    */
@@ -1716,6 +1740,7 @@ declare module CSNetbankingSDK {
 	    /**
 	    * Date and time which should be used for default ordering of the payment orders for display.
 	    */
+	    "cz-orderingDate": Date;
 	    /**
 	    * Status of the payment order (details above), State of payment order presented to user on FE). Possible values: OPEN, SPOOLED, CANCELLED, CLOSED and DELETED
 	    */
@@ -1731,6 +1756,7 @@ declare module CSNetbankingSDK {
 	    /**
 	    * description of payment order, transaction type
 	    */
+	    "cz-description"?: string;
 	    /**
 	    * ID of the application via which this payment order was entered/modified the last time. Possible values: GEORGE, ATM_PAYMENT, ATM_OTHER, GSM, BRANCH_FE, POST_OFFICE, INTERNET_BANKING, TELEPHONE_BANKER, COLLECTION_BOX, VIDEO_BANKER and UNKNOWN.
 	    */

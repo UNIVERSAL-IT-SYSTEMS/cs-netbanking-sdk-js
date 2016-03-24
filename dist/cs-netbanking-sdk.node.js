@@ -387,6 +387,7 @@ module.exports =
 	        * Fetches the services and returns them in a promise
 	        */
 	        this.list = function (params) {
+	            _this._path = _this.getPath().replace('/my', '/cz/my');
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'services', params, function (response) {
 	                // transform ISO dates to native Date objects
 	                CSCoreSDK.EntityUtils.addDatesToItems(['dateFrom', 'dateTo'], response);
@@ -459,6 +460,7 @@ module.exports =
 	        * Fetches the repayments and returns them in a promise
 	        */
 	        this.list = function () {
+	            _this._path = _this.getPath().replace('/my', '/cz/my');
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'repayments', null).then(function (response) {
 	                // transform ISO dates to native Date objects
 	                CSCoreSDK.EntityUtils.addDatesToItems('repaymentDate', response);
@@ -570,6 +572,7 @@ module.exports =
 	        * Returns all subaccount's statements in a promise
 	        */
 	        this.list = function (params) {
+	            _this._path = _this.getPath().replace('/my', '/cz/my');
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'statements', params, function (response) {
 	                // transform ISO dates to native Date objects
 	                CSCoreSDK.EntityUtils.addDatesToItems('statementDate', response);

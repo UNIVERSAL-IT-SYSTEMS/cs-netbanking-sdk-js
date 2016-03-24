@@ -193,7 +193,7 @@ export interface Payment extends Signed {
     /**
     * Date and time which should be used for default ordering of the payment orders for display.
     */    
-    //cz-orderingDate: Date;
+    "cz-orderingDate": Date;
     
     /**
     * Status of the payment order (details above), State of payment order presented to user on FE). Possible values: OPEN, SPOOLED, CANCELLED, CLOSED and DELETED
@@ -213,7 +213,7 @@ export interface Payment extends Signed {
     /**
     * description of payment order, transaction type
     */
-    //cz-description?: string;
+    "cz-description"?: string;
     
     /**
     * ID of the application via which this payment order was entered/modified the last time. Possible values: GEORGE, ATM_PAYMENT, ATM_OTHER, GSM, BRANCH_FE, POST_OFFICE, INTERNET_BANKING, TELEPHONE_BANKER, COLLECTION_BOX, VIDEO_BANKER and UNKNOWN.

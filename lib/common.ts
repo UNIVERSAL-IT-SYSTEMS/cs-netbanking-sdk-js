@@ -104,12 +104,12 @@ export interface Statement {
     /**
     * Number of files for of the whole statement.
     */
-    //cz-fileTotalNumber: string;
+    "cz-fileTotalNumber": string;
     
     /**
     * File number - to recognize order of the file if the statement is separated into several files.
     */
-    //cz-fileOrderNumber: string;
+    "cz-fileOrderNumber": string;
 }
 
 export interface AddNoteAndMarkTransactionsRequest {

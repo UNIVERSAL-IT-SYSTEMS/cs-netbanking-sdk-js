@@ -242,7 +242,7 @@ export interface Card {
     /**
     * Information about the main account's limits.
     */
-    // cz-overallCardAccountLimits?: CardAccountLimits;
+    "cz-overallCardAccountLimits"?: CardAccountLimits;
     
     /**
     * Indicates how a client receives their card and pin. Possible values: BRANCH, HOME, OTHER_BRANCH, ADDRESS_ABROAD.
