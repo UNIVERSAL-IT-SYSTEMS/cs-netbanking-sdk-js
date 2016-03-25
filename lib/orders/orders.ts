@@ -1,6 +1,6 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
-import {Amount, Signable, AccountNumber, Parameters} from '../common';
+import {Amount, Signable, AccountNumber, Parameters, NetbankingEmptyResponse} from '../common';
 import {PaymentsBookingDateResource} from './bookingDate';
 import {PaymentsDomesticResource} from './domestic';
 import {PaymentsLimitsResource} from './limits';
@@ -81,7 +81,7 @@ implements CSCoreSDK.HasInstanceResource<PaymentResource>, CSCoreSDK.PaginatedLi
 * Individual Payment order resource
 */
 export class PaymentResource extends CSCoreSDK.InstanceResource
-implements CSCoreSDK.GetEnabled<Payment>, CSCoreSDK.DeleteEnabled<void> {
+implements CSCoreSDK.GetEnabled<Payment>, CSCoreSDK.DeleteEnabled<NetbankingEmptyResponse> {
     
     /**
     * Get detail of the payment
@@ -97,7 +97,7 @@ implements CSCoreSDK.GetEnabled<Payment>, CSCoreSDK.DeleteEnabled<void> {
     /**
     * Remove payment
     */
-    delete = (): void => {
+    delete = (): Promise<NetbankingEmptyResponse> => {
         return CSCoreSDK.ResourceUtils.CallDelete(this, null);
     }
     
@@ -105,7 +105,7 @@ implements CSCoreSDK.GetEnabled<Payment>, CSCoreSDK.DeleteEnabled<void> {
 
 function resourcifyListing(paymentListing: Payment, paymentResource: PaymentResource) {
     paymentListing.get = paymentResource.get;
-    paymentListing.delete = PaymentResource.delete;
+    paymentListing.delete = paymentResource.delete;
 }
 
 export interface PaymentList extends CSCoreSDK.PaginatedListResponse<Payment> {}
@@ -245,7 +245,7 @@ export interface Payment extends Signable {
     /**
     * Convenience method for removing payment
     */
-    delete: () => void;
+    delete: () => Promise<NetbankingEmptyResponse>;
 }
 
 export interface Symbols {

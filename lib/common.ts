@@ -166,3 +166,5 @@ export interface Parameters extends CSCoreSDK.Paginated {
     */
     order?: string;
 }
+
+export interface NetbankingEmptyResponse extends CSCoreSDK.EmptyResponse {}
