@@ -14,10 +14,10 @@ describe("Netbanking SDK",function(){
     var originalTimeoutInterval = null;
     
     beforeAll(function(){
-        judge = new CoreSDK.Judge('http://localhost:3001');
+        judge = new CoreSDK.Judge();
         //Because Judge starts slowly on the first request
         originalTimeoutInterval = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = 2000;
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000;
     });
     
     afterAll(function(){
@@ -50,7 +50,10 @@ describe("Netbanking SDK",function(){
         
         it('retrieves list of payments', done => {
             judgeSession.setNextCase('payments.list').then(() => {
-                return client.orders.payments.list();
+                return client.orders.payments.list({
+                    sort: 'transferDate',
+                    order: 'asc'
+                });
             }).then(payments => {
                 
                 expectToBe(payments.pagination, {

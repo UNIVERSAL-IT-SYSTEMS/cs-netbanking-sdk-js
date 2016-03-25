@@ -13,10 +13,10 @@ describe("Netbanking SDK",function(){
     var originalTimeoutInterval = null;
     
     beforeAll(function(){
-        judge = new CoreSDK.Judge('http://localhost:3001');
+        judge = new CoreSDK.Judge();
         //Because Judge starts slowly on the first request
         originalTimeoutInterval = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = 2000;
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000;
     });
     
     afterAll(function(){
@@ -166,7 +166,9 @@ describe("Netbanking SDK",function(){
        
        it('retrieves a list of accounts', done => {
           judgeSession.setNextCase('accounts.list').then(() => {
-              return client.accounts.list();
+              return client.accounts.list({
+                  type: 'CURRENT'
+              });
           }).then(accounts => {
               
               expect(accounts.items.length).toBe(1);
@@ -554,7 +556,10 @@ describe("Netbanking SDK",function(){
     
     it('retrieves list of statements of the account', done => {
        judgeSession.setNextCase('accounts.withId.statements.list').then(() => {
-           return client.accounts.withId('076E1DBCCCD38729A99D93AC8D3E8273237C7E36').statements.list();
+           return client.accounts.withId('076E1DBCCCD38729A99D93AC8D3E8273237C7E36').statements.list({
+               sort: 'statementDate',
+               order: 'asc'
+           });
        }).then(statements => {
            
            processStatements(statements);
@@ -629,7 +634,10 @@ describe("Netbanking SDK",function(){
     
     it('retrieves list of statements on the sub account', done => {
         judgeSession.setNextCase('accounts.withId.subAccounts.withId.statements.list').then(() => {
-            return client.accounts.withId('076E1DBCCCD38729A99D93AC8D3E8273237C7E36').subAccounts.withId('0D5F82464A77DF093858A8A5B938BEE410B4409C').statements.list();            
+            return client.accounts.withId('076E1DBCCCD38729A99D93AC8D3E8273237C7E36').subAccounts.withId('0D5F82464A77DF093858A8A5B938BEE410B4409C').statements.list({
+                sort: 'statementDate',
+                order: 'asc'
+            });            
         }).then(statements => {
             
             processSubAccountsStatements(statements);

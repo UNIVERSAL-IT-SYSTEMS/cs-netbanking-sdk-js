@@ -14,10 +14,10 @@ describe("Netbanking SDK",function(){
     var originalTimeoutInterval = null;
     
     beforeAll(function(){
-        judge = new CoreSDK.Judge('http://localhost:3001');
+        judge = new CoreSDK.Judge();
         //Because Judge starts slowly on the first request
         originalTimeoutInterval = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = 2000;
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000;
     });
     
     afterAll(function(){
@@ -361,7 +361,10 @@ describe("Netbanking SDK",function(){
         
         it('retrieves list of statements of cards account', done => {
             judgeSession.setNextCase('cards.withId.accounts.withId.statements.list').then(() => {
-                return client.cards.withId('33A813886442D946122C78305EC4E482DE9F574D').accounts.withId('076E1DBCCCD38729A99D93AC8D3E8273237C7E36').statements.list();
+                return client.cards.withId('33A813886442D946122C78305EC4E482DE9F574D').accounts.withId('076E1DBCCCD38729A99D93AC8D3E8273237C7E36').statements.list({
+                    sort: 'statementDate',
+                    order: 'asc'
+                });
             }).then(statements => {
                 
                 var statement = statements.items[0];
