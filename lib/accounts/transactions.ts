@@ -6,20 +6,7 @@ import {TransactionList, Transaction, Parameters, AddNoteAndMarkTransactionsRequ
 * Get individual AccountsTransactionsResource
 */
 export class AccountsTransactionsResource extends CSCoreSDK.Resource
-implements CSCoreSDK.HasInstanceResource<AccountsTransactionResource>,
-CSCoreSDK.ListEnabled<Transaction> {
-    
-    /**
-    * Returns list of transactions
-    */
-    list = (params?: Parameters): Promise<TransactionList> => {
-        return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'transactions', params, response => {
-            
-            CSCoreSDK.EntityUtils.addDatesToItems(['bookingDate', 'valuationDate', 'transactionDate'], response);
-            
-            return response;
-        });
-    }
+implements CSCoreSDK.HasInstanceResource<AccountsTransactionResource> {
     
     /**
     * Returns individual AccountsTransactionResource with a given id

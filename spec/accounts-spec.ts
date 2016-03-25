@@ -102,22 +102,6 @@ describe("Netbanking SDK",function(){
         });
     }
     
-    function processTransactionsFromPage0(transactions) {
-        var transaction = transactions.items[0];
-           
-        expectToBe(transaction, {
-            id: 'CCBD429926DBA804UTC20140218230000000',
-            senderName: 'Můj osobní účet',
-            location: '196 ČS, Dělnická Praha 7'
-        });
-        
-        expectDate(transaction, {
-            bookingDate: '2014-06-23T23:00:00Z',
-            valuationDate: '2014-06-23T23:00:00Z',
-            transactionDate: '2014-06-21T12:25:10Z' 
-        });
-    }
-    
     function processStatements(statements) {
         var statement = statements.items[0];
         
@@ -370,69 +354,6 @@ describe("Netbanking SDK",function(){
         }).then(services => {
             
             processServicesFromPage0(services);
-            
-            done();
-        }).catch(e => {
-            logJudgeError(e);
-        });
-    });
-    
-    it('retrieves a list of transactions', done => {
-        judgeSession.setNextCase('accounts.withId.transactions.list').then(() => {
-            return client.accounts.withId('076E1DBCCCD38729A99D93AC8D3E8273237C7E36').transactions.list();
-        }).then(transactions => {
-           
-           processTransactionsFromPage0(transactions);
-           done(); 
-        }).catch(e => {
-            logJudgeError(e);
-        });
-    });
-    
-    it('tests pagination for accounts transactions', done => {
-        var response;
-        judgeSession.setNextCase('accounts.withId.transactions.list.page0').then(() => {
-            return client.accounts.withId('076E1DBCCCD38729A99D93AC8D3E8273237C7E36').transactions.list({
-                pageNumber: 0,
-                pageSize: 1
-            });
-        }).then(transactions => {
-           processTransactionsFromPage0(transactions);
-           response = transactions;
-        }).then(() => {
-            return judgeSession.setNextCase('accounts.withId.transactions.list.page1');
-        }).then(() => {
-            return response.nextPage();
-        }).then(transactions => {
-            
-            var transaction = transactions.items[0];
-            
-            expectToBe(transactions.pagination, {
-                pageNumber: 1,
-                pageCount: 2,
-                pageSize: 1
-            });
-            
-            expectToBe(transaction, {
-                id: 'CCBC009C359B9114UTC20140217230000000',
-                senderName: 'Můj osobní účet',
-                location: 'Tabak u Florianka, Bratislava'
-            });
-            
-            expectDate(transaction, {
-                bookingDate: '2014-06-23T23:00:00Z',
-                valuationDate: '2014-06-23T23:00:00Z',
-                transactionDate: '2014-06-21T12:25:10Z'
-            });
-            
-            response = transactions;
-        }).then(() => {
-            return judgeSession.setNextCase('accounts.withId.transactions.list.page0');
-        }).then(() => {
-            return response.prevPage();
-        }).then(transactions => {
-            
-            processTransactionsFromPage0(transactions);
             
             done();
         }).catch(e => {
