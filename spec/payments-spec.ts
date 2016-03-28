@@ -52,7 +52,9 @@ describe("Netbanking SDK",function(){
             judgeSession.setNextCase('payments.list').then(() => {
                 return client.orders.payments.list({
                     sort: 'transferDate',
-                    order: 'asc'
+                    order: 'asc',
+                    pageNumber: null,
+                    pageSize: null
                 });
             }).then(payments => {
                 

@@ -481,7 +481,9 @@ describe("Netbanking SDK",function(){
        judgeSession.setNextCase('accounts.withId.statements.list').then(() => {
            return client.accounts.withId('076E1DBCCCD38729A99D93AC8D3E8273237C7E36').statements.list({
                sort: 'statementDate',
-               order: 'asc'
+               order: 'asc',
+               pageNumber: null,
+               pageSize: null
            });
        }).then(statements => {
            
@@ -559,7 +561,9 @@ describe("Netbanking SDK",function(){
         judgeSession.setNextCase('accounts.withId.subAccounts.withId.statements.list').then(() => {
             return client.accounts.withId('076E1DBCCCD38729A99D93AC8D3E8273237C7E36').subAccounts.withId('0D5F82464A77DF093858A8A5B938BEE410B4409C').statements.list({
                 sort: 'statementDate',
-                order: 'asc'
+                order: 'asc',
+                pageNumber: null,
+                pageSize: null
             });            
         }).then(statements => {
             
