@@ -18,7 +18,7 @@ export interface SignInfo {
     /**
     * Hash value.
     */
-    signId?: number;
+    signId?: string;
 }
 
 export interface AccountNumber {
