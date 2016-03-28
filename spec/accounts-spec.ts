@@ -29,7 +29,7 @@ describe("Netbanking SDK",function(){
         judgeSession = judge.startNewSession();
     });
     
-    function processAccountsFromPage0(accounts) {
+    function processAccounts(accounts) {
         var account = accounts.items[0];
         expectToBe(accounts.pagination, {
             pageNumber: 0,
@@ -45,7 +45,7 @@ describe("Netbanking SDK",function(){
         });
     }
     
-    function processServicesFromPage0(services) {
+    function processServices(services) {
         var service = services.items[0];
         expect(services.items.length).toBe(2);
         
@@ -74,7 +74,7 @@ describe("Netbanking SDK",function(){
         });
     }
     
-    function processReservationsFromPage0(reservations) {
+    function processReservations(reservations) {
         
         var reservation = reservations.items[0];
         
@@ -188,7 +188,7 @@ describe("Netbanking SDK",function(){
               });
           }).then(accounts => {
               
-              processAccountsFromPage0(accounts);
+              processAccounts(accounts);
               response = accounts;
           }).then(() => {
               return judgeSession.setNextCase('accounts.list.page1');
@@ -221,7 +221,7 @@ describe("Netbanking SDK",function(){
           }).then(() => {
               return response.prevPage();
           }).then(accounts => {
-              processAccountsFromPage0(accounts);
+              processAccounts(accounts);
               
               done();
           }).catch(e => {
@@ -307,7 +307,7 @@ describe("Netbanking SDK",function(){
                });
            }).then(services => {
                
-               processServicesFromPage0(services);
+               processServices(services);
                
                done();
            }).catch(e => {
@@ -325,7 +325,7 @@ describe("Netbanking SDK",function(){
             });
         }).then(services => {
             
-            processServicesFromPage0(services);
+            processServices(services);
             
             response = services;
         }).then(() => {
@@ -355,7 +355,7 @@ describe("Netbanking SDK",function(){
             return response.prevPage();
         }).then(services => {
             
-            processServicesFromPage0(services);
+            processServices(services);
             
             done();
         }).catch(e => {
@@ -378,7 +378,7 @@ describe("Netbanking SDK",function(){
             return client.accounts.withId('076E1DBCCCD38729A99D93AC8D3E8273237C7E36').reservations.list();
         }).then(reservations => {
             
-            processReservationsFromPage0(reservations);
+            processReservations(reservations);
             
             done();
         }).catch(e => {
@@ -395,7 +395,7 @@ describe("Netbanking SDK",function(){
             });
         }).then(reservations => {
             
-            processReservationsFromPage0(reservations);
+            processReservations(reservations);
             
             response = reservations;
         }).then(() => {
@@ -429,7 +429,7 @@ describe("Netbanking SDK",function(){
             return response.prevPage();
         }).then(reservations => {
             
-            processReservationsFromPage0(reservations);
+            processReservations(reservations);
             
             done();
         }).catch(e => {
