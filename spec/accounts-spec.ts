@@ -151,7 +151,9 @@ describe("Netbanking SDK",function(){
        it('retrieves a list of accounts', done => {
           judgeSession.setNextCase('accounts.list').then(() => {
               return client.accounts.list({
-                  type: 'CURRENT'
+                  type: 'CURRENT',
+                  pageNumber: null,
+                  pageSize: null
               });
           }).then(accounts => {
               

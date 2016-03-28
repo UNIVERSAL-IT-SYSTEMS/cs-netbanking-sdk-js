@@ -167,7 +167,7 @@ var CSNetbankingSDK =
 	        this.list = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'accounts', params, function (response) {
 	                response.items.forEach(function (item) {
-	                    // add convenience methods
+	                    // add convenient methods
 	                    resourcifyListing(item, _this.withId(item.id), true, false);
 	                    // transform ISO dates to native Date objects
 	                    transformResponse(item);
@@ -386,6 +386,7 @@ var CSNetbankingSDK =
 	        * Fetches the services and returns them in a promise
 	        */
 	        this.list = function (params) {
+	            // insert 'cz' resource into the resource's path because the api requires it in some resources
 	            _this._path = _this.getPath().replace('/my', '/cz/my');
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'services', params, function (response) {
 	                // transform ISO dates to native Date objects
@@ -459,6 +460,7 @@ var CSNetbankingSDK =
 	        * Fetches the repayments and returns them in a promise
 	        */
 	        this.list = function () {
+	            // insert 'cz' resource into the resource's path because the api requires it in some resources
 	            _this._path = _this.getPath().replace('/my', '/cz/my');
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'repayments', null).then(function (response) {
 	                // transform ISO dates to native Date objects
@@ -604,15 +606,6 @@ var CSNetbankingSDK =
 	    function AccountsTransactionsResource() {
 	        var _this = this;
 	        _super.apply(this, arguments);
-	        /**
-	        * Returns list of transactions
-	        */
-	        this.list = function (params) {
-	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'transactions', params, function (response) {
-	                CSCoreSDK.EntityUtils.addDatesToItems(['bookingDate', 'valuationDate', 'transactionDate'], response);
-	                return response;
-	            });
-	        };
 	        /**
 	        * Returns individual AccountsTransactionResource with a given id
 	        */
@@ -795,9 +788,10 @@ var CSNetbankingSDK =
 	        this.list = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'cards', params, function (response) {
 	                response.items.forEach(function (item) {
-	                    transformResponse(item);
-	                    // add convenience get method to fetch detail of the card
+	                    // add convenient methods to items in the list
 	                    resourcifyListing(item, _this.withId(item.id), true, false);
+	                    // transform ISO dates to native Date objects
+	                    transformResponse(item);
 	                });
 	                return response;
 	            });
@@ -822,7 +816,9 @@ var CSNetbankingSDK =
 	        */
 	        this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null).then(function (card) {
+	                // add convenient methods to items in the list
 	                resourcifyListing(card, _this, false, false);
+	                // transform ISO dates to native Date objects
 	                transformResponse(card);
 	                return card;
 	            });
@@ -832,7 +828,9 @@ var CSNetbankingSDK =
 	        */
 	        this.update = function (payload) {
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (card) {
+	                // add convenient methods to items in the list
 	                resourcifyListing(card, _this, false, true);
+	                // transform ISO dates to native Date objects
 	                transformResponse(card);
 	                return card;
 	            });
@@ -927,8 +925,8 @@ var CSNetbankingSDK =
 	    itemListing.transfers = itemResource.transfers;
 	    itemListing.accounts = itemResource.accounts;
 	}
-	function transformResponse(response) {
-	    CSCoreSDK.EntityUtils.addDatesFromISO(['expiryDate', 'validFromDate'], response);
+	function transformResponse(item) {
+	    CSCoreSDK.EntityUtils.addDatesFromISO(['expiryDate', 'validFromDate'], item);
 	}
 
 
@@ -1294,6 +1292,7 @@ var CSNetbankingSDK =
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'order', params, function (response) {
 	                response.items.forEach(function (item) {
 	                    CSCoreSDK.EntityUtils.addDatesFromISO(['cz-orderingDate', 'executionDate', 'modificationDate', 'transferDate'], item);
+	                    // add convenient get and delete methods for fetching order's detail and removing order
 	                    resourcifyListing(item, _this.withId(item.id));
 	                });
 	                return response;
@@ -1378,7 +1377,7 @@ var CSNetbankingSDK =
 	exports.PaymentResource = PaymentResource;
 	function resourcifyListing(paymentListing, paymentResource) {
 	    paymentListing.get = paymentResource.get;
-	    paymentListing.delete = PaymentResource.delete;
+	    paymentListing.delete = paymentResource.delete;
 	}
 
 
@@ -1406,9 +1405,11 @@ var CSNetbankingSDK =
 	        * Returns current available booking date based on the provided account and optional payment order category parameters
 	        */
 	        this.update = function (payload) {
+	            // get account's ID from passed object
 	            var accountId = payload.accountId;
 	            delete payload.accountId;
-	            _this._path = _this.getPath() + ("?accountId=" + accountId);
+	            // add accountId to query
+	            _this._path = _this.getPath() + "?accountId=" + accountId;
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (bookingDate) {
 	                CSCoreSDK.EntityUtils.addDatesFromISO('bookingDate', bookingDate);
 	                return bookingDate;
@@ -1535,6 +1536,8 @@ var CSNetbankingSDK =
 	        var _this = this;
 	        _super.apply(this, arguments);
 	        this.create = function (payload) {
+	            // insert 'cz' resource into the resource's path because the api requires it in some resources
+	            _this._path = _this.getPath().replace('/my', '/cz/my');
 	            return CSCoreSDK.ResourceUtils.CallCreate(_this, payload);
 	        };
 	    }

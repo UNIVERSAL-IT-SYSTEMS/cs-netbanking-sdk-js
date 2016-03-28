@@ -1,7 +1,7 @@
 declare module CSNetbankingSDK {
 	/// <reference path="../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
-	export interface Signed {
+	export interface Signable {
 	    /**
 	    * Infomation about the signing
 	    */
@@ -15,7 +15,7 @@ declare module CSNetbankingSDK {
 	    /**
 	    * Hash value.
 	    */
-	    signId?: number;
+	    signId?: string;
 	}
 	export interface AccountNumber {
 	    /**
@@ -99,13 +99,13 @@ declare module CSNetbankingSDK {
 	    */
 	    flags?: [string];
 	}
-	export interface AddNoteAndMarkTransactionsResponse extends Signed {
+	export interface AddNoteAndMarkTransactionsResponse extends Signable {
 	    /**
 	    * Transactions information
 	    */
 	    transaction: Transaction;
 	}
-	export interface TransactionList extends CSCoreSDK.PaginatedListResponse<Transaction>, Signed {
+	export interface TransactionList extends CSCoreSDK.PaginatedListResponse<Transaction>, Signable {
 	}
 	export interface Transaction {
 	    /**
@@ -131,6 +131,8 @@ declare module CSNetbankingSDK {
 	    */
 	    order?: string;
 	}
+	export interface NetbankingEmptyResponse extends CSCoreSDK.EmptyResponse {
+	}
 
 }
 declare module CSNetbankingSDK {
@@ -140,13 +142,13 @@ declare module CSNetbankingSDK {
 	/**
 	* Get information about the account's balance
 	*/
-	export class AccountsBalanceResource extends CSCoreSDK.Resource implements CSCoreSDK.GetEnabled<BalanceListing> {
+	export class AccountsBalanceResource extends CSCoreSDK.Resource implements CSCoreSDK.GetEnabled<AccountsBalance> {
 	    /**
 	    * Fetches the balance and returns them in a promise
 	    */
-	    get: () => Promise<BalanceListing>;
+	    get: () => Promise<AccountsBalance>;
 	}
-	export interface BalanceListing {
+	export interface AccountsBalance {
 	    /**
 	    * Account balance for Current, Saved amount for Saving, Principal Outstanding for Loan/Mortgage.
 	    */
@@ -345,11 +347,7 @@ declare module CSNetbankingSDK {
 	/**
 	* Get individual AccountsTransactionsResource
 	*/
-	export class AccountsTransactionsResource extends CSCoreSDK.Resource implements CSCoreSDK.HasInstanceResource<AccountsTransactionResource>, CSCoreSDK.ListEnabled<Transaction> {
-	    /**
-	    * Returns list of transactions
-	    */
-	    list: (params?: Parameters) => Promise<TransactionList>;
+	export class AccountsTransactionsResource extends CSCoreSDK.Resource implements CSCoreSDK.HasInstanceResource<AccountsTransactionResource> {
 	    /**
 	    * Returns individual AccountsTransactionResource with a given id
 	    */
@@ -380,7 +378,7 @@ declare module CSNetbankingSDK {
 	    */
 	    update: (payload: TransferRequest) => Promise<TransferResponse>;
 	}
-	export interface TransferResponse extends Signed {
+	export interface TransferResponse extends Signable {
 	}
 	export interface TransferRequest {
 	    /**
@@ -527,15 +525,36 @@ declare module CSNetbankingSDK {
 	     * Convenience method for getting detail of the account right from the list
 	     */
 	    get: () => Promise<MainAccount>;
+	    /**
+	    * Convenience method for updating account's details
+	    */
 	    update: (payload: ChangeAccountSettingsRequest) => Promise<ChangeAccountSettingsResponse>;
+	    /**
+	    * Convenience getter for getting accounts's services resource
+	    */
 	    services: AccountsServicesResource;
+	    /**
+	    * Convenience getter for getting accounts's transactions resource
+	    */
 	    transactions: AccountsTransactionsResource;
+	    /**
+	    * Convenience getter for getting accounts's reservations resource
+	    */
 	    reservations: AccountsReservationsResource;
+	    /**
+	    * Convenience getter for getting accounts's transfers resource
+	    */
 	    transfers: AccountsTransfersResource;
+	    /**
+	    * Convenience getter for getting accounts's statements resource
+	    */
 	    statements: AccountsStatementsResource;
+	    /**
+	    * Convenience getter for getting accounts's repayments resource
+	    */
 	    repayments: AccountsRepaymentsResource;
 	}
-	export interface ChangeAccountSettingsResponse extends MainAccount, Signed {
+	export interface ChangeAccountSettingsResponse extends MainAccount, Signable {
 	}
 	export interface OverdraftAmount extends Amount {
 	    /**
@@ -855,7 +874,7 @@ declare module CSNetbankingSDK {
 	    */
 	    language: string;
 	}
-	export interface ChangeDeliverySettingsResponse extends DeliveryListing, Signed {
+	export interface ChangeDeliverySettingsResponse extends DeliveryListing, Signable {
 	}
 	export interface ChangeDeliverySettingsRequest extends CSCoreSDK.PaginatedListResponse<Confirmation> {
 	    /**
@@ -938,7 +957,7 @@ declare module CSNetbankingSDK {
 	     */
 	    update: (payload: CardsActionsRequest) => Promise<CardsActionsResponse>;
 	}
-	export interface CardsActionsResponse extends Signed {
+	export interface CardsActionsResponse extends Signable {
 	}
 	export interface CardsActionsRequest {
 	    /**
@@ -974,7 +993,8 @@ declare module CSNetbankingSDK {
 	     */
 	    update: (payload: ChangeCardLimitsRequest) => Promise<ChangeCardLimitsResponse>;
 	}
-	export interface CardsLimitList extends CSCoreSDK.PaginatedListResponse<CardsLimit> {
+	export interface CardsLimitList {
+	    limits?: [CardsLimit];
 	}
 	export interface CardsLimit {
 	    /**
@@ -1002,7 +1022,7 @@ declare module CSNetbankingSDK {
 	    */
 	    bankLimit?: Amount;
 	}
-	export interface ChangeCardLimitsResponse extends Signed {
+	export interface ChangeCardLimitsResponse extends Signable {
 	    limits?: [CardsLimit];
 	    /**
 	    * Information about the confirmation
@@ -1087,7 +1107,7 @@ declare module CSNetbankingSDK {
 	    */
 	    accountno: AccountNumber;
 	}
-	export interface PayUpCreditCardResponse extends Signed {
+	export interface PayUpCreditCardResponse extends Signable {
 	}
 
 }
@@ -1361,11 +1381,7 @@ declare module CSNetbankingSDK {
 	    */
 	    accountno: AccountNumber;
 	}
-	export interface ChangeCardSettingsResponse extends Card, Signed {
-	    /**
-	    * Minimal installment repayment amount for credit card (at previous cycle end date).
-	    */
-	    minimalMonthlyAmount?: Amount;
+	export interface ChangeCardSettingsResponse extends Card, Signable {
 	    /**
 	    * ID of the branch
 	    */
@@ -1442,7 +1458,7 @@ declare module CSNetbankingSDK {
 	    */
 	    update: (payload: DomesticPaymentUpdateRequest) => Promise<DomesticPaymentUpdateResponse>;
 	}
-	export interface DomesticPaymentUpdateRequest extends Signed {
+	export interface DomesticPaymentUpdateRequest extends Signable {
 	    /**
 	    * Internal identifier of payment order. Note that after signing of the order the id could change.
 	    */
@@ -1585,7 +1601,7 @@ declare module CSNetbankingSDK {
 	    */
 	    confirmationPhoneNumber: string;
 	}
-	export interface MobilePaymentsResponse extends MobilePaymentsRequest, Signed {
+	export interface MobilePaymentsResponse extends MobilePaymentsRequest, Signable {
 	}
 	export interface MobilePaymentSender {
 	    /**
@@ -1660,7 +1676,7 @@ declare module CSNetbankingSDK {
 	/**
 	* Individual Payment order resource
 	*/
-	export class PaymentResource extends CSCoreSDK.InstanceResource implements CSCoreSDK.GetEnabled<Payment>, CSCoreSDK.DeleteEnabled<void> {
+	export class PaymentResource extends CSCoreSDK.InstanceResource implements CSCoreSDK.GetEnabled<Payment>, CSCoreSDK.DeleteEnabled<NetbankingEmptyResponse> {
 	    /**
 	    * Get detail of the payment
 	    */
@@ -1668,11 +1684,11 @@ declare module CSNetbankingSDK {
 	    /**
 	    * Remove payment
 	    */
-	    delete: () => void;
+	    delete: () => Promise<NetbankingEmptyResponse>;
 	}
 	export interface PaymentList extends CSCoreSDK.PaginatedListResponse<Payment> {
 	}
-	export interface Payment extends Signed {
+	export interface Payment extends Signable {
 	    /**
 	    * Internal identifier of payment order. Note that after signing of the order the id could change.
 	    */
@@ -1780,7 +1796,7 @@ declare module CSNetbankingSDK {
 	    /**
 	    * Convenience method for removing payment
 	    */
-	    delete: () => void;
+	    delete: () => Promise<NetbankingEmptyResponse>;
 	}
 	export interface Symbols {
 	    /**
@@ -1802,7 +1818,7 @@ declare module CSNetbankingSDK {
 	    */
 	    text4x35?: [string];
 	}
-	export interface RemovePaymentOrderResponse extends Signed {
+	export interface RemovePaymentOrderResponse extends Signable {
 	}
 
 }
