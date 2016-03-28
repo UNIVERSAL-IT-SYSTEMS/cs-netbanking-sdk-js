@@ -350,11 +350,6 @@ export interface MainAccount {
 export interface ChangeCardSettingsResponse extends Card, Signable {
     
     /**
-    * Minimal installment repayment amount for credit card (at previous cycle end date).
-    */
-    minimalMonthlyAmount?: Amount;
-    
-    /**
     * ID of the branch
     */
     branchId?: string;
