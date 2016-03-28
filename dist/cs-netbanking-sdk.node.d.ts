@@ -993,8 +993,7 @@ declare module 'cs-netbanking-sdk/cards/limits' {
 	     */
 	    update: (payload: ChangeCardLimitsRequest) => Promise<ChangeCardLimitsResponse>;
 	}
-	export interface CardsLimitList {
-	    limits?: [CardsLimit];
+	export interface CardsLimitList extends CSCoreSDK.ListResponse<CardsLimit> {
 	}
 	export interface CardsLimit {
 	    /**

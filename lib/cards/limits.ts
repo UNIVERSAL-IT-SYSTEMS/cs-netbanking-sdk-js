@@ -24,9 +24,7 @@ implements CSCoreSDK.ListEnabled<CardsLimit>, CSCoreSDK.UpdateEnabled<ChangeCard
     }
 }
 
-export interface CardsLimitList {
-    limits?: [CardsLimit]
-}
+export interface CardsLimitList extends CSCoreSDK.ListResponse<CardsLimit> {}
 
 export interface CardsLimit {
     
