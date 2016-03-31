@@ -9,7 +9,8 @@ var client : CSNetbankingSDK.NetbankingClient = null;
 var expectToBe = CoreSDK.TestUtils.expectToBe;
 var expectDate = CoreSDK.TestUtils.expectDate;
 var logJudgeError = CoreSDK.TestUtils.logJudgeError;
-
+var fs = require('fs');
+var lodash = require('underscore');
 describe("Netbanking SDK",function(){
     var originalTimeoutInterval = null;
     
@@ -468,6 +469,26 @@ describe("Netbanking SDK",function(){
         });
     });
     
+    it('updates transaction with a given id', done => {
+        judgeSession.setNextCase('accounts.withId.transactions.withId.update').then(() => {
+            return client.accounts.withId('076E1DBCCCD38729A99D93AC8D3E8273237C7E36').transactions.withId('39876').update({
+                "note": "note",
+                "flags": [
+                    "hasStar"
+                ]
+            });
+        }).then(response => {
+            expectToBe(response.transaction, {
+                id: '39876',
+                note: 'note'
+            });
+            expect(response.transaction.flags.length).toBe(2);
+            done();
+        }).catch(e => {
+            logJudgeError(e);
+        });
+    });
+    
     it('exports transaction history into pdf', done => {
         judgeSession.setNextCase('accounts.withId.transactions.export').then(() => {
             
@@ -589,13 +610,64 @@ describe("Netbanking SDK",function(){
     
     it('revolves loan disbursement', done => {
         judgeSession.setNextCase('accounts.withId.transfers.update').then(() => {
+            return client.accounts.withId('076E1DBCCCD38729A99D93AC8D3E8273237C7E36').transfers.update({
+                type: "REVOLVING_LOAN_DISBURSEMENT",
+                amount: {
+                    value: 1000,
+                    precision: 2,
+                    currency: "CZK"
+                },
+                transferDate: "2015-02-28",
+                recipientNote: "moje prve cerpanie z penize na klik"
+            });
+        }).then(response => {
+            expectToBe(response.signInfo, {
+                state: 'OPEN',
+                signId: '151112531008724'
+            });
             
+            done();
         }).catch(e => {
-            // logJudgeError(e);
+            logJudgeError(e);
         });
-        
-        done();
-    })
+    });
+    
+    it('revolves loadn disbursement by convenience method on accounts listing', done => {
+         var response;
+        judgeSession.setNextCase('accounts.list').then(() => {
+            return client.accounts.list({
+                type: 'CURRENT',
+                pageNumber: null,
+                pageSize: null
+            });
+        }).then(accounts => {
+            processSimpleAccounts(accounts);
+            
+            response = accounts;
+        }).then(() => {
+            return judgeSession.setNextCase('accounts.withId.transfers.update');
+        }).then(() => {
+            return response.items[0].transfers.update({
+                type: "REVOLVING_LOAN_DISBURSEMENT",
+                amount: {
+                    value: 1000,
+                    precision: 2,
+                    currency: "CZK"
+                },
+                transferDate: "2015-02-28",
+                recipientNote: "moje prve cerpanie z penize na klik"
+            });
+        }).then(response => {
+            expectToBe(response.signInfo, {
+                state: 'OPEN',
+                signId: '151112531008724'
+            });
+            
+            done();
+        }).catch(e => {
+            logJudgeError(e);
+        });
+    });
     
     it('retrieves list of repayments of the account', done => {
        judgeSession.setNextCase('accounts.withId.repayments.list').then(() => {
@@ -849,12 +921,29 @@ describe("Netbanking SDK",function(){
     
     it('downloads subAccounts statements file', done => {
        judgeSession.setNextCase('accounts.withId.subAccounts.withId.statements.download').then(() => {
+           return client.accounts.withId('076E1DBCCCD38729A99D93AC8D3E8273237C7E36').subAccounts.withId('0D5F82464A77DF093858A8A5B938BEE410B4409C').statements.download({
+               format: 'PDF_A4',
+               statementId: 201302520130621180000
+           });
+       }).then(response => {
            
+           var file = new Uint16Array(fs.readFileSync(__dirname + '/data/test-pdf.pdf'));
+           var responseFile = string2ArrayBuffer(response);
+           expect(lodash.isEqual(file.buffer, responseFile.buffer)).toBe(true);
+           console.log(file.length, responseFile.length);                      
+           done();
        }).catch(e => {
-        //    logJudgeError(e);
+           logJudgeError(e);
        });
-       
-       done();
     });
 });
 
+
+function string2ArrayBuffer(str) {
+     var buf = new ArrayBuffer(str.length*2); // 2 bytes for each char
+     var bufView = new Uint16Array(buf);
+     for (var i=0, strLen=str.length; i < strLen; i++) {
+         bufView[i] = str.charCodeAt(i);
+     }
+     return bufView;
+ }

@@ -320,12 +320,22 @@ describe("Netbanking SDK",function(){
         
         it('changes personal note on a given transactions', done => {
             judgeSession.setNextCase('cards.withId.transactions.withId.update').then(() => {
-                
+                return client.cards.withId('33A813886442D946122C78305EC4E482DE9F574D').transactions.withId('23498').update({
+                    id: "23498",
+                    note: "note",
+                    flags: [
+                        "hasStar"
+                    ]
+                });
+            }).then(response => {
+                expectToBe(response.cardTransaction, {
+                    id: '23498',
+                    note: 'note'
+                });
+                done();
             }).catch(e => {
-                // logJudgeError(e);
+                logJudgeError(e);
             });
-            
-            done();
         });
         
         it('exports transactions into pdf', done => {
@@ -527,23 +537,67 @@ describe("Netbanking SDK",function(){
         
         it('pays up a credit card debt', done => {
             judgeSession.setNextCase('cards.withId.transfers.update').then(() => {
+                return client.cards.withId('33A813886442D946122C78305EC4E482DE9F574D').transfers.update({
+                    type: "DEBT_REPAYMENT",
+                    sender: {
+                        accountno: {
+                            number: "2326573123",
+                            bankCode: "0800"
+                        }
+                    },
+                    amount: {
+                        value: 500000,
+                        precision: 2,
+                        currency: "CZK"
+                    }
+                });
+            }).then(response => {
+                expectToBe(response.signInfo, {
+                    state: 'OPEN',
+                    signId: '151112531008554'
+                });
                 
+                done();
             }).catch(e => {
-                // logJudgeError(e);
+                logJudgeError(e);
             });
-            
-            done();
         });
         
-        // it('pays up a credit card debt by convenience method', done => {
-        //     judgeSession.setNextCase('cards.withId.transfers.update').then(() => {
+        it('pays up a credit card debt by convenience method', done => {
+            var response;
+            judgeSession.setNextCase('cards.list').then(() => {
+                return client.cards.list();
+            }).then(cards => {
+                processSimpleCards(cards);
+                response = cards;
+            }).then(() => {
+                return judgeSession.setNextCase('cards.withId.transfers.update');
+            }).then(() => {
+                return response.items[0].transfers.update({
+                    type: "DEBT_REPAYMENT",
+                    sender: {
+                        accountno: {
+                            number: "2326573123",
+                            bankCode: "0800"
+                        }
+                    },
+                    amount: {
+                        value: 500000,
+                        precision: 2,
+                        currency: "CZK"
+                    }
+                });
+            }).then(card => {
+                expectToBe(response.signInfo, {
+                    state: 'OPEN',
+                    signId: '151112531008554'
+                });
                 
-        //     }).catch(e => {
-        //         // logJudgeError(e);
-        //     });
-            
-        //     done();
-        // });
+                done();
+            }).catch(e => {
+                logJudgeError(e);
+            });
+        });
         
         it('retrieves list of statements of cards account', done => {
             judgeSession.setNextCase('cards.withId.accounts.withId.statements.list').then(() => {
