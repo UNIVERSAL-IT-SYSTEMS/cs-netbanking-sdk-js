@@ -114,6 +114,8 @@ export interface Statement {
 
 export interface AddNoteAndMarkTransactionsRequest {
     
+    id: string;
+    
     /**
     * Personal, user specific note for transaction. Max. 4 000 characters.
     */
