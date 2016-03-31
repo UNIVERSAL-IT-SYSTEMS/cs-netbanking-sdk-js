@@ -17,7 +17,7 @@ describe("Netbanking SDK",function(){
         judge = new CoreSDK.Judge();
         //Because Judge starts slowly on the first request
         originalTimeoutInterval = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000;
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
     });
     
     afterAll(function(){
@@ -55,7 +55,25 @@ describe("Netbanking SDK",function(){
         });
     }
     
-    function processCardsFromPage0(cards) {
+    function processSimpleCards(cards) {
+        expect(cards.items.length).toBe(2);
+                
+        expectToBe(cards.pagination, {
+            pageNumber: 0,
+            pageCount: 1,
+            pageSize: 2 
+        });
+        
+        processCard(cards.items[0]);
+        
+        expectToBe(cards.items[1], {
+            id: '3FB37388FC58076DEAD3DE282E075592A299B596',
+            owner: 'VOJTÍŠKOVÁ ANNA',
+            number: '451161XXXXXX1552'
+        });
+    }
+    
+    function processCards(cards) {
         var card = cards.items[0];
                 
         expectToBe(cards.pagination, {
@@ -77,7 +95,7 @@ describe("Netbanking SDK",function(){
         });
     }
     
-    function processStatementsFromPage0(statements) {
+    function processStatements(statements) {
         var statement = statements.items[0];
         expectToBe(statements.pagination, {
             pageNumber: 0,
@@ -105,21 +123,7 @@ describe("Netbanking SDK",function(){
                 return client.cards.list();
             }).then(cards => {
                 
-                expect(cards.items.length).toBe(2);
-                
-                expectToBe(cards.pagination, {
-                    pageNumber: 0,
-                    pageCount: 1,
-                    pageSize: 2 
-                });
-                
-                processCard(cards.items[0]);
-                
-                expectToBe(cards.items[1], {
-                   id: '3FB37388FC58076DEAD3DE282E075592A299B596',
-                   owner: 'VOJTÍŠKOVÁ ANNA',
-                   number: '451161XXXXXX1552'
-                });
+                processSimpleCards(cards);
                 
                 done();
             }).catch(e => {
@@ -136,7 +140,7 @@ describe("Netbanking SDK",function(){
                 });
             }).then(cards => {
                 
-                processCardsFromPage0(cards);
+                processCards(cards);
                 response = cards;
             }).then(() => {
                 return judgeSession.setNextCase('cards.list.page1');
@@ -171,7 +175,7 @@ describe("Netbanking SDK",function(){
                 return response.prevPage();
             }).then(cards => {
                 
-                processCardsFromPage0(cards)
+                processCards(cards)
                 
                 done();
             }).catch(e => {
@@ -190,10 +194,60 @@ describe("Netbanking SDK",function(){
             });
         });
         
+        it('retrieves cards detail by using convenience method on cards listing', done => {
+            var response;
+            judgeSession.setNextCase('cards.list').then(() => {
+                return client.cards.list();
+            }).then(cards => {
+                processSimpleCards(cards);
+                response = cards;
+            }).then(() => {
+                return judgeSession.setNextCase('cards.withId.get');
+            }).then(() => {
+                return response.items[0].get();
+            }).then(card => {
+                processCard(card);
+                done();
+            }).catch(e => {
+                logJudgeError(e);
+            });
+        });
+        
         it('updates alias of a given card', done => {
             judgeSession.setNextCase('cards.withId.update').then(() => {
                 return client.cards.withId('33A813886442D946122C78305EC4E482DE9F574D').update({
                     alias: 'moje karta' 
+                });
+            }).then(card => {
+                expectToBe(card, {
+                    id: '33A813886442D946122C78305EC4E482DE9F574D',
+                    number: '451161XXXXXX7982',
+                    alias: 'moje karta'
+                });     
+
+                expectDate(card, {
+                    expiryDate: '2017-11-30',
+                    validFromDate: '2014-12-01'
+                });
+                
+                done();
+            }).catch(e => {
+                logJudgeError(e);
+            });
+        });
+        
+        it('updates alias of a card by using convenience method on cards listing', done => {
+            var response;
+            judgeSession.setNextCase('cards.list').then(() => {
+                return client.cards.list();
+            }).then(cards => {
+                processSimpleCards(cards);
+                response = cards;
+            }).then(() => {
+                return judgeSession.setNextCase('cards.withId.update');
+            }).then(() => {
+                return response.items[0].update({
+                    alias: 'moje karta'
                 });
             }).then(card => {
                 expectToBe(card, {
@@ -235,11 +289,40 @@ describe("Netbanking SDK",function(){
             });
         });
         
+        it('retrieves current delivery settings of a card by using convenience method on cards listing', done => {
+            var response;
+            judgeSession.setNextCase('cards.list').then(() => {
+                return client.cards.list();
+            }).then(cards => {
+                processSimpleCards(cards);
+                response = cards;
+            }).then(() => {
+                return judgeSession.setNextCase('cards.withId.delivery.get');
+            }).then(() => {
+                return response.items[0].delivery.get();
+            }).then(delivery => {
+                expectToBe(delivery, {
+                   cardDeliveryMode: 'BRANCH',
+                   branchId: '1075',
+               });
+               
+               expectToBe(delivery.address, {
+                  street: 'Antala Staška',
+                  buildingApartment: '1292',
+                  streetNumber: '32' 
+               });
+               
+               done();
+            }).catch(e => {
+                logJudgeError(e);
+            });
+        });
+        
         it('changes personal note on a given transactions', done => {
             judgeSession.setNextCase('cards.withId.transactions.withId.update').then(() => {
                 
             }).catch(e => {
-                logJudgeError(e);
+                // logJudgeError(e);
             });
             
             done();
@@ -249,11 +332,29 @@ describe("Netbanking SDK",function(){
             judgeSession.setNextCase('cards.withId.transactions.export').then(() => {
                 
             }).catch(e => {
-                logJudgeError(e);
+                // logJudgeError(e);
             });
             
             done();
         });
+        
+        // it('exports transactions into pdf by using convenience method on cards listing', done => {
+        //     var response;
+        //     judgeSession.setNextCase('cards.list').then(() => {
+        //         return client.cards.list();
+        //     }).then(cards => {
+        //         processSimpleCards(cards);
+        //         response = cards;
+        //     }).then(() => {
+        //         return judgeSession.setNextCase('cards.withId.transactions.export');
+        //     }).then(() => {
+        //         return response.items[0].transactions.export();
+        //     }).then(response => {
+        //         done(); 
+        //     }).catch(e => {
+        //         logJudgeError(e);
+        //     });
+        // });
         
         it('retrieves limits of a card with a given id', done => {
             judgeSession.setNextCase('cards.withId.limits.list').then(() => {
@@ -278,6 +379,34 @@ describe("Netbanking SDK",function(){
             })
         });
         
+        it('retrieves limits of a card  by using convenience method on cards listing', done => {
+            var response;
+            judgeSession.setNextCase('cards.list').then(() => {
+                return client.cards.list();
+            }).then(cards => {
+                processSimpleCards(cards);
+                response = cards;
+            }).then(() => {
+                return judgeSession.setNextCase('cards.withId.limits.list');
+            }).then(() => {
+                return response.items[0].limits.list();
+            }).then(limits => {
+                expectToBe(limits.items[0], {
+                    limitType: 'ATM',
+                    limitPeriod: '1D'
+                });
+                
+                expectToBe(limits.items[0].limit, {
+                    value: 200000,
+                    precision: 2,
+                    currency: 'CZK'
+                });
+                done();
+            }).catch(e => {
+                logJudgeError(e);
+            });
+        });
+        
         it('actives card with a given id', done => {
            judgeSession.setNextCase('cards.withId.actions.create').then(() => {
                return client.cards.withId('33A813886442D946122C78305EC4E482DE9F574D').actions.update({
@@ -289,6 +418,30 @@ describe("Netbanking SDK",function(){
                    signId: '1883293134'
                });
                
+               done();
+           }).catch(e => {
+               logJudgeError(e);
+           });
+        });
+        
+        it('actives card by using convenience method on cards listing', done => {
+           var response;
+           judgeSession.setNextCase('cards.list').then(() => {
+               return client.cards.list();
+           }).then(cards => {
+               processSimpleCards(cards);
+               response = cards;
+           }).then(() => {
+               return judgeSession.setNextCase('cards.withId.actions.create');
+           }).then(() => {
+               return response.items[0].actions.update({
+                   action: 'ACTIVATE_CARD'
+               });
+           }).then(response => {
+               expectToBe(response.signInfo, {
+                   state: 'OPEN',
+                   signId: '1883293134'
+               });
                done();
            }).catch(e => {
                logJudgeError(e);
@@ -349,15 +502,48 @@ describe("Netbanking SDK",function(){
             });
         });
         
+        it('retrieves 3D secure info by convenience method on cards listing', done => {
+            var response;
+            judgeSession.setNextCase('cards.list').then(() => {
+                return client.cards.list();
+            }).then(cards => {
+                processSimpleCards(cards);
+                response = cards;
+            }).then(() => {
+                return judgeSession.setNextCase('cards.withId.secure3D.get');
+            }).then(() => {
+                return response.items[0].secure3d.get();
+            }).then(settings => {
+                expectToBe(settings, {
+                    status: 'OK',
+                    phoneNumber: '+420739473460',
+                    language: 'cs'
+                });
+                done();
+            }).catch(e => {
+                logJudgeError(e);
+            });
+        });
+        
         it('pays up a credit card debt', done => {
             judgeSession.setNextCase('cards.withId.transfers.update').then(() => {
                 
             }).catch(e => {
-                logJudgeError(e);
+                // logJudgeError(e);
             });
             
             done();
         });
+        
+        // it('pays up a credit card debt by convenience method', done => {
+        //     judgeSession.setNextCase('cards.withId.transfers.update').then(() => {
+                
+        //     }).catch(e => {
+        //         // logJudgeError(e);
+        //     });
+            
+        //     done();
+        // });
         
         it('retrieves list of statements of cards account', done => {
             judgeSession.setNextCase('cards.withId.accounts.withId.statements.list').then(() => {
@@ -396,6 +582,51 @@ describe("Netbanking SDK",function(){
             });
         });
         
+        it('retrieves list of statements of cards account by convenience method on cards listing', done => {
+            var response;
+            judgeSession.setNextCase('cards.list').then(() => {
+                return client.cards.list();
+            }).then(cards => {
+                processSimpleCards(cards);
+                response = cards;
+            }).then(() => {
+                return judgeSession.setNextCase('cards.withId.accounts.withId.statements.list');
+            }).then(() => {
+                return response.items[0].accounts.withId('076E1DBCCCD38729A99D93AC8D3E8273237C7E36').statements.list({
+                    sort: 'statementDate',
+                    order: 'asc',
+                    pageNumber: null,
+                    pageSize: null
+                });
+            }).then(statements => {
+                
+                var statement = statements.items[0];
+                expect(statements.items.length).toBe(1);
+                
+                expectDate(statement, {
+                    statementDate: '2016-02-29T00:00:00+01:00'
+                });
+                
+                expectToBe(statements.pagination, {
+                    pageNumber: 0,
+                    pageCount: 1,
+                    pageSize: 1,
+                });
+                
+                expectToBe(statement, {
+                   id: '06029392819b0198',
+                   number: 2,
+                   periodicity: 'MONTHLY',
+                   format: 'PDF_A4',
+                   language: 'cs' 
+                });
+                
+                done();
+            }).catch(e => {
+                logJudgeError(e);
+            });
+        })
+        
         it('tests pagination for statements', done => {
             var response;
             
@@ -406,7 +637,7 @@ describe("Netbanking SDK",function(){
                 });
             }).then(statements => {
                 
-                processStatementsFromPage0(statements);
+                processStatements(statements);
                 
                 response = statements;
             }).then(() => {
@@ -440,7 +671,7 @@ describe("Netbanking SDK",function(){
                 return response.prevPage();
             }).then(statements => {
                 
-                processStatementsFromPage0(statements);
+                processStatements(statements);
                 
                 done();                
             }).catch(e => {
@@ -452,7 +683,7 @@ describe("Netbanking SDK",function(){
             judgeSession.setNextCase('cards.withId.accounts.withId.statements.download').then(() => {
                  
             }).catch(e => {
-                logJudgeError(e);
+                // logJudgeError(e);
             });
             
             done();

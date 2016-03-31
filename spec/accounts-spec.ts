@@ -9,6 +9,7 @@ var client : CSNetbankingSDK.NetbankingClient = null;
 var expectToBe = CoreSDK.TestUtils.expectToBe;
 var expectDate = CoreSDK.TestUtils.expectDate;
 var logJudgeError = CoreSDK.TestUtils.logJudgeError;
+
 describe("Netbanking SDK",function(){
     var originalTimeoutInterval = null;
     
@@ -16,7 +17,7 @@ describe("Netbanking SDK",function(){
         judge = new CoreSDK.Judge();
         //Because Judge starts slowly on the first request
         originalTimeoutInterval = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000;
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
     });
     
     afterAll(function(){
@@ -28,6 +29,24 @@ describe("Netbanking SDK",function(){
         client =  netbanking.getClient();	
         judgeSession = judge.startNewSession();
     });
+    
+    function processSimpleAccounts(accounts) {
+        expect(accounts.items.length).toBe(1);
+              
+        expectToBe(accounts.pagination, {
+            pageNumber: 0,
+            pageCount: 1,
+            pageSize: 1,
+        });
+        
+        expectToBe(accounts.items[0], {
+            id: '076E1DBCCCD38729A99D93AC8D3E8273237C7E36',
+            description: 'Anna Vojtíšková',
+            product: '49',
+            productI18N: 'Osobní účet ČS II',
+            subType: 'GIRO_ACCOUNT'
+        });
+    }
     
     function processAccounts(accounts) {
         var account = accounts.items[0];
@@ -157,21 +176,7 @@ describe("Netbanking SDK",function(){
               });
           }).then(accounts => {
               
-              expect(accounts.items.length).toBe(1);
-              
-              expectToBe(accounts.pagination, {
-                  pageNumber: 0,
-                  pageCount: 1,
-                  pageSize: 1,
-              });
-              
-              expectToBe(accounts.items[0], {
-                  id: '076E1DBCCCD38729A99D93AC8D3E8273237C7E36',
-                  description: 'Anna Vojtíšková',
-                  product: '49',
-                  productI18N: 'Osobní účet ČS II',
-                  subType: 'GIRO_ACCOUNT'
-              });
+              processSimpleAccounts(accounts);
               
               done();
           }).catch(e => {
@@ -259,6 +264,48 @@ describe("Netbanking SDK",function(){
           });
        });
        
+       it('retrieves accounts detail by convenience method on accounts listing', done => {
+           var response;
+           judgeSession.setNextCase('accounts.list').then(() => {
+               return client.accounts.list({
+                   type: 'CURRENT',
+                   pageNumber: null,
+                   pageSize: null
+               });
+           }).then(accounts => {
+               processSimpleAccounts(accounts);
+               response = accounts;
+           }).then(() => {
+               return judgeSession.setNextCase('accounts.withId.get');
+           }).then(() => {
+               return response.items[0].get();
+           }).then(account => {
+               expectToBe(account, {
+                  id: '076E1DBCCCD38729A99D93AC8D3E8273237C7E36',
+                  description: 'Anna Vojtíšková',
+                  product: '49',
+                  productI18N: 'Osobní účet ČS II',
+                  subType: 'GIRO_ACCOUNT'
+              });
+              
+              expectToBe(account.accountno, {
+                 number: '2328489013',
+                 bankCode: '0800',
+                 countryCode: 'CZ' 
+              });
+              
+              expectToBe(account.balance, {
+                  value: 2650706,
+                  precision: 2,
+                  currency: 'CZK'
+              });
+              
+              done();
+           }).catch(e => {
+               logJudgeError(e);
+           });
+       });
+       
        it('updates alias on a given account', done => {
           judgeSession.setNextCase('accounts.withId.update').then(() => {
               return client.accounts.withId('076E1DBCCCD38729A99D93AC8D3E8273237C7E36').update({
@@ -275,6 +322,36 @@ describe("Netbanking SDK",function(){
           }).catch(e => {
               logJudgeError(e);
           });
+       });
+       
+       it('updates alias on an account by using convenience update method from accounts listing', done => {
+           var response;
+           judgeSession.setNextCase('accounts.list').then(() => {
+               return client.accounts.list({
+                   type: 'CURRENT',
+                   pageNumber: null,
+                   pageSize: null
+               });
+           }).then(accounts => {
+               processSimpleAccounts(accounts);
+               response = accounts;
+           }).then(() => {
+               return judgeSession.setNextCase('accounts.withId.update');
+           }).then(() => {
+               return response.items[0].update({
+                   alias: 'muj ucet'
+               });
+           }).then(account => {
+               expectToBe(account, {
+                  id: '076E1DBCCCD38729A99D93AC8D3E8273237C7E36',
+                  alias: 'muj ucet',
+                  description: 'Aleš Vrba'
+               });
+               
+               done();
+           }).catch(e => {
+               logJudgeError(e);
+           });
        });
        
        it('retrieves accounts balances', done => {
@@ -294,6 +371,34 @@ describe("Netbanking SDK",function(){
                });
 
                done();
+            }).catch(e => {
+                logJudgeError(e);
+            });
+       });
+       
+       it('retrieves accounts services by convenience method on accounts listing', done => {
+            var response;
+            judgeSession.setNextCase('accounts.list').then(() => {
+                return client.accounts.list({
+                    type: 'CURRENT',
+                    pageNumber: null,
+                    pageSize: null
+                });
+            }).then(accounts => {
+                
+                processSimpleAccounts(accounts);
+                response = accounts;
+            }).then(() => {
+                return judgeSession.setNextCase('accounts.withId.services.list');
+            }).then(() => {
+                return response.items[0].services.list({
+                   pageNumber: 0,
+                   pageSize: 2
+                });
+            }).then(services => {
+                processServices(services);
+                
+                done();
             }).catch(e => {
                 logJudgeError(e);
             });
@@ -367,11 +472,33 @@ describe("Netbanking SDK",function(){
         judgeSession.setNextCase('accounts.withId.transactions.export').then(() => {
             
         }).catch(e => {
-            logJudgeError(e);
+            // logJudgeError(e);
         });
         
         done();
     });
+    
+    // it('exports transaction history into pdf from convenience method on accounts listing', done => {
+    //    var response;
+    //    judgeSession.setNextCase('accounts.list').then(() => {
+    //        return client.accounts.list({
+    //            type: 'CURRENT',
+    //            pageNumber: null,
+    //            pageSize: null
+    //        });
+    //    }).then(accounts => {
+    //        processSimpleAccounts(accounts);
+    //        response = accounts;
+    //    }).then(() => {
+    //        return judgeSession.setNextCase('accounts.withId.transactions.export');
+    //    }).then(() => {
+    //        return response.items[0].transactions.export();
+    //    }).then(transactions => {
+    //        done();
+    //    }).catch(e => {
+    //     //    logJudgeError(e);
+    //    });
+    // });
     
     it('retrieves list of reservations of the account', done => {
         judgeSession.setNextCase('accounts.withId.reservations.list').then(() => {
@@ -437,11 +564,34 @@ describe("Netbanking SDK",function(){
         });
     });
     
+    it('retrieves accounts reservations by convenience method on accounts listing', done => {
+        var response;
+        judgeSession.setNextCase('accounts.list').then(() => {
+            return client.accounts.list({
+                type: 'CURRENT',
+                pageNumber: null,
+                pageSize: null
+            });
+        }).then(accounts => {
+            processSimpleAccounts(accounts);
+            response = accounts;
+        }).then(() => {
+            return judgeSession.setNextCase('accounts.withId.reservations.list');
+        }).then(() => {
+            return response.items[0].reservations.list();
+        }).then(reservations => {
+            processReservations(reservations);
+            done();
+        }).catch(e => {
+            logJudgeError(e);
+        });
+    });
+    
     it('revolves loan disbursement', done => {
         judgeSession.setNextCase('accounts.withId.transfers.update').then(() => {
             
         }).catch(e => {
-            logJudgeError(e);
+            // logJudgeError(e);
         });
         
         done();
@@ -474,6 +624,48 @@ describe("Netbanking SDK",function(){
            done();
        }).catch(e => {
            logJudgeError(e);
+        });
+    });
+    
+    it('retrieves accounts repayments by convenience method on accounts listing', done => {
+        var response;
+        judgeSession.setNextCase('accounts.list').then(() => {
+            return client.accounts.list({
+                type: 'CURRENT',
+                pageNumber: null,
+                pageSize: null
+            });
+        }).then(accounts => {
+            processSimpleAccounts(accounts);
+            
+            response = accounts;
+        }).then(() => {
+            return judgeSession.setNextCase('accounts.withId.repayments.list');
+        }).then(() => {
+            return response.items[0].repayments.list();
+        }).then(repayments => {
+            var repayment = repayments.items[0];
+           
+            expect(repayments.items.length).toBe(2);
+            expectDate(repayment, {
+                repaymentDate: '2016-01-18'
+            })
+            
+            expectToBe(repayment.amount, {
+                value: 32500,
+                precision: 2,
+                currency: 'CZK'
+            });
+            
+            expectToBe(repayment.paidAmount, {
+                value: 32500,
+                precision: 2,
+                currency: 'CZK'
+            });
+            
+            done();
+        }).catch(e => {
+            logJudgeError(e);
         });
     });
     
@@ -547,11 +739,41 @@ describe("Netbanking SDK",function(){
         });
     });
     
+    it('retrieves accounts statements by convenience method on accounts listing', done => {
+        var response;
+        judgeSession.setNextCase('accounts.list').then(() => {
+            return client.accounts.list({
+                type: 'CURRENT',
+                pageNumber: null,
+                pageSize: null
+            });
+        }).then(accounts => {
+            processSimpleAccounts(accounts);
+            
+            response = accounts
+        }).then(() => {
+            return judgeSession.setNextCase('accounts.withId.statements.list');
+        }).then(() => {
+            return response.items[0].statements.list({
+                sort: 'statementDate',
+                order: 'asc',
+                pageNumber: null,
+                pageSize: null
+            });
+        }).then(statements => {
+            processStatements(statements);
+            
+            done();
+        }).catch(e => {
+            logJudgeError(e);
+        })
+    });
+    
     it('downloads statements file', done => {
        judgeSession.setNextCase('accounts.withId.statements.download').then(() => {
            
        }).catch(e => {
-           logJudgeError(e);
+        //    logJudgeError(e);
        });
        
        done();
@@ -629,7 +851,7 @@ describe("Netbanking SDK",function(){
        judgeSession.setNextCase('accounts.withId.subAccounts.withId.statements.download').then(() => {
            
        }).catch(e => {
-           logJudgeError(e);
+        //    logJudgeError(e);
        });
        
        done();

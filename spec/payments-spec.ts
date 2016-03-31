@@ -17,7 +17,7 @@ describe("Netbanking SDK",function(){
         judge = new CoreSDK.Judge();
         //Because Judge starts slowly on the first request
         originalTimeoutInterval = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000;
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
     });
     
     afterAll(function(){

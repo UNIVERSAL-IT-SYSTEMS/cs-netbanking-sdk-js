@@ -309,7 +309,6 @@ module.exports =
 	    if (!isFromUpdate) {
 	        accountListing.update = account.update;
 	    }
-	    accountListing.update = account.update;
 	    accountListing.services = account.services;
 	    accountListing.transactions = account.transactions;
 	    accountListing.reservations = account.reservations;
