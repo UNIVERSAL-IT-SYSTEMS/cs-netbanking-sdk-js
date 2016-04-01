@@ -1,6 +1,6 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
-import {TransactionList, Transaction, Parameters, AddNoteAndMarkTransactionsRequest, AddNoteAndMarkTransactionsResponse} from '../common';
+import {AddNoteAndMarkTransactionsRequest, AddNoteAndMarkTransactionsResponse, ExportTransactionsParameters} from '../common';
 
 /**
 * Get individual AccountsTransactionsResource
@@ -15,9 +15,12 @@ implements CSCoreSDK.HasInstanceResource<AccountsTransactionResource> {
         return new AccountsTransactionResource(id, this.getPath(), this._client);
     }
     
-    // nebude fungovat
-    export = (params): Promise<{}> => {
-        return CSCoreSDK.ResourceUtils.CallCreateWithSuffix(this, 'export', params);
+    /**
+    * Exports transaction history into signed pdf
+    */
+    export = (params: ExportTransactionsParameters): Promise<{}> => {
+        this._path = this.getPath().replace('/my', '/cz/my');
+        return this._client.callApi(this._path + '/export', 'POST', params, null, null);
     }
 }
 

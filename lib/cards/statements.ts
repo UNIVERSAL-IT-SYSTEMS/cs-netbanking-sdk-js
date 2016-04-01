@@ -1,6 +1,6 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
-import {StatementList, Statement, Parameters} from '../common';
+import {StatementList, Statement, Parameters, DownloadStatementsParameters} from '../common';
 
 /**
  * Account resource for listing statements
@@ -51,20 +51,6 @@ implements CSCoreSDK.PaginatedListEnabled<Statement> {
      * Download PDF with statements
      */ 
     download = (params: DownloadStatementsParameters) => {
-        // zkontrolovat, zřejmě nebude fungovat
-        return CSCoreSDK.ResourceUtils.CallCreateWithSuffix(this, 'signed/download', params);
+        return this._client.callApi(this._path + '/signed/download', 'POST', params, null, null);
     }
-}
-
-export interface DownloadStatementsParameters {
-    
-    /**
-     * Format of statements file. Example: PDF_A4.
-     */ 
-    format: string;
-    
-    /**
-     * Statement identifier. Example: 201302520130621161819.
-     */ 
-    statementId: string;
 }

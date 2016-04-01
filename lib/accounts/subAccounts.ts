@@ -1,6 +1,6 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
-import {StatementList, Statement, Parameters} from '../common';
+import {StatementList, Statement, Parameters, DownloadStatementsParameters} from '../common';
 
 /**
 * Get individual SubAccount resource
@@ -39,6 +39,8 @@ implements CSCoreSDK.PaginatedListEnabled<Statement> {
     * Returns all subaccount's statements in a promise
     */
     list = (params?: Parameters): Promise<StatementList> => {
+        
+        // insert 'cz' resource into the resource's path because the api requires it in some resources
         this._path = this.getPath().replace('/my', '/cz/my');
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'statements', params, response => {
             
@@ -53,20 +55,9 @@ implements CSCoreSDK.PaginatedListEnabled<Statement> {
     * Downloads statements file
     */
     download = (params: DownloadStatementsParameters): Promise<any> => {
+        
+        // insert 'cz' resource into the resource's path because the api requires it in some resources
         this._path = this.getPath().replace('/my', '/cz/my');
         return this._client.callApi(this._path + '/download', "POST", params, null, null);
     }
-}
-
-export interface DownloadStatementsParameters {
-    
-    /**
-    * Format of statements file. Example: PDF_A4. Default: PDF_A4.
-    */
-    format?: string;
-    
-    /**
-    * Statement identifier.
-    */
-    statementId: number;
 }

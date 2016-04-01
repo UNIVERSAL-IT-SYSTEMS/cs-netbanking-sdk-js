@@ -169,4 +169,56 @@ export interface Parameters extends CSCoreSDK.Paginated {
     order?: string;
 }
 
+export interface DownloadStatementsParameters {
+    
+    /**
+    * Format of statements file. Example: PDF_A4. Default: PDF_A4.
+    */
+    format?: string;
+    
+    /**
+    * Statement identifier.
+    */
+    statementId: number;
+}
+
+export interface ExportTransactionsParameters {
+    
+    /**
+    * Date from which transactions should be exported.
+    */
+    dateFrom: Date;
+    
+    /**
+    * Date to which transactions should be exported.
+    */
+    dateTo: Date;
+    
+    /**
+    * Array of fields which should appear in export. Possible fields are: bookingDate, partner, amount, currency, variableSymbol, 
+    * constantSymbol, specificSymbol, transactionType, note, paymentReference, senderReference, cardNumber, investmentInstrumentName, marked, valuationDate, referenceId location
+    */
+    fields: string;
+    
+    /**
+    * Indication whether account name should be visible in export. Default is false.
+    */
+    showAccountName?: boolean;
+    
+    /**
+    * Indication whether account number should be visible in export. Default is false.
+    */
+    showAccountNumber?: boolean;
+    
+    /**
+    * Indication whether timespan of the export should be visible. Default is false.
+    */
+    showTimespan?: boolean;
+    
+    /**
+    * Indication whether balance of the account should be visible in export. Default is false.
+    */
+    showBalance?: boolean;
+}
+
 export interface NetbankingEmptyResponse extends CSCoreSDK.EmptyResponse {}

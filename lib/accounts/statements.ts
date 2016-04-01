@@ -1,6 +1,6 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
-import {StatementList, Statement, Parameters} from '../common';
+import {StatementList, Statement, Parameters, DownloadStatementsParameters} from '../common';
 
 /**
 * Get information about the account's statements
@@ -18,6 +18,13 @@ implements CSCoreSDK.PaginatedListEnabled<Statement> {
             CSCoreSDK.EntityUtils.addDatesToItems('statementDate', response);
             
             return response;
-        })
+        });
+    }
+    
+    /**
+    * Downloads statements file
+    */
+    download = (params: DownloadStatementsParameters): Promise<any> => {
+        return this._client.callApi(this._path + '/signed/download', "POST", params, null, null);
     }
 }
