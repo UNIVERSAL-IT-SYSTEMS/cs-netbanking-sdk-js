@@ -7,15 +7,21 @@ import {Info, Symbols, Payment} from './orders';
 * Create domestic payment order
 */
 export class PaymentsDomesticResource extends CSCoreSDK.Resource
-implements CSCoreSDK.CreateEnabled<DomesticPaymentUpdateRequest, DomesticPaymentUpdateResponse> {
+implements CSCoreSDK.CreateEnabled<DomesticPaymentCreateRequest, DomesticPaymentCreateResponse> {
     
     /**
     * Creates domestic payment order and returns it in promise
     */
-    create = (payload: DomesticPaymentUpdateRequest): Promise<DomesticPaymentUpdateResponse> => {
+    create = (payload: DomesticPaymentCreateRequest): Promise<DomesticPaymentCreateResponse> => {
+        
+        // transform Date object to ISO strings
+        CSCoreSDK.EntityUtils.transformDatesToISO('transferDate', payload);
+        
         return CSCoreSDK.ResourceUtils.CallCreate(this, payload).then(response => {
             
+            // transform ISO dates to native Date objects
             CSCoreSDK.EntityUtils.addDatesFromISO(['cz-orderingDate', 'executionDate', 'modificationDate', 'transferDate'], response);
+            
             return response;
         });
     }
@@ -39,21 +45,48 @@ implements CSCoreSDK.UpdateEnabled<DomesticPaymentUpdateRequest, DomesticPayment
     * Updates domestic payment and returns it in promise
     */
     update = (payload: DomesticPaymentUpdateRequest): Promise<DomesticPaymentUpdateResponse> => {
+        
+        // transform Date object to ISO strings
+        CSCoreSDK.EntityUtils.transformDatesToISO('transferDate', payload);
+        
         return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(response => {
             
+            // transform ISO dates to native Date objects
             CSCoreSDK.EntityUtils.addDatesFromISO(['cz-orderingDate', 'executionDate', 'modificationDate', 'transferDate'], response);
+            
             return response;
         });
     }
 }
 
-export interface DomesticPaymentUpdateRequest extends Signable {
+export interface DomesticPaymentUpdateRequest extends DomesticPaymentCreateRequest {
     
     /**
     * Internal identifier of payment order. Note that after signing of the order the id could change.
     */
-    id?: string;
+    id: string;
     
+    /**
+    * Status of the payment order (details above), State of payment order presented to user on FE). Possible values: OPEN, SPOOLED, CANCELLED, CLOSED and DELETED
+    */
+    state: string;
+    
+    /**
+    * State detail of payment order provided based on BE technical states.
+    */
+    stateDetail?: string;
+    
+    /**
+    * Indicator whether state (stateDetail value) of payment order is OK from user point of view. For mapping between stateDetail and stateOk indicator values see table below.
+    */
+    stateOk: boolean;
+}
+
+export interface DomesticPaymentUpdateResponse extends Payment, Signable {}
+
+export interface DomesticPaymentCreateResponse extends Payment, Signable {}
+
+export interface DomesticPaymentCreateRequest {
     /**
     * Name of the sender
     */
@@ -104,8 +137,6 @@ export interface DomesticPaymentUpdateRequest extends Signable {
     */
     flags?: [string];
 }
-
-export interface DomesticPaymentUpdateResponse extends Payment {}
 
 export interface DomesticPaymentAccount {
     
