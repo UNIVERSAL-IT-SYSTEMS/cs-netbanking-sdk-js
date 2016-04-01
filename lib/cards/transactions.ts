@@ -20,8 +20,12 @@ implements CSCoreSDK.HasInstanceResource<CardTransactionResource> {
      */ 
     export = (params: ExportTransactionsParameters) : Promise<any> => {
         
+        // transform Date objects to ISO strings
+        CSCoreSDK.EntityUtils.transformDatesToISO(['dateFrom', 'dateTo'], params);
+        
         // insert 'cz' resource into the resource's path because the api requires it in some resources
         this._path = this.getPath().replace('/my', '/cz/my');
+        
         return this._client.callApi(this._path + '/export', 'POST', params, null, null);
     }
 }
