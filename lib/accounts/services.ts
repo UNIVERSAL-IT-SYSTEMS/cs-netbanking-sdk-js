@@ -14,6 +14,7 @@ implements CSCoreSDK.PaginatedListEnabled<Service> {
         
         // insert 'cz' resource into the resource's path because the api requires it in some resources
         this._path = this.getPath().replace('/my', '/cz/my');
+        
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'services', params, response => {
             
             // transform ISO dates to native Date objects

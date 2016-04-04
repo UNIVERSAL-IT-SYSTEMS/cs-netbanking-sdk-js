@@ -61,7 +61,11 @@ export interface CardsLimit {
 
 export interface ChangeCardLimitsResponse extends Signable {
     
+    /**
+    * Card's limits
+    */
     limits?: [CardsLimit];
+    
     /**
     * Information about the confirmation
     */
@@ -70,7 +74,11 @@ export interface ChangeCardLimitsResponse extends Signable {
 
 export interface ChangeCardLimitsRequest {
     
-    limits?: [CardsLimit]
+    /**
+    * Card's limits
+    */
+    limits?: [CardsLimit];
+    
     /**
     * Information about the confirmation
     */

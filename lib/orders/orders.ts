@@ -32,6 +32,8 @@ implements CSCoreSDK.HasInstanceResource<PaymentResource>, CSCoreSDK.PaginatedLi
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'order', params, response => {
             
             response.items.forEach(item => {
+                
+                // transform ISO dates to native Date objects
                 CSCoreSDK.EntityUtils.addDatesFromISO(['cz-orderingDate', 'executionDate', 'modificationDate', 'transferDate'], item);
                 
                 // add convenient get and delete methods for fetching order's detail and removing order
@@ -89,7 +91,9 @@ implements CSCoreSDK.GetEnabled<Payment>, CSCoreSDK.DeleteEnabled<NetbankingEmpt
     get = (): Promise<Payment> => {
         return CSCoreSDK.ResourceUtils.CallGet(this, null).then(payment => {
             
+            // transform ISO dates to native Date objects
             CSCoreSDK.EntityUtils.addDatesFromISO(['cz-orderingDate', 'executionDate', 'modificationDate', 'transferDate'], payment);
+            
             return payment;
         });
     }

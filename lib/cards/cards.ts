@@ -30,6 +30,7 @@ implements CSCoreSDK.ListEnabled<Card>, CSCoreSDK.HasInstanceResource<CardResour
                 // transform ISO dates to native Date objects
                 transformResponse(item);
             });
+            
             return response;
         });
     }
@@ -56,6 +57,7 @@ implements CSCoreSDK.GetEnabled<Card>, CSCoreSDK.UpdateEnabled<ChangeCardSetting
             
             // transform ISO dates to native Date objects
             transformResponse(card);
+            
             return card;
         });
     }
@@ -71,6 +73,7 @@ implements CSCoreSDK.GetEnabled<Card>, CSCoreSDK.UpdateEnabled<ChangeCardSetting
             
             // transform ISO dates to native Date objects
             transformResponse(card);
+            
             return card;
         })
     }
@@ -248,7 +251,7 @@ export interface Card {
     /**
     * Information about the main account.
     */
-    mainAccount?: MainAccount;
+    mainAccount?: CardsMainAccount;
     
     /**
     * Information about the main account's limits.
@@ -329,7 +332,7 @@ export interface CardAccountLimits {
     limitPOS?: Amount;
 }
 
-export interface MainAccount {
+export interface CardsMainAccount {
     
     /**
     * Internal ID as reference for account provided by BE

@@ -12,7 +12,8 @@ implements CSCoreSDK.ListEnabled<LastLoginInfo> {
      */ 
     list = () : Promise<LastLoginList> => {
         return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'lastlogin').then(response => {
-           
+            
+            // transform ISO dates to native Date objects
             CSCoreSDK.EntityUtils.addDatesToItems('lastlogin', response); 
             return response;
         });

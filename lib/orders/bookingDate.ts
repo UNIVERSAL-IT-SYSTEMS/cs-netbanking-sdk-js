@@ -22,7 +22,9 @@ implements CSCoreSDK.UpdateEnabled<PaymentBookingDateRequest, PaymentBookingDate
         
         return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(bookingDate => {
             
+            // transform ISO dates to native Date objects
             CSCoreSDK.EntityUtils.addDatesFromISO('bookingDate', bookingDate);
+            
             return bookingDate;
         })
     }
@@ -30,7 +32,11 @@ implements CSCoreSDK.UpdateEnabled<PaymentBookingDateRequest, PaymentBookingDate
 
 export interface PaymentBookingDateRequest {
     
+    /**
+    * Account's ID
+    */
     accountId: string;
+    
     /**
     * Receiver's account number
     */

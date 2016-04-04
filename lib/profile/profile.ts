@@ -13,9 +13,13 @@ implements CSCoreSDK.GetEnabled<Profile> {
      */  
     get = (): Promise<Profile> => {
         return CSCoreSDK.ResourceUtils.CallGet(this, null).then(profile => {
+            
             if((<Profile>profile).lastlogin) {
+                
+                // transform ISO dates to native Date objects
                 CSCoreSDK.EntityUtils.addDatesFromISO('lastlogin', profile);   
             }
+            
             return profile;
         });
     }

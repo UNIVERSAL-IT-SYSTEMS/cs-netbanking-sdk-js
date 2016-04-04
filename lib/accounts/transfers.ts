@@ -13,8 +13,12 @@ implements CSCoreSDK.UpdateEnabled<TransferRequest, TransferResponse> {
     */  
     update = (payload: TransferRequest): Promise<TransferResponse> => {
         
+        // transform Date objects to ISO strings
         CSCoreSDK.EntityUtils.transformDatesToISO('transferDate', payload);
+        
+        // insert 'cz' resource into the resource's path because the api requires it in some resources
         this._path = this.getPath().replace('/my', '/cz/my');
+        
         return CSCoreSDK.ResourceUtils.CallUpdate(this, payload);
     }
 }

@@ -15,6 +15,7 @@ implements CSCoreSDK.ListEnabled<Repayment> {
         
         // insert 'cz' resource into the resource's path because the api requires it in some resources
         this._path = this.getPath().replace('/my', '/cz/my');
+        
         return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'repayments', null).then(response => {
             
             // transform ISO dates to native Date objects
