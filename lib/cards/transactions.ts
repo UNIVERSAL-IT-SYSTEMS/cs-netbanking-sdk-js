@@ -1,6 +1,6 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
-import {AddNoteAndMarkTransactionsRequest, AddNoteAndMarkTransactionsResponse, ExportTransactionsParameters} from '../common';
+import {AddNoteAndMarkTransactionsRequest, AddNoteAndMarkTransactionsResponse, ExportTransactionsParameters, Transaction} from '../common';
 
 /**
 * Allows to add or change a client's personal note and mark/star the card transaction as favorite/important for one specific transaction
@@ -34,12 +34,16 @@ implements CSCoreSDK.HasInstanceResource<CardTransactionResource> {
  * Add or change a client's personal note and mark/star the card transaction as favorite/important
  */ 
 export class CardTransactionResource extends CSCoreSDK.InstanceResource
-implements CSCoreSDK.UpdateEnabled<AddNoteAndMarkTransactionsRequest, AddNoteAndMarkTransactionsResponse> {
+implements CSCoreSDK.UpdateEnabled<AddNoteAndMarkTransactionsRequest, AddNoteAndMarkCardTransactionsResponse> {
     
     /**
     * Adds, changes of marks transaction
     */ 
-    update = (payload: AddNoteAndMarkTransactionsRequest): Promise<AddNoteAndMarkTransactionsResponse> => {
+    update = (payload: AddNoteAndMarkTransactionsRequest): Promise<AddNoteAndMarkCardTransactionsResponse> => {
         return CSCoreSDK.ResourceUtils.CallUpdate(this, payload);
     }
+}
+
+export interface AddNoteAndMarkCardTransactionsResponse {
+    cardTransaction: Transaction;
 }

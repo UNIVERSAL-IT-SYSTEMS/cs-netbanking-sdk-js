@@ -12,6 +12,8 @@ implements CSCoreSDK.UpdateEnabled<TransferRequest, TransferResponse> {
     * Revolves the loan. Currently only REVOLVING_LOAN subtype is supported.
     */  
     update = (payload: TransferRequest): Promise<TransferResponse> => {
+        
+        CSCoreSDK.EntityUtils.transformDatesToISO('transferDate', payload);
         this._path = this.getPath().replace('/my', '/cz/my');
         return CSCoreSDK.ResourceUtils.CallUpdate(this, payload);
     }

@@ -168,6 +168,7 @@ export interface AccountList extends CSCoreSDK.PaginatedListResponse<MainAccount
 
 export interface MainAccount extends Account {
     
+    
     /**
     * User defined account name. Max. 50 characters
     */
@@ -293,7 +294,8 @@ export interface SubAccount extends Account {
 }
 
 export interface Account {
-   /**
+    
+    /**
     * Unique product id
     */
     id: string;
