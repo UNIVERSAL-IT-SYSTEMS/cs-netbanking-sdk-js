@@ -6,7 +6,7 @@ import {CardsTransactionsResource} from './transactions';
 import {CardsActionsResource} from './actions';
 import {CardsLimitsResource} from './limits';
 import {CardsSecure3DResource} from './secure3D';
-import {CardsTransfersResource} from './transfer';
+import {CardsTransferResource} from './transfer';
 import {CardsAccountsResource} from './statements';
 
     
@@ -117,8 +117,8 @@ implements CSCoreSDK.GetEnabled<Card>, CSCoreSDK.UpdateEnabled<ChangeCardsSettin
     /**
     * Resource for paying up credit card debt
     */
-    get transfers() {
-        return new CardsTransfersResource(this.getPath() + '/transfer', this._client);
+    get transfer() {
+        return new CardsTransferResource(this.getPath() + '/transfer', this._client);
     }
     
     /**
@@ -141,7 +141,7 @@ function resourcifyListing(itemListing: Card, itemResource: CardResource, isFrom
     itemListing.actions = itemResource.actions;
     itemListing.limits = itemResource.limits;
     itemListing.secure3d = itemResource.secure3d;
-    itemListing.transfers = itemResource.transfers;
+    itemListing.transfer = itemResource.transfer;
     itemListing.accounts = itemResource.accounts;
 }
 
@@ -309,9 +309,9 @@ export interface Card {
     secure3d: CardsSecure3DResource;
     
     /**
-    * Convenience getter for getting card's transfers resource
+    * Convenience getter for getting card's transfer resource
     */
-    transfers: CardsTransfersResource;
+    transfer: CardsTransferResource;
     
     /**
     * Convenience getter for getting card's accounts resource

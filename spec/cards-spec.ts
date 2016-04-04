@@ -536,7 +536,7 @@ describe("Netbanking SDK",function(){
         
         it('pays up a credit card debt', done => {
             judgeSession.setNextCase('cards.withId.transfers.update').then(() => {
-                return client.cards.withId('33A813886442D946122C78305EC4E482DE9F574D').transfers.update({
+                return client.cards.withId('33A813886442D946122C78305EC4E482DE9F574D').transfer.update({
                     type: "DEBT_REPAYMENT",
                     sender: {
                         accountno: {
@@ -572,7 +572,7 @@ describe("Netbanking SDK",function(){
             }).then(() => {
                 return judgeSession.setNextCase('cards.withId.transfers.update');
             }).then(() => {
-                return response.items[0].transfers.update({
+                return response.items[0].transfer.update({
                     type: "DEBT_REPAYMENT",
                     sender: {
                         accountno: {

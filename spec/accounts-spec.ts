@@ -149,7 +149,7 @@ describe("Netbanking SDK",function(){
 
         expectDate(statement, {
             statementDate: '2013-06-21T14:18:19Z'
-        })
+        });
         
         expectToBe(statements.pagination, {
             pageNumber: 0,
@@ -610,7 +610,7 @@ describe("Netbanking SDK",function(){
     
     it('revolves loan disbursement', done => {
         judgeSession.setNextCase('accounts.withId.transfers.update').then(() => {
-            return client.accounts.withId('076E1DBCCCD38729A99D93AC8D3E8273237C7E36').transfers.update({
+            return client.accounts.withId('076E1DBCCCD38729A99D93AC8D3E8273237C7E36').transfer.update({
                 type: "REVOLVING_LOAN_DISBURSEMENT",
                 amount: {
                     value: 1000,
@@ -647,7 +647,7 @@ describe("Netbanking SDK",function(){
         }).then(() => {
             return judgeSession.setNextCase('accounts.withId.transfers.update');
         }).then(() => {
-            return response.items[0].transfers.update({
+            return response.items[0].transfer.update({
                 type: "REVOLVING_LOAN_DISBURSEMENT",
                 amount: {
                     value: 1000,

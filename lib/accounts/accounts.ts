@@ -131,7 +131,7 @@ implements CSCoreSDK.GetEnabled<MainAccount>, CSCoreSDK.UpdateEnabled<ChangeAcco
     /**
     * Revolve a loan
     */
-    get transfers() {
+    get transfer() {
         return new AccountsTransferResource(this.getPath() + '/transfer', this._client);
     }
 }
@@ -146,7 +146,7 @@ function resourcifyListing(accountListing: MainAccount, account: AccountResource
     accountListing.services = account.services;
     accountListing.transactions = account.transactions;
     accountListing.reservations = account.reservations;
-    accountListing.transfers = account.transfers;
+    accountListing.transfer = account.transfer;
     accountListing.statements = account.statements;
     accountListing.repayments = account.repayments;
 }
@@ -254,9 +254,9 @@ export interface MainAccount extends Account {
     reservations: AccountsReservationsResource;
     
     /**
-    * Convenience getter for getting accounts's transfers resource
+    * Convenience getter for getting accounts's transfer resource
     */
-    transfers: AccountsTransferResource;
+    transfer: AccountsTransferResource;
     
     /**
     * Convenience getter for getting accounts's statements resource
