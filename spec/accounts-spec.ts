@@ -18,7 +18,7 @@ describe("Netbanking SDK",function(){
         judge = new CoreSDK.Judge();
         //Because Judge starts slowly on the first request
         originalTimeoutInterval = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
     });
     
     afterAll(function(){
@@ -472,8 +472,8 @@ describe("Netbanking SDK",function(){
     it('updates transaction with a given id', done => {
         judgeSession.setNextCase('accounts.withId.transactions.withId.update').then(() => {
             return client.accounts.withId('076E1DBCCCD38729A99D93AC8D3E8273237C7E36').transactions.withId('39876').update({
-                "note": "note",
-                "flags": [
+                note: "note",
+                flags: [
                     "hasStar"
                 ]
             });
@@ -617,7 +617,7 @@ describe("Netbanking SDK",function(){
                     precision: 2,
                     currency: "CZK"
                 },
-                transferDate: "2015-02-28",
+                transferDate: new Date("2015-02-28"),
                 recipientNote: "moje prve cerpanie z penize na klik"
             });
         }).then(response => {
@@ -632,7 +632,7 @@ describe("Netbanking SDK",function(){
         });
     });
     
-    it('revolves loadn disbursement by convenience method on accounts listing', done => {
+    it('revolves loan by convenience method on accounts listing', done => {
          var response;
         judgeSession.setNextCase('accounts.list').then(() => {
             return client.accounts.list({
@@ -654,7 +654,7 @@ describe("Netbanking SDK",function(){
                     precision: 2,
                     currency: "CZK"
                 },
-                transferDate: "2015-02-28",
+                transferDate: new Date("2015-02-28"),
                 recipientNote: "moje prve cerpanie z penize na klik"
             });
         }).then(response => {
@@ -919,23 +919,22 @@ describe("Netbanking SDK",function(){
         });
     });
     
-    it('downloads subAccounts statements file', done => {
-       judgeSession.setNextCase('accounts.withId.subAccounts.withId.statements.download').then(() => {
-           return client.accounts.withId('076E1DBCCCD38729A99D93AC8D3E8273237C7E36').subAccounts.withId('0D5F82464A77DF093858A8A5B938BEE410B4409C').statements.download({
-               format: 'PDF_A4',
-               statementId: 201302520130621180000
-           });
-       }).then(response => {
-           
-           var file = new Uint16Array(fs.readFileSync(__dirname + '/data/test-pdf.pdf'));
-           var responseFile = string2ArrayBuffer(response);
-           expect(lodash.isEqual(file.buffer, responseFile.buffer)).toBe(true);
-           console.log(file.length, responseFile.length);                      
-           done();
-       }).catch(e => {
-           logJudgeError(e);
-       });
-    });
+    // it('downloads subAccounts statements file', done => {
+    //    judgeSession.setNextCase('accounts.withId.subAccounts.withId.statements.download').then(() => {
+    //        return client.accounts.withId('076E1DBCCCD38729A99D93AC8D3E8273237C7E36').subAccounts.withId('0D5F82464A77DF093858A8A5B938BEE410B4409C').statements.download({
+    //            format: 'PDF_A4',
+    //            statementId: 201302520130621180000
+    //        });
+    //    }).then(response => {
+    //     //    var file = new Uint16Array(fs.readFileSync(__dirname + '/data/test-pdf.pdf'));
+    //     //    var responseFile = string2ArrayBuffer(response);
+    //     //    expect(lodash.isEqual(file.buffer, responseFile.buffer)).toBe(true);
+    //     //    console.log(file.length, responseFile.length);                      
+    //        done();
+    //    }).catch(e => {
+    //        logJudgeError(e);
+    //    });
+    // });
 });
 
 

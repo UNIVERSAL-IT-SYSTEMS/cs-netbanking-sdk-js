@@ -183,16 +183,16 @@ describe("Netbanking SDK",function(){
         it('creates a domestic payment', done => {
             judgeSession.setNextCase('payments.domestic.create').then(() => {
                 return client.orders.payments.domestic.create({
-                    "senderName": "Vrba",
-                    "sender": {
+                    senderName: "Vrba",
+                    sender: {
                         "cz-iban": "CZ1208000000002059930033",
                         "cz-bic": "GIBACZPX"
                     },
-                    "receiverName": "Vojtíšková",
-                    "receiver": {
+                    receiverName: "Vojtíšková",
+                    receiver: {
                         "cz-iban": "CZ5908000000002328489013"
                     },
-                    "amount": {
+                    amount: {
                         "value": 110,
                         "precision": 2,
                         "currency": "CZK"
@@ -240,20 +240,22 @@ describe("Netbanking SDK",function(){
         it('updates domesic payment', done => {
             judgeSession.setNextCase('payments.domestic.update').then(() => {
                 return client.orders.payments.domestic.withId('1154226597').update({
-                    "id": "1154226597",
-                    "senderName": "Vrba",
-                    "sender": {
+                    id: "1154226597",
+                    senderName: "Vrba",
+                    sender: {
                         "cz-iban": "CZ1208000000002059930033",
                         "cz-bic": "GIBACZPX"
                     },
-                    "receiverName": "Vojtíšková Alena",
-                    "receiver": {
+                    receiverName: "Vojtíšková Alena",
+                    receiver: {
                         "cz-iban": "CZ5908000000002328489013"
                     },
-                    "amount": {
-                        "value": 110,
-                        "precision": 2,
-                        "currency": "CZK"
+                    state: "open",
+                    stateOk: true,
+                    amount: {
+                        value: 110,
+                        precision: 2,
+                        currency: "CZK"
                     }
                 });
             }).then(response => {
