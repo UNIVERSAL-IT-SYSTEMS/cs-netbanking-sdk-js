@@ -4,13 +4,13 @@ import CSCoreSDK = require('cs-core-sdk');
 /** 
  * List all past logins
  */
-export class LastLoginResource extends CSCoreSDK.Resource
+export class LastLoginsResource extends CSCoreSDK.Resource
 implements CSCoreSDK.ListEnabled<LastLoginInfo> {
     
     /** 
      * Returns promise with a list of past logins
      */ 
-    list = () : Promise<LastLoginList> => {
+    list = () : Promise<LastLoginsList> => {
         return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'lastlogin').then(response => {
             
             // transform ISO dates to native Date objects
@@ -20,7 +20,7 @@ implements CSCoreSDK.ListEnabled<LastLoginInfo> {
     }
 }
 
-export interface LastLoginList extends CSCoreSDK.ListResponse<LastLoginInfo> {}
+export interface LastLoginsList extends CSCoreSDK.ListResponse<LastLoginInfo> {}
 
 export interface LastLoginInfo {
     

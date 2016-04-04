@@ -7,12 +7,12 @@ import {Info, Symbols, Payment} from './orders';
 * Create domestic payment order
 */
 export class PaymentsDomesticResource extends CSCoreSDK.Resource
-implements CSCoreSDK.CreateEnabled<DomesticPaymentCreateRequest, DomesticPaymentCreateResponse> {
+implements CSCoreSDK.CreateEnabled<DomesticPaymentCreateRequest, DomesticPaymentResponse> {
     
     /**
     * Creates domestic payment order and returns it in promise
     */
-    create = (payload: DomesticPaymentCreateRequest): Promise<DomesticPaymentCreateResponse> => {
+    create = (payload: DomesticPaymentCreateRequest): Promise<DomesticPaymentResponse> => {
         
         // transform Date object to ISO strings
         CSCoreSDK.EntityUtils.transformDatesToISO('transferDate', payload);
@@ -39,12 +39,12 @@ implements CSCoreSDK.CreateEnabled<DomesticPaymentCreateRequest, DomesticPayment
 * Update domestic payment
 */
 export class PaymentDomesticResource extends CSCoreSDK.InstanceResource
-implements CSCoreSDK.UpdateEnabled<DomesticPaymentUpdateRequest, DomesticPaymentUpdateResponse> {
+implements CSCoreSDK.UpdateEnabled<DomesticPaymentUpdateRequest, DomesticPaymentResponse> {
     
     /**
     * Updates domestic payment and returns it in promise
     */
-    update = (payload: DomesticPaymentUpdateRequest): Promise<DomesticPaymentUpdateResponse> => {
+    update = (payload: DomesticPaymentUpdateRequest): Promise<DomesticPaymentResponse> => {
         
         // transform Date object to ISO strings
         CSCoreSDK.EntityUtils.transformDatesToISO('transferDate', payload);
@@ -82,9 +82,7 @@ export interface DomesticPaymentUpdateRequest extends DomesticPaymentCreateReque
     stateOk: boolean;
 }
 
-export interface DomesticPaymentUpdateResponse extends Payment, Signable {}
-
-export interface DomesticPaymentCreateResponse extends Payment, Signable {}
+export interface DomesticPaymentResponse extends Payment, Signable {}
 
 export interface DomesticPaymentCreateRequest {
     /**

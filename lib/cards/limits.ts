@@ -6,27 +6,27 @@ import {Confirmation} from './delivery';
 /**
 * Get information about different limits
 */
-export class CardLimitsResource extends CSCoreSDK.Resource
-implements CSCoreSDK.ListEnabled<CardsLimit>, CSCoreSDK.UpdateEnabled<ChangeCardLimitsRequest, ChangeCardLimitsResponse> {
+export class CardsLimitsResource extends CSCoreSDK.Resource
+implements CSCoreSDK.ListEnabled<CardsLimits>, CSCoreSDK.UpdateEnabled<ChangeCardsLimitsRequest, ChangeCardsLimitsResponse> {
     
     /**
      * List all limits  
      */ 
-    list = () : Promise<CardsLimitList> => {
+    list = () : Promise<CardsLimitsList> => {
         return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'limits');
     }
     
     /**
      * Update individual limits  
      */ 
-    update = (payload: ChangeCardLimitsRequest): Promise<ChangeCardLimitsResponse> => {
+    update = (payload: ChangeCardsLimitsRequest): Promise<ChangeCardsLimitsResponse> => {
         return CSCoreSDK.ResourceUtils.CallUpdate(this, payload);
     }
 }
 
-export interface CardsLimitList extends CSCoreSDK.ListResponse<CardsLimit> {}
+export interface CardsLimitsList extends CSCoreSDK.ListResponse<CardsLimits> {}
 
-export interface CardsLimit {
+export interface CardsLimits {
     
     /**
     * Limit type defines ATM, POS, internet/eCommerce, total limits. Possible Values: ATM, POS, INTERNET
@@ -59,12 +59,12 @@ export interface CardsLimit {
     bankLimit?: Amount;
 }
 
-export interface ChangeCardLimitsResponse extends Signable {
+export interface ChangeCardsLimitsResponse extends Signable {
     
     /**
     * Card's limits
     */
-    limits?: [CardsLimit];
+    limits?: [CardsLimits];
     
     /**
     * Information about the confirmation
@@ -72,12 +72,12 @@ export interface ChangeCardLimitsResponse extends Signable {
     confirmations?: [Confirmation];
 }
 
-export interface ChangeCardLimitsRequest {
+export interface ChangeCardsLimitsRequest {
     
     /**
     * Card's limits
     */
-    limits?: [CardsLimit];
+    limits?: [CardsLimits];
     
     /**
     * Information about the confirmation

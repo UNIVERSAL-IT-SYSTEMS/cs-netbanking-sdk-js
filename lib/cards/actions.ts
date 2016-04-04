@@ -6,7 +6,7 @@ import {Confirmation} from './delivery';
 /**
  * Issue various actions on a single card. 
  */
-export class CardActionsResource extends CSCoreSDK.Resource
+export class CardsActionsResource extends CSCoreSDK.Resource
 implements CSCoreSDK.UpdateEnabled<CardsActionsRequest, CardsActionsResponse> {
     
     /**

@@ -4,7 +4,7 @@ import CSCoreSDK = require('cs-core-sdk');
 /**
  * Get the 3D secure online shopping status
  */
-export class CardSecure3DResource extends CSCoreSDK.Resource
+export class CardsSecure3DResource extends CSCoreSDK.Resource
 implements CSCoreSDK.GetEnabled<SecureSettings> {
     
     /**

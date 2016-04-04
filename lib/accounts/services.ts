@@ -10,7 +10,7 @@ implements CSCoreSDK.PaginatedListEnabled<Service> {
     /**
     * Fetches the services and returns them in a promise
     */
-    list = (params?: ServicesParameters): Promise<ServiceList> => {
+    list = (params?: ServicesParameters): Promise<ServicesList> => {
         
         // insert 'cz' resource into the resource's path because the api requires it in some resources
         this._path = this.getPath().replace('/my', '/cz/my');
@@ -25,7 +25,7 @@ implements CSCoreSDK.PaginatedListEnabled<Service> {
     }
 }
 
-export interface ServiceList extends CSCoreSDK.PaginatedListResponse<Service> {}
+export interface ServicesList extends CSCoreSDK.PaginatedListResponse<Service> {}
 
 export interface Service {
     

@@ -5,7 +5,7 @@ import {AccountNumber, Amount, Signable} from '../common';
 /**
  * Resource for paying up credit card debt  
  */ 
-export class CardTransfersResource extends CSCoreSDK.Resource
+export class CardsTransfersResource extends CSCoreSDK.Resource
 implements CSCoreSDK.UpdateEnabled<PayUpCreditCardRequest, PayUpCreditCardResponse> {
     
     /**

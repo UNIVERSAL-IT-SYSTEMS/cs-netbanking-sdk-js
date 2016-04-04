@@ -67,7 +67,7 @@ export interface Amount {
     currency: string;
 }
 
-export interface StatementList extends CSCoreSDK.PaginatedListResponse<Statement> {}
+export interface StatementsList extends CSCoreSDK.PaginatedListResponse<Statement> {}
 
 export interface Statement {
     

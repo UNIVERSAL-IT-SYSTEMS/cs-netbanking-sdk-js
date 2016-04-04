@@ -8,7 +8,7 @@ import {AccountsRepaymentsResource} from './repayments';
 import {AccountsStatementsResource} from './statements';
 import {AccountsSubAccountsResource} from './subAccounts';
 import {AccountsTransactionsResource} from './transactions';
-import {AccountsTransfersResource} from './transfers';
+import {AccountsTransferResource} from './transfer';
 
 /**
 * List all accounts and get individual account instance resource 
@@ -19,7 +19,7 @@ implements CSCoreSDK.HasInstanceResource<AccountResource>, CSCoreSDK.PaginatedLi
    /**
     * List all accounts
     */
-    list = (params?: AccountsParameters) : Promise<AccountList> => {
+    list = (params?: AccountsParameters) : Promise<AccountsList> => {
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'accounts', params, response => {
             response.items.forEach(item => {
                 
@@ -45,7 +45,7 @@ implements CSCoreSDK.HasInstanceResource<AccountResource>, CSCoreSDK.PaginatedLi
 * Get detail of the individual account and additional information about it 
 */
 export class AccountResource extends CSCoreSDK.InstanceResource
-implements CSCoreSDK.GetEnabled<MainAccount>, CSCoreSDK.UpdateEnabled<ChangeAccountSettingsRequest, ChangeAccountSettingsResponse> {
+implements CSCoreSDK.GetEnabled<MainAccount>, CSCoreSDK.UpdateEnabled<ChangeAccountsSettingsRequest, ChangeAccountsSettingsResponse> {
     
     /**
     * Get account detail
@@ -66,7 +66,7 @@ implements CSCoreSDK.GetEnabled<MainAccount>, CSCoreSDK.UpdateEnabled<ChangeAcco
     /**
     * Update account's alias 
     */  
-    update = (payload: ChangeAccountSettingsRequest): Promise<ChangeAccountSettingsResponse> => {
+    update = (payload: ChangeAccountsSettingsRequest): Promise<ChangeAccountsSettingsResponse> => {
         return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(response => {
             
             // add convenience methods
@@ -132,7 +132,7 @@ implements CSCoreSDK.GetEnabled<MainAccount>, CSCoreSDK.UpdateEnabled<ChangeAcco
     * Revolve a loan
     */
     get transfers() {
-        return new AccountsTransfersResource(this.getPath() + '/transfer', this._client);
+        return new AccountsTransferResource(this.getPath() + '/transfer', this._client);
     }
 }
 
@@ -164,7 +164,7 @@ function transformResponse(accountListing) {
     CSCoreSDK.EntityUtils.addDatesFromISO('overdraftDueDate', accountListing);
 }
 
-export interface AccountList extends CSCoreSDK.PaginatedListResponse<MainAccount> {}
+export interface AccountsList extends CSCoreSDK.PaginatedListResponse<MainAccount> {}
 
 export interface MainAccount extends Account {
     
@@ -236,7 +236,7 @@ export interface MainAccount extends Account {
     /**
     * Convenience method for updating account's details
     */
-    update: (payload: ChangeAccountSettingsRequest) => Promise<ChangeAccountSettingsResponse>;
+    update: (payload: ChangeAccountsSettingsRequest) => Promise<ChangeAccountsSettingsResponse>;
     
     /**
     * Convenience getter for getting accounts's services resource
@@ -256,7 +256,7 @@ export interface MainAccount extends Account {
     /**
     * Convenience getter for getting accounts's transfers resource
     */
-    transfers: AccountsTransfersResource;
+    transfers: AccountsTransferResource;
     
     /**
     * Convenience getter for getting accounts's statements resource
@@ -268,8 +268,6 @@ export interface MainAccount extends Account {
     */
     repayments: AccountsRepaymentsResource;
 }
-
-export interface ChangeAccountSettingsResponse extends MainAccount, Signable {}
 
 export interface OverdraftAmount extends Amount {
     
@@ -461,7 +459,7 @@ export interface TransferReceivers {
     accountno: AccountNumber;
 }
 
-export interface ChangeAccountSettingsRequest {
+export interface ChangeAccountsSettingsRequest {
     
     /**
     * Account indentifier
@@ -473,6 +471,8 @@ export interface ChangeAccountSettingsRequest {
     */
     alias?: string;
 }
+
+export interface ChangeAccountsSettingsResponse extends MainAccount, Signable {}
 
 export interface AccountsParameters extends Parameters {
     

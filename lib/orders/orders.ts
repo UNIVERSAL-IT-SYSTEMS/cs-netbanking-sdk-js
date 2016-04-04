@@ -28,7 +28,7 @@ implements CSCoreSDK.HasInstanceResource<PaymentResource>, CSCoreSDK.PaginatedLi
     /**
     * List all payments
     */  
-    list = (params?: Parameters): Promise<PaymentList> => {
+    list = (params?: Parameters): Promise<PaymentsList> => {
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'order', params, response => {
             
             response.items.forEach(item => {
@@ -112,7 +112,7 @@ function resourcifyListing(paymentListing: Payment, paymentResource: PaymentReso
     paymentListing.delete = paymentResource.delete;
 }
 
-export interface PaymentList extends CSCoreSDK.PaginatedListResponse<Payment> {}
+export interface PaymentsList extends CSCoreSDK.PaginatedListResponse<Payment> {}
 
 export interface Payment extends Signable {
     

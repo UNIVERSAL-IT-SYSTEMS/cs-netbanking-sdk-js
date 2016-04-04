@@ -1,6 +1,6 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
-import {StatementList, Statement, Parameters, DownloadStatementsParameters} from '../common';
+import {StatementsList, Statement, Parameters, DownloadStatementsParameters} from '../common';
 
 /**
 * Get individual SubAccount resource
@@ -25,20 +25,20 @@ export class SubAccountResource extends CSCoreSDK.InstanceResource {
     * Get information about the subaccount's statements
     */
     get statements() {
-        return new SubAccountStatementsResource(this.getPath() + '/statements', this._client);
+        return new SubAccountsStatementsResource(this.getPath() + '/statements', this._client);
     }
 }
 
 /**
 * List all subaccount's statements
 */
-export class SubAccountStatementsResource extends CSCoreSDK.Resource
+export class SubAccountsStatementsResource extends CSCoreSDK.Resource
 implements CSCoreSDK.PaginatedListEnabled<Statement> {
     
     /**
     * Returns all subaccount's statements in a promise
     */
-    list = (params?: Parameters): Promise<StatementList> => {
+    list = (params?: Parameters): Promise<StatementsList> => {
         
         // insert 'cz' resource into the resource's path because the api requires it in some resources
         this._path = this.getPath().replace('/my', '/cz/my');

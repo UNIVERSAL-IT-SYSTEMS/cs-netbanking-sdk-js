@@ -11,12 +11,12 @@ implements CSCoreSDK.ListEnabled<PaymentsLimit> {
     /**
     * List all limits for payment orders
     */  
-    list = (): Promise<PaymentsLimitList> => {
+    list = (): Promise<PaymentsLimitsList> => {
         return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'remainingLimits', null);
     }
 }
 
-export interface PaymentsLimitList extends CSCoreSDK.PaginatedListResponse<PaymentsLimit> {}
+export interface PaymentsLimitsList extends CSCoreSDK.PaginatedListResponse<PaymentsLimit> {}
 
 export interface PaymentsLimit {
     

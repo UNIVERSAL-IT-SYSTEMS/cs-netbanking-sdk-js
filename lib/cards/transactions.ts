@@ -5,14 +5,14 @@ import {AddNoteAndMarkTransactionsRequest, ExportTransactionsParameters, Transac
 /**
 * Allows to add or change a client's personal note and mark/star the card transaction as favorite/important for one specific transaction
 */
-export class CardTransactionsResource extends CSCoreSDK.Resource
-implements CSCoreSDK.HasInstanceResource<CardTransactionResource> {
+export class CardsTransactionsResource extends CSCoreSDK.Resource
+implements CSCoreSDK.HasInstanceResource<CardsTransactionResource> {
     
     /**
      * Returns CardTransactionResource for a given id
      */
-    withId = (id: string) : CardTransactionResource => {
-        return new CardTransactionResource(id, this.getPath(), this._client);
+    withId = (id: string) : CardsTransactionResource => {
+        return new CardsTransactionResource(id, this.getPath(), this._client);
     }
     
     /**
@@ -33,17 +33,17 @@ implements CSCoreSDK.HasInstanceResource<CardTransactionResource> {
 /**
  * Add or change a client's personal note and mark/star the card transaction as favorite/important
  */ 
-export class CardTransactionResource extends CSCoreSDK.InstanceResource
-implements CSCoreSDK.UpdateEnabled<AddNoteAndMarkTransactionsRequest, AddNoteAndMarkCardTransactionsResponse> {
+export class CardsTransactionResource extends CSCoreSDK.InstanceResource
+implements CSCoreSDK.UpdateEnabled<AddNoteAndMarkTransactionsRequest, AddNoteAndMarkCardsTransactionsResponse> {
     
     /**
     * Adds, changes of marks transaction
     */ 
-    update = (payload: AddNoteAndMarkTransactionsRequest): Promise<AddNoteAndMarkCardTransactionsResponse> => {
+    update = (payload: AddNoteAndMarkTransactionsRequest): Promise<AddNoteAndMarkCardsTransactionsResponse> => {
         return CSCoreSDK.ResourceUtils.CallUpdate(this, payload);
     }
 }
 
-export interface AddNoteAndMarkCardTransactionsResponse {
+export interface AddNoteAndMarkCardsTransactionsResponse {
     cardTransaction: Transaction;
 }
