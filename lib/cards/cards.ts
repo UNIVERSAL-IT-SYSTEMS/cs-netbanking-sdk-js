@@ -19,7 +19,7 @@ implements CSCoreSDK.ListEnabled<Card>, CSCoreSDK.HasInstanceResource<CardResour
     /**
     * List all cards 
     */  
-    list = (params?: Parameters) : Promise<CardsListing> => {
+    list = (params?: Parameters) : Promise<CardsList> => {
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'cards', params, response => {
             
             response.items.forEach(item => {
@@ -149,7 +149,7 @@ function transformResponse(item) {
     CSCoreSDK.EntityUtils.addDatesFromISO(['expiryDate', 'validFromDate'], item);
 }
 
-export interface CardsListing extends CSCoreSDK.PaginatedListResponse<Card> {}
+export interface CardsList extends CSCoreSDK.PaginatedListResponse<Card> {}
 
 export interface Card {
     
