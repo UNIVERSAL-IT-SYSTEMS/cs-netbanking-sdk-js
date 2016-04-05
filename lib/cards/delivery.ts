@@ -39,6 +39,11 @@ export interface DeliveryListing {
     * Address where card should be sent.
     */
     address: Address;
+    
+    /**
+    * Information about the confirmation
+    */
+    confirmations?: [Confirmation];
 }
 
 export interface Address {
@@ -73,10 +78,6 @@ export interface Address {
     */
     country: string;
     
-    /**
-    * Information about the confirmation
-    */
-    confirmations?: [Confirmation];
 }
 
 export interface Confirmation {
@@ -94,10 +95,30 @@ export interface Confirmation {
 
 export interface ChangeDeliverySettingsResponse extends DeliveryListing, Signable {}
 
-export interface ChangeDeliverySettingsRequest extends CSCoreSDK.PaginatedListResponse<Confirmation> {
+export interface ChangeDeliverySettingsRequest {
     
     /**
     * Indicates how a client receives their card and pin. Possible values: BRANCH, HOME, OTHER_BRANCH, ADDRESS_ABROAD.
     */
     cardDeliveryMode: string;
+    
+    /**
+    * ID of a branch where card should be sent.
+    */
+    branchId?: string;
+    
+    /**
+    * Address where card should be sent.
+    */
+    address?: Address;
+    
+    /**
+    * Phone number of the client.
+    */
+    deliveryPhone?: string;
+    
+    /**
+    * Information about the confirmation
+    */
+    confirmations: [Confirmation];  
 }
