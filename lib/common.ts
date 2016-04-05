@@ -177,7 +177,7 @@ export interface DownloadStatementsParameters {
     /**
     * Statement identifier.
     */
-    statementId: number;
+    statementId: string;
 }
 
 export interface ExportTransactionsParameters {
