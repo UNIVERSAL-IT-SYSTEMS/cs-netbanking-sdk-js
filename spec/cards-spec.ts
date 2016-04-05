@@ -393,31 +393,48 @@ describe("Netbanking SDK",function(){
         
         it('exports transactions into pdf', done => {
             judgeSession.setNextCase('cards.withId.transactions.export').then(() => {
+                return client.cards.withId('33A813886442D946122C78305EC4E482DE9F574D').transactions.export({
+                    dateFrom: '1999-09-27T00:00:00+02:00',
+                    dateTo: '2000-09-27T00:00:00+02:00',
+                    fields: 'bookingDate,partner,amount,currency',
+                    showAccountName: true,
+                    showAccountNumber: true,
+                    showTimespan: true,
+                    showBalance: true
+                });
+            }).then(response => {
                 
+                done();
             }).catch(e => {
-                // logJudgeError(e);
+                logJudgeError(e);
             });
-            
-            done();
         });
         
-        // it('exports transactions into pdf by using convenience method on cards listing', done => {
-        //     var response;
-        //     judgeSession.setNextCase('cards.list').then(() => {
-        //         return client.cards.list();
-        //     }).then(cards => {
-        //         processSimpleCards(cards);
-        //         response = cards;
-        //     }).then(() => {
-        //         return judgeSession.setNextCase('cards.withId.transactions.export');
-        //     }).then(() => {
-        //         return response.items[0].transactions.export();
-        //     }).then(response => {
-        //         done(); 
-        //     }).catch(e => {
-        //         logJudgeError(e);
-        //     });
-        // });
+        it('exports transactions into pdf by using convenience method on cards listing', done => {
+            var response;
+            judgeSession.setNextCase('cards.list').then(() => {
+                return client.cards.list();
+            }).then(cards => {
+                processSimpleCards(cards);
+                response = cards;
+            }).then(() => {
+                return judgeSession.setNextCase('cards.withId.transactions.export');
+            }).then(() => {
+                return response.items[0].transactions.export({
+                    dateFrom: '1999-09-27T00:00:00+02:00',
+                    dateTo: '2000-09-27T00:00:00+02:00',
+                    fields: 'bookingDate,partner,amount,currency',
+                    showAccountName: true,
+                    showAccountNumber: true,
+                    showTimespan: true,
+                    showBalance: true
+                });
+            }).then(response => {
+                done(); 
+            }).catch(e => {
+                logJudgeError(e);
+            });
+        });
         
         it('retrieves limits of a card with a given id', done => {
             judgeSession.setNextCase('cards.withId.limits.list').then(() => {
@@ -788,12 +805,16 @@ describe("Netbanking SDK",function(){
         
         it('downloads list of statements of cards account', done => {
             judgeSession.setNextCase('cards.withId.accounts.withId.statements.download').then(() => {
-                 
+                return client.cards.withId('33A813886442D946122C78305EC4E482DE9F574D').accounts.withId('076E1DBCCCD38729A99D93AC8D3E8273237C7E36').statements.download({
+                    format: 'PDF_A4',
+                    statementId: '06029392819b0198'
+                });
+            }).then(response => {
+                
+                done();
             }).catch(e => {
-                // logJudgeError(e);
+                logJudgeError(e);
             });
-            
-            done();
         });
    });
 });

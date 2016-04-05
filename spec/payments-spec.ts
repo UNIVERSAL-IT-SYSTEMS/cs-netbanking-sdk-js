@@ -150,7 +150,7 @@ describe("Netbanking SDK",function(){
             judgeSession.setNextCase('payments.withId.delete').then(() => {
                 return client.orders.payments.withId('1023464260').delete();
             }).then(response => {
-                // doplnit
+                
                 done();
             }).catch(e => {
                 logJudgeError(e);

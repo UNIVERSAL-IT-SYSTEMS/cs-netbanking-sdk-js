@@ -18,7 +18,7 @@ describe("Netbanking SDK",function(){
         judge = new CoreSDK.Judge();
         //Because Judge starts slowly on the first request
         originalTimeoutInterval = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
     });
     
     afterAll(function(){
@@ -483,6 +483,7 @@ describe("Netbanking SDK",function(){
                 note: 'note'
             });
             expect(response.transaction.flags.length).toBe(2);
+            
             done();
         }).catch(e => {
             logJudgeError(e);
@@ -491,35 +492,53 @@ describe("Netbanking SDK",function(){
     
     it('exports transaction history into pdf', done => {
         judgeSession.setNextCase('accounts.withId.transactions.export').then(() => {
+            return client.accounts.withId('076E1DBCCCD38729A99D93AC8D3E8273237C7E36').transactions.export({
+                dateFrom: '1999-09-27T00:00:00+02:00',
+                dateTo: '2000-09-27T00:00:00+02:00',
+                fields: 'bookingDate,partner,amount,currency',
+                showAccountName: true,
+                showAccountNumber: true,
+                showTimespan: true,
+                showBalance: true
+            });
+        }).then(response => {
             
+            done();
         }).catch(e => {
-            // logJudgeError(e);
+            logJudgeError(e);
         });
-        
-        done();
     });
     
-    // it('exports transaction history into pdf from convenience method on accounts listing', done => {
-    //    var response;
-    //    judgeSession.setNextCase('accounts.list').then(() => {
-    //        return client.accounts.list({
-    //            type: 'CURRENT',
-    //            pageNumber: null,
-    //            pageSize: null
-    //        });
-    //    }).then(accounts => {
-    //        processSimpleAccounts(accounts);
-    //        response = accounts;
-    //    }).then(() => {
-    //        return judgeSession.setNextCase('accounts.withId.transactions.export');
-    //    }).then(() => {
-    //        return response.items[0].transactions.export();
-    //    }).then(transactions => {
-    //        done();
-    //    }).catch(e => {
-    //     //    logJudgeError(e);
-    //    });
-    // });
+    it('exports transaction history into pdf from convenience method on accounts listing', done => {
+       var response;
+       judgeSession.setNextCase('accounts.list').then(() => {
+           return client.accounts.list({
+               type: 'CURRENT',
+               pageNumber: null,
+               pageSize: null
+           });
+       }).then(accounts => {
+           processSimpleAccounts(accounts);
+           response = accounts;
+       }).then(() => {
+           return judgeSession.setNextCase('accounts.withId.transactions.export');
+       }).then(() => {
+           return response.items[0].transactions.export({
+                dateFrom: '1999-09-27T00:00:00+02:00',
+                dateTo: '2000-09-27T00:00:00+02:00',
+                fields: 'bookingDate,partner,amount,currency',
+                showAccountName: true,
+                showAccountNumber: true,
+                showTimespan: true,
+                showBalance: true
+           });
+       }).then(transactions => {
+           
+           done();
+       }).catch(e => {
+           logJudgeError(e);
+       });
+    });
     
     it('retrieves list of reservations of the account', done => {
         judgeSession.setNextCase('accounts.withId.reservations.list').then(() => {
@@ -843,12 +862,16 @@ describe("Netbanking SDK",function(){
     
     it('downloads statements file', done => {
        judgeSession.setNextCase('accounts.withId.statements.download').then(() => {
+           return client.accounts.withId('076E1DBCCCD38729A99D93AC8D3E8273237C7E36').statements.download({
+               format: 'PDF_A4',
+               statementId: '06029392819b0198'
+           });
+       }).then(response => {
            
+           done();
        }).catch(e => {
-        //    logJudgeError(e);
+           logJudgeError(e);
        });
-       
-       done();
     });
     
     it('retrieves list of statements on the sub account', done => {
@@ -919,30 +942,17 @@ describe("Netbanking SDK",function(){
         });
     });
     
-    // it('downloads subAccounts statements file', done => {
-    //    judgeSession.setNextCase('accounts.withId.subAccounts.withId.statements.download').then(() => {
-    //        return client.accounts.withId('076E1DBCCCD38729A99D93AC8D3E8273237C7E36').subAccounts.withId('0D5F82464A77DF093858A8A5B938BEE410B4409C').statements.download({
-    //            format: 'PDF_A4',
-    //            statementId: 201302520130621180000
-    //        });
-    //    }).then(response => {
-    //     //    var file = new Uint16Array(fs.readFileSync(__dirname + '/data/test-pdf.pdf'));
-    //     //    var responseFile = string2ArrayBuffer(response);
-    //     //    expect(lodash.isEqual(file.buffer, responseFile.buffer)).toBe(true);
-    //     //    console.log(file.length, responseFile.length);                      
-    //        done();
-    //    }).catch(e => {
-    //        logJudgeError(e);
-    //    });
-    // });
+    it('downloads subAccounts statements file', done => {
+       judgeSession.setNextCase('accounts.withId.subAccounts.withId.statements.download').then(() => {
+           return client.accounts.withId('076E1DBCCCD38729A99D93AC8D3E8273237C7E36').subAccounts.withId('0D5F82464A77DF093858A8A5B938BEE410B4409C').statements.download({
+               format: 'PDF_A4',
+               statementId: '201302520130621180000'
+           });
+       }).then(response => {
+                      
+           done();
+       }).catch(e => {
+           logJudgeError(e);
+       });
+    });
 });
-
-
-function string2ArrayBuffer(str) {
-     var buf = new ArrayBuffer(str.length*2); // 2 bytes for each char
-     var bufView = new Uint16Array(buf);
-     for (var i=0, strLen=str.length; i < strLen; i++) {
-         bufView[i] = str.charCodeAt(i);
-     }
-     return bufView;
- }
