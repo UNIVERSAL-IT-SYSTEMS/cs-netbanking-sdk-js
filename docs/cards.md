@@ -77,9 +77,11 @@ Get card's delivery by getting the `CardsDeliveryResource` resource and then cal
 
 ```
 
-## 5. delivery update
+## 5. Update card's delivery
 
-// dodat!!!! i test
+Update card's delivery by getting the `CardsDeliveryResource` resource and then calling the `update` method. The `update` method takes object with properties as a parameter. For all supported parameters see `ChangeDeliverySettingsRequest` interface and for full response see `ChangeDeliverySettingsResponse` interface in [`delivery.ts`](../lib/cards/delivery.ts). 
+
+
 ```javascript
 
     CSNetbankingSDK
@@ -88,7 +90,16 @@ Get card's delivery by getting the `CardsDeliveryResource` resource and then cal
         .withId('76FABDF10FD983EA144FF90EB3EB64AAFC67A664')
         .delivery
         .update({
-            
+            cardDeliveryMode: "BRANCH",
+            confirmations: [
+                {
+                    email: "john.doe@test.com",
+                    language: "cs"
+                }
+            ] 
+        })
+        .then(function(delivery) {
+            console.log(delivery.cardDeliveryMode); // BRANCH 
         });
 
 ```
