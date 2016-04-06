@@ -39,6 +39,10 @@ implements CSCoreSDK.PaginatedListEnabled<Statement> {
      * List all statements
      */ 
     list = (params?: NetbankingParameters) : Promise<StatementsList> => {
+        
+        // transform "sort" and "order" parameters to comma separated list from array
+        CSCoreSDK.EntityUtils.transformSortableParameters(params);
+        
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'statements', params, response => {
             
             // transform ISO dates to native Date objects

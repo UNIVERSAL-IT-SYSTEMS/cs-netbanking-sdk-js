@@ -40,6 +40,9 @@ implements CSCoreSDK.PaginatedListEnabled<Statement> {
     */
     list = (params?: NetbankingParameters): Promise<StatementsList> => {
         
+        // transform "sort" and "order" parameters to comma separated list from array
+        CSCoreSDK.EntityUtils.transformSortableParameters(params);
+        
         // insert 'cz' resource into the resource's path because the api requires it in some resources
         this._path = this.getPath().replace('/my', '/cz/my');
         

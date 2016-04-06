@@ -20,6 +20,10 @@ implements CSCoreSDK.HasInstanceResource<AccountResource>, CSCoreSDK.PaginatedLi
     * List all accounts
     */
     list = (params?: AccountsParameters) : Promise<AccountsList> => {
+        
+        // transform "sort" and "order" parameters to comma separated list from array
+        CSCoreSDK.EntityUtils.transformSortableParameters(params);
+        
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'accounts', params, response => {
             response.items.forEach(item => {
                 

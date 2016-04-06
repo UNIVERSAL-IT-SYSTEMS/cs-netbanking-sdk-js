@@ -20,6 +20,9 @@ implements CSCoreSDK.HasInstanceResource<CardsTransactionResource> {
      */ 
     export = (params: ExportTransactionsParameters) : Promise<any> => {
         
+        // transform "fields" parameter to comma separated list from array
+        CSCoreSDK.EntityUtils.transformArrayParamsToString(params, 'fields');
+        
         // transform Date objects to ISO strings
         CSCoreSDK.EntityUtils.transformDatesToISO(['dateFrom', 'dateTo'], params);
         

@@ -20,6 +20,10 @@ implements CSCoreSDK.ListEnabled<Card>, CSCoreSDK.HasInstanceResource<CardResour
     * List all cards 
     */  
     list = (params?: NetbankingParameters) : Promise<CardsList> => {
+        
+        // transform "sort" and "order" parameters to comma separated list from array
+        CSCoreSDK.EntityUtils.transformSortableParameters(params);
+        
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'cards', params, response => {
             
             response.items.forEach(item => {
