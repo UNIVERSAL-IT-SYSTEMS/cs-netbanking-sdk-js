@@ -11,6 +11,7 @@ var expectDate = CoreSDK.TestUtils.expectDate;
 var logJudgeError = CoreSDK.TestUtils.logJudgeError;
 var fs = require('fs');
 var lodash = require('underscore');
+
 describe("Netbanking SDK",function(){
     var originalTimeoutInterval = null;
     
@@ -493,8 +494,8 @@ describe("Netbanking SDK",function(){
     it('exports transaction history into pdf', done => {
         judgeSession.setNextCase('accounts.withId.transactions.export').then(() => {
             return client.accounts.withId('076E1DBCCCD38729A99D93AC8D3E8273237C7E36').transactions.export({
-                dateFrom: '1999-09-27T00:00:00+02:00',
-                dateTo: '2000-09-27T00:00:00+02:00',
+                dateFrom: new Date(1999, 8, 27), 
+                dateTo: new Date(2000, 8, 27),
                 fields: 'bookingDate,partner,amount,currency',
                 showAccountName: true,
                 showAccountNumber: true,
@@ -524,8 +525,8 @@ describe("Netbanking SDK",function(){
            return judgeSession.setNextCase('accounts.withId.transactions.export');
        }).then(() => {
            return response.items[0].transactions.export({
-                dateFrom: '1999-09-27T00:00:00+02:00',
-                dateTo: '2000-09-27T00:00:00+02:00',
+                dateFrom: new Date(1999, 8, 27),
+                dateTo: new Date(2000, 8, 27),
                 fields: 'bookingDate,partner,amount,currency',
                 showAccountName: true,
                 showAccountNumber: true,
@@ -636,7 +637,7 @@ describe("Netbanking SDK",function(){
                     precision: 2,
                     currency: "CZK"
                 },
-                transferDate: new Date("2015-02-28"),
+                transferDate: new Date(2015, 1, 28),
                 recipientNote: "moje prve cerpanie z penize na klik"
             });
         }).then(response => {

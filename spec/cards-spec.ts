@@ -14,7 +14,7 @@ describe("Netbanking SDK",function(){
     var originalTimeoutInterval = null;
     
     beforeAll(function(){
-        judge = new CoreSDK.Judge();
+        judge = new CoreSDK.Judge('http://localhost:3001');
         //Because Judge starts slowly on the first request
         originalTimeoutInterval = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
@@ -394,8 +394,8 @@ describe("Netbanking SDK",function(){
         it('exports transactions into pdf', done => {
             judgeSession.setNextCase('cards.withId.transactions.export').then(() => {
                 return client.cards.withId('33A813886442D946122C78305EC4E482DE9F574D').transactions.export({
-                    dateFrom: '1999-09-27T00:00:00+02:00',
-                    dateTo: '2000-09-27T00:00:00+02:00',
+                    dateFrom: new Date(1999, 8, 27),
+                    dateTo: new Date(2000, 8, 27),
                     fields: 'bookingDate,partner,amount,currency',
                     showAccountName: true,
                     showAccountNumber: true,
@@ -421,8 +421,8 @@ describe("Netbanking SDK",function(){
                 return judgeSession.setNextCase('cards.withId.transactions.export');
             }).then(() => {
                 return response.items[0].transactions.export({
-                    dateFrom: '1999-09-27T00:00:00+02:00',
-                    dateTo: '2000-09-27T00:00:00+02:00',
+                    dateFrom: new Date(1999, 8, 27),
+                    dateTo: new Date(2000, 8, 27),
                     fields: 'bookingDate,partner,amount,currency',
                     showAccountName: true,
                     showAccountNumber: true,
