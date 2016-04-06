@@ -1,6 +1,6 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
-import {Signable, AccountNumber, Amount, Parameters} from '../common';
+import {Signable, AccountNumber, Amount, NetbankingParameters} from '../common';
 import {AccountsBalanceResource} from './balance';
 import {AccountsServicesResource} from './services';
 import {AccountsReservationsResource} from './reservations';
@@ -474,7 +474,7 @@ export interface ChangeAccountsSettingsRequest {
 
 export interface ChangeAccountsSettingsResponse extends MainAccount, Signable {}
 
-export interface AccountsParameters extends Parameters {
+export interface AccountsParameters extends NetbankingParameters {
     
     /**
     * Example: CURRENT.

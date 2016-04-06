@@ -1,6 +1,6 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
-import {StatementsList, Statement, Parameters, DownloadStatementsParameters} from '../common';
+import {StatementsList, Statement, NetbankingParameters, DownloadStatementsParameters} from '../common';
 
 /**
  * Account resource for listing statements
@@ -38,7 +38,7 @@ implements CSCoreSDK.PaginatedListEnabled<Statement> {
     /**
      * List all statements
      */ 
-    list = (params?: Parameters) : Promise<StatementsList> => {
+    list = (params?: NetbankingParameters) : Promise<StatementsList> => {
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'statements', params, response => {
             
             // transform ISO dates to native Date objects

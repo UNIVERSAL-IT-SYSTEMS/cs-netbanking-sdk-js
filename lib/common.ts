@@ -154,7 +154,7 @@ export interface Transaction {
     flags?: [string];
 }
 
-export interface Parameters extends CSCoreSDK.Paginated {
+export interface NetbankingParameters extends CSCoreSDK.Paginated {
     
     /**
     * Comma separated list of fields which should be used for sorting. Sort priorities are left to right. Example: statementDate.
