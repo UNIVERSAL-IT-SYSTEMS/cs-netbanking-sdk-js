@@ -5,18 +5,18 @@ import {Amount} from '../common';
 /**
 * Get information about the account's balance
 */
-export class AccountsBalanceResource extends CSCoreSDK.Resource
-implements CSCoreSDK.GetEnabled<AccountsBalance> {
+export class AccountBalanceResource extends CSCoreSDK.Resource
+implements CSCoreSDK.GetEnabled<AccountBalance> {
     
     /**
     * Fetches the balance and returns them in a promise
     */
-    get = (): Promise<AccountsBalance> => {
+    get = (): Promise<AccountBalance> => {
         return CSCoreSDK.ResourceUtils.CallGet(this, null);
     }
 }
 
-export interface AccountsBalance {
+export interface AccountBalance {
     
     /**
     * Account balance for Current, Saved amount for Saving, Principal Outstanding for Loan/Mortgage.

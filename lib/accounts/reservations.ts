@@ -5,13 +5,13 @@ import {Amount} from '../common';
 /**
 * Get information about the account's reservations
 */
-export class AccountsReservationsResource extends CSCoreSDK.Resource
+export class AccountReservationsResource extends CSCoreSDK.Resource
 implements CSCoreSDK.PaginatedListEnabled<Reservation> {
     
     /**
     * Fetches the reservations and returns them in a promise
     */
-    list = (params?: ReservationsParameters) : Promise<ReservationsList> => {
+    list = (params?: ReservationParameters) : Promise<ReservationList> => {
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'reservations', params, response => {
             
             // transform ISO dates to native Date objects
@@ -22,7 +22,7 @@ implements CSCoreSDK.PaginatedListEnabled<Reservation> {
     }
 }
 
-export interface ReservationsList extends CSCoreSDK.PaginatedListResponse<Reservation> {}
+export interface ReservationList extends CSCoreSDK.PaginatedListResponse<Reservation> {}
 
 export interface Reservation {
     
@@ -72,4 +72,4 @@ export interface Reservation {
     amountSender?: Amount; 
 }
 
-export interface ReservationsParameters extends CSCoreSDK.Paginated {}
+export interface ReservationParameters extends CSCoreSDK.Paginated {}

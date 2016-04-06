@@ -1,18 +1,18 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
-import {AddNoteAndMarkTransactionsRequest, ExportTransactionsParameters, Transaction} from '../common';
+import {AddNoteAndMarkTransactionRequest, ExportTransactionsParameters, Transaction} from '../common';
 
 /**
 * Allows to add or change a client's personal note and mark/star the card transaction as favorite/important for one specific transaction
 */
-export class CardsTransactionsResource extends CSCoreSDK.Resource
-implements CSCoreSDK.HasInstanceResource<CardsTransactionResource> {
+export class CardTransactionsResource extends CSCoreSDK.Resource
+implements CSCoreSDK.HasInstanceResource<CardTransactionResource> {
     
     /**
      * Returns CardTransactionResource for a given id
      */
-    withId = (id: string) : CardsTransactionResource => {
-        return new CardsTransactionResource(id, this.getPath(), this._client);
+    withId = (id: string) : CardTransactionResource => {
+        return new CardTransactionResource(id, this.getPath(), this._client);
     }
     
     /**
@@ -36,17 +36,17 @@ implements CSCoreSDK.HasInstanceResource<CardsTransactionResource> {
 /**
  * Add or change a client's personal note and mark/star the card transaction as favorite/important
  */ 
-export class CardsTransactionResource extends CSCoreSDK.InstanceResource
-implements CSCoreSDK.UpdateEnabled<AddNoteAndMarkTransactionsRequest, AddNoteAndMarkCardsTransactionsResponse> {
+export class CardTransactionResource extends CSCoreSDK.InstanceResource
+implements CSCoreSDK.UpdateEnabled<AddNoteAndMarkTransactionRequest, AddNoteAndMarkCardTransactionResponse> {
     
     /**
     * Adds, changes of marks transaction
     */ 
-    update = (payload: AddNoteAndMarkTransactionsRequest): Promise<AddNoteAndMarkCardsTransactionsResponse> => {
+    update = (payload: AddNoteAndMarkTransactionRequest): Promise<AddNoteAndMarkCardTransactionResponse> => {
         return CSCoreSDK.ResourceUtils.CallUpdate(this, payload);
     }
 }
 
-export interface AddNoteAndMarkCardsTransactionsResponse {
+export interface AddNoteAndMarkCardTransactionResponse {
     cardTransaction: Transaction;
 }

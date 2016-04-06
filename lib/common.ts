@@ -67,7 +67,7 @@ export interface Amount {
     currency: string;
 }
 
-export interface StatementsList extends CSCoreSDK.PaginatedListResponse<Statement> {}
+export interface StatementList extends CSCoreSDK.PaginatedListResponse<Statement> {}
 
 export interface Statement {
     
@@ -112,7 +112,7 @@ export interface Statement {
     "cz-fileOrderNumber": string;
 }
 
-export interface AddNoteAndMarkTransactionsRequest {
+export interface AddNoteAndMarkTransactionRequest {
     
     /**
     * Personal, user specific note for transaction. Max. 4 000 characters.
@@ -125,7 +125,7 @@ export interface AddNoteAndMarkTransactionsRequest {
     flags?: [string];
 }
 
-export interface AddNoteAndMarkTransactionsResponse extends Signable {
+export interface AddNoteAndMarkTransactionResponse extends Signable {
     
     /**
     * Transactions information
@@ -156,7 +156,7 @@ export interface Transaction {
 
 export interface NetbankingParameters extends CSCoreSDK.Paginated, CSCoreSDK.Sortable {}
 
-export interface DownloadStatementsParameters {
+export interface DownloadStatementParameters {
     
     /**
     * Format of statements file. Example: PDF_A4. Default: PDF_A4.

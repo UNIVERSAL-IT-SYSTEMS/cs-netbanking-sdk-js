@@ -1,14 +1,14 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
 import {Signable, AccountNumber, Amount, NetbankingParameters} from '../common';
-import {AccountsBalanceResource} from './balance';
-import {AccountsServicesResource} from './services';
-import {AccountsReservationsResource} from './reservations';
-import {AccountsRepaymentsResource} from './repayments';
-import {AccountsStatementsResource} from './statements';
-import {AccountsSubAccountsResource} from './subAccounts';
-import {AccountsTransactionsResource} from './transactions';
-import {AccountsTransferResource} from './transfer';
+import {AccountBalanceResource} from './balance';
+import {AccountServicesResource} from './services';
+import {AccountReservationsResource} from './reservations';
+import {AccountRepaymentsResource} from './repayments';
+import {AccountStatementsResource} from './statements';
+import {AccountSubAccountsResource} from './subAccounts';
+import {AccountTransactionsResource} from './transactions';
+import {AccountTransferResource} from './transfer';
 
 /**
 * List all accounts and get individual account instance resource 
@@ -19,7 +19,7 @@ implements CSCoreSDK.HasInstanceResource<AccountResource>, CSCoreSDK.PaginatedLi
    /**
     * List all accounts
     */
-    list = (params?: AccountsParameters) : Promise<AccountsList> => {
+    list = (params?: AccountParameters) : Promise<AccountList> => {
         
         // transform "sort" and "order" parameters to comma separated list from array
         CSCoreSDK.EntityUtils.transformArrayParamsToString(params, ['sort', 'order']);
@@ -49,7 +49,7 @@ implements CSCoreSDK.HasInstanceResource<AccountResource>, CSCoreSDK.PaginatedLi
 * Get detail of the individual account and additional information about it 
 */
 export class AccountResource extends CSCoreSDK.InstanceResource
-implements CSCoreSDK.GetEnabled<MainAccount>, CSCoreSDK.UpdateEnabled<ChangeAccountsSettingsRequest, ChangeAccountsSettingsResponse> {
+implements CSCoreSDK.GetEnabled<MainAccount>, CSCoreSDK.UpdateEnabled<ChangeAccountSettingsRequest, ChangeAccountSettingsResponse> {
     
     /**
     * Get account detail
@@ -70,7 +70,7 @@ implements CSCoreSDK.GetEnabled<MainAccount>, CSCoreSDK.UpdateEnabled<ChangeAcco
     /**
     * Update account's settings. 
     */  
-    update = (payload: ChangeAccountsSettingsRequest): Promise<ChangeAccountsSettingsResponse> => {
+    update = (payload: ChangeAccountSettingsRequest): Promise<ChangeAccountSettingsResponse> => {
         return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(response => {
             
             // add convenience methods
@@ -87,56 +87,56 @@ implements CSCoreSDK.GetEnabled<MainAccount>, CSCoreSDK.UpdateEnabled<ChangeAcco
     * Get information about the account's balance
     */
     get balance() {
-        return new AccountsBalanceResource(this.getPath() + '/balance', this._client);
+        return new AccountBalanceResource(this.getPath() + '/balance', this._client);
     }
     
     /**
     * Get information about the account's services
     */
     get services() {
-        return new AccountsServicesResource(this.getPath() + '/services', this._client);
+        return new AccountServicesResource(this.getPath() + '/services', this._client);
     }
     
     /**
     * Get information about the account's reservations
     */
     get reservations() {
-        return new AccountsReservationsResource(this.getPath() + '/reservations', this._client);
+        return new AccountReservationsResource(this.getPath() + '/reservations', this._client);
     }
     
     /**
     * Get information about the account's repayments
     */
     get repayments() {
-        return new AccountsRepaymentsResource(this.getPath() + '/repayments', this._client);
+        return new AccountRepaymentsResource(this.getPath() + '/repayments', this._client);
     }
     
     /**
     * Get information about the account's statements
     */
     get statements() {
-        return new AccountsStatementsResource(this.getPath() + '/statements', this._client);
+        return new AccountStatementsResource(this.getPath() + '/statements', this._client);
     }
     
     /**
     * Get information about the account's subaccounts
     */
     get subAccounts() {
-        return new AccountsSubAccountsResource(this.getPath() + '/subaccounts', this._client);
+        return new AccountSubAccountsResource(this.getPath() + '/subaccounts', this._client);
     }
     
     /**
     * Get information about the account's transactions
     */
     get transactions() {
-        return new AccountsTransactionsResource(this.getPath() + '/transactions', this._client);
+        return new AccountTransactionsResource(this.getPath() + '/transactions', this._client);
     }
     
     /**
     * Revolve a loan
     */
     get transfer() {
-        return new AccountsTransferResource(this.getPath() + '/transfer', this._client);
+        return new AccountTransferResource(this.getPath() + '/transfer', this._client);
     }
 }
 
@@ -166,7 +166,7 @@ function transformResponse(accountListing) {
     CSCoreSDK.EntityUtils.addDatesFromISO('overdraftDueDate', accountListing);
 }
 
-export interface AccountsList extends CSCoreSDK.PaginatedListResponse<MainAccount> {}
+export interface AccountList extends CSCoreSDK.PaginatedListResponse<MainAccount> {}
 
 export interface MainAccount extends Account {
     
@@ -238,37 +238,37 @@ export interface MainAccount extends Account {
     /**
     * Convenience method for updating account's details
     */
-    update: (payload: ChangeAccountsSettingsRequest) => Promise<ChangeAccountsSettingsResponse>;
+    update: (payload: ChangeAccountSettingsRequest) => Promise<ChangeAccountSettingsResponse>;
     
     /**
     * Convenience getter for getting accounts's services resource
     */
-    services: AccountsServicesResource;
+    services: AccountServicesResource;
     
     /**
     * Convenience getter for getting accounts's transactions resource
     */
-    transactions: AccountsTransactionsResource;
+    transactions: AccountTransactionsResource;
     
     /**
     * Convenience getter for getting accounts's reservations resource
     */
-    reservations: AccountsReservationsResource;
+    reservations: AccountReservationsResource;
     
     /**
     * Convenience getter for getting accounts's transfer resource
     */
-    transfer: AccountsTransferResource;
+    transfer: AccountTransferResource;
     
     /**
     * Convenience getter for getting accounts's statements resource
     */
-    statements: AccountsStatementsResource;
+    statements: AccountStatementsResource;
     
     /**
     * Convenience getter for getting accounts's repayments resource
     */
-    repayments: AccountsRepaymentsResource;
+    repayments: AccountRepaymentsResource;
 }
 
 export interface OverdraftAmount extends Amount {
@@ -461,7 +461,7 @@ export interface TransferReceivers {
     accountno: AccountNumber;
 }
 
-export interface ChangeAccountsSettingsRequest {
+export interface ChangeAccountSettingsRequest {
     
     /**
     * User defined account name. Max. 50 characters 
@@ -469,9 +469,9 @@ export interface ChangeAccountsSettingsRequest {
     alias?: string;
 }
 
-export interface ChangeAccountsSettingsResponse extends MainAccount, Signable {}
+export interface ChangeAccountSettingsResponse extends MainAccount, Signable {}
 
-export interface AccountsParameters extends NetbankingParameters {
+export interface AccountParameters extends NetbankingParameters {
     
     /**
     * Example: CURRENT.

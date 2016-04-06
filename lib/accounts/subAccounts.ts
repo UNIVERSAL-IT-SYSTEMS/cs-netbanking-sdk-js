@@ -1,11 +1,11 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
-import {StatementsList, Statement, NetbankingParameters, DownloadStatementsParameters} from '../common';
+import {StatementList, Statement, NetbankingParameters, DownloadStatementParameters} from '../common';
 
 /**
 * Get individual SubAccount resource
 */
-export class AccountsSubAccountsResource extends CSCoreSDK.Resource
+export class AccountSubAccountsResource extends CSCoreSDK.Resource
 implements CSCoreSDK.HasInstanceResource<SubAccountResource> {
     
     /**
@@ -25,20 +25,20 @@ export class SubAccountResource extends CSCoreSDK.InstanceResource {
     * Get information about the subaccount's statements
     */
     get statements() {
-        return new SubAccountsStatementsResource(this.getPath() + '/statements', this._client);
+        return new SubAccountStatementsResource(this.getPath() + '/statements', this._client);
     }
 }
 
 /**
 * List all subaccount's statements
 */
-export class SubAccountsStatementsResource extends CSCoreSDK.Resource
+export class SubAccountStatementsResource extends CSCoreSDK.Resource
 implements CSCoreSDK.PaginatedListEnabled<Statement> {
     
     /**
     * Returns all subaccount's statements in a promise
     */
-    list = (params?: NetbankingParameters): Promise<StatementsList> => {
+    list = (params?: NetbankingParameters): Promise<StatementList> => {
         
         // transform "sort" and "order" parameters to comma separated list from array
         CSCoreSDK.EntityUtils.transformArrayParamsToString(params, ['sort', 'order']);
@@ -58,7 +58,7 @@ implements CSCoreSDK.PaginatedListEnabled<Statement> {
     /**
     * Downloads statements file
     */
-    download = (params: DownloadStatementsParameters): Promise<any> => {
+    download = (params: DownloadStatementParameters): Promise<any> => {
         
         // insert 'cz' resource into the resource's path because the api requires it in some resources
         this._path = this.getPath().replace('/my', '/cz/my');

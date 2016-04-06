@@ -5,13 +5,13 @@ import {Amount} from '../common';
 /**
 * Get information about the account's repayments
 */
-export class AccountsRepaymentsResource extends CSCoreSDK.Resource
+export class AccountRepaymentsResource extends CSCoreSDK.Resource
 implements CSCoreSDK.ListEnabled<Repayment> {
     
     /**
     * Fetches the repayments and returns them in a promise
     */
-    list = (): Promise<RepaymentsList> => {
+    list = (): Promise<RepaymentList> => {
         
         // insert 'cz' resource into the resource's path because the api requires it in some resources
         this._path = this.getPath().replace('/my', '/cz/my');
@@ -26,7 +26,7 @@ implements CSCoreSDK.ListEnabled<Repayment> {
     }
 }
 
-export interface RepaymentsList extends CSCoreSDK.PaginatedListResponse<Repayment> {}
+export interface RepaymentList extends CSCoreSDK.PaginatedListResponse<Repayment> {}
 
 export interface Repayment {
     

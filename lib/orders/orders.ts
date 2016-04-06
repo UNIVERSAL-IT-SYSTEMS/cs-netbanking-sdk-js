@@ -1,10 +1,10 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
 import {Amount, Signable, AccountNumber, NetbankingParameters, NetbankingEmptyResponse} from '../common';
-import {PaymentsBookingDateResource} from './bookingDate';
+import {PaymentBookingDateResource} from './bookingDate';
 import {PaymentsDomesticResource} from './domestic';
-import {PaymentsLimitsResource} from './limits';
-import {PaymentsMobileResource} from './mobile';
+import {PaymentLimitsResource} from './limits';
+import {PaymentMobileResource} from './mobile';
 
 /**
 * Get information about payments orders
@@ -28,7 +28,7 @@ implements CSCoreSDK.HasInstanceResource<PaymentResource>, CSCoreSDK.PaginatedLi
     /**
     * List all payments
     */  
-    list = (params?: NetbankingParameters): Promise<PaymentsList> => {
+    list = (params?: NetbankingParameters): Promise<PaymentList> => {
         
         // transform "sort" and "order" parameters to comma separated list from array
         CSCoreSDK.EntityUtils.transformArrayParamsToString(params, ['sort', 'order']);
@@ -58,7 +58,7 @@ implements CSCoreSDK.HasInstanceResource<PaymentResource>, CSCoreSDK.PaginatedLi
     * Get currently available booking date
     */
     get bookingDate() {
-        return new PaymentsBookingDateResource(this.getPath() + '/bookingdate', this._client);
+        return new PaymentBookingDateResource(this.getPath() + '/bookingdate', this._client);
     }
     
     /**
@@ -72,14 +72,14 @@ implements CSCoreSDK.HasInstanceResource<PaymentResource>, CSCoreSDK.PaginatedLi
     * Get remaining amounts for payment orders
     */
     get limits() {
-        return new PaymentsLimitsResource(this.getPath() + '/limits', this._client);
+        return new PaymentLimitsResource(this.getPath() + '/limits', this._client);
     }
     
     /**
     * Recharging the credit available on prepaid cards provided by Vodafone, T-Mobile or O2.
     */
     get mobile() {
-        return new PaymentsMobileResource(this.getPath() + '/mobile', this._client);
+        return new PaymentMobileResource(this.getPath() + '/mobile', this._client);
     }
 }
 
@@ -116,7 +116,7 @@ function resourcifyListing(paymentListing: Payment, paymentResource: PaymentReso
     paymentListing.delete = paymentResource.delete;
 }
 
-export interface PaymentsList extends CSCoreSDK.PaginatedListResponse<Payment> {}
+export interface PaymentList extends CSCoreSDK.PaginatedListResponse<Payment> {}
 
 export interface Payment extends Signable {
     

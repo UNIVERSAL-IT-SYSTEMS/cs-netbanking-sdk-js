@@ -5,7 +5,7 @@ import {AccountNumber} from '../common';
 /**
 * Get currently available booking date
 */
-export class PaymentsBookingDateResource extends CSCoreSDK.Resource
+export class PaymentBookingDateResource extends CSCoreSDK.Resource
 implements CSCoreSDK.UpdateEnabled<PaymentBookingDateRequest, PaymentBookingDateResponse> {
     
     /**

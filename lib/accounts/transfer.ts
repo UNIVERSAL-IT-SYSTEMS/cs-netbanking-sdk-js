@@ -5,7 +5,7 @@ import {Signable, Amount} from '../common';
 /**
 * Revolve a loan
 */
-export class AccountsTransferResource extends CSCoreSDK.Resource
+export class AccountTransferResource extends CSCoreSDK.Resource
 implements CSCoreSDK.UpdateEnabled<TransferRequest, TransferResponse> {
     
     /**

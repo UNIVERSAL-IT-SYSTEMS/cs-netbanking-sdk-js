@@ -6,20 +6,20 @@ import {Confirmation} from './delivery';
 /**
  * Issue various actions on a single card. 
  */
-export class CardsActionsResource extends CSCoreSDK.Resource
-implements CSCoreSDK.UpdateEnabled<CardsActionsRequest, CardsActionsResponse> {
+export class CardActionsResource extends CSCoreSDK.Resource
+implements CSCoreSDK.UpdateEnabled<CardActionRequest, CardActionResponse> {
     
     /**
      * Issues various actions on a single card  
      */ 
-    update = (payload: CardsActionsRequest): Promise<CardsActionsResponse> => {
+    update = (payload: CardActionRequest): Promise<CardActionResponse> => {
         return CSCoreSDK.ResourceUtils.CallUpdate(this, payload);
     } 
 }
 
-export interface CardsActionsResponse extends Signable {}
+export interface CardActionResponse extends Signable {}
 
-export interface CardsActionsRequest {
+export interface CardActionRequest {
     
    /**
     * Action which should be issued. Possible values are "REISSUE_PIN", "LOCK_CARD", "UNLOCK_CARD", "REPLACE_CARD", "ACTIVATE_CARD", "SET_AUTOMATIC_REPLACEMENT_ON", "SET_AUTOMATIC_REPLACEMENT_OFF".

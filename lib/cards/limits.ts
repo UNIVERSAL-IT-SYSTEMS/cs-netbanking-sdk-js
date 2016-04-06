@@ -6,13 +6,13 @@ import {Confirmation} from './delivery';
 /**
 * Get information about different limits
 */
-export class CardsLimitsResource extends CSCoreSDK.Resource
-implements CSCoreSDK.ListEnabled<CardsLimits>, CSCoreSDK.UpdateEnabled<ChangeCardsLimitsRequest, ChangeCardsLimitsResponse> {
+export class CardLimitsResource extends CSCoreSDK.Resource
+implements CSCoreSDK.ListEnabled<CardLimit>, CSCoreSDK.UpdateEnabled<ChangeCardLimitsRequest, ChangeCardLimitsResponse> {
     
     /**
      * List all limits  
      */ 
-    list = () : Promise<CardsLimitsList> => {
+    list = () : Promise<CardLimitsList> => {
         return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'limits').then(response => {
             
             // transform ISO dates to native Date objects
@@ -25,7 +25,7 @@ implements CSCoreSDK.ListEnabled<CardsLimits>, CSCoreSDK.UpdateEnabled<ChangeCar
     /**
      * Update individual limits  
      */ 
-    update = (payload: ChangeCardsLimitsRequest): Promise<ChangeCardsLimitsResponse> => {
+    update = (payload: ChangeCardLimitsRequest): Promise<ChangeCardLimitsResponse> => {
         return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(response => {
             
             // transform ISO dates to native Date objects
@@ -36,9 +36,9 @@ implements CSCoreSDK.ListEnabled<CardsLimits>, CSCoreSDK.UpdateEnabled<ChangeCar
     }
 }
 
-export interface CardsLimitsList extends CSCoreSDK.ListResponse<CardsLimits> {}
+export interface CardLimitsList extends CSCoreSDK.ListResponse<CardLimit> {}
 
-export interface CardsLimits {
+export interface CardLimit {
     
     /**
     * Limit type defines ATM, POS, internet/eCommerce, total limits. Possible Values: ATM, POS, INTERNET
@@ -71,12 +71,12 @@ export interface CardsLimits {
     bankLimit?: Amount;
 }
 
-export interface ChangeCardsLimitsResponse extends Signable {
+export interface ChangeCardLimitsResponse extends Signable {
     
     /**
     * Card's limits
     */
-    limits?: [CardsLimits];
+    limits?: [CardLimit];
     
     /**
     * Information about the confirmation
@@ -84,12 +84,12 @@ export interface ChangeCardsLimitsResponse extends Signable {
     confirmations?: [Confirmation];
 }
 
-export interface ChangeCardsLimitsRequest {
+export interface ChangeCardLimitsRequest {
     
     /**
     * Card's limits
     */
-    limits?: [CardsLimits];
+    limits?: [CardLimit];
     
     /**
     * Information about the confirmation

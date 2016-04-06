@@ -1,44 +1,44 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
-import {StatementsList, Statement, NetbankingParameters, DownloadStatementsParameters} from '../common';
+import {StatementList, Statement, NetbankingParameters, DownloadStatementParameters} from '../common';
 
 /**
  * Account resource for listing statements
  */
-export class CardsAccountsResource extends CSCoreSDK.Resource
-implements CSCoreSDK.HasInstanceResource<CardsAccountResource> {
+export class CardAccountsResource extends CSCoreSDK.Resource
+implements CSCoreSDK.HasInstanceResource<CardAccountResource> {
     
     /**
      * Returns CardAccountResource for an account with a given id
      */ 
-    withId = (id: string): CardsAccountResource => {
-        return new CardsAccountResource(id, this.getPath(), this._client);
+    withId = (id: string): CardAccountResource => {
+        return new CardAccountResource(id, this.getPath(), this._client);
     }
 } 
 
 /**
  * Indidiual account resource with a given id
  */
-export class CardsAccountResource extends CSCoreSDK.InstanceResource {
+export class CardAccountResource extends CSCoreSDK.InstanceResource {
     
     /**
      * Get statements of the account
      */ 
     get statements() {
-        return new CardsStatementsResource(this.getPath() + '/statements', this._client); 
+        return new CardStatementsResource(this.getPath() + '/statements', this._client); 
     }
 }
 
 /**
  * Get statements for an account
  */ 
-export class CardsStatementsResource extends CSCoreSDK.Resource
+export class CardStatementsResource extends CSCoreSDK.Resource
 implements CSCoreSDK.PaginatedListEnabled<Statement> {
     
     /**
      * List all statements
      */ 
-    list = (params?: NetbankingParameters) : Promise<StatementsList> => {
+    list = (params?: NetbankingParameters) : Promise<StatementList> => {
         
         // transform "sort" and "order" parameters to comma separated list from array
         CSCoreSDK.EntityUtils.transformArrayParamsToString(params, ['sort', 'order']);
@@ -55,7 +55,7 @@ implements CSCoreSDK.PaginatedListEnabled<Statement> {
     /**
      * Download PDF with statements
      */ 
-    download = (params: DownloadStatementsParameters) => {
+    download = (params: DownloadStatementParameters) => {
         return this._client.callApi(this._path + '/signed/download', 'POST', params, null, null);
     }
 }

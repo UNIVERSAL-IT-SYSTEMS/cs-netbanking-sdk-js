@@ -1,17 +1,17 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
-import {StatementsList, Statement, NetbankingParameters, DownloadStatementsParameters} from '../common';
+import {StatementList, Statement, NetbankingParameters, DownloadStatementParameters} from '../common';
 
 /**
 * Get information about the account's statements
 */
-export class AccountsStatementsResource extends CSCoreSDK.Resource
+export class AccountStatementsResource extends CSCoreSDK.Resource
 implements CSCoreSDK.PaginatedListEnabled<Statement> {
     
     /**
     * Fetches the statements and returns them in a promise
     */
-    list = (params?: NetbankingParameters) : Promise<StatementsList> => {
+    list = (params?: NetbankingParameters) : Promise<StatementList> => {
         
         // transform "sort" and "order" parameters to comma separated list from array
         CSCoreSDK.EntityUtils.transformArrayParamsToString(params, ['sort', 'order']);
@@ -28,7 +28,7 @@ implements CSCoreSDK.PaginatedListEnabled<Statement> {
     /**
     * Downloads statements file
     */
-    download = (params: DownloadStatementsParameters): Promise<any> => {
+    download = (params: DownloadStatementParameters): Promise<any> => {
         return this._client.callApi(this._path + '/signed/download', "POST", params, null, null);
     }
 }

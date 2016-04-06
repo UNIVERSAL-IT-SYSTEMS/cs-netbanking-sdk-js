@@ -5,7 +5,7 @@ import {Signable} from '../common';
 /**
  * Get current delivery settings
  */
-export class CardsDeliveryResource extends CSCoreSDK.Resource
+export class CardDeliveryResource extends CSCoreSDK.Resource
 implements CSCoreSDK.GetEnabled<DeliveryListing>, CSCoreSDK.UpdateEnabled<ChangeDeliverySettingsRequest, ChangeDeliverySettingsResponse> {
     
     /**

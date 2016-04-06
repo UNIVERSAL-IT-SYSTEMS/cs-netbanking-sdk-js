@@ -4,13 +4,13 @@ import CSCoreSDK = require('cs-core-sdk');
 /**
 * Get information about the account's services
 */
-export class AccountsServicesResource extends CSCoreSDK.Resource
+export class AccountServicesResource extends CSCoreSDK.Resource
 implements CSCoreSDK.PaginatedListEnabled<Service> {
     
     /**
     * Fetches the services and returns them in a promise
     */
-    list = (params?: ServicesParameters): Promise<ServicesList> => {
+    list = (params?: ServiceParameters): Promise<ServiceList> => {
         
         // insert 'cz' resource into the resource's path because the api requires it in some resources
         this._path = this.getPath().replace('/my', '/cz/my');
@@ -25,7 +25,7 @@ implements CSCoreSDK.PaginatedListEnabled<Service> {
     }
 }
 
-export interface ServicesList extends CSCoreSDK.PaginatedListResponse<Service> {}
+export interface ServiceList extends CSCoreSDK.PaginatedListResponse<Service> {}
 
 export interface Service {
     
@@ -55,4 +55,4 @@ export interface Service {
     dateTo?: Date;
 }
 
-export interface ServicesParameters extends CSCoreSDK.Paginated {}
+export interface ServiceParameters extends CSCoreSDK.Paginated {}

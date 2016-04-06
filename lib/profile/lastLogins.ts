@@ -10,7 +10,7 @@ implements CSCoreSDK.ListEnabled<LastLoginInfo> {
     /** 
      * Returns promise with a list of past logins
      */ 
-    list = () : Promise<LastLoginsList> => {
+    list = () : Promise<LastLoginList> => {
         return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'lastlogin').then(response => {
             
             // transform ISO dates to native Date objects
@@ -21,7 +21,7 @@ implements CSCoreSDK.ListEnabled<LastLoginInfo> {
     }
 }
 
-export interface LastLoginsList extends CSCoreSDK.ListResponse<LastLoginInfo> {}
+export interface LastLoginList extends CSCoreSDK.ListResponse<LastLoginInfo> {}
 
 export interface LastLoginInfo {
     

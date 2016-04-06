@@ -5,7 +5,7 @@ import {Amount, Signable} from '../common';
 /**
 * Recharging the credit available on prepaid cards provided by Vodafone, T-Mobile or O2.
 */
-export class PaymentsMobileResource extends CSCoreSDK.Resource
+export class PaymentMobileResource extends CSCoreSDK.Resource
 implements CSCoreSDK.CreateEnabled<MobilePaymentsRequest, MobilePaymentsResponse> {
     
     create = (payload: MobilePaymentsRequest): Promise<MobilePaymentsResponse> => {

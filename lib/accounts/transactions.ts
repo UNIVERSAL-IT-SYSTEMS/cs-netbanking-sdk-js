@@ -1,18 +1,18 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
-import {AddNoteAndMarkTransactionsRequest, AddNoteAndMarkTransactionsResponse, ExportTransactionsParameters} from '../common';
+import {AddNoteAndMarkTransactionRequest, AddNoteAndMarkTransactionResponse, ExportTransactionsParameters} from '../common';
 
 /**
 * Get individual AccountsTransactionsResource
 */
-export class AccountsTransactionsResource extends CSCoreSDK.Resource
-implements CSCoreSDK.HasInstanceResource<AccountsTransactionResource> {
+export class AccountTransactionsResource extends CSCoreSDK.Resource
+implements CSCoreSDK.HasInstanceResource<AccountTransactionResource> {
     
     /**
     * Returns individual AccountsTransactionResource with a given id
     */
-    withId = (id: string|number) : AccountsTransactionResource => {
-        return new AccountsTransactionResource(id, this.getPath(), this._client);
+    withId = (id: string|number) : AccountTransactionResource => {
+        return new AccountTransactionResource(id, this.getPath(), this._client);
     }
     
     /**
@@ -36,13 +36,13 @@ implements CSCoreSDK.HasInstanceResource<AccountsTransactionResource> {
 /**
 * Allows to add or change a client's personal transaction note and mark the transaction as favorite/important for one specific transaction on selected account.
 */
-export class AccountsTransactionResource extends CSCoreSDK.InstanceResource
-implements CSCoreSDK.UpdateEnabled<AddNoteAndMarkTransactionsRequest, AddNoteAndMarkTransactionsResponse> {
+export class AccountTransactionResource extends CSCoreSDK.InstanceResource
+implements CSCoreSDK.UpdateEnabled<AddNoteAndMarkTransactionRequest, AddNoteAndMarkTransactionResponse> {
     
     /**
     * Adds, changes of marks transaction
     */  
-    update = (payload: AddNoteAndMarkTransactionsRequest): Promise<AddNoteAndMarkTransactionsResponse> => {
+    update = (payload: AddNoteAndMarkTransactionRequest): Promise<AddNoteAndMarkTransactionResponse> => {
         return CSCoreSDK.ResourceUtils.CallUpdate(this, payload);
     }
 }
