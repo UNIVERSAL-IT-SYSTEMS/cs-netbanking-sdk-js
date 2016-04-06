@@ -29,7 +29,7 @@ implements CSCoreSDK.ListEnabled<Card>, CSCoreSDK.HasInstanceResource<CardResour
             response.items.forEach(item => {
                 
                 // add convenient methods to items in the list
-                resourcifyListing(<Card>item, this.withId((<Card>item).id), true, false);
+                resourcifyListing(<Card>item, this.withId((<Card>item).id), true);
                 
                 // transform ISO dates to native Date objects
                 transformResponse(item);
@@ -57,7 +57,7 @@ implements CSCoreSDK.GetEnabled<Card>, CSCoreSDK.UpdateEnabled<ChangeCardsSettin
         return CSCoreSDK.ResourceUtils.CallGet(this, null).then(card => {
             
             // add convenient methods to items in the list
-            resourcifyListing(<Card>card, this, false, false);
+            resourcifyListing(<Card>card, this, false);
             
             // transform ISO dates to native Date objects
             transformResponse(card);
@@ -73,7 +73,7 @@ implements CSCoreSDK.GetEnabled<Card>, CSCoreSDK.UpdateEnabled<ChangeCardsSettin
         return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(card => {
             
             // add convenient methods to items in the list
-            resourcifyListing(<Card>card, this, false, true);
+            resourcifyListing(<Card>card, this, false);
             
             // transform ISO dates to native Date objects
             transformResponse(card);
@@ -133,12 +133,9 @@ implements CSCoreSDK.GetEnabled<Card>, CSCoreSDK.UpdateEnabled<ChangeCardsSettin
     }
 }
 
-function resourcifyListing(itemListing: Card, itemResource: CardResource, isFromList: boolean, isFromUpdate: boolean) {
+function resourcifyListing(itemListing: Card, itemResource: CardResource, isFromList: boolean) {
     if(isFromList) {
         itemListing.get = itemResource.get;    
-    }
-    if(!isFromUpdate) {
-        itemListing.update = itemResource.update;
     }
     itemListing.delivery = itemResource.delivery;
     itemListing.transactions = itemResource.transactions;
@@ -363,11 +360,6 @@ export interface ChangeCardsSettingsResponse extends Card, Signable {
 } 
 
 export interface ChangeCardsSettingsRequest {
-    
-    /**
-    * ID of the card
-    */
-    id?: string;
     
     /**
     * Alias of the card

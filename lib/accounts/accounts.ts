@@ -28,7 +28,7 @@ implements CSCoreSDK.HasInstanceResource<AccountResource>, CSCoreSDK.PaginatedLi
             response.items.forEach(item => {
                 
                 // add convenient methods
-                resourcifyListing(<MainAccount>item, this.withId((<MainAccount>item).id), true, false);
+                resourcifyListing(<MainAccount>item, this.withId((<MainAccount>item).id), true);
                 
                 // transform ISO dates to native Date objects
                 transformResponse(<MainAccount>item);
@@ -58,7 +58,7 @@ implements CSCoreSDK.GetEnabled<MainAccount>, CSCoreSDK.UpdateEnabled<ChangeAcco
         return CSCoreSDK.ResourceUtils.CallGet(this, null).then(response => {
             
             // add convenience methods
-            resourcifyListing(<MainAccount>response, this, false, false);
+            resourcifyListing(<MainAccount>response, this, false);
             
             // transform ISO dates to native Date objects
             transformResponse(<MainAccount>response);
@@ -68,13 +68,13 @@ implements CSCoreSDK.GetEnabled<MainAccount>, CSCoreSDK.UpdateEnabled<ChangeAcco
     }
     
     /**
-    * Update account's alias 
+    * Update account's settings. 
     */  
     update = (payload: ChangeAccountsSettingsRequest): Promise<ChangeAccountsSettingsResponse> => {
         return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(response => {
             
             // add convenience methods
-            resourcifyListing(<MainAccount>response, this, false, true);
+            resourcifyListing(<MainAccount>response, this, false);
             
             // transform ISO dates to native Date objects
             transformResponse(<MainAccount>response);
@@ -140,12 +140,9 @@ implements CSCoreSDK.GetEnabled<MainAccount>, CSCoreSDK.UpdateEnabled<ChangeAcco
     }
 }
 
-function resourcifyListing(accountListing: MainAccount, account: AccountResource, isFromList: boolean, isFromUpdate: boolean) : void {
+function resourcifyListing(accountListing: MainAccount, account: AccountResource, isFromList: boolean) : void {
     if(isFromList) {
         accountListing.get = account.get;    
-    }
-    if(!isFromUpdate) {
-        accountListing.update = account.update;
     }
     accountListing.services = account.services;
     accountListing.transactions = account.transactions;
@@ -464,11 +461,6 @@ export interface TransferReceivers {
 }
 
 export interface ChangeAccountsSettingsRequest {
-    
-    /**
-    * Account indentifier
-    */
-    id?: string;
     
     /**
     * User defined account name. Max. 50 characters 
