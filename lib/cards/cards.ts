@@ -137,6 +137,7 @@ function resourcifyListing(itemListing: Card, itemResource: CardResource, isFrom
     if(isFromList) {
         itemListing.get = itemResource.get;    
     }
+    itemListing.update = itemResource.update;
     itemListing.delivery = itemResource.delivery;
     itemListing.transactions = itemResource.transactions;
     itemListing.actions = itemResource.actions;
