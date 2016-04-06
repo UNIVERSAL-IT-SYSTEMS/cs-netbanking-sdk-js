@@ -15,6 +15,7 @@ implements CSCoreSDK.ListEnabled<LastLoginInfo> {
             
             // transform ISO dates to native Date objects
             CSCoreSDK.EntityUtils.addDatesToItems('lastlogin', response); 
+            
             return response;
         });
     }
@@ -25,7 +26,7 @@ export interface LastLoginsList extends CSCoreSDK.ListResponse<LastLoginInfo> {}
 export interface LastLoginInfo {
     
     /**
-    * Channel of the last login.
+    * Channel of the last login. 
     */
     channel: string;
     

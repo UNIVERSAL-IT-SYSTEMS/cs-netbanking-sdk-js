@@ -57,7 +57,7 @@ describe("Netbanking SDK",function(){
         
         it('retrieves list of last logins', done => {
             judgeSession.setNextCase('profile.lastLogin.list').then(() => {
-                return client.profile.lastLogin.list();
+                return client.profile.lastLogins.list();
             }).then(lastLogins => {
                 var item = lastLogins.items[0];
                 

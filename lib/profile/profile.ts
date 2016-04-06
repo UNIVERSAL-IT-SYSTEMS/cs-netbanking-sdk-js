@@ -1,6 +1,6 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
-import {LastLoginsResource} from './lastLogin';
+import {LastLoginsResource} from './lastLogins';
 
 /**
 * Get information about the profile and past logins.
@@ -25,9 +25,9 @@ implements CSCoreSDK.GetEnabled<Profile> {
     }
     
     /** 
-     * Returns LastLoginResource for listing past logins
+     * Returns LastLoginsResource for listing past logins
      */
-    get lastLogin() {
+    get lastLogins() {
         return new LastLoginsResource(this.getPath() + '/logininfo', this.getClient());
     }
 }
@@ -50,7 +50,7 @@ export interface Profile {
     salutation?: string;
     
     /**
-    * customer's id
+    * customer's id a.k.a cluid
     */
     customerId: string;
     
