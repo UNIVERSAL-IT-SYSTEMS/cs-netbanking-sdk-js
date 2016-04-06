@@ -13,14 +13,26 @@ implements CSCoreSDK.ListEnabled<CardsLimits>, CSCoreSDK.UpdateEnabled<ChangeCar
      * List all limits  
      */ 
     list = () : Promise<CardsLimitsList> => {
-        return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'limits');
+        return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'limits').then(response => {
+            
+            // transform ISO dates to native Date objects
+            CSCoreSDK.EntityUtils.addDatesToItems('temporaryLimitExpiration', response);
+            
+            return response;
+        })
     }
     
     /**
      * Update individual limits  
      */ 
     update = (payload: ChangeCardsLimitsRequest): Promise<ChangeCardsLimitsResponse> => {
-        return CSCoreSDK.ResourceUtils.CallUpdate(this, payload);
+        return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(response => {
+            
+            // transform ISO dates to native Date objects
+            CSCoreSDK.EntityUtils.addDatesToItems('temporaryLimitExpiration', response, 'limits');
+            
+            return response;
+        })
     }
 }
 
