@@ -496,7 +496,12 @@ describe("Netbanking SDK",function(){
             return client.accounts.withId('076E1DBCCCD38729A99D93AC8D3E8273237C7E36').transactions.export({
                 dateFrom: new Date(1999, 8, 27), 
                 dateTo: new Date(2000, 8, 27),
-                fields: 'bookingDate,partner,amount,currency',
+                fields: [
+                    'bookingDate',
+                    'partner',
+                    'amount',
+                    'currency'
+                ],
                 showAccountName: true,
                 showAccountNumber: true,
                 showTimespan: true,
@@ -527,7 +532,12 @@ describe("Netbanking SDK",function(){
            return response.items[0].transactions.export({
                 dateFrom: new Date(1999, 8, 27),
                 dateTo: new Date(2000, 8, 27),
-                fields: 'bookingDate,partner,amount,currency',
+                fields: [
+                    'bookingDate',
+                    'partner',
+                    'amount',
+                    'currency'
+                ],
                 showAccountName: true,
                 showAccountNumber: true,
                 showTimespan: true,

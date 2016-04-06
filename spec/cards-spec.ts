@@ -396,7 +396,12 @@ describe("Netbanking SDK",function(){
                 return client.cards.withId('33A813886442D946122C78305EC4E482DE9F574D').transactions.export({
                     dateFrom: new Date(1999, 8, 27),
                     dateTo: new Date(2000, 8, 27),
-                    fields: 'bookingDate,partner,amount,currency',
+                    fields: [
+                        'bookingDate',
+                        'partner',
+                        'amount',
+                        'currency'
+                    ],
                     showAccountName: true,
                     showAccountNumber: true,
                     showTimespan: true,
@@ -423,7 +428,12 @@ describe("Netbanking SDK",function(){
                 return response.items[0].transactions.export({
                     dateFrom: new Date(1999, 8, 27),
                     dateTo: new Date(2000, 8, 27),
-                    fields: 'bookingDate,partner,amount,currency',
+                    fields: [
+                        'bookingDate',
+                        'partner',
+                        'amount',
+                        'currency'
+                    ],
                     showAccountName: true,
                     showAccountNumber: true,
                     showTimespan: true,
@@ -717,8 +727,8 @@ describe("Netbanking SDK",function(){
                 return judgeSession.setNextCase('cards.withId.accounts.withId.statements.list');
             }).then(() => {
                 return response.items[0].accounts.withId('076E1DBCCCD38729A99D93AC8D3E8273237C7E36').statements.list({
-                    sort: 'statementDate',
-                    order: 'asc',
+                    sort: ['statementDate'],
+                    order: ['asc'],
                     pageNumber: null,
                     pageSize: null
                 });
