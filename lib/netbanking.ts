@@ -33,28 +33,28 @@ export class NetbankingClient extends CSCoreSDK.WebApiClient {
     }
     
    /**
-    * List all accounts and get information about them.
+    * List all accounts and get other information like balance, services, statements etc.
     */
     get accounts() {
         return new AccountsResource(this.getPath() + '/accounts', this);
     }
     
     /**
-    * Get information about the profile and past logins.
+    * Get information about the current user's profile and past logins.
     */
     get profile() {
         return new ProfileResource(this.getPath() + '/profile', this);
     }
     
     /**
-    * Represents list of payment cards (either debet or credit) for current user. Every card was issued for current user or belongs to one of his accounts.
+    * List all cards and other information like delivery, transactions, limits etc. 
     */
     get cards() {
         return new CardsResource(this.getPath() + '/cards', this);
     }
     
     /**
-    * Get information about payments orders
+    * List, update and get payments, booking date or create and update domestic payments. 
     */
     get orders() {
         return new OrdersResource(this.getPath() + '/orders', this);
