@@ -41,7 +41,7 @@ implements CSCoreSDK.PaginatedListEnabled<Statement> {
     list = (params?: NetbankingParameters) : Promise<StatementsList> => {
         
         // transform "sort" and "order" parameters to comma separated list from array
-        CSCoreSDK.EntityUtils.transformSortableParameters(params);
+        CSCoreSDK.EntityUtils.transformArrayParamsToString(params, ['sort', 'order']);
         
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'statements', params, response => {
             
