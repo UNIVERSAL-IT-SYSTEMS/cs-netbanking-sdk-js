@@ -185,17 +185,18 @@ describe("Netbanking SDK",function(){
                 return client.orders.payments.domestic.create({
                     senderName: "Vrba",
                     sender: {
-                        "cz-iban": "CZ1208000000002059930033",
-                        "cz-bic": "GIBACZPX"
+                        number: "2059930033",
+                        bankCode: "0800"
                     },
                     receiverName: "Vojtíšková",
                     receiver: {
-                        "cz-iban": "CZ5908000000002328489013"
+                        number: "2328489013",
+                        bankCode: "0800"
                     },
                     amount: {
-                        "value": 110,
-                        "precision": 2,
-                        "currency": "CZK"
+                        value: 110,
+                        precision: 2,
+                        currency: "CZK"
                     }
                 });
             }).then(response => {
@@ -240,18 +241,16 @@ describe("Netbanking SDK",function(){
         it('updates domesic payment', done => {
             judgeSession.setNextCase('payments.domestic.update').then(() => {
                 return client.orders.payments.domestic.withId('1154226597').update({
-                    id: "1154226597",
                     senderName: "Vrba",
                     sender: {
-                        "cz-iban": "CZ1208000000002059930033",
-                        "cz-bic": "GIBACZPX"
+                        number: "2059930033",
+                        bankCode: "0800" 
                     },
                     receiverName: "Vojtíšková Alena",
                     receiver: {
-                        "cz-iban": "CZ5908000000002328489013"
+                        number: "2328489013",
+                        bankCode: "0800"
                     },
-                    state: "open",
-                    stateOk: true,
                     amount: {
                         value: 110,
                         precision: 2,

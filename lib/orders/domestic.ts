@@ -46,6 +46,9 @@ implements CSCoreSDK.UpdateEnabled<DomesticPaymentUpdateRequest, DomesticPayment
     */
     update = (payload: DomesticPaymentUpdateRequest): Promise<DomesticPaymentResponse> => {
         
+        // add ID to payload from resource id property
+        (<FullDomesticPaymentUpdateRequest>payload).id = this._id;
+        
         // transform Date object to ISO strings
         CSCoreSDK.EntityUtils.transformDatesToISO('transferDate', payload);
         
@@ -59,17 +62,20 @@ implements CSCoreSDK.UpdateEnabled<DomesticPaymentUpdateRequest, DomesticPayment
     }
 }
 
-export interface DomesticPaymentUpdateRequest extends DomesticPaymentCreateRequest {
+export interface FullDomesticPaymentUpdateRequest extends DomesticPaymentUpdateRequest {
     
     /**
     * Internal identifier of payment order. Note that after signing of the order the id could change.
     */
     id: string;
+}
+
+export interface DomesticPaymentUpdateRequest extends DomesticPaymentCreateRequest {
     
     /**
     * Status of the payment order (details above), State of payment order presented to user on FE). Possible values: OPEN, SPOOLED, CANCELLED, CLOSED and DELETED
     */
-    state: string;
+    state?: string;
     
     /**
     * State detail of payment order provided based on BE technical states.
@@ -79,12 +85,13 @@ export interface DomesticPaymentUpdateRequest extends DomesticPaymentCreateReque
     /**
     * Indicator whether state (stateDetail value) of payment order is OK from user point of view. For mapping between stateDetail and stateOk indicator values see table below.
     */
-    stateOk: boolean;
+    stateOk?: boolean;
 }
 
 export interface DomesticPaymentResponse extends Payment, Signable {}
 
 export interface DomesticPaymentCreateRequest {
+    
     /**
     * Name of the sender
     */
@@ -141,12 +148,12 @@ export interface DomesticPaymentAccount {
     /**
     * Account number with possible prefix. Format is "XXXXXX-NNNNNNNNNN" if prefix is not null or "000000". If prefix is not provided then format is "NNNNNNNNNN" without leading zeros.
     */
-    number?: string;
+    number: string;
     
     /**
     * Bank Code
     */
-    bankCode?: string;
+    bankCode: string;
     
     /**
     * Code of the Country - 2 characters; mandatoryfor international orders.
