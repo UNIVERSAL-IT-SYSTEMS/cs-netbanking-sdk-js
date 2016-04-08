@@ -84,7 +84,7 @@ var CSNetbankingSDK =
 	    }
 	    Object.defineProperty(NetbankingClient.prototype, "accounts", {
 	        /**
-	         * List all accounts and get information about them.
+	         * List all accounts and get other information like balance, services, statements etc.
 	         */
 	        get: function () {
 	            return new accounts_1.AccountsResource(this.getPath() + '/accounts', this);
@@ -94,7 +94,7 @@ var CSNetbankingSDK =
 	    });
 	    Object.defineProperty(NetbankingClient.prototype, "profile", {
 	        /**
-	        * Get information about the profile and past logins.
+	        * Get information about the current user's profile and past logins.
 	        */
 	        get: function () {
 	            return new profile_1.ProfileResource(this.getPath() + '/profile', this);
@@ -104,7 +104,7 @@ var CSNetbankingSDK =
 	    });
 	    Object.defineProperty(NetbankingClient.prototype, "cards", {
 	        /**
-	        * Represents list of payment cards (either debet or credit) for current user. Every card was issued for current user or belongs to one of his accounts.
+	        * List all cards and other information like delivery, transactions, limits etc.
 	        */
 	        get: function () {
 	            return new cards_1.CardsResource(this.getPath() + '/cards', this);
@@ -114,7 +114,7 @@ var CSNetbankingSDK =
 	    });
 	    Object.defineProperty(NetbankingClient.prototype, "orders", {
 	        /**
-	        * Get information about payments orders
+	        * List, update and get payments, booking date or create and update domestic payments.
 	        */
 	        get: function () {
 	            return new orders_1.OrdersResource(this.getPath() + '/orders', this);
@@ -152,7 +152,7 @@ var CSNetbankingSDK =
 	var statements_1 = __webpack_require__(7);
 	var subAccounts_1 = __webpack_require__(8);
 	var transactions_1 = __webpack_require__(9);
-	var transfers_1 = __webpack_require__(10);
+	var transfer_1 = __webpack_require__(10);
 	/**
 	* List all accounts and get individual account instance resource
 	*/
@@ -168,7 +168,7 @@ var CSNetbankingSDK =
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'accounts', params, function (response) {
 	                response.items.forEach(function (item) {
 	                    // add convenient methods
-	                    resourcifyListing(item, _this.withId(item.id), true, false);
+	                    resourcifyListing(item, _this.withId(item.id), true);
 	                    // transform ISO dates to native Date objects
 	                    transformResponse(item);
 	                });
@@ -199,19 +199,19 @@ var CSNetbankingSDK =
 	        this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null).then(function (response) {
 	                // add convenience methods
-	                resourcifyListing(response, _this, false, false);
+	                resourcifyListing(response, _this, false);
 	                // transform ISO dates to native Date objects
 	                transformResponse(response);
 	                return response;
 	            });
 	        };
 	        /**
-	        * Update account's alias
+	        * Update account's settings.
 	        */
 	        this.update = function (payload) {
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (response) {
 	                // add convenience methods
-	                resourcifyListing(response, _this, false, true);
+	                resourcifyListing(response, _this, false);
 	                // transform ISO dates to native Date objects
 	                transformResponse(response);
 	                return response;
@@ -223,7 +223,7 @@ var CSNetbankingSDK =
 	        * Get information about the account's balance
 	        */
 	        get: function () {
-	            return new balance_1.AccountsBalanceResource(this.getPath() + '/balance', this._client);
+	            return new balance_1.AccountBalanceResource(this.getPath() + '/balance', this._client);
 	        },
 	        enumerable: true,
 	        configurable: true
@@ -233,7 +233,7 @@ var CSNetbankingSDK =
 	        * Get information about the account's services
 	        */
 	        get: function () {
-	            return new services_1.AccountsServicesResource(this.getPath() + '/services', this._client);
+	            return new services_1.AccountServicesResource(this.getPath() + '/services', this._client);
 	        },
 	        enumerable: true,
 	        configurable: true
@@ -243,7 +243,7 @@ var CSNetbankingSDK =
 	        * Get information about the account's reservations
 	        */
 	        get: function () {
-	            return new reservations_1.AccountsReservationsResource(this.getPath() + '/reservations', this._client);
+	            return new reservations_1.AccountReservationsResource(this.getPath() + '/reservations', this._client);
 	        },
 	        enumerable: true,
 	        configurable: true
@@ -253,7 +253,7 @@ var CSNetbankingSDK =
 	        * Get information about the account's repayments
 	        */
 	        get: function () {
-	            return new repayments_1.AccountsRepaymentsResource(this.getPath() + '/repayments', this._client);
+	            return new repayments_1.AccountRepaymentsResource(this.getPath() + '/repayments', this._client);
 	        },
 	        enumerable: true,
 	        configurable: true
@@ -263,7 +263,7 @@ var CSNetbankingSDK =
 	        * Get information about the account's statements
 	        */
 	        get: function () {
-	            return new statements_1.AccountsStatementsResource(this.getPath() + '/statements', this._client);
+	            return new statements_1.AccountStatementsResource(this.getPath() + '/statements', this._client);
 	        },
 	        enumerable: true,
 	        configurable: true
@@ -273,7 +273,7 @@ var CSNetbankingSDK =
 	        * Get information about the account's subaccounts
 	        */
 	        get: function () {
-	            return new subAccounts_1.AccountsSubAccountsResource(this.getPath() + '/subaccounts', this._client);
+	            return new subAccounts_1.AccountSubAccountsResource(this.getPath() + '/subaccounts', this._client);
 	        },
 	        enumerable: true,
 	        configurable: true
@@ -283,17 +283,17 @@ var CSNetbankingSDK =
 	        * Get information about the account's transactions
 	        */
 	        get: function () {
-	            return new transactions_1.AccountsTransactionsResource(this.getPath() + '/transactions', this._client);
+	            return new transactions_1.AccountTransactionsResource(this.getPath() + '/transactions', this._client);
 	        },
 	        enumerable: true,
 	        configurable: true
 	    });
-	    Object.defineProperty(AccountResource.prototype, "transfers", {
+	    Object.defineProperty(AccountResource.prototype, "transfer", {
 	        /**
 	        * Revolve a loan
 	        */
 	        get: function () {
-	            return new transfers_1.AccountsTransfersResource(this.getPath() + '/transfer', this._client);
+	            return new transfer_1.AccountTransferResource(this.getPath() + '/transfer', this._client);
 	        },
 	        enumerable: true,
 	        configurable: true
@@ -301,17 +301,15 @@ var CSNetbankingSDK =
 	    return AccountResource;
 	}(CSCoreSDK.InstanceResource));
 	exports.AccountResource = AccountResource;
-	function resourcifyListing(accountListing, account, isFromList, isFromUpdate) {
+	function resourcifyListing(accountListing, account, isFromList) {
 	    if (isFromList) {
 	        accountListing.get = account.get;
 	    }
-	    if (!isFromUpdate) {
-	        accountListing.update = account.update;
-	    }
+	    accountListing.update = account.update;
 	    accountListing.services = account.services;
 	    accountListing.transactions = account.transactions;
 	    accountListing.reservations = account.reservations;
-	    accountListing.transfers = account.transfers;
+	    accountListing.transfer = account.transfer;
 	    accountListing.statements = account.statements;
 	    accountListing.repayments = account.repayments;
 	}
@@ -344,9 +342,9 @@ var CSNetbankingSDK =
 	/**
 	* Get information about the account's balance
 	*/
-	var AccountsBalanceResource = (function (_super) {
-	    __extends(AccountsBalanceResource, _super);
-	    function AccountsBalanceResource() {
+	var AccountBalanceResource = (function (_super) {
+	    __extends(AccountBalanceResource, _super);
+	    function AccountBalanceResource() {
 	        var _this = this;
 	        _super.apply(this, arguments);
 	        /**
@@ -356,9 +354,9 @@ var CSNetbankingSDK =
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null);
 	        };
 	    }
-	    return AccountsBalanceResource;
+	    return AccountBalanceResource;
 	}(CSCoreSDK.Resource));
-	exports.AccountsBalanceResource = AccountsBalanceResource;
+	exports.AccountBalanceResource = AccountBalanceResource;
 
 
 /***/ },
@@ -376,9 +374,9 @@ var CSNetbankingSDK =
 	/**
 	* Get information about the account's services
 	*/
-	var AccountsServicesResource = (function (_super) {
-	    __extends(AccountsServicesResource, _super);
-	    function AccountsServicesResource() {
+	var AccountServicesResource = (function (_super) {
+	    __extends(AccountServicesResource, _super);
+	    function AccountServicesResource() {
 	        var _this = this;
 	        _super.apply(this, arguments);
 	        /**
@@ -394,9 +392,9 @@ var CSNetbankingSDK =
 	            });
 	        };
 	    }
-	    return AccountsServicesResource;
+	    return AccountServicesResource;
 	}(CSCoreSDK.Resource));
-	exports.AccountsServicesResource = AccountsServicesResource;
+	exports.AccountServicesResource = AccountServicesResource;
 
 
 /***/ },
@@ -414,9 +412,9 @@ var CSNetbankingSDK =
 	/**
 	* Get information about the account's reservations
 	*/
-	var AccountsReservationsResource = (function (_super) {
-	    __extends(AccountsReservationsResource, _super);
-	    function AccountsReservationsResource() {
+	var AccountReservationsResource = (function (_super) {
+	    __extends(AccountReservationsResource, _super);
+	    function AccountReservationsResource() {
 	        var _this = this;
 	        _super.apply(this, arguments);
 	        /**
@@ -430,9 +428,9 @@ var CSNetbankingSDK =
 	            });
 	        };
 	    }
-	    return AccountsReservationsResource;
+	    return AccountReservationsResource;
 	}(CSCoreSDK.Resource));
-	exports.AccountsReservationsResource = AccountsReservationsResource;
+	exports.AccountReservationsResource = AccountReservationsResource;
 
 
 /***/ },
@@ -450,9 +448,9 @@ var CSNetbankingSDK =
 	/**
 	* Get information about the account's repayments
 	*/
-	var AccountsRepaymentsResource = (function (_super) {
-	    __extends(AccountsRepaymentsResource, _super);
-	    function AccountsRepaymentsResource() {
+	var AccountRepaymentsResource = (function (_super) {
+	    __extends(AccountRepaymentsResource, _super);
+	    function AccountRepaymentsResource() {
 	        var _this = this;
 	        _super.apply(this, arguments);
 	        /**
@@ -468,9 +466,9 @@ var CSNetbankingSDK =
 	            });
 	        };
 	    }
-	    return AccountsRepaymentsResource;
+	    return AccountRepaymentsResource;
 	}(CSCoreSDK.Resource));
-	exports.AccountsRepaymentsResource = AccountsRepaymentsResource;
+	exports.AccountRepaymentsResource = AccountRepaymentsResource;
 
 
 /***/ },
@@ -488,25 +486,32 @@ var CSNetbankingSDK =
 	/**
 	* Get information about the account's statements
 	*/
-	var AccountsStatementsResource = (function (_super) {
-	    __extends(AccountsStatementsResource, _super);
-	    function AccountsStatementsResource() {
+	var AccountStatementsResource = (function (_super) {
+	    __extends(AccountStatementsResource, _super);
+	    function AccountStatementsResource() {
 	        var _this = this;
 	        _super.apply(this, arguments);
 	        /**
 	        * Fetches the statements and returns them in a promise
 	        */
 	        this.list = function (params) {
+	            // transform "sort" and "order" parameters to comma separated list from array
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'statements', params, function (response) {
 	                // transform ISO dates to native Date objects
 	                CSCoreSDK.EntityUtils.addDatesToItems('statementDate', response);
 	                return response;
 	            });
 	        };
+	        /**
+	        * Downloads statements file
+	        */
+	        this.download = function (params) {
+	            return _this._client.callApi(_this._path + '/signed/download', "POST", params, null, null);
+	        };
 	    }
-	    return AccountsStatementsResource;
+	    return AccountStatementsResource;
 	}(CSCoreSDK.Resource));
-	exports.AccountsStatementsResource = AccountsStatementsResource;
+	exports.AccountStatementsResource = AccountStatementsResource;
 
 
 /***/ },
@@ -524,9 +529,9 @@ var CSNetbankingSDK =
 	/**
 	* Get individual SubAccount resource
 	*/
-	var AccountsSubAccountsResource = (function (_super) {
-	    __extends(AccountsSubAccountsResource, _super);
-	    function AccountsSubAccountsResource() {
+	var AccountSubAccountsResource = (function (_super) {
+	    __extends(AccountSubAccountsResource, _super);
+	    function AccountSubAccountsResource() {
 	        var _this = this;
 	        _super.apply(this, arguments);
 	        /**
@@ -536,9 +541,9 @@ var CSNetbankingSDK =
 	            return new SubAccountResource(id, _this.getPath(), _this._client);
 	        };
 	    }
-	    return AccountsSubAccountsResource;
+	    return AccountSubAccountsResource;
 	}(CSCoreSDK.Resource));
-	exports.AccountsSubAccountsResource = AccountsSubAccountsResource;
+	exports.AccountSubAccountsResource = AccountSubAccountsResource;
 	/**
 	* Get information about the subaccount
 	*/
@@ -572,12 +577,21 @@ var CSNetbankingSDK =
 	        * Returns all subaccount's statements in a promise
 	        */
 	        this.list = function (params) {
+	            // insert 'cz' resource into the resource's path because the api requires it in some resources
 	            _this._path = _this.getPath().replace('/my', '/cz/my');
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'statements', params, function (response) {
 	                // transform ISO dates to native Date objects
 	                CSCoreSDK.EntityUtils.addDatesToItems('statementDate', response);
 	                return response;
 	            });
+	        };
+	        /**
+	        * Downloads statements file
+	        */
+	        this.download = function (params) {
+	            // insert 'cz' resource into the resource's path because the api requires it in some resources
+	            _this._path = _this.getPath().replace('/my', '/cz/my');
+	            return _this._client.callApi(_this._path + '/download', "POST", params, null, null);
 	        };
 	    }
 	    return SubAccountStatementsResource;
@@ -600,31 +614,39 @@ var CSNetbankingSDK =
 	/**
 	* Get individual AccountsTransactionsResource
 	*/
-	var AccountsTransactionsResource = (function (_super) {
-	    __extends(AccountsTransactionsResource, _super);
-	    function AccountsTransactionsResource() {
+	var AccountTransactionsResource = (function (_super) {
+	    __extends(AccountTransactionsResource, _super);
+	    function AccountTransactionsResource() {
 	        var _this = this;
 	        _super.apply(this, arguments);
 	        /**
 	        * Returns individual AccountsTransactionResource with a given id
 	        */
 	        this.withId = function (id) {
-	            return new AccountsTransactionResource(id, _this.getPath(), _this._client);
+	            return new AccountTransactionResource(id, _this.getPath(), _this._client);
 	        };
-	        // nebude fungovat
+	        /**
+	        * Exports transaction history into signed pdf
+	        */
 	        this.export = function (params) {
-	            return CSCoreSDK.ResourceUtils.CallCreateWithSuffix(_this, 'export', params);
+	            // transform "fields" parameter to comma separated list from array
+	            CSCoreSDK.EntityUtils.transformArrayParamsToString(params, 'fields');
+	            // transform Date objects to ISO strings
+	            CSCoreSDK.EntityUtils.transformDatesToISO(['dateFrom', 'dateTo'], params);
+	            // insert 'cz' resource into the resource's path because the api requires it in some resources
+	            _this._path = _this.getPath().replace('/my', '/cz/my');
+	            return _this._client.callApi(_this._path + '/export', 'POST', params, null, null);
 	        };
 	    }
-	    return AccountsTransactionsResource;
+	    return AccountTransactionsResource;
 	}(CSCoreSDK.Resource));
-	exports.AccountsTransactionsResource = AccountsTransactionsResource;
+	exports.AccountTransactionsResource = AccountTransactionsResource;
 	/**
 	* Allows to add or change a client's personal transaction note and mark the transaction as favorite/important for one specific transaction on selected account.
 	*/
-	var AccountsTransactionResource = (function (_super) {
-	    __extends(AccountsTransactionResource, _super);
-	    function AccountsTransactionResource() {
+	var AccountTransactionResource = (function (_super) {
+	    __extends(AccountTransactionResource, _super);
+	    function AccountTransactionResource() {
 	        var _this = this;
 	        _super.apply(this, arguments);
 	        /**
@@ -634,9 +656,9 @@ var CSNetbankingSDK =
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload);
 	        };
 	    }
-	    return AccountsTransactionResource;
+	    return AccountTransactionResource;
 	}(CSCoreSDK.InstanceResource));
-	exports.AccountsTransactionResource = AccountsTransactionResource;
+	exports.AccountTransactionResource = AccountTransactionResource;
 
 
 /***/ },
@@ -654,21 +676,25 @@ var CSNetbankingSDK =
 	/**
 	* Revolve a loan
 	*/
-	var AccountsTransfersResource = (function (_super) {
-	    __extends(AccountsTransfersResource, _super);
-	    function AccountsTransfersResource() {
+	var AccountTransferResource = (function (_super) {
+	    __extends(AccountTransferResource, _super);
+	    function AccountTransferResource() {
 	        var _this = this;
 	        _super.apply(this, arguments);
 	        /**
 	        * Revolves the loan. Currently only REVOLVING_LOAN subtype is supported.
 	        */
 	        this.update = function (payload) {
-	            return CSCoreSDK.ResourceUtils.CallCreate(_this, payload);
+	            // transform Date objects to ISO strings
+	            CSCoreSDK.EntityUtils.transformDatesToSimpleISO('transferDate', payload);
+	            // insert 'cz' resource into the resource's path because the api requires it in some resources
+	            _this._path = _this.getPath().replace('/my', '/cz/my');
+	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload);
 	        };
 	    }
-	    return AccountsTransfersResource;
+	    return AccountTransferResource;
 	}(CSCoreSDK.Resource));
-	exports.AccountsTransfersResource = AccountsTransfersResource;
+	exports.AccountTransferResource = AccountTransferResource;
 
 
 /***/ },
@@ -683,7 +709,7 @@ var CSNetbankingSDK =
 	};
 	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
-	var lastLogin_1 = __webpack_require__(12);
+	var lastLogins_1 = __webpack_require__(12);
 	/**
 	* Get information about the profile and past logins.
 	*/
@@ -698,18 +724,19 @@ var CSNetbankingSDK =
 	        this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null).then(function (profile) {
 	                if (profile.lastlogin) {
+	                    // transform ISO dates to native Date objects
 	                    CSCoreSDK.EntityUtils.addDatesFromISO('lastlogin', profile);
 	                }
 	                return profile;
 	            });
 	        };
 	    }
-	    Object.defineProperty(ProfileResource.prototype, "lastLogin", {
+	    Object.defineProperty(ProfileResource.prototype, "lastLogins", {
 	        /**
-	         * Returns LastLoginResource for listing past logins
+	         * Returns LastLoginsResource for listing past logins
 	         */
 	        get: function () {
-	            return new lastLogin_1.LastLoginResource(this.getPath() + '/logininfo', this.getClient());
+	            return new lastLogins_1.LastLoginsResource(this.getPath() + '/logininfo', this.getClient());
 	        },
 	        enumerable: true,
 	        configurable: true
@@ -734,9 +761,9 @@ var CSNetbankingSDK =
 	/**
 	 * List all past logins
 	 */
-	var LastLoginResource = (function (_super) {
-	    __extends(LastLoginResource, _super);
-	    function LastLoginResource() {
+	var LastLoginsResource = (function (_super) {
+	    __extends(LastLoginsResource, _super);
+	    function LastLoginsResource() {
 	        var _this = this;
 	        _super.apply(this, arguments);
 	        /**
@@ -744,14 +771,15 @@ var CSNetbankingSDK =
 	         */
 	        this.list = function () {
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'lastlogin').then(function (response) {
+	                // transform ISO dates to native Date objects
 	                CSCoreSDK.EntityUtils.addDatesToItems('lastlogin', response);
 	                return response;
 	            });
 	        };
 	    }
-	    return LastLoginResource;
+	    return LastLoginsResource;
 	}(CSCoreSDK.Resource));
-	exports.LastLoginResource = LastLoginResource;
+	exports.LastLoginsResource = LastLoginsResource;
 
 
 /***/ },
@@ -771,7 +799,7 @@ var CSNetbankingSDK =
 	var actions_1 = __webpack_require__(16);
 	var limits_1 = __webpack_require__(17);
 	var secure3D_1 = __webpack_require__(18);
-	var transfers_1 = __webpack_require__(19);
+	var transfer_1 = __webpack_require__(19);
 	var statements_1 = __webpack_require__(20);
 	/**
 	* Represents list of payment cards (either debet or credit) for current user. Every card was issued for current user or belongs to one of his accounts.
@@ -788,7 +816,7 @@ var CSNetbankingSDK =
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'cards', params, function (response) {
 	                response.items.forEach(function (item) {
 	                    // add convenient methods to items in the list
-	                    resourcifyListing(item, _this.withId(item.id), true, false);
+	                    resourcifyListing(item, _this.withId(item.id), true);
 	                    // transform ISO dates to native Date objects
 	                    transformResponse(item);
 	                });
@@ -816,7 +844,7 @@ var CSNetbankingSDK =
 	        this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null).then(function (card) {
 	                // add convenient methods to items in the list
-	                resourcifyListing(card, _this, false, false);
+	                resourcifyListing(card, _this, false);
 	                // transform ISO dates to native Date objects
 	                transformResponse(card);
 	                return card;
@@ -828,7 +856,7 @@ var CSNetbankingSDK =
 	        this.update = function (payload) {
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (card) {
 	                // add convenient methods to items in the list
-	                resourcifyListing(card, _this, false, true);
+	                resourcifyListing(card, _this, false);
 	                // transform ISO dates to native Date objects
 	                transformResponse(card);
 	                return card;
@@ -886,12 +914,12 @@ var CSNetbankingSDK =
 	        enumerable: true,
 	        configurable: true
 	    });
-	    Object.defineProperty(CardResource.prototype, "transfers", {
+	    Object.defineProperty(CardResource.prototype, "transfer", {
 	        /**
 	        * Resource for paying up credit card debt
 	        */
 	        get: function () {
-	            return new transfers_1.CardTransfersResource(this.getPath() + '/transfer', this._client);
+	            return new transfer_1.CardTransferResource(this.getPath() + '/transfer', this._client);
 	        },
 	        enumerable: true,
 	        configurable: true
@@ -909,19 +937,17 @@ var CSNetbankingSDK =
 	    return CardResource;
 	}(CSCoreSDK.InstanceResource));
 	exports.CardResource = CardResource;
-	function resourcifyListing(itemListing, itemResource, isFromList, isFromUpdate) {
+	function resourcifyListing(itemListing, itemResource, isFromList) {
 	    if (isFromList) {
 	        itemListing.get = itemResource.get;
 	    }
-	    if (!isFromUpdate) {
-	        itemListing.update = itemResource.update;
-	    }
+	    itemListing.update = itemResource.update;
 	    itemListing.delivery = itemResource.delivery;
 	    itemListing.transactions = itemResource.transactions;
 	    itemListing.actions = itemResource.actions;
 	    itemListing.limits = itemResource.limits;
 	    itemListing.secure3d = itemResource.secure3d;
-	    itemListing.transfers = itemResource.transfers;
+	    itemListing.transfer = itemResource.transfer;
 	    itemListing.accounts = itemResource.accounts;
 	}
 	function transformResponse(item) {
@@ -997,8 +1023,13 @@ var CSNetbankingSDK =
 	         * Export transactions to PDF
 	         */
 	        this.export = function (params) {
-	            // zkontrolovat, pravděpodobně nebude fungovat
-	            return CSCoreSDK.ResourceUtils.CallCreateWithSuffix(_this, 'export', params);
+	            // transform "fields" parameter to comma separated list from array
+	            CSCoreSDK.EntityUtils.transformArrayParamsToString(params, 'fields');
+	            // transform Date objects to ISO strings
+	            CSCoreSDK.EntityUtils.transformDatesToISO(['dateFrom', 'dateTo'], params);
+	            // insert 'cz' resource into the resource's path because the api requires it in some resources
+	            _this._path = _this.getPath().replace('/my', '/cz/my');
+	            return _this._client.callApi(_this._path + '/export', 'POST', params, null, null);
 	        };
 	    }
 	    return CardTransactionsResource;
@@ -1080,13 +1111,21 @@ var CSNetbankingSDK =
 	         * List all limits
 	         */
 	        this.list = function () {
-	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'limits');
+	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'limits').then(function (response) {
+	                // transform ISO dates to native Date objects
+	                CSCoreSDK.EntityUtils.addDatesToItems('temporaryLimitExpiration', response);
+	                return response;
+	            });
 	        };
 	        /**
 	         * Update individual limits
 	         */
 	        this.update = function (payload) {
-	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload);
+	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (response) {
+	                // transform ISO dates to native Date objects
+	                CSCoreSDK.EntityUtils.addDatesToItems('temporaryLimitExpiration', response, 'limits');
+	                return response;
+	            });
 	        };
 	    }
 	    return CardLimitsResource;
@@ -1141,9 +1180,9 @@ var CSNetbankingSDK =
 	/**
 	 * Resource for paying up credit card debt
 	 */
-	var CardTransfersResource = (function (_super) {
-	    __extends(CardTransfersResource, _super);
-	    function CardTransfersResource() {
+	var CardTransferResource = (function (_super) {
+	    __extends(CardTransferResource, _super);
+	    function CardTransferResource() {
 	        var _this = this;
 	        _super.apply(this, arguments);
 	        /**
@@ -1153,9 +1192,9 @@ var CSNetbankingSDK =
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload);
 	        };
 	    }
-	    return CardTransfersResource;
+	    return CardTransferResource;
 	}(CSCoreSDK.Resource));
-	exports.CardTransfersResource = CardTransfersResource;
+	exports.CardTransferResource = CardTransferResource;
 
 
 /***/ },
@@ -1222,6 +1261,7 @@ var CSNetbankingSDK =
 	         */
 	        this.list = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'statements', params, function (response) {
+	                // transform ISO dates to native Date objects
 	                CSCoreSDK.EntityUtils.addDatesToItems('statementDate', response);
 	                return response;
 	            });
@@ -1230,8 +1270,7 @@ var CSNetbankingSDK =
 	         * Download PDF with statements
 	         */
 	        this.download = function (params) {
-	            // zkontrolovat, zřejmě nebude fungovat
-	            return CSCoreSDK.ResourceUtils.CallCreateWithSuffix(_this, 'signed/download', params);
+	            return _this._client.callApi(_this._path + '/signed/download', 'POST', params, null, null);
 	        };
 	    }
 	    return CardStatementsResource;
@@ -1290,6 +1329,7 @@ var CSNetbankingSDK =
 	        this.list = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'order', params, function (response) {
 	                response.items.forEach(function (item) {
+	                    // transform ISO dates to native Date objects
 	                    CSCoreSDK.EntityUtils.addDatesFromISO(['cz-orderingDate', 'executionDate', 'modificationDate', 'transferDate'], item);
 	                    // add convenient get and delete methods for fetching order's detail and removing order
 	                    resourcifyListing(item, _this.withId(item.id));
@@ -1309,7 +1349,7 @@ var CSNetbankingSDK =
 	        * Get currently available booking date
 	        */
 	        get: function () {
-	            return new bookingDate_1.PaymentsBookingDateResource(this.getPath() + '/bookingdate', this._client);
+	            return new bookingDate_1.PaymentBookingDateResource(this.getPath() + '/bookingdate', this._client);
 	        },
 	        enumerable: true,
 	        configurable: true
@@ -1329,7 +1369,7 @@ var CSNetbankingSDK =
 	        * Get remaining amounts for payment orders
 	        */
 	        get: function () {
-	            return new limits_1.PaymentsLimitsResource(this.getPath() + '/limits', this._client);
+	            return new limits_1.PaymentLimitsResource(this.getPath() + '/limits', this._client);
 	        },
 	        enumerable: true,
 	        configurable: true
@@ -1339,7 +1379,7 @@ var CSNetbankingSDK =
 	        * Recharging the credit available on prepaid cards provided by Vodafone, T-Mobile or O2.
 	        */
 	        get: function () {
-	            return new mobile_1.PaymentsMobileResource(this.getPath() + '/mobile', this._client);
+	            return new mobile_1.PaymentMobileResource(this.getPath() + '/mobile', this._client);
 	        },
 	        enumerable: true,
 	        configurable: true
@@ -1360,6 +1400,7 @@ var CSNetbankingSDK =
 	        */
 	        this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null).then(function (payment) {
+	                // transform ISO dates to native Date objects
 	                CSCoreSDK.EntityUtils.addDatesFromISO(['cz-orderingDate', 'executionDate', 'modificationDate', 'transferDate'], payment);
 	                return payment;
 	            });
@@ -1395,9 +1436,9 @@ var CSNetbankingSDK =
 	/**
 	* Get currently available booking date
 	*/
-	var PaymentsBookingDateResource = (function (_super) {
-	    __extends(PaymentsBookingDateResource, _super);
-	    function PaymentsBookingDateResource() {
+	var PaymentBookingDateResource = (function (_super) {
+	    __extends(PaymentBookingDateResource, _super);
+	    function PaymentBookingDateResource() {
 	        var _this = this;
 	        _super.apply(this, arguments);
 	        /**
@@ -1410,14 +1451,15 @@ var CSNetbankingSDK =
 	            // add accountId to query
 	            _this._path = _this.getPath() + "?accountId=" + accountId;
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (bookingDate) {
+	                // transform ISO dates to native Date objects
 	                CSCoreSDK.EntityUtils.addDatesFromISO('bookingDate', bookingDate);
 	                return bookingDate;
 	            });
 	        };
 	    }
-	    return PaymentsBookingDateResource;
+	    return PaymentBookingDateResource;
 	}(CSCoreSDK.Resource));
-	exports.PaymentsBookingDateResource = PaymentsBookingDateResource;
+	exports.PaymentBookingDateResource = PaymentBookingDateResource;
 
 
 /***/ },
@@ -1444,7 +1486,10 @@ var CSNetbankingSDK =
 	        * Creates domestic payment order and returns it in promise
 	        */
 	        this.create = function (payload) {
+	            // transform Date object to ISO strings
+	            CSCoreSDK.EntityUtils.transformDatesToISO('transferDate', payload);
 	            return CSCoreSDK.ResourceUtils.CallCreate(_this, payload).then(function (response) {
+	                // transform ISO dates to native Date objects
 	                CSCoreSDK.EntityUtils.addDatesFromISO(['cz-orderingDate', 'executionDate', 'modificationDate', 'transferDate'], response);
 	                return response;
 	            });
@@ -1471,7 +1516,12 @@ var CSNetbankingSDK =
 	        * Updates domestic payment and returns it in promise
 	        */
 	        this.update = function (payload) {
+	            // add ID to payload from resource id property
+	            payload.id = _this._id;
+	            // transform Date object to ISO strings
+	            CSCoreSDK.EntityUtils.transformDatesToISO('transferDate', payload);
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (response) {
+	                // transform ISO dates to native Date objects
 	                CSCoreSDK.EntityUtils.addDatesFromISO(['cz-orderingDate', 'executionDate', 'modificationDate', 'transferDate'], response);
 	                return response;
 	            });
@@ -1497,9 +1547,9 @@ var CSNetbankingSDK =
 	/**
 	* Get remaining amounts for payment orders
 	*/
-	var PaymentsLimitsResource = (function (_super) {
-	    __extends(PaymentsLimitsResource, _super);
-	    function PaymentsLimitsResource() {
+	var PaymentLimitsResource = (function (_super) {
+	    __extends(PaymentLimitsResource, _super);
+	    function PaymentLimitsResource() {
 	        var _this = this;
 	        _super.apply(this, arguments);
 	        /**
@@ -1509,9 +1559,9 @@ var CSNetbankingSDK =
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'remainingLimits', null);
 	        };
 	    }
-	    return PaymentsLimitsResource;
+	    return PaymentLimitsResource;
 	}(CSCoreSDK.Resource));
-	exports.PaymentsLimitsResource = PaymentsLimitsResource;
+	exports.PaymentLimitsResource = PaymentLimitsResource;
 
 
 /***/ },
@@ -1529,9 +1579,9 @@ var CSNetbankingSDK =
 	/**
 	* Recharging the credit available on prepaid cards provided by Vodafone, T-Mobile or O2.
 	*/
-	var PaymentsMobileResource = (function (_super) {
-	    __extends(PaymentsMobileResource, _super);
-	    function PaymentsMobileResource() {
+	var PaymentMobileResource = (function (_super) {
+	    __extends(PaymentMobileResource, _super);
+	    function PaymentMobileResource() {
 	        var _this = this;
 	        _super.apply(this, arguments);
 	        this.create = function (payload) {
@@ -1540,9 +1590,9 @@ var CSNetbankingSDK =
 	            return CSCoreSDK.ResourceUtils.CallCreate(_this, payload);
 	        };
 	    }
-	    return PaymentsMobileResource;
+	    return PaymentMobileResource;
 	}(CSCoreSDK.Resource));
-	exports.PaymentsMobileResource = PaymentsMobileResource;
+	exports.PaymentMobileResource = PaymentMobileResource;
 
 
 /***/ }

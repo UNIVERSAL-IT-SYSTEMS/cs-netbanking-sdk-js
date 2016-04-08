@@ -9,8 +9,6 @@ var client : CSNetbankingSDK.NetbankingClient = null;
 var expectToBe = CoreSDK.TestUtils.expectToBe;
 var expectDate = CoreSDK.TestUtils.expectDate;
 var logJudgeError = CoreSDK.TestUtils.logJudgeError;
-var fs = require('fs');
-var lodash = require('underscore');
 
 describe("Netbanking SDK",function(){
     var originalTimeoutInterval = null;
