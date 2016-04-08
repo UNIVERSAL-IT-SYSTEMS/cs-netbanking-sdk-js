@@ -682,8 +682,8 @@ describe("Netbanking SDK",function(){
         it('retrieves list of statements of cards account', done => {
             judgeSession.setNextCase('cards.withId.accounts.withId.statements.list').then(() => {
                 return client.cards.withId('33A813886442D946122C78305EC4E482DE9F574D').accounts.withId('076E1DBCCCD38729A99D93AC8D3E8273237C7E36').statements.list({
-                    sort: 'statementDate',
-                    order: 'asc',
+                    sort: ['statementDate'],
+                    order: ['asc'],
                     pageNumber: null,
                     pageSize: null
                 });

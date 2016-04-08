@@ -774,8 +774,8 @@ describe("Netbanking SDK",function(){
     it('retrieves list of statements of the account', done => {
        judgeSession.setNextCase('accounts.withId.statements.list').then(() => {
            return client.accounts.withId('076E1DBCCCD38729A99D93AC8D3E8273237C7E36').statements.list({
-               sort: 'statementDate',
-               order: 'asc',
+               sort: ['statementDate'],
+               order: ['asc'],
                pageNumber: null,
                pageSize: null
            });
@@ -857,8 +857,8 @@ describe("Netbanking SDK",function(){
             return judgeSession.setNextCase('accounts.withId.statements.list');
         }).then(() => {
             return response.items[0].statements.list({
-                sort: 'statementDate',
-                order: 'asc',
+                sort: ['statementDate'],
+                order: ['asc'],
                 pageNumber: null,
                 pageSize: null
             });
@@ -888,8 +888,8 @@ describe("Netbanking SDK",function(){
     it('retrieves list of statements on the sub account', done => {
         judgeSession.setNextCase('accounts.withId.subAccounts.withId.statements.list').then(() => {
             return client.accounts.withId('076E1DBCCCD38729A99D93AC8D3E8273237C7E36').subAccounts.withId('0D5F82464A77DF093858A8A5B938BEE410B4409C').statements.list({
-                sort: 'statementDate',
-                order: 'asc',
+                sort: ['statementDate'],
+                order: ['asc'],
                 pageNumber: null,
                 pageSize: null
             });            

@@ -51,8 +51,8 @@ describe("Netbanking SDK",function(){
         it('retrieves list of payments', done => {
             judgeSession.setNextCase('payments.list').then(() => {
                 return client.orders.payments.list({
-                    sort: 'transferDate',
-                    order: 'asc',
+                    sort: ['transferDate'],
+                    order: ['asc'],
                     pageNumber: null,
                     pageSize: null
                 });
