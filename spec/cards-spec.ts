@@ -498,7 +498,7 @@ describe("Netbanking SDK",function(){
         });
         
         it('actives card with a given id', done => {
-           judgeSession.setNextCase('cards.withId.actions.create').then(() => {
+           judgeSession.setNextCase('cards.withId.actions.update').then(() => {
                return client.cards.withId('33A813886442D946122C78305EC4E482DE9F574D').actions.update({
                   action: 'ACTIVATE_CARD' 
                });
@@ -522,7 +522,7 @@ describe("Netbanking SDK",function(){
                processSimpleCards(cards);
                response = cards;
            }).then(() => {
-               return judgeSession.setNextCase('cards.withId.actions.create');
+               return judgeSession.setNextCase('cards.withId.actions.update');
            }).then(() => {
                return response.items[0].actions.update({
                    action: 'ACTIVATE_CARD'
