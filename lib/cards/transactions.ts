@@ -1,6 +1,6 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
-import {AddNoteAndMarkTransactionRequest, ExportTransactionsParameters, Transaction} from '../common';
+import {AddNoteAndMarkTransactionRequest, ExportTransactionsParameters, Transaction, Signable} from '../common';
 
 /**
 * Allows to add or change a client's personal note and mark/star the card transaction as favorite/important for one specific transaction
@@ -47,6 +47,6 @@ implements CSCoreSDK.UpdateEnabled<AddNoteAndMarkTransactionRequest, AddNoteAndM
     }
 }
 
-export interface AddNoteAndMarkCardTransactionResponse {
+export interface AddNoteAndMarkCardTransactionResponse extends Signable {
     cardTransaction: Transaction;
 }
