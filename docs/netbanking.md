@@ -48,6 +48,134 @@ To get resource instances see the following code snippet.
 
 ##Usage
 
+### Pagination
+
+Resources that supports pagination implements `PaginatedListEnabled` interface (for example [`AccountsResource`](../lib/accounts/accounts.ts)). If thats the case you can (and should) pass an object with properties `pageNumber` and `pageSize` to the `list` method. There is no SDK default pagination so if you do not pass pagination parameters then you get whatever the server decides so we strongly recommend you use pagination parameters.
+
+ ```javascript
+ 
+    CSNetbankingSDK
+        .getClient()
+        .accounts
+        .list({
+            // number of the page 
+            pageNumber: 0,
+            
+            // size of the listing
+            pageSize: 10 
+        })
+        .then(function(accounts) {
+            // ...
+        });
+ 
+ ```
+
+The response from this call contains `pagination` property. `Pagination` object has properties such as `pageCount`, `hasNextPage` or `hasPrevPage`. For `Pagination` definition please see [`ResponsePagination`](https://github.com/Ceskasporiteln/cs-core-sdk-js/blob/master/lib/web-api/lists.ts).
+See full sample response below.
+
+```javascript
+
+    PaginatedListResponseStructure {
+        items: Array[10],
+        pagination: {
+            hasNextPage: true,
+            hasPrevPage: false,
+            pageCount: 13,
+            pageNumber: 0,
+            pageSize: 10,
+            nextPage: 1,
+            prevPage: null
+        },
+        nextPage: function,
+        prevPage: function
+    }
+
+```
+
+On this response you can call `nextPage` function which returns `Promise` with a next page results.
+
+```javascript
+
+    var accounts;
+    
+    CSNetbankingSDK
+        .getClient()
+        .accounts
+        .list({
+            pageNumber: 0,
+            pageSize: 10
+        }).then(function(response) => {
+            accounts = response;            
+        });
+        
+    // Do something ...
+    
+    accounts
+        .nextPage()
+        .then(function(response) => {
+            console.log(response.pagination.pageNumber); // 1
+        });
+
+```
+
+If you are on the second or latter page you can also call `prevPage` on the listing to get previous page results.
+
+```javascript
+
+    accounts
+        .prevPage()
+        .then(function(response) {
+            console.log(response.pagination.pageNumber); // 0
+        });
+
+```
+
+### Sorting
+
+Methods that support server side sorting take object with properties `sort` and `order` as a parameter. These methods' parameters interfaces extend [`Sortable`](https://github.com/Ceskasporiteln/cs-core-sdk-js/blob/master/lib/web-api/lists.ts) interface. Both `sort` and `order` parameters are optional but you obviously cannot use `order` parameter without using `sort` parameter. Available `Sort` values are dependent on individual API. `Order` can be `asc` for ascending which is also default or `desc` for descending. These parameters must be defined as array of strings. 
+
+```javascript
+
+    CSNetbankingSDK
+        .getClient()
+        .accounts
+        .list({
+            pageNumber: 0,
+            pageSize: 10,
+            sort: ['type'],
+            order: ['desc']
+        })
+        .then(function(response) {
+            // ...
+        });
+
+```
+
+You can use multiple values for sorting.
+
+```javascript
+
+    CSNetbankingSDK
+        .getClient()
+        .accounts
+        .list({
+            pageNumber: 0,
+            pageSize: 10,
+            sort: [
+                'type',
+                'id',
+            ],
+            types: [
+                'desc',
+                'asc'
+            ]
+        })
+        .then(function(response) {
+            // ...
+        });
+
+```
+
 Go to [profile.md](./profile.md) to see guide that walks you through getting detail of the current user and information about his last logins.
 
 Then you can see [accounts.md](./accounts.md) for guide that walks you through listing all current user's accounts and all the information and actions of about them.
