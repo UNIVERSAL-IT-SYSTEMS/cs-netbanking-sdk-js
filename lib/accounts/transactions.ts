@@ -8,8 +8,6 @@ import {AddNoteAndMarkTransactionRequest, AddNoteAndMarkTransactionResponse, Exp
 export class AccountTransactionsResource extends CSCoreSDK.Resource
 implements CSCoreSDK.HasInstanceResource<AccountTransactionResource> {
     
-    private WasPathReplaced: boolean = false;
-    
     /**
     * Returns individual AccountsTransactionResource with a given id
     */
@@ -29,12 +27,9 @@ implements CSCoreSDK.HasInstanceResource<AccountTransactionResource> {
         CSCoreSDK.EntityUtils.transformDatesToISO(['dateFrom', 'dateTo'], params);
         
         // insert 'cz' resource into the resource's path once because the api requires it in some resources
-        if (!this.WasPathReplaced) {
-            this._path = this.getPath().replace('/my', '/cz/my');   
-            this.WasPathReplaced = true;
-        }
+        var path = this.getPath().replace('/my', '/cz/my');   
         
-        return this._client.callApi(this._path + '/export', 'POST', params, null, null);
+        return this._client.callApi(path + '/export', 'POST', params, null, null);
     }
 }
 

@@ -17,20 +17,13 @@ implements CSCoreSDK.UpdateEnabled<PaymentBookingDateRequest, PaymentBookingDate
         payload = JSON.parse(JSON.stringify(payload));
         
         // get account's ID from passed object
-        var accountId = payload.accountId;
-
+        var params = {
+            accountId: payload.accountId  
+        };
+        
         delete payload.accountId;
 
-        var regex = /(.+?accountId=)(\w+)/;
-        
-        // add accountId to query
-        if (regex.test(this.getPath())) {
-            this._path = this.getPath().replace(regex, `$1${accountId}`);
-        } else {
-            this._path = `${this.getPath()}?accountId=${accountId}`;
-        }
-
-        return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(bookingDate => {
+        return CSCoreSDK.ResourceUtils.CallApiWithSuffix(this, null, "PUT", params, payload).then(bookingDate => {
 
             // transform ISO dates to native Date objects
             CSCoreSDK.EntityUtils.addDatesFromISO('bookingDate', bookingDate);
