@@ -60,7 +60,6 @@ implements CSCoreSDK.PaginatedListEnabled<Statement> {
     * Downloads statements file
     */
     download = (params: DownloadStatementParameters): Promise<any> => {
-        
-        return this._client.callApi(this._path + '/download', "POST", params, null, null);
+        return CSCoreSDK.ResourceUtils.CallApiWithSuffix(this, 'download', 'POST', params);
     }
 }

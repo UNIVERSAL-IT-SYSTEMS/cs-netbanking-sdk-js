@@ -29,6 +29,6 @@ implements CSCoreSDK.PaginatedListEnabled<Statement> {
     * Downloads statements file
     */
     download = (params: DownloadStatementParameters): Promise<any> => {
-        return this._client.callApi(this._path + '/signed/download', "POST", params, null, null);
+        return CSCoreSDK.ResourceUtils.CallApiWithSuffix(this, 'signed/download', 'POST', params);
     }
 }

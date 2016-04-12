@@ -53,6 +53,6 @@ implements CSCoreSDK.PaginatedListEnabled<Statement> {
      * Download PDF with statements
      */ 
     download = (params: DownloadStatementParameters) => {
-        return this._client.callApi(this._path + '/signed/download', 'POST', params, null, null);
+        return CSCoreSDK.ResourceUtils.CallApiWithSuffix(this, 'signed/download', 'POST', params);
     }
 }
