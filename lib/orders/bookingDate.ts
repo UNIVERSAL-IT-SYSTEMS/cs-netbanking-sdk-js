@@ -7,41 +7,51 @@ import {AccountNumber} from '../common';
 */
 export class PaymentBookingDateResource extends CSCoreSDK.Resource
 implements CSCoreSDK.UpdateEnabled<PaymentBookingDateRequest, PaymentBookingDateResponse> {
-    
+
     /**
     * Returns current available booking date based on the provided account and optional payment order category parameters
-    */  
+    */
     update = (payload: PaymentBookingDateRequest): Promise<PaymentBookingDateResponse> => {
+        
+        // make copy of payload
+        payload = JSON.parse(JSON.stringify(payload));
         
         // get account's ID from passed object
         var accountId = payload.accountId;
+
         delete payload.accountId;
+
+        var regex = /(.+?accountId=)(\w+)/;
         
         // add accountId to query
-        this._path = `${this.getPath()}?accountId=${accountId}`;
-        
+        if (regex.test(this.getPath())) {
+            this._path = this.getPath().replace(regex, `$1${accountId}`);
+        } else {
+            this._path = `${this.getPath()}?accountId=${accountId}`;
+        }
+
         return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(bookingDate => {
-            
+
             // transform ISO dates to native Date objects
             CSCoreSDK.EntityUtils.addDatesFromISO('bookingDate', bookingDate);
-            
+
             return bookingDate;
         })
     }
 }
 
 export interface PaymentBookingDateRequest {
-    
+
     /**
     * Account's ID
     */
     accountId: string;
-    
+
     /**
     * Receiver's account number
     */
     receiver?: AccountNumber;
-    
+
     /**
     * Payment order priority selected by user, ENUM values: URGENT (for express payments), STANDARD.
     */
@@ -49,7 +59,7 @@ export interface PaymentBookingDateRequest {
 }
 
 export interface PaymentBookingDateResponse {
-    
+
     /**
     * booking date value for provided account ID and payment order.
     */

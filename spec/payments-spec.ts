@@ -29,7 +29,17 @@ describe("Netbanking SDK",function(){
         client =  netbanking.getClient();	
         judgeSession = judge.startNewSession();
     });
-
+    
+    var bookingDatePayload = {
+        accountId: '4B2F9EBE742BCAE1E98A78E12F6FBC62464A74EE',
+        receiver: {
+            number: '123-123',
+            bankCode: '0100',
+            countryCode: 'CZ'
+        },
+        priority: 'STANDARD'
+    }
+    
     var mobilePaymentPayload = {
         paymentType: 'VODAFONE_PAYMENT',
         phoneNumber: '777952341',
@@ -187,19 +197,35 @@ describe("Netbanking SDK",function(){
             });
         });
         
-        it('returns currently available booking date', done => {
+        it('retrieves currently available booking date', done => {
             judgeSession.setNextCase('payments.bookingDate.update').then(() => {
-                return client.orders.payments.bookingDate.update({
-                    accountId: '4B2F9EBE742BCAE1E98A78E12F6FBC62464A74EE',
-                    receiver: {
-                        number: '123-123',
-                        bankCode: '0100',
-                        countryCode: 'CZ'
-                    },
-                    priority: 'STANDARD'
-                });
+                return client.orders.payments.bookingDate.update(bookingDatePayload);
             }).then(response => {
                 
+                expectDate(response, {
+                    bookingDate: '2016-03-21T00:00:00+01:00'
+                });
+                
+                done();
+            }).catch(e => {
+                logJudgeError(e);
+            });
+        });
+        
+        it('retrieves currently available booking date twice from same resource', done => {
+            var resource = client.orders.payments.bookingDate;
+            
+            judgeSession.setNextCase('payments.bookingDate.update').then(() => {
+                return resource.update(bookingDatePayload);
+            }).then(response => {
+                expectDate(response, {
+                    bookingDate: '2016-03-21T00:00:00+01:00'
+                });
+                
+                return judgeSession.setNextCase('payments.bookingDate.update');
+            }).then(() => {
+                return resource.update(bookingDatePayload);
+            }).then(response => {
                 expectDate(response, {
                     bookingDate: '2016-03-21T00:00:00+01:00'
                 });
