@@ -8,6 +8,8 @@ import {AddNoteAndMarkTransactionRequest, ExportTransactionsParameters, Transact
 export class CardTransactionsResource extends CSCoreSDK.Resource
 implements CSCoreSDK.HasInstanceResource<CardTransactionResource> {
     
+    private WasPathReplaced: boolean = false;
+    
     /**
      * Returns CardTransactionResource for a given id
      */
@@ -26,8 +28,11 @@ implements CSCoreSDK.HasInstanceResource<CardTransactionResource> {
         // transform Date objects to ISO strings
         CSCoreSDK.EntityUtils.transformDatesToISO(['dateFrom', 'dateTo'], params);
         
-        // insert 'cz' resource into the resource's path because the api requires it in some resources
-        this._path = this.getPath().replace('/my', '/cz/my');
+        // insert 'cz' resource into the resource's path once because the api requires it in some resources
+        if (!this.WasPathReplaced) {
+            this._path = this.getPath().replace('/my', '/cz/my');
+            this.WasPathReplaced = true; 
+        }
         
         return this._client.callApi(this._path + '/export', 'POST', params, null, null);
     }

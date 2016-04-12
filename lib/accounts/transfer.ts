@@ -8,6 +8,13 @@ import {Signable, Amount} from '../common';
 export class AccountTransferResource extends CSCoreSDK.Resource
 implements CSCoreSDK.UpdateEnabled<TransferRequest, TransferResponse> {
     
+    constructor(basePath: string, client: CSCoreSDK.WebApiClient) {    
+        super(basePath, client);
+        
+        // insert 'cz' resource into the resource's path because the api requires it in some resources
+        this._path = this.getPath().replace('/my', '/cz/my');
+    }
+    
     /**
     * Revolves the loan. Currently only REVOLVING_LOAN subtype is supported.
     */  
@@ -15,9 +22,6 @@ implements CSCoreSDK.UpdateEnabled<TransferRequest, TransferResponse> {
         
         // transform Date objects to ISO strings
         CSCoreSDK.EntityUtils.transformDatesToSimpleISO('transferDate', payload);
-        
-        // insert 'cz' resource into the resource's path because the api requires it in some resources
-        this._path = this.getPath().replace('/my', '/cz/my');
         
         return CSCoreSDK.ResourceUtils.CallUpdate(this, payload);
     }

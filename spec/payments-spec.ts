@@ -29,6 +29,36 @@ describe("Netbanking SDK",function(){
         client =  netbanking.getClient();	
         judgeSession = judge.startNewSession();
     });
+
+    var mobilePaymentPayload = {
+        paymentType: 'VODAFONE_PAYMENT',
+        phoneNumber: '777952341',
+        sender: {
+            iban: 'CZ1208000000002059930033',
+            bic: 'GIBACZPX',
+            number: '2059930033',
+            bankCode: '0800',
+            countryCode: 'CZ'
+        },
+        amount: {
+            value: 3000,
+            precision: 0,
+            currency: 'CZK'
+        },
+        confirmationPhoneNumber: '777952341'
+    }
+    
+    function processMobilePayment(response) {
+        expectToBe(response, {
+            paymentType: 'VODAFONE_PAYMENT',
+            phoneNumber: '777952341'
+        });
+        
+        expectToBe(response.signInfo, {
+            state: 'OPEN',
+            signId: '1671744209'
+        });
+    }
     
     function processPayment(payment) {
         
@@ -304,33 +334,27 @@ describe("Netbanking SDK",function(){
         
         it('recharges the credit on prepaid card', done => {
             judgeSession.setNextCase('payments.mobile.create').then(() => {
-                return client.orders.payments.mobile.create({
-                    paymentType: 'VODAFONE_PAYMENT',
-                    phoneNumber: '777952341',
-                    sender: {
-                        iban: 'CZ1208000000002059930033',
-                        bic: 'GIBACZPX',
-                        number: '2059930033',
-                        bankCode: '0800',
-                        countryCode: 'CZ'
-                    },
-                    amount: {
-                        value: 3000,
-                        precision: 0,
-                        currency: 'CZK'
-                    },
-                    confirmationPhoneNumber: '777952341'
-                });
+                return client.orders.payments.mobile.create(mobilePaymentPayload);
             }).then(response => {
-                expectToBe(response, {
-                    paymentType: 'VODAFONE_PAYMENT',
-                    phoneNumber: '777952341'
-                });
+                processMobilePayment(response);
                 
-                expectToBe(response.signInfo, {
-                    state: 'OPEN',
-                    signId: '1671744209'
-                });
+                done();
+            }).catch(e => {
+                logJudgeError(e);
+            });
+        });
+        
+        it('recharges the credit on prepaid card twice from same resource', done => {
+            var resource = client.orders.payments.mobile;
+            
+            judgeSession.setNextCase('payments.mobile.create').then(() => {
+                return resource.create(mobilePaymentPayload);
+            }).then(response => {
+                processMobilePayment(response);
+                
+                return judgeSession.setNextCase('payments.mobile.create');
+            }).then(response => {
+                processMobilePayment(response);
                 
                 done();
             }).catch(e => {

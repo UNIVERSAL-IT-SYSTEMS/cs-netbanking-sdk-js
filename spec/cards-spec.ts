@@ -29,6 +29,21 @@ describe("Netbanking SDK",function(){
         client =  netbanking.getClient();	
         judgeSession = judge.startNewSession();
     });
+
+    var exportTransactionsPayload = {
+        dateFrom: new Date(1999, 8, 27),
+        dateTo: new Date(2000, 8, 27),
+        fields: [
+            'bookingDate',
+            'partner',
+            'amount',
+            'currency'
+        ],
+        showAccountName: true,
+        showAccountNumber: true,
+        showTimespan: true,
+        showBalance: true
+    }
     
     function processCard(card) {
         
@@ -393,21 +408,29 @@ describe("Netbanking SDK",function(){
         
         it('exports transactions into pdf', done => {
             judgeSession.setNextCase('cards.withId.transactions.export').then(() => {
-                return client.cards.withId('33A813886442D946122C78305EC4E482DE9F574D').transactions.export({
-                    dateFrom: new Date(1999, 8, 27),
-                    dateTo: new Date(2000, 8, 27),
-                    fields: [
-                        'bookingDate',
-                        'partner',
-                        'amount',
-                        'currency'
-                    ],
-                    showAccountName: true,
-                    showAccountNumber: true,
-                    showTimespan: true,
-                    showBalance: true
-                });
+                return client.cards.withId('33A813886442D946122C78305EC4E482DE9F574D').transactions.export(exportTransactionsPayload);
             }).then(response => {
+                expect(response).toBeTruthy();
+                
+                done();
+            }).catch(e => {
+                logJudgeError(e);
+            });
+        });
+        
+        it('exports transactions into pdf twice from same resource', done => {
+            var resource = client.cards.withId('33A813886442D946122C78305EC4E482DE9F574D').transactions;
+            
+            judgeSession.setNextCase('cards.withId.transactions.export').then(() => {
+                return resource.export(exportTransactionsPayload);
+            }).then(response => {
+                expect(response).toBeTruthy();
+
+                return judgeSession.setNextCase('cards.withId.transactions.export');
+            }).then(() => {
+                return resource.export(exportTransactionsPayload);
+            }).then(response => {
+                expect(response).toBeTruthy();
                 
                 done();
             }).catch(e => {
@@ -440,6 +463,8 @@ describe("Netbanking SDK",function(){
                     showBalance: true
                 });
             }).then(response => {
+                expect(response).toBeTruthy();
+                
                 done(); 
             }).catch(e => {
                 logJudgeError(e);
@@ -820,6 +845,7 @@ describe("Netbanking SDK",function(){
                     statementId: '06029392819b0198'
                 });
             }).then(response => {
+                expect(response).toBeTruthy();
                 
                 done();
             }).catch(e => {

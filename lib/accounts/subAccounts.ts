@@ -35,14 +35,18 @@ export class SubAccountResource extends CSCoreSDK.InstanceResource {
 export class SubAccountStatementsResource extends CSCoreSDK.Resource
 implements CSCoreSDK.PaginatedListEnabled<Statement> {
     
+    constructor(basePath: string, client: CSCoreSDK.WebApiClient) {    
+        super(basePath, client);
+        
+        // insert 'cz' resource into the resource's path because the api requires it in some resources
+        this._path = this.getPath().replace('/my', '/cz/my');
+    }
+    
     /**
     * Returns all subaccount's statements in a promise
     */
     list = (params?: NetbankingParameters): Promise<StatementList> => {
-        
-        // insert 'cz' resource into the resource's path because the api requires it in some resources
-        this._path = this.getPath().replace('/my', '/cz/my');
-        
+           
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'statements', params, response => {
             
             // transform ISO dates to native Date objects
@@ -56,9 +60,6 @@ implements CSCoreSDK.PaginatedListEnabled<Statement> {
     * Downloads statements file
     */
     download = (params: DownloadStatementParameters): Promise<any> => {
-        
-        // insert 'cz' resource into the resource's path because the api requires it in some resources
-        this._path = this.getPath().replace('/my', '/cz/my');
         
         return this._client.callApi(this._path + '/download', "POST", params, null, null);
     }

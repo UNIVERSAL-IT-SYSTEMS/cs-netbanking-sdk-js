@@ -71,7 +71,7 @@ describe("Netbanking SDK",function(){
                 done();
             }).catch(e => {
                 logJudgeError(e);
-            })
+            });
         });   
     });
 });

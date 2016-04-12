@@ -7,13 +7,17 @@ import CSCoreSDK = require('cs-core-sdk');
 export class AccountServicesResource extends CSCoreSDK.Resource
 implements CSCoreSDK.PaginatedListEnabled<Service> {
     
+    constructor(basePath: string, client: CSCoreSDK.WebApiClient) {    
+        super(basePath, client);
+        
+        // insert 'cz' resource into the resource's path because the api requires it in some resources
+        this._path = this.getPath().replace('/my', '/cz/my');
+    }
+    
     /**
     * Fetches the services and returns them in a promise
     */
     list = (params?: ServiceParameters): Promise<ServiceList> => {
-        
-        // insert 'cz' resource into the resource's path because the api requires it in some resources
-        this._path = this.getPath().replace('/my', '/cz/my');
         
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'services', params, response => {
             
