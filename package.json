@@ -1,0 +1,56 @@
+{
+  "name": "cs-netbanking-sdk",
+  "version": "0.1.2",
+  "description": "CS Netbanking SDK for the CSAS Web Api",
+  "main": "dist/cs-netbanking-sdk.node.js",
+  "scripts": {
+    "dist": "npm run build && node node_modules/cs-core-sdk/tooling/dist",
+    "build": "node node_modules/cs-core-sdk/tooling/clean && webpack && webpack --target-browser && npm run generate-tsd",
+    "test": "npm run build && npm run test-node-run && npm run test-browser-run",
+    "test-node": "npm run build && npm run test-node-run",
+    "test-browser": "npm run build  && npm run test-browser-run",
+    "generate-tsd": "node node_modules/cs-core-sdk/tooling/generate-tsd cs-netbanking-sdk CSNetbankingSDK netbanking",
+    "test-node-run": "webpack --config ./webpack.test.config.js && jasmine ./spec/build/tests.node.js",
+    "test-browser-run": "webpack --config ./webpack.test.config.js --target-browser && node ./node_modules/karma/bin/karma start karma.conf.js --single-run",
+    "preversion": "npm run build && npm run test-node-run && npm run test-browser-run",
+    "version": "npm run dist && git add -A dist",
+    "postversion": "git push && git push --tags"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ceskasporiteln/cs-netbanking-js.git"
+  },
+  "author": "Petr Bažout <petr.bazout@applifting.cz>",
+  "license": "Proprietary",
+  "bugs": {
+    "url": "https://github.com/Ceskasporiteln/cs-netbanking-js/issues"
+  },
+  "homepage": "https://github.com/Ceskasporiteln/cs-netbanking-js#readme",
+  "devDependencies": {
+    "dts-generator": "1.6.0-pre.1",
+    "jasmine": "^2.4.1",
+    "jasmine-ajax": "^3.2.0",
+    "jasmine-core": "^2.4.1",
+    "karma": "^0.13.19",
+    "karma-chrome-launcher": "^0.2.1",
+    "karma-jasmine": "^0.3.6",
+    "karma-sourcemap-loader": "^0.3.6",
+    "karma-webpack": "^1.7.0",
+    "json-loader": "^0.5.3",
+    "nock": "^2.17.0",
+    "replace": "^0.3.0",
+    "serve": "^1.4.0",
+    "shelljs": "^0.5.3",
+    "ts-loader": "^0.7.2",
+    "typescript": "^1.7.5",
+    "underscore": "^1.8.3",
+    "webpack": "^1.12.9"
+  },
+  "dependencies": {
+    "cs-core-sdk": "git+ssh:git@github.com:Ceskasporiteln/cs-core-sdk-js.git#v0.3.0",
+    "axios": "^0.8.1",
+    "node-uuid": "^1.4.3",
+    "source-map-support": "^0.3.3",
+    "standard-error": "^1.1.0"
+  }
+}
