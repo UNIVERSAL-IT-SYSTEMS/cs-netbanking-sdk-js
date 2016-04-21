@@ -104,6 +104,4 @@ Contributions are more than welcome!
 Please read our [contribution guide](CONTRIBUTING.md) to learn how to contribute to this project.
 
 #Terms and License
-Please read our [terms](TERMS.md) and [license](LICENSE.md)
-#Terms and License
-Please read our [terms](TERMS.md) and [license](LICENSE.md)
+Please read our [terms](TERMS.md) and [license](LICENSE.md).
