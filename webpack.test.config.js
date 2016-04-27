@@ -57,6 +57,9 @@ module.exports = {
     libraryTarget: libraryTarget
   },
   target: target,
+  node: {
+    __dirname: true
+  },
   resolve: {
     extensions: ['', '.webpack.js', '.web.js', '.ts', '.js']
   },
@@ -65,6 +68,7 @@ module.exports = {
   devtool: 'source-map',
   // Add minification
   plugins: plugins,
+  
   module: {
     loaders: [
       { test: /\.json$/, loader: "json-loader" },

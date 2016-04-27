@@ -204,6 +204,7 @@ declare module CSNetbankingSDK {
 	* Get information about the account's services
 	*/
 	export class AccountServicesResource extends CSCoreSDK.Resource implements CSCoreSDK.PaginatedListEnabled<Service> {
+	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
 	    /**
 	    * Fetches the services and returns them in a promise
 	    */
@@ -302,6 +303,7 @@ declare module CSNetbankingSDK {
 	* Get information about the account's repayments
 	*/
 	export class AccountRepaymentsResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<Repayment> {
+	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
 	    /**
 	    * Fetches the repayments and returns them in a promise
 	    */
@@ -370,6 +372,7 @@ declare module CSNetbankingSDK {
 	* List all subaccount's statements
 	*/
 	export class SubAccountStatementsResource extends CSCoreSDK.Resource implements CSCoreSDK.PaginatedListEnabled<Statement> {
+	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
 	    /**
 	    * Returns all subaccount's statements in a promise
 	    */
@@ -417,6 +420,7 @@ declare module CSNetbankingSDK {
 	* Revolve a loan
 	*/
 	export class AccountTransferResource extends CSCoreSDK.Resource implements CSCoreSDK.UpdateEnabled<TransferRequest, TransferResponse> {
+	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
 	    /**
 	    * Revolves the loan. Currently only REVOLVING_LOAN subtype is supported.
 	    */
@@ -966,7 +970,7 @@ declare module CSNetbankingSDK {
 	    */
 	    update: (payload: AddNoteAndMarkTransactionRequest) => Promise<AddNoteAndMarkCardTransactionResponse>;
 	}
-	export interface AddNoteAndMarkCardTransactionResponse {
+	export interface AddNoteAndMarkCardTransactionResponse extends Signable {
 	    cardTransaction: Transaction;
 	}
 
@@ -1177,7 +1181,7 @@ declare module CSNetbankingSDK {
 	    /**
 	     * Download PDF with statements
 	     */
-	    download: (params: DownloadStatementParameters) => Promise<any>;
+	    download: (params: DownloadStatementParameters) => Promise<{}>;
 	}
 
 }
@@ -1611,6 +1615,10 @@ declare module CSNetbankingSDK {
 	* Recharging the credit available on prepaid cards provided by Vodafone, T-Mobile or O2.
 	*/
 	export class PaymentMobileResource extends CSCoreSDK.Resource implements CSCoreSDK.CreateEnabled<MobilePaymentsRequest, MobilePaymentsResponse> {
+	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
+	    /**
+	    * Recharge the credit on prepaid card
+	    */
 	    create: (payload: MobilePaymentsRequest) => Promise<MobilePaymentsResponse>;
 	}
 	export interface MobilePaymentsRequest {

@@ -377,21 +377,21 @@ module.exports =
 	*/
 	var AccountServicesResource = (function (_super) {
 	    __extends(AccountServicesResource, _super);
-	    function AccountServicesResource() {
+	    function AccountServicesResource(basePath, client) {
 	        var _this = this;
-	        _super.apply(this, arguments);
+	        _super.call(this, basePath, client);
 	        /**
 	        * Fetches the services and returns them in a promise
 	        */
 	        this.list = function (params) {
-	            // insert 'cz' resource into the resource's path because the api requires it in some resources
-	            _this._path = _this.getPath().replace('/my', '/cz/my');
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'services', params, function (response) {
 	                // transform ISO dates to native Date objects
 	                CSCoreSDK.EntityUtils.addDatesToItems(['dateFrom', 'dateTo'], response);
 	                return response;
 	            });
 	        };
+	        // insert 'cz' resource into the resource's path because the api requires it in some resources
+	        this._path = this.getPath().replace('/my', '/cz/my');
 	    }
 	    return AccountServicesResource;
 	}(CSCoreSDK.Resource));
@@ -451,21 +451,21 @@ module.exports =
 	*/
 	var AccountRepaymentsResource = (function (_super) {
 	    __extends(AccountRepaymentsResource, _super);
-	    function AccountRepaymentsResource() {
+	    function AccountRepaymentsResource(basePath, client) {
 	        var _this = this;
-	        _super.apply(this, arguments);
+	        _super.call(this, basePath, client);
 	        /**
 	        * Fetches the repayments and returns them in a promise
 	        */
 	        this.list = function () {
-	            // insert 'cz' resource into the resource's path because the api requires it in some resources
-	            _this._path = _this.getPath().replace('/my', '/cz/my');
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'repayments', null).then(function (response) {
 	                // transform ISO dates to native Date objects
 	                CSCoreSDK.EntityUtils.addDatesToItems('repaymentDate', response);
 	                return response;
 	            });
 	        };
+	        // insert 'cz' resource into the resource's path because the api requires it in some resources
+	        this._path = this.getPath().replace('/my', '/cz/my');
 	    }
 	    return AccountRepaymentsResource;
 	}(CSCoreSDK.Resource));
@@ -507,7 +507,7 @@ module.exports =
 	        * Downloads statements file
 	        */
 	        this.download = function (params) {
-	            return _this._client.callApi(_this._path + '/signed/download', "POST", params, null, null);
+	            return CSCoreSDK.ResourceUtils.CallApiWithSuffix(_this, 'signed/download', 'POST', params);
 	        };
 	    }
 	    return AccountStatementsResource;
@@ -571,15 +571,13 @@ module.exports =
 	*/
 	var SubAccountStatementsResource = (function (_super) {
 	    __extends(SubAccountStatementsResource, _super);
-	    function SubAccountStatementsResource() {
+	    function SubAccountStatementsResource(basePath, client) {
 	        var _this = this;
-	        _super.apply(this, arguments);
+	        _super.call(this, basePath, client);
 	        /**
 	        * Returns all subaccount's statements in a promise
 	        */
 	        this.list = function (params) {
-	            // insert 'cz' resource into the resource's path because the api requires it in some resources
-	            _this._path = _this.getPath().replace('/my', '/cz/my');
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'statements', params, function (response) {
 	                // transform ISO dates to native Date objects
 	                CSCoreSDK.EntityUtils.addDatesToItems('statementDate', response);
@@ -590,10 +588,10 @@ module.exports =
 	        * Downloads statements file
 	        */
 	        this.download = function (params) {
-	            // insert 'cz' resource into the resource's path because the api requires it in some resources
-	            _this._path = _this.getPath().replace('/my', '/cz/my');
-	            return _this._client.callApi(_this._path + '/download', "POST", params, null, null);
+	            return CSCoreSDK.ResourceUtils.CallApiWithSuffix(_this, 'download', 'POST', params);
 	        };
+	        // insert 'cz' resource into the resource's path because the api requires it in some resources
+	        this._path = this.getPath().replace('/my', '/cz/my');
 	    }
 	    return SubAccountStatementsResource;
 	}(CSCoreSDK.Resource));
@@ -634,9 +632,9 @@ module.exports =
 	            CSCoreSDK.EntityUtils.transformArrayParamsToString(params, 'fields');
 	            // transform Date objects to ISO strings
 	            CSCoreSDK.EntityUtils.transformDatesToISO(['dateFrom', 'dateTo'], params);
-	            // insert 'cz' resource into the resource's path because the api requires it in some resources
-	            _this._path = _this.getPath().replace('/my', '/cz/my');
-	            return _this._client.callApi(_this._path + '/export', 'POST', params, null, null);
+	            // insert 'cz' resource into the resource's path once because the api requires it in some resources
+	            var path = _this.getPath().replace('/my', '/cz/my');
+	            return _this._client.callApi(path + "/export", 'POST', params, null, null);
 	        };
 	    }
 	    return AccountTransactionsResource;
@@ -679,19 +677,19 @@ module.exports =
 	*/
 	var AccountTransferResource = (function (_super) {
 	    __extends(AccountTransferResource, _super);
-	    function AccountTransferResource() {
+	    function AccountTransferResource(basePath, client) {
 	        var _this = this;
-	        _super.apply(this, arguments);
+	        _super.call(this, basePath, client);
 	        /**
 	        * Revolves the loan. Currently only REVOLVING_LOAN subtype is supported.
 	        */
 	        this.update = function (payload) {
 	            // transform Date objects to ISO strings
 	            CSCoreSDK.EntityUtils.transformDatesToSimpleISO('transferDate', payload);
-	            // insert 'cz' resource into the resource's path because the api requires it in some resources
-	            _this._path = _this.getPath().replace('/my', '/cz/my');
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload);
 	        };
+	        // insert 'cz' resource into the resource's path because the api requires it in some resources
+	        this._path = this.getPath().replace('/my', '/cz/my');
 	    }
 	    return AccountTransferResource;
 	}(CSCoreSDK.Resource));
@@ -1028,9 +1026,9 @@ module.exports =
 	            CSCoreSDK.EntityUtils.transformArrayParamsToString(params, 'fields');
 	            // transform Date objects to ISO strings
 	            CSCoreSDK.EntityUtils.transformDatesToISO(['dateFrom', 'dateTo'], params);
-	            // insert 'cz' resource into the resource's path because the api requires it in some resources
-	            _this._path = _this.getPath().replace('/my', '/cz/my');
-	            return _this._client.callApi(_this._path + '/export', 'POST', params, null, null);
+	            // insert 'cz' resource into the resource's path once because the api requires it in some resources
+	            var path = _this.getPath().replace('/my', '/cz/my');
+	            return _this._client.callApi(path + "/export", 'POST', params, null, null);
 	        };
 	    }
 	    return CardTransactionsResource;
@@ -1271,7 +1269,7 @@ module.exports =
 	         * Download PDF with statements
 	         */
 	        this.download = function (params) {
-	            return _this._client.callApi(_this._path + '/signed/download', 'POST', params, null, null);
+	            return CSCoreSDK.ResourceUtils.CallApiWithSuffix(_this, 'signed/download', 'POST', params);
 	        };
 	    }
 	    return CardStatementsResource;
@@ -1446,12 +1444,14 @@ module.exports =
 	        * Returns current available booking date based on the provided account and optional payment order category parameters
 	        */
 	        this.update = function (payload) {
+	            // make copy of payload
+	            payload = JSON.parse(JSON.stringify(payload));
 	            // get account's ID from passed object
-	            var accountId = payload.accountId;
+	            var params = {
+	                accountId: payload.accountId
+	            };
 	            delete payload.accountId;
-	            // add accountId to query
-	            _this._path = _this.getPath() + "?accountId=" + accountId;
-	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (bookingDate) {
+	            return CSCoreSDK.ResourceUtils.CallApiWithSuffix(_this, null, "PUT", params, payload).then(function (bookingDate) {
 	                // transform ISO dates to native Date objects
 	                CSCoreSDK.EntityUtils.addDatesFromISO('bookingDate', bookingDate);
 	                return bookingDate;
@@ -1582,14 +1582,17 @@ module.exports =
 	*/
 	var PaymentMobileResource = (function (_super) {
 	    __extends(PaymentMobileResource, _super);
-	    function PaymentMobileResource() {
+	    function PaymentMobileResource(basePath, client) {
 	        var _this = this;
-	        _super.apply(this, arguments);
+	        _super.call(this, basePath, client);
+	        /**
+	        * Recharge the credit on prepaid card
+	        */
 	        this.create = function (payload) {
-	            // insert 'cz' resource into the resource's path because the api requires it in some resources
-	            _this._path = _this.getPath().replace('/my', '/cz/my');
 	            return CSCoreSDK.ResourceUtils.CallCreate(_this, payload);
 	        };
+	        // insert 'cz' resource into the resource's path because the api requires it in some resources
+	        this._path = this.getPath().replace('/my', '/cz/my');
 	    }
 	    return PaymentMobileResource;
 	}(CSCoreSDK.Resource));
