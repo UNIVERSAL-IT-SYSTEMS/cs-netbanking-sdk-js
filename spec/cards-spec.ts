@@ -3,12 +3,16 @@
 /// <reference path="../typings/tsd.d.ts"/>
 var CoreSDK = require('cs-core-sdk');
 var netbanking  = require('../build/cs-netbanking-sdk.node.js');
+var fs = require('fs');
+var path = require('path');
+var _ = <UnderscoreStatic>(require('underscore'));
 var judge : CSCoreSDK.Judge = null;
 var judgeSession : CSCoreSDK.JudgeSession = null;
 var client : CSNetbankingSDK.NetbankingClient = null;
 var expectToBe = CoreSDK.TestUtils.expectToBe;
 var expectDate = CoreSDK.TestUtils.expectDate;
 var logJudgeError = CoreSDK.TestUtils.logJudgeError;
+var file = fs.readFileSync(path.join(__dirname, 'test-pdf.pdf'));
 
 describe("Netbanking SDK",function(){
     var originalTimeoutInterval = null;
@@ -411,6 +415,7 @@ describe("Netbanking SDK",function(){
                 return client.cards.withId('33A813886442D946122C78305EC4E482DE9F574D').transactions.export(exportTransactionsPayload);
             }).then(response => {
                 expect(response).toBeTruthy();
+                expect(_.isEqual(file.toString(), response.toString())).toBe(true);
                 
                 done();
             }).catch(e => {
@@ -425,12 +430,14 @@ describe("Netbanking SDK",function(){
                 return resource.export(exportTransactionsPayload);
             }).then(response => {
                 expect(response).toBeTruthy();
+                expect(_.isEqual(file.toString(), response.toString())).toBe(true);
 
                 return judgeSession.setNextCase('cards.withId.transactions.export');
             }).then(() => {
                 return resource.export(exportTransactionsPayload);
             }).then(response => {
                 expect(response).toBeTruthy();
+                expect(_.isEqual(file.toString(), response.toString())).toBe(true);
                 
                 done();
             }).catch(e => {
@@ -464,6 +471,7 @@ describe("Netbanking SDK",function(){
                 });
             }).then(response => {
                 expect(response).toBeTruthy();
+                expect(_.isEqual(file.toString(), response.toString())).toBe(true);
                 
                 done(); 
             }).catch(e => {
@@ -846,6 +854,7 @@ describe("Netbanking SDK",function(){
                 });
             }).then(response => {
                 expect(response).toBeTruthy();
+                expect(_.isEqual(file.toString(), response.toString())).toBe(true);
                 
                 done();
             }).catch(e => {
