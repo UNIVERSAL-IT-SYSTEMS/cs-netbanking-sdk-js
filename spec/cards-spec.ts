@@ -11,6 +11,7 @@ var client : CSNetbankingSDK.NetbankingClient = null;
 var expectToBe = CoreSDK.TestUtils.expectToBe;
 var expectDate = CoreSDK.TestUtils.expectDate;
 var logJudgeError = CoreSDK.TestUtils.logJudgeError;
+import {testAuthorizationTac, testStateOpen, testStateDone} from './helpers';
 try {
     var fs = require('fs');
     var file = fs.readFileSync(path.join(__dirname, 'test-pdf.pdf'));    
@@ -546,11 +547,33 @@ describe("Netbanking SDK",function(){
                   action: 'ACTIVATE_CARD' 
                });
            }).then(response => {
-               expectToBe(response.signInfo, {
-                   state: 'OPEN',
-                   signId: '1883293134'
-               });
+            //    expectToBe(response.signInfo, {
+            //        state: 'OPEN',
+            //        signId: '1883293134'
+            //    });
                
+               done();
+           }).catch(e => {
+               logJudgeError(e);
+           });
+        });
+        
+        it('actives card with a given id and signs the order', done => {
+           judgeSession.setNextCase('signing.tac.cards.actions.update').then(() => {
+               return client.cards.withId('3FB37388FC58076DEAD3DE282E075592A299B596').actions.update({
+                  action: 'ACTIVATE_CARD' 
+               });
+           }).then(response => {
+               testStateOpen(response.signing);
+               return response.signing.getInfo();
+               
+           }).then(response => {
+               testAuthorizationTac(response);
+               return response.startSigningWithTac();
+           }).then(response => {
+               return response.finishSigning('00000000');
+           }).then(response => {
+               testStateDone(response);
                done();
            }).catch(e => {
                logJudgeError(e);
