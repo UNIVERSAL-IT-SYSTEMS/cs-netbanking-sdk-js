@@ -11,6 +11,7 @@ var expectToBe = CoreSDK.TestUtils.expectToBe;
 var expectDate = CoreSDK.TestUtils.expectDate;
 var logJudgeError = CoreSDK.TestUtils.logJudgeError;
 var _ = <UnderscoreStatic>(require('underscore'));
+import {testAuthorizationTac, testStateOpen, testStateDone} from './helpers';
 try {
     var fs = require('fs');
     var file = fs.readFileSync(path.join(__dirname, 'test-pdf.pdf'));    
@@ -25,7 +26,7 @@ describe("Netbanking SDK",function(){
         judge = new CoreSDK.Judge();
         //Because Judge starts slowly on the first request
         originalTimeoutInterval = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
     });
     
     afterAll(function(){
@@ -822,6 +823,35 @@ describe("Netbanking SDK",function(){
                 signId: '151112531008724'
             });
             
+            done();
+        }).catch(e => {
+            logJudgeError(e);
+        });
+    });
+    
+    it('revolves loan disbursement and signs it', done => {
+        judgeSession.setNextCase('signing.tac.accounts.transfer.update').then(() => {
+            return client.accounts.withId('3FB37388FC58076DEAD3DE282E075592A299B596').transfer.update({
+                type: "REVOLVING_LOAN_DISBURSEMENT",
+                amount: {
+                    value: 1000000,
+                    precision: 2,
+                    currency: "CZK"
+                },
+                transferDate: new Date("2015-02-28"),
+                recipientNote: "moje prve cerpanie z penize na klik"
+            });
+        }).then(response => {
+            testStateOpen(response.signing);
+            return response.signing.getInfo();
+        }).then(response => {
+            testAuthorizationTac(response);
+            return response.startSigningWithTac();
+        }).then(response => {
+            
+            return response.finishSigning('00000000');
+        }).then(response => {
+            testStateDone(response);
             done();
         }).catch(e => {
             logJudgeError(e);
