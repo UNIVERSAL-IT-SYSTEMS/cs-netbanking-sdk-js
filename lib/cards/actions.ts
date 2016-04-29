@@ -13,11 +13,15 @@ implements CSCoreSDK.UpdateEnabled<CardActionRequest, CardActionResponse> {
      * Issues various actions on a single card  
      */ 
     update = (payload: CardActionRequest): Promise<CardActionResponse> => {
-        return CSCoreSDK.ResourceUtils.CallUpdate(this, payload);
+        return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(response => {
+            
+            CSCoreSDK.SigningUtils.createSingingObject(<CSCoreSDK.HasSignInfo>response, this.getClient(), this.getPath());
+            return response;
+        })
     } 
 }
 
-export interface CardActionResponse extends Signable {}
+export interface CardActionResponse extends CSCoreSDK.Signable {}
 
 export interface CardActionRequest {
     
