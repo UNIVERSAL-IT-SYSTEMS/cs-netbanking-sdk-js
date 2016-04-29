@@ -3,7 +3,6 @@
 /// <reference path="../typings/tsd.d.ts"/>
 var CoreSDK = require('cs-core-sdk');
 var netbanking  = require('../build/cs-netbanking-sdk.node.js');
-var fs = require('fs');
 var path = require('path');
 var judge : CSCoreSDK.Judge = null;
 var judgeSession : CSCoreSDK.JudgeSession = null;
@@ -12,7 +11,12 @@ var expectToBe = CoreSDK.TestUtils.expectToBe;
 var expectDate = CoreSDK.TestUtils.expectDate;
 var logJudgeError = CoreSDK.TestUtils.logJudgeError;
 var _ = <UnderscoreStatic>(require('underscore'));
-var file = fs.readFileSync(path.join(__dirname, 'test-pdf.pdf'));
+try {
+    var fs = require('fs');
+    var file = fs.readFileSync(path.join(__dirname, 'test-pdf.pdf'));    
+} catch(e) {
+    console.log('Testing browser');
+}
 
 describe("Netbanking SDK",function(){
     var originalTimeoutInterval = null;
@@ -47,6 +51,14 @@ describe("Netbanking SDK",function(){
         showAccountNumber: true,
         showTimespan: true,
         showBalance: true
+    }
+    
+    function testFile(response) {
+        expect(response).toBeTruthy();
+        expect(response.length).toBe(7850);
+        if(file) {
+            expect(_.isEqual(file.toString(), response.toString())).toBe(true);   
+        }
     }
         
     function processTransfer(response) {
@@ -566,8 +578,8 @@ describe("Netbanking SDK",function(){
         judgeSession.setNextCase('accounts.withId.transactions.export').then(() => {
             return client.accounts.withId('076E1DBCCCD38729A99D93AC8D3E8273237C7E36').transactions.export(exportTransactionsPayload);
         }).then(response => {
-            expect(response).toBeTruthy();
-            expect(_.isEqual(file.toString(), response.toString())).toBe(true);
+            
+            testFile(response);
             
             done();
         }).catch(e => {
@@ -581,15 +593,13 @@ describe("Netbanking SDK",function(){
         judgeSession.setNextCase('accounts.withId.transactions.export').then(() => {
             return resource.export(exportTransactionsPayload);
         }).then(response => {
-            expect(response).toBeTruthy();
-            expect(_.isEqual(file.toString(), response.toString())).toBe(true);
+            testFile(response);
             
             return judgeSession.setNextCase('accounts.withId.transactions.export');
         }).then(() => {
             return resource.export(exportTransactionsPayload);
         }).then(response => {
-            expect(response).toBeTruthy();
-            expect(_.isEqual(file.toString(), response.toString())).toBe(true);
+            testFile(response);
             
             done();
         }).catch(e => {
@@ -626,8 +636,7 @@ describe("Netbanking SDK",function(){
                 showBalance: true
            });
        }).then(response => {
-           expect(response).toBeTruthy();
-           expect(_.isEqual(file.toString(), response.toString())).toBe(true);
+           testFile(response);
            
            done();
        }).catch(e => {
@@ -1000,8 +1009,8 @@ describe("Netbanking SDK",function(){
                statementId: '06029392819b0198'
            });
        }).then(response => {
-           expect(response).toBeTruthy();
-           expect(_.isEqual(file.toString(), response.toString())).toBe(true);
+           
+           testFile(response);
            
            done();
        }).catch(e => {
@@ -1114,8 +1123,7 @@ describe("Netbanking SDK",function(){
                statementId: '201302520130621180000'
            });
        }).then(response => {
-           expect(response).toBeTruthy();
-           expect(_.isEqual(file.toString(), response.toString())).toBe(true);
+           testFile(response);
            
            done();
        }).catch(e => {
@@ -1132,8 +1140,7 @@ describe("Netbanking SDK",function(){
                 statementId: '201302520130621180000'
             });
         }).then(response => {
-            expect(response).toBeTruthy();
-            expect(_.isEqual(file.toString(), response.toString())).toBe(true);
+            testFile(response);
             
             return judgeSession.setNextCase('accounts.withId.subAccounts.withId.statements.download');
         }).then(() => {
@@ -1142,8 +1149,7 @@ describe("Netbanking SDK",function(){
                 statementId: '201302520130621180000'
             });
         }).then(response => {
-            expect(response).toBeTruthy();
-            expect(_.isEqual(file.toString(), response.toString())).toBe(true);
+            testFile(response);
             
             done();
         }).catch(e => {
