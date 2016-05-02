@@ -57,6 +57,7 @@ implements CSCoreSDK.UpdateEnabled<DomesticPaymentUpdateRequest, DomesticPayment
             
             // transform ISO dates to native Date objects
             CSCoreSDK.EntityUtils.addDatesFromISO(['cz-orderingDate', 'executionDate', 'modificationDate', 'transferDate'], response);
+            CSCoreSDK.SigningUtils.createSingingObject(<CSCoreSDK.HasSignInfo>response, this.getClient(), `${this.getClient().getPath()}/orders/payments/${(<DomesticPaymentResponse>response).id}`);
             
             return response;
         });

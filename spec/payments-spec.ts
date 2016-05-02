@@ -335,7 +335,7 @@ describe("Netbanking SDK",function(){
             });
         });
         
-        it('updates domesic payment', done => {
+        it('updates domestic payment', done => {
             judgeSession.setNextCase('payments.domestic.update').then(() => {
                 return client.orders.payments.domestic.withId('1154226597').update({
                     senderName: "Vrba",
@@ -368,6 +368,46 @@ describe("Netbanking SDK",function(){
                     receiverName: 'Vojtíšková Alena' 
                 });
                  
+                done();
+            }).catch(e => {
+                logJudgeError(e);
+            });
+        });
+        
+        it('updates domestic payment and signs the order', done => {
+            var info;
+            judgeSession.setNextCase('signing.tac.payments.domestic.withId.update').then(() => {
+                return client.orders.payments.domestic.withId('160429968927553').update({
+                    "senderName": "Vrba",
+                    "sender": {
+                        "number": "2059930033",
+                        "bankCode": "0800"
+                    },
+                    "receiverName": "Vojtíšková Alena",
+                    "receiver": {
+                        "number": "2328489013",
+                        "bankCode": "0800"
+                    },
+                    "amount": {
+                        "value": 110,
+                        "precision": 2,
+                        "currency": "CZK"
+                    }
+                });
+            }).then(response => {
+                info = response;
+                testStateOpen(response.signing);
+                return response.signing.getInfo();
+            }).then(response => {
+                testAuthorizationTac(response);
+                testAuthorizationTac(info.signing);
+                return response.startSigningWithTac();
+            }).then(response => {
+                testStateOpen(info.signing);
+                return response.finishSigning('00000000');
+            }).then(response => {
+                testStateDone(response);
+                testStateDone(info.signing);
                 done();
             }).catch(e => {
                 logJudgeError(e);
