@@ -1,6 +1,6 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
-import {Amount, Signable} from '../common';
+import {Amount} from '../common';
 import {Confirmation} from './delivery';
 
 /**
@@ -30,7 +30,8 @@ implements CSCoreSDK.ListEnabled<CardLimit>, CSCoreSDK.UpdateEnabled<ChangeCardL
             
             // transform ISO dates to native Date objects
             CSCoreSDK.EntityUtils.addDatesToItems('temporaryLimitExpiration', response, 'limits');
-            
+           
+            CSCoreSDK.SigningUtils.createSingingObject(<CSCoreSDK.HasSignInfo>response, this.getClient(), this.getPath()); 
             return response;
         })
     }
@@ -71,7 +72,7 @@ export interface CardLimit {
     bankLimit?: Amount;
 }
 
-export interface ChangeCardLimitsResponse extends Signable {
+export interface ChangeCardLimitsResponse extends CSCoreSDK.Signable {
     
     /**
     * Card's limits
