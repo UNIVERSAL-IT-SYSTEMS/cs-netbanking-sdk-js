@@ -65,10 +65,7 @@ describe("Netbanking SDK",function(){
             phoneNumber: '777952341'
         });
         
-        expectToBe(response.signInfo, {
-            state: 'OPEN',
-            signId: '1671744209'
-        });
+        testStateOpen(response.signing);
     }
     
     function processPayment(payment) {
@@ -500,6 +497,8 @@ describe("Netbanking SDK",function(){
                 processMobilePayment(response);
                 
                 return judgeSession.setNextCase('payments.mobile.create');
+            }).then(response => {
+                return resource.create(mobilePaymentPayload);
             }).then(response => {
                 processMobilePayment(response);
                 

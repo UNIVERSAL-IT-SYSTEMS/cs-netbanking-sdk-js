@@ -63,10 +63,8 @@ describe("Netbanking SDK",function(){
     }
         
     function processTransfer(response) {
-        expectToBe(response.signInfo, {
-            state: 'OPEN',
-            signId: '151112531008724'
-        });
+        expect(response.signing).toBeTruthy();
+        testStateOpen(response.signing);
     }
     
     function processSimpleAccounts(accounts) {
@@ -818,10 +816,7 @@ describe("Netbanking SDK",function(){
                 recipientNote: "moje prve cerpanie z penize na klik"
             });
         }).then(response => {
-            expectToBe(response.signInfo, {
-                state: 'OPEN',
-                signId: '151112531008724'
-            });
+            testStateOpen(response.signing);
             
             done();
         }).catch(e => {

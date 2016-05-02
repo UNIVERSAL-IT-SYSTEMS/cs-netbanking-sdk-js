@@ -547,10 +547,7 @@ describe("Netbanking SDK",function(){
                   action: 'ACTIVATE_CARD' 
                });
            }).then(response => {
-            //    expectToBe(response.signInfo, {
-            //        state: 'OPEN',
-            //        signId: '1883293134'
-            //    });
+               testStateOpen(response.signing);
                
                done();
            }).catch(e => {
@@ -594,10 +591,8 @@ describe("Netbanking SDK",function(){
                    action: 'ACTIVATE_CARD'
                });
            }).then(response => {
-               expectToBe(response.signInfo, {
-                   state: 'OPEN',
-                   signId: '1883293134'
-               });
+               testStateOpen(response.signing);
+               
                done();
            }).catch(e => {
                logJudgeError(e);
@@ -620,10 +615,7 @@ describe("Netbanking SDK",function(){
                     ]
                 });
             }).then(response => {
-                expectToBe(response.signInfo, {
-                    state: 'OPEN',
-                    signId: '1480132234'
-                });
+                testStateOpen(response.signing);
                 
                 expectToBe(response.limits[0], {
                     limitType: 'ATM',
@@ -800,10 +792,7 @@ describe("Netbanking SDK",function(){
                     }
                 });
             }).then(response => {
-                expectToBe(response.signInfo, {
-                    state: 'OPEN',
-                    signId: '151112531008554'
-                });
+                testStateOpen(response.signing);
                 
                 done();
             }).catch(e => {
@@ -836,10 +825,7 @@ describe("Netbanking SDK",function(){
                     }
                 });
             }).then(card => {
-                expectToBe(response.signInfo, {
-                    state: 'OPEN',
-                    signId: '151112531008554'
-                });
+                testStateOpen(card.signing);
                 
                 done();
             }).catch(e => {
