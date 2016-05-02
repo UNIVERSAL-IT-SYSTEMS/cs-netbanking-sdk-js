@@ -781,6 +781,43 @@ describe("Netbanking SDK",function(){
             });
         });
         
+        it('pays up a credit card debt and signs the order', done => {
+            var info;
+            judgeSession.setNextCase('signing.tac.cards.transfer.update').then(() => {
+                return client.cards.withId('3FB37388FC58076DEAD3DE282E075592A299B596').transfer.update({
+                    "type": "DEBT_REPAYMENT",
+                    "sender": {
+                        "accountno": {
+                            "number": "2326573123",
+                            "bankCode": "0800"
+                        }
+                    },
+                    "amount": {
+                        "value": 500000,
+                        "precision": 2,
+                        "currency": "CZK"
+                    }
+                });
+            }).then(response => {
+                info = response;
+                testStateOpen(response.signing);
+                return response.signing.getInfo();
+            }).then(response => {
+                testAuthorizationTac(response);
+                testAuthorizationTac(info.signing);
+                return response.startSigningWithTac();
+            }).then(response => {
+                testStateOpen(info.signing);
+                return response.finishSigning('00000000');
+            }).then(response => {
+                testStateDone(info.signing);
+                testStateDone(response);
+                done();
+            }).catch(e => {
+                logJudgeError(e);
+            });
+        });
+        
         it('retrieves list of statements of cards account', done => {
             judgeSession.setNextCase('cards.withId.accounts.withId.statements.list').then(() => {
                 return client.cards.withId('33A813886442D946122C78305EC4E482DE9F574D').accounts.withId('076E1DBCCCD38729A99D93AC8D3E8273237C7E36').statements.list({
