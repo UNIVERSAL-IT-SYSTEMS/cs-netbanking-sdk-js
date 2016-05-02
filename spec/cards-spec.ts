@@ -705,6 +705,7 @@ describe("Netbanking SDK",function(){
             }).catch(e => {
                 expect(e.response.data.errors[0].error).toBe('FIELD_INVALID');
                 expect(e.response.data.errors[0].scope).toBe('authorizationType');
+                testStateOpen(info.signing);
                 done();
             });
         });
