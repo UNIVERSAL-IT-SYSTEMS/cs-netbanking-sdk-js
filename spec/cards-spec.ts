@@ -646,14 +646,14 @@ describe("Netbanking SDK",function(){
             var info;
             judgeSession.setNextCase('signing.tac.cards.limits.update').then(() => {
                 return client.cards.withId('3FB37388FC58076DEAD3DE282E075592A299B596').limits.update({
-                    "limits": [
+                    limits: [
                         {
-                            "limitType": "ATM",
-                            "limitPeriod": "5D",
-                            "limit": {
-                                "value": 1100000,
-                                "precision": 2,
-                                "currency": "CZK"
+                            limitType: "ATM",
+                            limitPeriod: "5D",
+                            limit: {
+                                value: 1100000,
+                                precision: 2,
+                                currency: "CZK"
                             }
                         }
                     ]
@@ -682,14 +682,14 @@ describe("Netbanking SDK",function(){
             var info;
             judgeSession.setNextCase('signing.tac.cards.limits.update.authorizationType.invalid').then(() => {
                 return client.cards.withId('3FB37388FC58076DEAD3DE282E075592A299B596').limits.update({
-                    "limits": [
+                    limits: [
                         {
-                            "limitType": "ATM",
-                            "limitPeriod": "5D",
-                            "limit": {
-                                "value": 1100000,
-                                "precision": 2,
-                                "currency": "CZK"
+                            limitType: "ATM",
+                            limitPeriod: "5D",
+                            limit: {
+                                value: 1100000,
+                                precision: 2,
+                                currency: "CZK"
                             }
                         }
                     ]
@@ -714,14 +714,14 @@ describe("Netbanking SDK",function(){
             var info;
             judgeSession.setNextCase('signing.tac.cards.limits.update.OTP.invalid').then(() => {
                 return client.cards.withId('3FB37388FC58076DEAD3DE282E075592A299B596').limits.update({
-                    "limits": [
+                    limits: [
                         {
-                            "limitType": "ATM",
-                            "limitPeriod": "5D",
-                            "limit": {
-                                "value": 1100000,
-                                "precision": 2,
-                                "currency": "CZK"
+                            limitType: "ATM",
+                            limitPeriod: "5D",
+                            limit: {
+                                value: 1100000,
+                                precision: 2,
+                                currency: "CZK"
                             }
                         }
                     ]
@@ -851,17 +851,17 @@ describe("Netbanking SDK",function(){
             var info;
             judgeSession.setNextCase('signing.tac.cards.transfer.update').then(() => {
                 return client.cards.withId('3FB37388FC58076DEAD3DE282E075592A299B596').transfer.update({
-                    "type": "DEBT_REPAYMENT",
-                    "sender": {
-                        "accountno": {
-                            "number": "2326573123",
-                            "bankCode": "0800"
+                    type: "DEBT_REPAYMENT",
+                    sender: {
+                        accountno: {
+                            number: "2326573123",
+                            bankCode: "0800"
                         }
                     },
-                    "amount": {
-                        "value": 500000,
-                        "precision": 2,
-                        "currency": "CZK"
+                    amount: {
+                        value: 500000,
+                        precision: 2,
+                        currency: "CZK"
                     }
                 });
             }).then(response => {

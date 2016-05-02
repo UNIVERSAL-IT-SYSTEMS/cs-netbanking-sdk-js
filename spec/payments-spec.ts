@@ -299,20 +299,20 @@ describe("Netbanking SDK",function(){
             var info;
             judgeSession.setNextCase('signing.tac.payments.domestic.create').then(() => {
                 return client.orders.payments.domestic.create({
-                    "senderName": "Vrba",
-                    "sender": {
-                        "number": "2328489013",
-                        "bankCode": "0800"
+                    senderName: "Vrba",
+                    sender: {
+                        number: "2328489013",
+                        bankCode: "0800"
                     },
-                    "receiverName": "Vojtíšková",
-                    "receiver": {
-                        "number": "2059930033",
-                        "bankCode": "0800"
+                    receiverName: "Vojtíšková",
+                    receiver: {
+                        number: "2059930033",
+                        bankCode: "0800"
                     },
-                    "amount": {
-                        "value": 110,
-                        "precision": 2,
-                        "currency": "CZK"
+                    amount: {
+                        value: 110,
+                        precision: 2,
+                        currency: "CZK"
                     }
                 });
             }).then(response => {
@@ -378,20 +378,20 @@ describe("Netbanking SDK",function(){
             var info;
             judgeSession.setNextCase('signing.tac.payments.domestic.withId.update').then(() => {
                 return client.orders.payments.domestic.withId('160429968927553').update({
-                    "senderName": "Vrba",
-                    "sender": {
-                        "number": "2059930033",
-                        "bankCode": "0800"
+                    senderName: "Vrba",
+                    sender: {
+                        number: "2059930033",
+                        bankCode: "0800"
                     },
-                    "receiverName": "Vojtíšková Alena",
-                    "receiver": {
-                        "number": "2328489013",
-                        "bankCode": "0800"
+                    receiverName: "Vojtíšková Alena",
+                    receiver: {
+                        number: "2328489013",
+                        bankCode: "0800"
                     },
-                    "amount": {
-                        "value": 110,
-                        "precision": 2,
-                        "currency": "CZK"
+                    amount: {
+                        value: 110,
+                        precision: 2,
+                        currency: "CZK"
                     }
                 });
             }).then(response => {
@@ -455,19 +455,19 @@ describe("Netbanking SDK",function(){
             var info;
             judgeSession.setNextCase('signing.tac.orders.payments.mobile.create').then(() => {
                 return client.orders.payments.mobile.create({
-                    "paymentType": "VODAFONE_PAYMENT",
-                    "phoneNumber": "777952341",
-                    "sender": {
-                        "iban": "CZ1208000000002059930033",
-                        "bic": "GIBACZPX",
-                        "number": "2059930033",
-                        "bankCode": "0800",
-                        "countryCode": "CZ"
+                    paymentType: "VODAFONE_PAYMENT",
+                    phoneNumber: "777952341",
+                    sender: {
+                        iban: "CZ1208000000002059930033",
+                        bic: "GIBACZPX",
+                        number: "2059930033",
+                        bankCode: "0800",
+                        countryCode: "CZ"
                     },
-                    "amount": {
-                        "value": 3000,
-                        "precision": 0,
-                        "currency": "CZK"
+                    amount: {
+                        value: 3000,
+                        precision: 0,
+                        currency: "CZK"
                     },
                     "confirmationPhoneNumber": "777952341"
                 });
