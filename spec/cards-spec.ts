@@ -678,6 +678,37 @@ describe("Netbanking SDK",function(){
             });
         });
         
+        it('changes cards limits and fails to sign the order', done => {
+            var info;
+            judgeSession.setNextCase('signing.tac.cards.limits.update.authorizationType.invalid').then(() => {
+                return client.cards.withId('3FB37388FC58076DEAD3DE282E075592A299B596').limits.update({
+                    "limits": [
+                        {
+                            "limitType": "ATM",
+                            "limitPeriod": "5D",
+                            "limit": {
+                                "value": 1100000,
+                                "precision": 2,
+                                "currency": "CZK"
+                            }
+                        }
+                    ]
+                });
+            }).then(response => {
+                info = response;
+                testStateOpen(response.signing);
+                return response.signing.getInfo();
+            }).then(response => {
+                testAuthorizationTac(response);
+                testAuthorizationTac(info.signing);
+                return response.startSigningWithCaseMobile();
+            }).catch(e => {
+                expect(e.response.data.errors[0].error).toBe('FIELD_INVALID');
+                expect(e.response.data.errors[0].scope).toBe('authorizationType');
+                done();
+            });
+        });
+        
         it('retrieves 3D secure info', done => {
             judgeSession.setNextCase('cards.withId.secure3D.get').then(() => {
                 return client.cards.withId('33A813886442D946122C78305EC4E482DE9F574D').secure3d.get();
