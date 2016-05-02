@@ -1,6 +1,6 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
-import {Amount, Signable} from '../common';
+import {Amount} from '../common';
 
 /**
 * Recharging the credit available on prepaid cards provided by Vodafone, T-Mobile or O2.
@@ -20,7 +20,12 @@ implements CSCoreSDK.CreateEnabled<MobilePaymentsRequest, MobilePaymentsResponse
     */
     create = (payload: MobilePaymentsRequest): Promise<MobilePaymentsResponse> => {
         
-        return CSCoreSDK.ResourceUtils.CallCreate(this, payload);
+        return CSCoreSDK.ResourceUtils.CallCreate(this, payload).then(response => {
+            
+            CSCoreSDK.SigningUtils.createSingingObject(<CSCoreSDK.HasSignInfo>response, this.getClient(), this.getPath());
+            
+            return response;
+        })
     }
 }
 
@@ -57,7 +62,7 @@ export interface MobilePaymentsRequest {
     confirmationPhoneNumber: string;   
 }
 
-export interface MobilePaymentsResponse extends MobilePaymentsRequest, Signable {}
+export interface MobilePaymentsResponse extends MobilePaymentsRequest, CSCoreSDK.Signable {}
 
 export interface MobilePaymentSender {
     

@@ -451,6 +451,46 @@ describe("Netbanking SDK",function(){
             });
         });
         
+        it('recharges the credit on prepaid card and signs the order', done => {
+            var info;
+            judgeSession.setNextCase('signing.tac.orders.payments.mobile.create').then(() => {
+                return client.orders.payments.mobile.create({
+                    "paymentType": "VODAFONE_PAYMENT",
+                    "phoneNumber": "777952341",
+                    "sender": {
+                        "iban": "CZ1208000000002059930033",
+                        "bic": "GIBACZPX",
+                        "number": "2059930033",
+                        "bankCode": "0800",
+                        "countryCode": "CZ"
+                    },
+                    "amount": {
+                        "value": 3000,
+                        "precision": 0,
+                        "currency": "CZK"
+                    },
+                    "confirmationPhoneNumber": "777952341"
+                });
+            }).then(response => {
+                info = response;
+                testStateOpen(response.signing);
+                return response.signing.getInfo();
+            }).then(response => {
+                testAuthorizationTac(response);
+                testAuthorizationTac(info.signing);
+                return response.startSigningWithTac();               
+            }).then(response => {
+                testStateOpen(info.signing);
+                return response.finishSigning('00000000');
+            }).then(response => {
+                testStateDone(response);
+                testStateDone(info.signing);
+                done();
+            }).catch(e => {
+                logJudgeError(e);
+            });
+        });
+        
         it('recharges the credit on prepaid card twice from same resource', done => {
             var resource = client.orders.payments.mobile;
             
