@@ -154,7 +154,18 @@ describe("Netbanking SDK",function(){
         
         it('retrieves a list of cards', done => {
             judgeSession.setNextCase('cards.list').then(() => {
-                return client.cards.list();
+                return client.cards.list({
+                    pageNumber: null,
+                    pageSize: null,
+                    sort: [
+                        'id',
+                        'product'
+                    ],
+                    order: [
+                        'asc',
+                        'desc'
+                    ]
+                });
             }).then(cards => {
                 
                 processSimpleCards(cards);
@@ -231,7 +242,18 @@ describe("Netbanking SDK",function(){
         it('retrieves cards detail by using convenience method on cards listing', done => {
             var response;
             judgeSession.setNextCase('cards.list').then(() => {
-                return client.cards.list();
+                return client.cards.list({
+                    pageNumber: null,
+                    pageSize: null,
+                    sort: [
+                        'id',
+                        'product'
+                    ],
+                    order: [
+                        'asc',
+                        'desc'
+                    ]
+                });
             }).then(cards => {
                 processSimpleCards(cards);
                 response = cards;
@@ -273,7 +295,18 @@ describe("Netbanking SDK",function(){
         it('updates alias of a card by using convenience method on cards listing', done => {
             var response;
             judgeSession.setNextCase('cards.list').then(() => {
-                return client.cards.list();
+               return client.cards.list({
+                    pageNumber: null,
+                    pageSize: null,
+                    sort: [
+                        'id',
+                        'product'
+                    ],
+                    order: [
+                        'asc',
+                        'desc'
+                    ]
+                });
             }).then(cards => {
                 processSimpleCards(cards);
                 response = cards;
@@ -326,7 +359,18 @@ describe("Netbanking SDK",function(){
         it('retrieves current delivery settings of a card by using convenience method on cards listing', done => {
             var response;
             judgeSession.setNextCase('cards.list').then(() => {
-                return client.cards.list();
+                return client.cards.list({
+                    pageNumber: null,
+                    pageSize: null,
+                    sort: [
+                        'id',
+                        'product'
+                    ],
+                    order: [
+                        'asc',
+                        'desc'
+                    ]
+                });
             }).then(cards => {
                 processSimpleCards(cards);
                 response = cards;
@@ -378,7 +422,18 @@ describe("Netbanking SDK",function(){
         it('updates current delivery mode to branch by convenience method on cards listing', done => {
             var response;
             judgeSession.setNextCase('cards.list').then(() => {
-                return client.cards.list();
+                return client.cards.list({
+                    pageNumber: null,
+                    pageSize: null,
+                    sort: [
+                        'id',
+                        'product'
+                    ],
+                    order: [
+                        'asc',
+                        'desc'
+                    ]
+                });
             }).then(cards => {
                 processSimpleCards(cards);
                 response = cards;
@@ -460,7 +515,18 @@ describe("Netbanking SDK",function(){
         it('exports transactions into pdf by using convenience method on cards listing', done => {
             var response;
             judgeSession.setNextCase('cards.list').then(() => {
-                return client.cards.list();
+                return client.cards.list({
+                    pageNumber: null,
+                    pageSize: null,
+                    sort: [
+                        'id',
+                        'product'
+                    ],
+                    order: [
+                        'asc',
+                        'desc'
+                    ]
+                });
             }).then(cards => {
                 processSimpleCards(cards);
                 response = cards;
@@ -516,7 +582,18 @@ describe("Netbanking SDK",function(){
         it('retrieves limits of a card  by using convenience method on cards listing', done => {
             var response;
             judgeSession.setNextCase('cards.list').then(() => {
-                return client.cards.list();
+                return client.cards.list({
+                    pageNumber: null,
+                    pageSize: null,
+                    sort: [
+                        'id',
+                        'product'
+                    ],
+                    order: [
+                        'asc',
+                        'desc'
+                    ]
+                });
             }).then(cards => {
                 processSimpleCards(cards);
                 response = cards;
@@ -580,7 +657,18 @@ describe("Netbanking SDK",function(){
         it('actives card by using convenience method on cards listing', done => {
            var response;
            judgeSession.setNextCase('cards.list').then(() => {
-               return client.cards.list();
+               return client.cards.list({
+                   pageNumber: null,
+                   pageSize: null,
+                   sort: [
+                       'id',
+                       'product'
+                   ],
+                   order: [
+                       'asc',
+                       'desc'
+                   ]
+               });
            }).then(cards => {
                processSimpleCards(cards);
                response = cards;
@@ -755,7 +843,18 @@ describe("Netbanking SDK",function(){
         it('retrieves 3D secure info by convenience method on cards listing', done => {
             var response;
             judgeSession.setNextCase('cards.list').then(() => {
-                return client.cards.list();
+                return client.cards.list({
+                    pageNumber: null,
+                    pageSize: null,
+                    sort: [
+                        'id',
+                        'product'
+                    ],
+                    order: [
+                        'asc',
+                        'desc'
+                    ]
+                });
             }).then(cards => {
                 processSimpleCards(cards);
                 response = cards;
@@ -803,7 +902,18 @@ describe("Netbanking SDK",function(){
         it('pays up a credit card debt by convenience method', done => {
             var response;
             judgeSession.setNextCase('cards.list').then(() => {
-                return client.cards.list();
+                return client.cards.list({
+                    pageNumber: null,
+                    pageSize: null,
+                    sort: [
+                        'id',
+                        'product'
+                    ],
+                    order: [
+                        'asc',
+                        'desc'
+                    ]
+                });
             }).then(cards => {
                 processSimpleCards(cards);
                 response = cards;
@@ -910,7 +1020,18 @@ describe("Netbanking SDK",function(){
         it('retrieves list of statements of cards account by convenience method on cards listing', done => {
             var response;
             judgeSession.setNextCase('cards.list').then(() => {
-                return client.cards.list();
+                return client.cards.list({
+                    pageNumber: null,
+                    pageSize: null,
+                    sort: [
+                        'id',
+                        'product'
+                    ],
+                    order: [
+                        'asc',
+                        'desc'
+                    ]
+                });
             }).then(cards => {
                 processSimpleCards(cards);
                 response = cards;
