@@ -29,7 +29,7 @@ export class NetbankingClient extends CSCoreSDK.WebApiClient {
      * @param context WebApiContext object that allows for data sharing between clients
      */
     constructor(config: CSCoreSDK.WebApiConfiguration, context: CSCoreSDK.WebApiContext) {
-        super(config, context, '/api/v3/netbanking/my');
+        super(config, '/api/v3/netbanking/my');
     }
     
    /**
