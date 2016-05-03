@@ -46,6 +46,8 @@ implements CSCoreSDK.PaginatedListEnabled<Statement> {
     * Returns all subaccount's statements in a promise
     */
     list = (params?: NetbankingParameters): Promise<StatementList> => {
+        
+        CSCoreSDK.EntityUtils.transformArrayParamsToString(params, ['sort', 'order']);
            
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'statements', params, response => {
             
