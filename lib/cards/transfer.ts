@@ -15,7 +15,7 @@ implements CSCoreSDK.UpdateEnabled<PayUpCreditCardRequest, PayUpCreditCardRespon
         return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(response => {
             
             // Remove signInfo from response and add SigningObject with key signing
-            CSCoreSDK.SigningUtils.createSigningObject(<CSCoreSDK.HasSignInfo>response, this.getClient(), this.getPath());
+            CSCoreSDK.SigningUtils.createSigningObject(response, this.getClient(), this.getPath());
             
             return response;
         })

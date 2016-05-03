@@ -32,7 +32,7 @@ implements CSCoreSDK.ListEnabled<CardLimit>, CSCoreSDK.UpdateEnabled<ChangeCardL
             CSCoreSDK.EntityUtils.addDatesToItems('temporaryLimitExpiration', response, 'limits');
             
            // Remove signInfo from response and add SigningObject with key signing
-            CSCoreSDK.SigningUtils.createSigningObject(<CSCoreSDK.HasSignInfo>response, this.getClient(), this.getPath());
+            CSCoreSDK.SigningUtils.createSigningObject(response, this.getClient(), this.getPath());
              
             return response;
         })
