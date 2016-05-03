@@ -22,7 +22,9 @@ implements CSCoreSDK.CreateEnabled<DomesticPaymentCreateRequest, DomesticPayment
             // transform ISO dates to native Date objects
             CSCoreSDK.EntityUtils.addDatesFromISO(['cz-orderingDate', 'executionDate', 'modificationDate', 'transferDate'], response);
             
+            // Remove signInfo from response and add SigningObject with key signing
             CSCoreSDK.SigningUtils.createSingingObject(<CSCoreSDK.HasSignInfo>response, this.getClient(), `${this.getClient().getPath()}/orders/payments/${(<DomesticPaymentResponse>response).id}`);
+            
             return response;
         });
     }
@@ -57,6 +59,8 @@ implements CSCoreSDK.UpdateEnabled<DomesticPaymentUpdateRequest, DomesticPayment
             
             // transform ISO dates to native Date objects
             CSCoreSDK.EntityUtils.addDatesFromISO(['cz-orderingDate', 'executionDate', 'modificationDate', 'transferDate'], response);
+            
+            // Remove signInfo from response and add SigningObject with key signing
             CSCoreSDK.SigningUtils.createSingingObject(<CSCoreSDK.HasSignInfo>response, this.getClient(), `${this.getClient().getPath()}/orders/payments/${(<DomesticPaymentResponse>response).id}`);
             
             return response;

@@ -30,6 +30,7 @@ implements CSCoreSDK.HasInstanceResource<PaymentResource>, CSCoreSDK.PaginatedLi
     */  
     list = (params?: NetbankingParameters): Promise<PaymentList> => {
         
+        // transform "sort" and "order" parameters to comma separated list from array
         CSCoreSDK.EntityUtils.transformArrayParamsToString(params, ['sort', 'order']);
         
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'order', params, response => {

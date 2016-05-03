@@ -30,8 +30,10 @@ implements CSCoreSDK.ListEnabled<CardLimit>, CSCoreSDK.UpdateEnabled<ChangeCardL
             
             // transform ISO dates to native Date objects
             CSCoreSDK.EntityUtils.addDatesToItems('temporaryLimitExpiration', response, 'limits');
-           
-            CSCoreSDK.SigningUtils.createSingingObject(<CSCoreSDK.HasSignInfo>response, this.getClient(), this.getPath()); 
+            
+           // Remove signInfo from response and add SigningObject with key signing
+            CSCoreSDK.SigningUtils.createSingingObject(<CSCoreSDK.HasSignInfo>response, this.getClient(), this.getPath());
+             
             return response;
         })
     }
