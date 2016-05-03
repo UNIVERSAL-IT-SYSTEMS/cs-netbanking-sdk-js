@@ -16,7 +16,7 @@ implements CSCoreSDK.UpdateEnabled<CardActionRequest, CardActionResponse> {
         return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(response => {
             
             // Remove signInfo from response and add SigningObject with key signing
-            CSCoreSDK.SigningUtils.createSingingObject(<CSCoreSDK.HasSignInfo>response, this.getClient(), this.getPath());
+            CSCoreSDK.SigningUtils.createSigningObject(<CSCoreSDK.HasSignInfo>response, this.getClient(), this.getPath());
             
             return response;
         })
