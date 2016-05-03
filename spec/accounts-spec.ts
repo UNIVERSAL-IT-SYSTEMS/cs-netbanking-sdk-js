@@ -230,7 +230,15 @@ describe("Netbanking SDK",function(){
               return client.accounts.list({
                   type: 'CURRENT',
                   pageNumber: null,
-                  pageSize: null
+                  pageSize: null,
+                  sort: [
+                    'iban',
+                    'balance'
+                  ],
+                  order: [
+                    'asc',
+                    'desc'
+                  ]
               });
           }).then(accounts => {
               
@@ -328,7 +336,15 @@ describe("Netbanking SDK",function(){
                return client.accounts.list({
                    type: 'CURRENT',
                    pageNumber: null,
-                   pageSize: null
+                   pageSize: null,
+                   sort: [
+                    'iban',
+                    'balance'
+                   ],
+                   order: [
+                    'asc',
+                    'desc'
+                   ]
                });
            }).then(accounts => {
                processSimpleAccounts(accounts);
@@ -388,7 +404,15 @@ describe("Netbanking SDK",function(){
                return client.accounts.list({
                    type: 'CURRENT',
                    pageNumber: null,
-                   pageSize: null
+                   pageSize: null,
+                   sort: [
+                    'iban',
+                    'balance'
+                   ],
+                   order: [
+                    'asc',
+                    'desc'
+                   ]
                });
            }).then(accounts => {
                processSimpleAccounts(accounts);
@@ -440,7 +464,15 @@ describe("Netbanking SDK",function(){
                 return client.accounts.list({
                     type: 'CURRENT',
                     pageNumber: null,
-                    pageSize: null
+                    pageSize: null,
+                    sort: [
+                    'iban',
+                    'balance'
+                   ],
+                   order: [
+                    'asc',
+                    'desc'
+                   ]
                 });
             }).then(accounts => {
                 
@@ -612,7 +644,15 @@ describe("Netbanking SDK",function(){
            return client.accounts.list({
                type: 'CURRENT',
                pageNumber: null,
-               pageSize: null
+               pageSize: null,
+               sort: [
+                   'iban',
+                   'balance'
+                ],
+                order: [
+                    'asc',
+                    'desc'
+                ]
            });
        }).then(accounts => {
            processSimpleAccounts(accounts);
@@ -713,7 +753,15 @@ describe("Netbanking SDK",function(){
             return client.accounts.list({
                 type: 'CURRENT',
                 pageNumber: null,
-                pageSize: null
+                pageSize: null,
+                sort: [
+                    'iban',
+                    'balance'
+                ],
+                order: [
+                    'asc',
+                    'desc'
+                ]
             });
         }).then(accounts => {
             processSimpleAccounts(accounts);
@@ -796,7 +844,15 @@ describe("Netbanking SDK",function(){
             return client.accounts.list({
                 type: 'CURRENT',
                 pageNumber: null,
-                pageSize: null
+                pageSize: null,
+                sort: [
+                    'iban',
+                    'balance'
+                ],
+                order: [
+                    'asc',
+                    'desc'
+                ]
             });
         }).then(accounts => {
             processSimpleAccounts(accounts);
@@ -891,7 +947,15 @@ describe("Netbanking SDK",function(){
             return client.accounts.list({
                 type: 'CURRENT',
                 pageNumber: null,
-                pageSize: null
+                pageSize: null,
+                sort: [
+                    'iban',
+                    'balance'
+                ],
+                order: [
+                    'asc',
+                    'desc'
+                ]
             });
         }).then(accounts => {
             processSimpleAccounts(accounts);
@@ -1003,7 +1067,15 @@ describe("Netbanking SDK",function(){
             return client.accounts.list({
                 type: 'CURRENT',
                 pageNumber: null,
-                pageSize: null
+                pageSize: null,
+                sort: [
+                    'iban',
+                    'balance'
+                ],
+                order: [
+                    'asc',
+                    'desc'
+                ]
             });
         }).then(accounts => {
             processSimpleAccounts(accounts);
