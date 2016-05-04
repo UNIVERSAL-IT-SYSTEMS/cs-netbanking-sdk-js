@@ -90,5 +90,5 @@ The last method that [`SigningObject`](https://github.com/Ceskasporiteln/cs-core
 If the call was successful then the `state` value should be `DONE`.
 
 ```javascript
-    expect(FilledSigningObject.isDone()).toEqual(true);
+    expect(filledSigningObject.isDone()).toEqual(true);
 ```
