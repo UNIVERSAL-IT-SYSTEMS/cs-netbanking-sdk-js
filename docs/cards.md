@@ -2,7 +2,7 @@
 
 This guide walks you through retrieving current user's cards and information like limits, transactions, transfers etc. You can also issue card's actions or updating or adding and marking a transaction.
 
-## 1. List all of current user's cards
+## List all of current user's cards
 
 You can list all of current user's cards by calling the `list` method on `CardsResource`. The method takes object with properties such as `pageSize` or `sortBy` as a parameter. See all supported parameters in `Parameters` interface in [`common.ts`](../lib/common.ts). For full response see `CardsList` interface in [`cards.ts`](../lib/cards/cards.ts). 
 
@@ -23,7 +23,7 @@ You can list all of current user's cards by calling the `list` method on `CardsR
 
 ```
 
-## 2. Get card's detail
+## Get card's detail
 
 You can get detail of the individual card by calling the `withId` method on `CardsResource` with id as a parameter and then calling the `get` method. For full response see `Card` interface in [`cards.ts`](../lib/cards/cards.ts).
 
@@ -40,7 +40,7 @@ You can get detail of the individual card by calling the `withId` method on `Car
 
 ```
 
-## 3. Update card's settings
+## Update card's settings
 
 Update card's settings by getting the `CardResource` and then calling the `update` method on it. The method takes object with properties as a parameter. Currently only alias can be changed. For all supported parameters see `ChangeCardsSettingsRequest` interface and `ChangeCardsSettingsResponse` interface for full response.
 
@@ -59,7 +59,7 @@ Update card's settings by getting the `CardResource` and then calling the `updat
 
 ```
 
-## 4. Get card's delivery information
+## Get card's delivery information
 
 Get card's delivery by getting the `CardsDeliveryResource` resource and then calling the `get` method. For full response see `DeliveryListing` interface in [`delivery.ts`](../lib/cards/delivery.ts).
 
@@ -76,8 +76,8 @@ Get card's delivery by getting the `CardsDeliveryResource` resource and then cal
         });
 
 ```
-
-## 5. Update card's delivery
+<!-- 
+## Update card's delivery
 
 Update card's delivery by getting the `CardsDeliveryResource` resource and then calling the `update` method. The `update` method takes object with properties as a parameter. For all supported parameters see `ChangeDeliverySettingsRequest` interface and for full response see `ChangeDeliverySettingsResponse` interface in [`delivery.ts`](../lib/cards/delivery.ts). 
 
@@ -103,8 +103,9 @@ Update card's delivery by getting the `CardsDeliveryResource` resource and then 
         });
 
 ```
+-->
 
-## 6. Add or change note and mark transaction
+## Add or change note and mark transaction
 
 Add or change note and mark transaction by getting the `CardsTransactionsResource` and calling the `update` method on it. The method takes object with properties as a parameter. See all supported parameters in `AddNoteAndMarkTransactionsRequest` interface and `AddNoteAndMarkCardsTransactionsResponse` interface for full response in [`transactions.ts`](../lib/cards/transactions.ts).
 
@@ -128,7 +129,7 @@ Add or change note and mark transaction by getting the `CardsTransactionsResourc
 
 ```
 
-## 7. Export transaction history
+## Export transaction history
 
 Extract transaction history into signed PDF by getting the `CardsTransactionsResource` and calling the `export` method on it. The method takes object with properties as a parameter. See all supported parameters in `ExportTransactionsParameters` interface in [`common.ts`](../lib/common.ts).
 
@@ -147,7 +148,7 @@ Extract transaction history into signed PDF by getting the `CardsTransactionsRes
 
 ```
 
-## 8. Issue card's action
+## Issue card's action
 
 Issue card's action by getting the `CardsActionsResource` and calling the `update` method on it. Currently supported actions are reissue pin, lock card, unlock card, activate card, set automatic card replacement on, set automatic card replacement off and replacement card request. Possibility to issue action is controlled by flags and features on particular card:
 
@@ -177,7 +178,7 @@ For supported parameters see `CardsActionsRequest` interface and `CardsActionsRe
 
 ```
 
-## 9. Get card's limits
+## Get card's limits
 
 Get card's limits by getting the `CardsLimitsResource` resource and then calling the `list` method. For full response see `CardsLimitsList` interface in [`limits.ts`](../lib/cards/limits.ts).
 
@@ -196,7 +197,7 @@ Get card's limits by getting the `CardsLimitsResource` resource and then calling
 
 ```
 
-## 10. Update card's limits
+## Update card's limits
 
 Update card's limits by getting the `CardsLimitsResource` resource and then calling the `update` method. The method takes object with properties as a parameter. See all supported parameters in `ChangeCardsLimitsRequest` interface and `ChangeCardsLimitsResponse` interface for full response in [`limits.ts`](../lib/cards/limits.ts). 
 
@@ -227,7 +228,7 @@ Update card's limits by getting the `CardsLimitsResource` resource and then call
 
 ```
 
-## 11. Get card's 3D Secure status
+## Get card's 3D Secure status
 
 Get card's 3D Secure status by getting the `CardsSecure3DResource` resource and then calling the `get` method. See `SecureSettings` interface for full response in [`secure3D.ts`](../lib/cards/secure3D.ts).  
 
@@ -245,7 +246,7 @@ Get card's 3D Secure status by getting the `CardsSecure3DResource` resource and 
 
 ```
 
-## 12. Pay up credit card debt
+## Pay up credit card debt
 
 Pay up credit card debt by getting the `CardsTransferResource` resource and then calling the `update` method. The method takes object with properties as a parameter. See `PayUpCreditCardRequest` interface for supported parameters and `PayUpCreditCardResponse` interface for full response in [`transfer.ts`](../lib/cards/transfer.ts). 
 
@@ -276,7 +277,7 @@ Pay up credit card debt by getting the `CardsTransferResource` resource and then
 
 ```
 
-## 13. Get statements of a card's account
+## Get statements of a card's account
 
 Get statements of a card's account by getting the `CardsAccountsResource` resource then calling the `withId` method and passing it id of the account after that getting the `CardsStatementsResource` resource and finally calling the `list` method. The method takes object with properties such as `pageSize` or `sortBy` as a parameter. See all supported parameters in `Parameters` interface and `StatementsList` interface for full response in [`common.ts`](../lib/common.ts).   
 
@@ -301,7 +302,7 @@ Get statements of a card's account by getting the `CardsAccountsResource` resour
 
 ```
 
-## 14. Download statement of a card's account
+## Download statement of a card's account
 
 Download statement of a card's account by getting the `CardsStatementsResource` resource and then calling the `download` method. The method takes object with properties as a parameter. See `DownloadStatementsParameters` interface for all supported parameters in [`common.ts`](../lib/common.ts). 
 

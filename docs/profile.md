@@ -2,7 +2,7 @@
 
 This guide walks you through retrieving current user's profile and information about their last logins.
 
-## 1. Get currrent user's profile detail
+## Get currrent user's profile detail
 
 You can get current users profile detail by calling the `get` method on `ProfileResource`. For complete response with description please see `Profile` interface in [`profile.ts`](../lib/profile/profile.ts) interface.
 
@@ -18,7 +18,7 @@ You can get current users profile detail by calling the `get` method on `Profile
 
 ```
 
-## 2. List current user's last logins
+## List current user's last logins
 
 You can list current user's last logins by calling the `list` method on `LastLoginResource`. For complete response with description please see `LastLoginsList` interface in [`lastLogin.ts`](../lib/profile/lastLogin.ts).
 

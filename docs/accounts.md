@@ -2,7 +2,7 @@
 
 This guide walks you through retrieving current user's accounts detail and other information like account's services, transactions, repayments etc. There are also actions like changing account's settings or changing and adding note to transaction. Finally you can export transactions or download statements. 
 
-## 1. List all of current user's accounts
+## List all of current user's accounts
 
 You can list all of current user's accounts by calling the `list` method on `AccountsResource`. The method takes object with properties such as `pageSize` or `sortBy` as a parameter. See all parameters in `Parameters` interface in [`common.ts`](../lib/common.ts) file. For complete response see `AccountsList` in [`accounts.ts`](../lib/accounts/accounts.ts). 
 
@@ -24,7 +24,7 @@ You can list all of current user's accounts by calling the `list` method on `Acc
 
 ```
 
-## 2. Get individual current user's account
+## Get individual current user's account
 
 You can get detail of the individual current user's account by calling the `withId` method on `AccountsResource` with id as a parameter and then calling the `get` method. For complete response see `MainAccount` interface in [`accounts.ts`](../lib/accounts/accounts.ts).
 
@@ -41,7 +41,7 @@ You can get detail of the individual current user's account by calling the `with
 
 ```
 
-## 3. Update current user's account
+## Update current user's account
 
 You can update current user's account by calling the `withId` method on `AccountsResource` with `id` as a parameter and then calling the `update` method and giving it payload in object as a parameter. Currently only alias can be changed. For payload properties please see `ChangeAccountsSettingsRequest` interface and `ChangeAccountsSettingsResponse` interface for response in [`accounts.ts`](../lib/accounts/accounts.ts).
 
@@ -60,7 +60,7 @@ You can update current user's account by calling the `withId` method on `Account
 
 ```   
 
-## 4. Get account's balances
+## Get account's balances
 
 Get account's balances by getting the `AccountsBalanceResource` resource and then calling the `get` method. For complete response see `AccountsBalance` interface in [`balance.ts`](../lib/accounts/balance.ts).
 
@@ -78,7 +78,7 @@ Get account's balances by getting the `AccountsBalanceResource` resource and the
 
 ```
 
-## 5. List account's services
+## List account's services
 
 List account's services by getting the `AccountsServicesResource` resource and then calling the `list` method. The method takes object with properties as a parameter. Services resource supports pagination. See all supported parameters in `ServicesParameters` interface in [`services.ts`].(../lib/accounts/services.ts).
 
@@ -99,7 +99,7 @@ List account's services by getting the `AccountsServicesResource` resource and t
         });
 
 ```
-## 6. Add or change note and mark transaction
+## Add or change note and mark transaction
 
 Add, change or mark transaction by calling the `update` method on `AccountsTransactionResource` and passing it object with options as parameter. See all supported options in `ServicesParameters` interface and `ServicesList` interface for full response in [`services.ts`](../lib/accounts/services.ts).
 
@@ -120,7 +120,7 @@ Add, change or mark transaction by calling the `update` method on `AccountsTrans
 
 ```
 
-## 7. Export transaction history
+## Export transaction history
 
 Export transaction history into signed PDF by calling the `export` method on `AccountsTransactionsResource` and passing it object with options as parameter. See `ExportTransactionsParameters` in [`common.ts`](../lib/common.ts) for all supported parameters.
 
@@ -139,7 +139,7 @@ Export transaction history into signed PDF by calling the `export` method on `Ac
 
 ``` 
 
-## 8. List account's reservations
+## List account's reservations
 
 List account's reservations by getting the `AccountsReservationsResource` resource and then calling the `list` method. The method takes object with properties as a parameter. See all supported parameters in `ReservationsResource` interface and `ReservationsList` for full response in [services.ts](../lib/accounts/reservations.ts).
 
@@ -161,9 +161,9 @@ List account's reservations by getting the `AccountsReservationsResource` resour
 
 ```
 
-## 9. Transfer
+## Revolve loan disbursement
 
-Update transfer by getting the `AccountsTransferResource` and then calling the `update` method on it. The method takes object with properties as a parameter. See all supported properties in `TransferRequest` interface and `TransfereResponse` for full response in [`transfer.ts`](../lib/accounts/transfer.ts).    
+Revolve loan disbursement by getting the `AccountsTransferResource` and then calling the `update` method on it. The method takes object with properties as a parameter. See all supported properties in `TransferRequest` interface and `TransfereResponse` for full response in [`transfer.ts`](../lib/accounts/transfer.ts).    
 
 ```javascript
     
@@ -188,7 +188,7 @@ Update transfer by getting the `AccountsTransferResource` and then calling the `
 
 ```
 
-## 10. List account's repayments
+## List account's repayments
 
 List account's repayments by getting the `AccountsRepaymentsResource` resource and then calling the `list` method. For full response see `RepaymentsList` in [`repayments.ts`](../lib/accounts/repayments.ts).
 
@@ -207,7 +207,7 @@ List account's repayments by getting the `AccountsRepaymentsResource` resource a
 
 ```
 
-## 11. List account's statements
+## List account's statements
 
 List account's statements by getting the `AccountsStatementsResource` resource and then calling the `list` method. The method takes object with properties such as `pageSize` or `sortBy` as a parameter. See all supported parameters in `Parameters` interface in [`common.ts`](../lib/common.ts). For full response see `StatementsList` interface in [`statements.ts`](../lib/accounts/statements.ts). 
 
@@ -230,7 +230,7 @@ List account's statements by getting the `AccountsStatementsResource` resource a
 
 ```
 
-## 12. Download account's statement
+## Download account's statement
 
 Download account's statement by getting the `AccountsStatementsResource` resource and then calling the `download` method on it. The method takes object with properties as a parameter. For all supported parameters see `DownloadStatementsParamaters` in [`common.ts`](../lib/common.ts).
 
@@ -248,7 +248,7 @@ Download account's statement by getting the `AccountsStatementsResource` resourc
 
 ```
 
-## 13. List sub account's statements
+## List sub account's statements
 
 List sub account's statements by getting the `SubAccountsStatementsResource` resource and the calling the `list` method on it. The list method takes object with properties as a parameter. See all supported parameters in `Parameters` interface and `StatementsList` interface for full response in [`common.ts`](../lib/common.ts). 
 
@@ -273,7 +273,7 @@ List sub account's statements by getting the `SubAccountsStatementsResource` res
 
 ```
 
-## 14. Download sub account's statements
+## Download sub account's statements
 
 Download sub account's statement by getting the `SubAccountsStatementsResource` and then calling the `download` method on it. The method takes object with properties as a paramater. For all supported parameters see `DownloadStatementsParameters` interface in [`common.ts`](../lib/common.ts).
 
