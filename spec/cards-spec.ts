@@ -3,23 +3,13 @@
 /// <reference path="../typings/tsd.d.ts"/>
 var CoreSDK = require('cs-core-sdk');
 var netbanking  = require('../build/cs-netbanking-sdk.node.js');
-var path = require('path');
-var _ = <UnderscoreStatic>(require('underscore'));
 var judge : CSCoreSDK.Judge = null;
 var judgeSession : CSCoreSDK.JudgeSession = null;
 var client : CSNetbankingSDK.NetbankingClient = null;
 var expectToBe = CoreSDK.TestUtils.expectToBe;
 var expectDate = CoreSDK.TestUtils.expectDate;
 var logJudgeError = CoreSDK.TestUtils.logJudgeError;
-import {testAuthorizationTac, testStateOpen, testStateDone} from './helpers';
-try {
-    var fs = require('fs');
-    var file = fs.readFileSync(path.join(__dirname, 'test-pdf.pdf'));    
-} catch(e) {
-    console.log('Testing browser');
-}
-
-
+import {testAuthorizationTac, testStateOpen, testStateDone, testFile} from './helpers';
 
 describe("Netbanking SDK",function(){
     var originalTimeoutInterval = null;
@@ -54,14 +44,6 @@ describe("Netbanking SDK",function(){
         showAccountNumber: true,
         showTimespan: true,
         showBalance: true
-    }
-    
-    function testFile(response) {
-        expect(response).toBeTruthy();
-        expect(response.length).toBe(7850);
-        if(file) {
-            expect(_.isEqual(file.toString(), response.toString())).toBe(true);   
-        }
     }
     
     function processCard(card) {
