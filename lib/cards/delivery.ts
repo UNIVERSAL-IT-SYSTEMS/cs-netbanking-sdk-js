@@ -5,8 +5,10 @@ import {Signable} from '../common';
 /**
  * Get current delivery settings
  */
+// export class CardDeliveryResource extends CSCoreSDK.Resource
+// implements CSCoreSDK.GetEnabled<DeliveryListing>, CSCoreSDK.UpdateEnabled<ChangeDeliverySettingsRequest, ChangeDeliverySettingsResponse> {
 export class CardDeliveryResource extends CSCoreSDK.Resource
-implements CSCoreSDK.GetEnabled<DeliveryListing>, CSCoreSDK.UpdateEnabled<ChangeDeliverySettingsRequest, ChangeDeliverySettingsResponse> {
+implements CSCoreSDK.GetEnabled<DeliveryListing> {
     
     /**
      * Returns current delivery settings  
@@ -18,9 +20,9 @@ implements CSCoreSDK.GetEnabled<DeliveryListing>, CSCoreSDK.UpdateEnabled<Change
     /**
      * Change current delivery settings  
      */ 
-    update = (payload: ChangeDeliverySettingsRequest): Promise<ChangeDeliverySettingsResponse> => {
-        return CSCoreSDK.ResourceUtils.CallUpdate(this, payload);
-    }
+    // update = (payload: ChangeDeliverySettingsRequest): Promise<ChangeDeliverySettingsResponse> => {
+    //     return CSCoreSDK.ResourceUtils.CallUpdate(this, payload);
+    // }
 } 
 
 export interface DeliveryListing {

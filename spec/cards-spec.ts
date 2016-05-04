@@ -378,70 +378,70 @@ describe("Netbanking SDK",function(){
             });
         });
         
-        it('updates current delivery mode to branch', done => {
-            judgeSession.setNextCase('cards.withId.delivery.update').then(() => {
-                return client.cards.withId('33A813886442D946122C78305EC4E482DE9F574D').delivery.update({
-                    cardDeliveryMode: "BRANCH",
-                    confirmations: [
-                        {
-                            email: "john.doe@test.com",
-                            language: "cs"
-                        }
-                    ] 
-                });
-            }).then(delivery => {
-                expectToBe(delivery, {
-                    cardDeliveryMode: 'BRANCH',
-                    branchId: '1075',
-                });
+        // it('updates current delivery mode to branch', done => {
+        //     judgeSession.setNextCase('cards.withId.delivery.update').then(() => {
+        //         return client.cards.withId('33A813886442D946122C78305EC4E482DE9F574D').delivery.update({
+        //             cardDeliveryMode: "BRANCH",
+        //             confirmations: [
+        //                 {
+        //                     email: "john.doe@test.com",
+        //                     language: "cs"
+        //                 }
+        //             ] 
+        //         });
+        //     }).then(delivery => {
+        //         expectToBe(delivery, {
+        //             cardDeliveryMode: 'BRANCH',
+        //             branchId: '1075',
+        //         });
                 
-                done();
-            }).catch(e => {
-                logJudgeError(e);
-            });
-        });
-        
-        it('updates current delivery mode to branch by convenience method on cards listing', done => {
-            var response;
-            judgeSession.setNextCase('cards.list').then(() => {
-                return client.cards.list({
-                    pageNumber: null,
-                    pageSize: null,
-                    sort: [
-                        'id',
-                        'product'
-                    ],
-                    order: [
-                        'asc',
-                        'desc'
-                    ]
-                });
-            }).then(cards => {
-                processSimpleCards(cards);
-                response = cards;
-            }).then(() => {
-                return judgeSession.setNextCase('cards.withId.delivery.update');
-            }).then(() => {
-                return response.items[0].delivery.update({
-                    cardDeliveryMode: "BRANCH",
-                    confirmations: [
-                        {
-                            email: "john.doe@test.com",
-                            language: "cs"
-                        }
-                    ]
-                });
-            }).then(delivery => {
-                expectToBe(delivery, {
-                    cardDeliveryMode: 'BRANCH',
-                    branchId: '1075',
-                });
+        //         done();
+        //     }).catch(e => {
+        //         logJudgeError(e);
+        //     });
+        // });
+        //
+        // it('updates current delivery mode to branch by convenience method on cards listing', done => {
+        //     var response;
+        //     judgeSession.setNextCase('cards.list').then(() => {
+        //         return client.cards.list({
+        //             pageNumber: null,
+        //             pageSize: null,
+        //             sort: [
+        //                 'id',
+        //                 'product'
+        //             ],
+        //             order: [
+        //                 'asc',
+        //                 'desc'
+        //             ]
+        //         });
+        //     }).then(cards => {
+        //         processSimpleCards(cards);
+        //         response = cards;
+        //     }).then(() => {
+        //         return judgeSession.setNextCase('cards.withId.delivery.update');
+        //     }).then(() => {
+        //         return response.items[0].delivery.update({
+        //             cardDeliveryMode: "BRANCH",
+        //             confirmations: [
+        //                 {
+        //                     email: "john.doe@test.com",
+        //                     language: "cs"
+        //                 }
+        //             ]
+        //         });
+        //     }).then(delivery => {
+        //         expectToBe(delivery, {
+        //             cardDeliveryMode: 'BRANCH',
+        //             branchId: '1075',
+        //         });
                
-               done();
-            }).catch(e => {
-                logJudgeError(e);
-            });         
-        });
+        //        done();
+        //     }).catch(e => {
+        //         logJudgeError(e);
+        //     });         
+        // });
         
         it('changes personal note on a given transactions', done => {
             judgeSession.setNextCase('cards.withId.transactions.withId.update').then(() => {
