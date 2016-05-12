@@ -29,7 +29,7 @@ implements CSCoreSDK.HasInstanceResource<CardTransactionResource> {
         // insert 'cz' resource into the resource's path once because the api requires it in some resources
         var path = this.getPath().replace('/my', '/cz/my');
         
-        return this._client.callApi(`${path}/export`, 'POST', params, null, null);
+        return this._client.callApi(`${path}/export`, 'POST', params, null, null, 'arraybuffer');
     }
 }
 
