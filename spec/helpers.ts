@@ -26,5 +26,10 @@ export function testFile(response) {
         expect(_.isEqual(file.toString(), response.toString())).toBe(true);    
     }
     expect(response).toBeTruthy();
-    expect(response.length).toBe(7850);
+    var str = ab2str(response);
+    expect(str.length).toBe(7945);
+}
+
+function ab2str(buf) {
+  return String.fromCharCode.apply(null, new Uint8Array(buf));
 }
