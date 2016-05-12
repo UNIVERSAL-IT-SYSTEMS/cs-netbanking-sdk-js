@@ -40,9 +40,12 @@ implements CSCoreSDK.HasInstanceResource<PaymentResource>, CSCoreSDK.PaginatedLi
                 // transform ISO dates to native Date objects
                 CSCoreSDK.EntityUtils.addDatesFromISO(['cz-orderingDate', 'executionDate', 'modificationDate', 'transferDate'], item);
                 
+                // Remove signInfo from response and add SigningObject with key signing
+                CSCoreSDK.SigningUtils.createSigningObject(item, this.getClient(), `${this.getClient().getPath()}/orders/payments/${(<Payment>item).id}`);
+                 
                 // add convenient get and delete methods for fetching order's detail and removing order
                 resourcifyListing(<Payment>item, this.withId((<Payment>item).id));
-            })
+            });
             return response;
         })
     }
@@ -97,6 +100,9 @@ implements CSCoreSDK.GetEnabled<Payment>, CSCoreSDK.DeleteEnabled<NetbankingEmpt
             
             // transform ISO dates to native Date objects
             CSCoreSDK.EntityUtils.addDatesFromISO(['cz-orderingDate', 'executionDate', 'modificationDate', 'transferDate'], payment);
+                
+            // Remove signInfo from response and add SigningObject with key signing
+            CSCoreSDK.SigningUtils.createSigningObject(payment, this.getClient(), `${this.getClient().getPath()}/orders/payments/${(<Payment>payment).id}`);
             
             return payment;
         });
@@ -118,7 +124,7 @@ function resourcifyListing(paymentListing: Payment, paymentResource: PaymentReso
 
 export interface PaymentList extends CSCoreSDK.PaginatedListResponse<Payment> {}
 
-export interface Payment extends Signable {
+export interface Payment extends CSCoreSDK.Signable {
     
     /**
     * Internal identifier of payment order. Note that after signing of the order the id could change.
