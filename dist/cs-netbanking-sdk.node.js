@@ -81,7 +81,7 @@ module.exports =
 	     * @param context WebApiContext object that allows for data sharing between clients
 	     */
 	    function NetbankingClient(config, context) {
-	        _super.call(this, config, context, '/api/v3/netbanking/my');
+	        _super.call(this, config, '/api/v3/netbanking/my');
 	    }
 	    Object.defineProperty(NetbankingClient.prototype, "accounts", {
 	        /**
@@ -166,6 +166,8 @@ module.exports =
 	         * List all accounts
 	         */
 	        this.list = function (params) {
+	            // transform "sort" and "order" parameters to comma separated list from array
+	            CSCoreSDK.EntityUtils.transformArrayParamsToString(params, ['sort', 'order']);
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'accounts', params, function (response) {
 	                response.items.forEach(function (item) {
 	                    // add convenient methods
@@ -497,6 +499,7 @@ module.exports =
 	        */
 	        this.list = function (params) {
 	            // transform "sort" and "order" parameters to comma separated list from array
+	            CSCoreSDK.EntityUtils.transformArrayParamsToString(params, ['sort', 'order']);
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'statements', params, function (response) {
 	                // transform ISO dates to native Date objects
 	                CSCoreSDK.EntityUtils.addDatesToItems('statementDate', response);
@@ -507,7 +510,7 @@ module.exports =
 	        * Downloads statements file
 	        */
 	        this.download = function (params) {
-	            return CSCoreSDK.ResourceUtils.CallApiWithSuffix(_this, 'signed/download', 'POST', params);
+	            return CSCoreSDK.ResourceUtils.CallDownload(_this, 'signed/download', 'POST', params);
 	        };
 	    }
 	    return AccountStatementsResource;
@@ -578,6 +581,8 @@ module.exports =
 	        * Returns all subaccount's statements in a promise
 	        */
 	        this.list = function (params) {
+	            // transform "sort" and "order" parameters to comma separated list from array
+	            CSCoreSDK.EntityUtils.transformArrayParamsToString(params, ['sort', 'order']);
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'statements', params, function (response) {
 	                // transform ISO dates to native Date objects
 	                CSCoreSDK.EntityUtils.addDatesToItems('statementDate', response);
@@ -588,7 +593,7 @@ module.exports =
 	        * Downloads statements file
 	        */
 	        this.download = function (params) {
-	            return CSCoreSDK.ResourceUtils.CallApiWithSuffix(_this, 'download', 'POST', params);
+	            return CSCoreSDK.ResourceUtils.CallDownload(_this, 'download', 'POST', params);
 	        };
 	        // insert 'cz' resource into the resource's path because the api requires it in some resources
 	        this._path = this.getPath().replace('/my', '/cz/my');
@@ -634,7 +639,7 @@ module.exports =
 	            CSCoreSDK.EntityUtils.transformDatesToISO(['dateFrom', 'dateTo'], params);
 	            // insert 'cz' resource into the resource's path once because the api requires it in some resources
 	            var path = _this.getPath().replace('/my', '/cz/my');
-	            return _this._client.callApi(path + "/export", 'POST', params, null, null);
+	            return _this._client.callApi(path + "/export", 'POST', params, null, null, 'arraybuffer');
 	        };
 	    }
 	    return AccountTransactionsResource;
@@ -686,7 +691,11 @@ module.exports =
 	        this.update = function (payload) {
 	            // transform Date objects to ISO strings
 	            CSCoreSDK.EntityUtils.transformDatesToSimpleISO('transferDate', payload);
-	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload);
+	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (response) {
+	                // Remove signInfo from response and add SigningObject with key signing
+	                CSCoreSDK.SigningUtils.createSigningObject(response, _this.getClient(), _this.getPath());
+	                return response;
+	            });
 	        };
 	        // insert 'cz' resource into the resource's path because the api requires it in some resources
 	        this._path = this.getPath().replace('/my', '/cz/my');
@@ -812,6 +821,8 @@ module.exports =
 	        * List all cards
 	        */
 	        this.list = function (params) {
+	            // transform "sort" and "order" parameters to comma separated list from array
+	            CSCoreSDK.EntityUtils.transformArrayParamsToString(params, ['sort', 'order']);
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'cards', params, function (response) {
 	                response.items.forEach(function (item) {
 	                    // add convenient methods to items in the list
@@ -969,6 +980,8 @@ module.exports =
 	/**
 	 * Get current delivery settings
 	 */
+	// export class CardDeliveryResource extends CSCoreSDK.Resource
+	// implements CSCoreSDK.GetEnabled<DeliveryListing>, CSCoreSDK.UpdateEnabled<ChangeDeliverySettingsRequest, ChangeDeliverySettingsResponse> {
 	var CardDeliveryResource = (function (_super) {
 	    __extends(CardDeliveryResource, _super);
 	    function CardDeliveryResource() {
@@ -979,12 +992,6 @@ module.exports =
 	         */
 	        this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null);
-	        };
-	        /**
-	         * Change current delivery settings
-	         */
-	        this.update = function (payload) {
-	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload);
 	        };
 	    }
 	    return CardDeliveryResource;
@@ -1028,7 +1035,7 @@ module.exports =
 	            CSCoreSDK.EntityUtils.transformDatesToISO(['dateFrom', 'dateTo'], params);
 	            // insert 'cz' resource into the resource's path once because the api requires it in some resources
 	            var path = _this.getPath().replace('/my', '/cz/my');
-	            return _this._client.callApi(path + "/export", 'POST', params, null, null);
+	            return _this._client.callApi(path + "/export", 'POST', params, null, null, 'arraybuffer');
 	        };
 	    }
 	    return CardTransactionsResource;
@@ -1078,7 +1085,11 @@ module.exports =
 	         * Issues various actions on a single card
 	         */
 	        this.update = function (payload) {
-	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload);
+	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (response) {
+	                // Remove signInfo from response and add SigningObject with key signing
+	                CSCoreSDK.SigningUtils.createSigningObject(response, _this.getClient(), _this.getPath());
+	                return response;
+	            });
 	        };
 	    }
 	    return CardActionsResource;
@@ -1123,6 +1134,8 @@ module.exports =
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (response) {
 	                // transform ISO dates to native Date objects
 	                CSCoreSDK.EntityUtils.addDatesToItems('temporaryLimitExpiration', response, 'limits');
+	                // Remove signInfo from response and add SigningObject with key signing
+	                CSCoreSDK.SigningUtils.createSigningObject(response, _this.getClient(), _this.getPath());
 	                return response;
 	            });
 	        };
@@ -1188,7 +1201,11 @@ module.exports =
 	         * Pays up the credit card debt and returns sign info
 	         */
 	        this.update = function (payload) {
-	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload);
+	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (response) {
+	                // Remove signInfo from response and add SigningObject with key signing
+	                CSCoreSDK.SigningUtils.createSigningObject(response, _this.getClient(), _this.getPath());
+	                return response;
+	            });
 	        };
 	    }
 	    return CardTransferResource;
@@ -1259,6 +1276,8 @@ module.exports =
 	         * List all statements
 	         */
 	        this.list = function (params) {
+	            // transform "sort" and "order" parameters to comma separated list from array
+	            CSCoreSDK.EntityUtils.transformArrayParamsToString(params, ['sort', 'order']);
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'statements', params, function (response) {
 	                // transform ISO dates to native Date objects
 	                CSCoreSDK.EntityUtils.addDatesToItems('statementDate', response);
@@ -1269,7 +1288,7 @@ module.exports =
 	         * Download PDF with statements
 	         */
 	        this.download = function (params) {
-	            return CSCoreSDK.ResourceUtils.CallApiWithSuffix(_this, 'signed/download', 'POST', params);
+	            return CSCoreSDK.ResourceUtils.CallDownload(_this, 'signed/download', 'POST', params);
 	        };
 	    }
 	    return CardStatementsResource;
@@ -1326,10 +1345,14 @@ module.exports =
 	        * List all payments
 	        */
 	        this.list = function (params) {
+	            // transform "sort" and "order" parameters to comma separated list from array
+	            CSCoreSDK.EntityUtils.transformArrayParamsToString(params, ['sort', 'order']);
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'order', params, function (response) {
 	                response.items.forEach(function (item) {
 	                    // transform ISO dates to native Date objects
 	                    CSCoreSDK.EntityUtils.addDatesFromISO(['cz-orderingDate', 'executionDate', 'modificationDate', 'transferDate'], item);
+	                    // Remove signInfo from response and add SigningObject with key signing
+	                    CSCoreSDK.SigningUtils.createSigningObject(item, _this.getClient(), _this.getClient().getPath() + "/orders/payments/" + item.id);
 	                    // add convenient get and delete methods for fetching order's detail and removing order
 	                    resourcifyListing(item, _this.withId(item.id));
 	                });
@@ -1401,6 +1424,8 @@ module.exports =
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null).then(function (payment) {
 	                // transform ISO dates to native Date objects
 	                CSCoreSDK.EntityUtils.addDatesFromISO(['cz-orderingDate', 'executionDate', 'modificationDate', 'transferDate'], payment);
+	                // Remove signInfo from response and add SigningObject with key signing
+	                CSCoreSDK.SigningUtils.createSigningObject(payment, _this.getClient(), _this.getClient().getPath() + "/orders/payments/" + payment.id);
 	                return payment;
 	            });
 	        };
@@ -1492,6 +1517,8 @@ module.exports =
 	            return CSCoreSDK.ResourceUtils.CallCreate(_this, payload).then(function (response) {
 	                // transform ISO dates to native Date objects
 	                CSCoreSDK.EntityUtils.addDatesFromISO(['cz-orderingDate', 'executionDate', 'modificationDate', 'transferDate'], response);
+	                // Remove signInfo from response and add SigningObject with key signing
+	                CSCoreSDK.SigningUtils.createSigningObject(response, _this.getClient(), _this.getClient().getPath() + "/orders/payments/" + response.id);
 	                return response;
 	            });
 	        };
@@ -1524,6 +1551,8 @@ module.exports =
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (response) {
 	                // transform ISO dates to native Date objects
 	                CSCoreSDK.EntityUtils.addDatesFromISO(['cz-orderingDate', 'executionDate', 'modificationDate', 'transferDate'], response);
+	                // Remove signInfo from response and add SigningObject with key signing
+	                CSCoreSDK.SigningUtils.createSigningObject(response, _this.getClient(), _this.getClient().getPath() + "/orders/payments/" + response.id);
 	                return response;
 	            });
 	        };
@@ -1589,7 +1618,12 @@ module.exports =
 	        * Recharge the credit on prepaid card
 	        */
 	        this.create = function (payload) {
-	            return CSCoreSDK.ResourceUtils.CallCreate(_this, payload);
+	            return CSCoreSDK.ResourceUtils.CallCreate(_this, payload).then(function (response) {
+	                // Remove signInfo from response and add SigningObject with key signing
+	                CSCoreSDK.SigningUtils.createSigningObject(response, _this.getClient(), _this.getPath());
+	                console.log(_this.getPath());
+	                return response;
+	            });
 	        };
 	        // insert 'cz' resource into the resource's path because the api requires it in some resources
 	        this._path = this.getPath().replace('/my', '/cz/my');

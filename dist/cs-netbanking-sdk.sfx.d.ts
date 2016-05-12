@@ -426,7 +426,7 @@ declare module CSNetbankingSDK {
 	    */
 	    update: (payload: TransferRequest) => Promise<TransferResponse>;
 	}
-	export interface TransferResponse extends Signable {
+	export interface TransferResponse extends CSCoreSDK.Signable {
 	}
 	export interface TransferRequest {
 	    /**
@@ -854,15 +854,11 @@ declare module CSNetbankingSDK {
 	/**
 	 * Get current delivery settings
 	 */
-	export class CardDeliveryResource extends CSCoreSDK.Resource implements CSCoreSDK.GetEnabled<DeliveryListing>, CSCoreSDK.UpdateEnabled<ChangeDeliverySettingsRequest, ChangeDeliverySettingsResponse> {
+	export class CardDeliveryResource extends CSCoreSDK.Resource implements CSCoreSDK.GetEnabled<DeliveryListing> {
 	    /**
 	     * Returns current delivery settings
 	     */
 	    get: () => Promise<DeliveryListing>;
-	    /**
-	     * Change current delivery settings
-	     */
-	    update: (payload: ChangeDeliverySettingsRequest) => Promise<ChangeDeliverySettingsResponse>;
 	}
 	export interface DeliveryListing {
 	    /**
@@ -979,7 +975,6 @@ declare module CSNetbankingSDK {
 	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
-	
 	/**
 	 * Issue various actions on a single card.
 	 */
@@ -989,7 +984,7 @@ declare module CSNetbankingSDK {
 	     */
 	    update: (payload: CardActionRequest) => Promise<CardActionResponse>;
 	}
-	export interface CardActionResponse extends Signable {
+	export interface CardActionResponse extends CSCoreSDK.Signable {
 	}
 	export interface CardActionRequest {
 	    /**
@@ -1053,7 +1048,7 @@ declare module CSNetbankingSDK {
 	    */
 	    bankLimit?: Amount;
 	}
-	export interface ChangeCardLimitsResponse extends Signable {
+	export interface ChangeCardLimitsResponse extends CSCoreSDK.Signable {
 	    /**
 	    * Card's limits
 	    */
@@ -1144,7 +1139,7 @@ declare module CSNetbankingSDK {
 	    */
 	    accountno: AccountNumber;
 	}
-	export interface PayUpCreditCardResponse extends Signable {
+	export interface PayUpCreditCardResponse extends CSCoreSDK.Signable {
 	}
 
 }
@@ -1504,7 +1499,7 @@ declare module CSNetbankingSDK {
 	    */
 	    stateOk?: boolean;
 	}
-	export interface DomesticPaymentResponse extends Payment, Signable {
+	export interface DomesticPaymentResponse extends Payment, CSCoreSDK.Signable {
 	}
 	export interface DomesticPaymentCreateRequest {
 	    /**
@@ -1647,7 +1642,7 @@ declare module CSNetbankingSDK {
 	    */
 	    confirmationPhoneNumber: string;
 	}
-	export interface MobilePaymentsResponse extends MobilePaymentsRequest, Signable {
+	export interface MobilePaymentsResponse extends MobilePaymentsRequest, CSCoreSDK.Signable {
 	}
 	export interface MobilePaymentSender {
 	    /**
@@ -1734,7 +1729,7 @@ declare module CSNetbankingSDK {
 	}
 	export interface PaymentList extends CSCoreSDK.PaginatedListResponse<Payment> {
 	}
-	export interface Payment extends Signable {
+	export interface Payment extends CSCoreSDK.Signable {
 	    /**
 	    * Internal identifier of payment order. Note that after signing of the order the id could change.
 	    */
