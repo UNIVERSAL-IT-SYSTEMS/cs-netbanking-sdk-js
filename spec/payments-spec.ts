@@ -82,6 +82,8 @@ describe("Netbanking SDK",function(){
             senderName: 'Aleš Vrba',
             receiverName: 'Vrba Aleš'
         });
+        
+        testStateOpen(payment.signing);
     }
     
     describe('payments', () => {
@@ -101,7 +103,7 @@ describe("Netbanking SDK",function(){
                     pageCount: 1,
                     pageSize: 2
                 });
-                 
+                
                 processPayment(payments.items[0]);
                 
                 done();
@@ -137,6 +139,9 @@ describe("Netbanking SDK",function(){
                     modificationDate: '2016-03-21T10:33:41+01:00',
                     transferDate: '2016-03-23'
                 });
+                
+                testStateOpen(payment.signing);
+                
                 response = payments;
             }).then(() => {
                 return judgeSession.setNextCase('payments.list.page1');
@@ -164,6 +169,8 @@ describe("Netbanking SDK",function(){
                     executionDate: '2016-03-22T00:00:00+01:00',
                     transferDate: '2016-03-22',
                 });
+                
+                expect(payment.signing.state).toBe('NONE');
                 
                 done();
             }).catch(e => {
