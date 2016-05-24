@@ -6,7 +6,7 @@ You can find possible signing authorization methods in the following list:
 
 * __NO AUTHORIZATION__ - validation of user intent without additional security measure. This form of signing is usually done by clicking some button in the UI.
 * __TAC__ - validation of user intent to execute order by one time password sent to user personal device via SMS
-* __MOBILE CASE__ - validation of the user response using mobile application, this method have two forms (user can choose which he'll use)
+* __MOBILE CASE (NOT IMPLEMENTED YET)__ - validation of the user response using mobile application, this method have two forms (user can choose which he'll use)
     * __ONLINE__ - mobile application receives PUSH notification with relevant data for authorization and user just clicks confirmation button in mobile application (data are sent over internet to bank)
     * __QR__ - mobile application retrieves relevant data for authorization by reading QR code displayed in frontend application, generates onetime password and user enters this OTP into frontend application to authorize operation
 
