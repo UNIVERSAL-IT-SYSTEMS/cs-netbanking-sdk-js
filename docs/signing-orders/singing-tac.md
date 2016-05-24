@@ -1,6 +1,6 @@
 # Signing
 
-Most of the create/update/delete active calls done by the user/application need to be signed by the client. User can use various authorization methods, to confirm his/hers intention to execute active operation and authorize its execution.
+Most of the create/update/delete active calls done by the user/application need to be signed by the client. User can use various authorization methods, to confirm his/hers intention to execute active operation and authorize it.
 
 You can find possible signing authorization methods in the following list:
 
