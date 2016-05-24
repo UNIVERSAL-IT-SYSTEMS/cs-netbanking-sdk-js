@@ -2,7 +2,7 @@
 
 This guide walks you through listing all payments, getting payment's detail, deleting payment, listing limits and retrieving current available booking date. You can also create and update domestic payment or recharge credit on prepaid cards. 
 
-## 1. List all payment orders
+## List all payment orders
 
 List all payment orders by calling the `list` method on `PaymentsResource` resource. The method takes object with properties such as `pageSize` or `sortBy` as a parameter. See all supported parameters in `Parameters` interface in [`common.ts`](../lib/common.ts). For full response see `PaymentsList` interface in [`orders.ts`](../lib/orders/orders.ts).  
 
@@ -24,7 +24,7 @@ List all payment orders by calling the `list` method on `PaymentsResource` resou
     
 ```
 
-## 2. Get payment's detail
+## Get payment's detail
 
 Get payment's detail by calling the `withId` method on `PaymentsResource` resource and then calling the `get` method. See `Payment` interface in [`orders.ts`](../lib/orders.ts) for full response.
 
@@ -42,7 +42,7 @@ Get payment's detail by calling the `withId` method on `PaymentsResource` resour
 
 ```
 
-## 3. Delete payment
+## Delete payment
 
 Delete payment by getting the `PaymentResource` resource and then calling the `delete` method.
 
@@ -57,7 +57,7 @@ Delete payment by getting the `PaymentResource` resource and then calling the `d
 
 ```
 
-## 4. Create domestic payment
+## Create domestic payment
 
 Create domestic payment by getting the `PaymentsDomesticResource` resource and then calling the `create` method. The `create` method takes object with properties as a parameter. See `DomesticPaymentCreateRequest` interface for all supported parameters in and `DomesticPaymentResponse` interface for full response in [`domestic.ts`](../lib/orders/domestic.ts).
 
@@ -90,7 +90,7 @@ Create domestic payment by getting the `PaymentsDomesticResource` resource and t
 
 ```
 
-## 5. Update domestic payment
+## Update domestic payment
 
 Update domestic payment by getting the `PaymentsDomesticResource` resource and then calling the `update` method. The `update` method takes object with options as a parameter. For all supported options see `DomesticPaymentUpdateRequest` interface and for full response see `DomesticPaymentResponse` interface in [`domestic.ts`](../lib/orders/domestic.ts).
 
@@ -127,7 +127,7 @@ Update domestic payment by getting the `PaymentsDomesticResource` resource and t
 
 ```
 
-## 6. Get remaining amounts for payments
+## Get remaining amounts for payments
 
 Get remaining amounts for payment orders by getting the `PaymentsLimitsResource` resource and then calling the `list` method.
 
@@ -145,7 +145,7 @@ Get remaining amounts for payment orders by getting the `PaymentsLimitsResource`
         });
 ```
 
-## 7. Recharge the credit on prepaid card
+## Recharge the credit on prepaid card
 
 Recharge the credit on prepaid card by getting the `PaymentsMobileResource` resource and calling the `create` method. The `create` method takes object with properties as a parameter. See `MobilePaymentsRequest` interface for all supported parameters and `MobilePaymentsResponse` interface for full response in [`mobile.ts`](../lib/orders/mobile.ts).
 

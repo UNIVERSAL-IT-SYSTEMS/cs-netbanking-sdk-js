@@ -9,7 +9,8 @@ var client : CSNetbankingSDK.NetbankingClient = null;
 var expectToBe = CoreSDK.TestUtils.expectToBe;
 var expectDate = CoreSDK.TestUtils.expectDate;
 var logJudgeError = CoreSDK.TestUtils.logJudgeError;
-
+import {testAuthorizationTac, testStateOpen, testStateDone, testFile} from './helpers';
+    
 describe("Netbanking SDK",function(){
     var originalTimeoutInterval = null;
     
@@ -17,7 +18,7 @@ describe("Netbanking SDK",function(){
         judge = new CoreSDK.Judge();
         //Because Judge starts slowly on the first request
         originalTimeoutInterval = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
     });
     
     afterAll(function(){
@@ -46,10 +47,8 @@ describe("Netbanking SDK",function(){
     }
         
     function processTransfer(response) {
-        expectToBe(response.signInfo, {
-            state: 'OPEN',
-            signId: '151112531008724'
-        });
+        expect(response.signing).toBeTruthy();
+        testStateOpen(response.signing);
     }
     
     function processSimpleAccounts(accounts) {
@@ -215,7 +214,15 @@ describe("Netbanking SDK",function(){
               return client.accounts.list({
                   type: 'CURRENT',
                   pageNumber: null,
-                  pageSize: null
+                  pageSize: null,
+                  sort: [
+                    'iban',
+                    'balance'
+                  ],
+                  order: [
+                    'asc',
+                    'desc'
+                  ]
               });
           }).then(accounts => {
               
@@ -313,7 +320,15 @@ describe("Netbanking SDK",function(){
                return client.accounts.list({
                    type: 'CURRENT',
                    pageNumber: null,
-                   pageSize: null
+                   pageSize: null,
+                   sort: [
+                    'iban',
+                    'balance'
+                   ],
+                   order: [
+                    'asc',
+                    'desc'
+                   ]
                });
            }).then(accounts => {
                processSimpleAccounts(accounts);
@@ -373,7 +388,15 @@ describe("Netbanking SDK",function(){
                return client.accounts.list({
                    type: 'CURRENT',
                    pageNumber: null,
-                   pageSize: null
+                   pageSize: null,
+                   sort: [
+                    'iban',
+                    'balance'
+                   ],
+                   order: [
+                    'asc',
+                    'desc'
+                   ]
                });
            }).then(accounts => {
                processSimpleAccounts(accounts);
@@ -425,7 +448,15 @@ describe("Netbanking SDK",function(){
                 return client.accounts.list({
                     type: 'CURRENT',
                     pageNumber: null,
-                    pageSize: null
+                    pageSize: null,
+                    sort: [
+                    'iban',
+                    'balance'
+                   ],
+                   order: [
+                    'asc',
+                    'desc'
+                   ]
                 });
             }).then(accounts => {
                 
@@ -562,7 +593,8 @@ describe("Netbanking SDK",function(){
         judgeSession.setNextCase('accounts.withId.transactions.export').then(() => {
             return client.accounts.withId('076E1DBCCCD38729A99D93AC8D3E8273237C7E36').transactions.export(exportTransactionsPayload);
         }).then(response => {
-            expect(response).toBeTruthy();
+            
+            testFile(response);
             
             done();
         }).catch(e => {
@@ -576,13 +608,13 @@ describe("Netbanking SDK",function(){
         judgeSession.setNextCase('accounts.withId.transactions.export').then(() => {
             return resource.export(exportTransactionsPayload);
         }).then(response => {
-            expect(response).toBeTruthy();
+            testFile(response);
             
             return judgeSession.setNextCase('accounts.withId.transactions.export');
         }).then(() => {
             return resource.export(exportTransactionsPayload);
         }).then(response => {
-            expect(response).toBeTruthy();
+            testFile(response);
             
             done();
         }).catch(e => {
@@ -596,7 +628,15 @@ describe("Netbanking SDK",function(){
            return client.accounts.list({
                type: 'CURRENT',
                pageNumber: null,
-               pageSize: null
+               pageSize: null,
+               sort: [
+                   'iban',
+                   'balance'
+                ],
+                order: [
+                    'asc',
+                    'desc'
+                ]
            });
        }).then(accounts => {
            processSimpleAccounts(accounts);
@@ -619,7 +659,8 @@ describe("Netbanking SDK",function(){
                 showBalance: true
            });
        }).then(response => {
-           expect(response).toBeTruthy();
+           testFile(response);
+           
            done();
        }).catch(e => {
            logJudgeError(e);
@@ -696,7 +737,15 @@ describe("Netbanking SDK",function(){
             return client.accounts.list({
                 type: 'CURRENT',
                 pageNumber: null,
-                pageSize: null
+                pageSize: null,
+                sort: [
+                    'iban',
+                    'balance'
+                ],
+                order: [
+                    'asc',
+                    'desc'
+                ]
             });
         }).then(accounts => {
             processSimpleAccounts(accounts);
@@ -779,7 +828,15 @@ describe("Netbanking SDK",function(){
             return client.accounts.list({
                 type: 'CURRENT',
                 pageNumber: null,
-                pageSize: null
+                pageSize: null,
+                sort: [
+                    'iban',
+                    'balance'
+                ],
+                order: [
+                    'asc',
+                    'desc'
+                ]
             });
         }).then(accounts => {
             processSimpleAccounts(accounts);
@@ -799,11 +856,37 @@ describe("Netbanking SDK",function(){
                 recipientNote: "moje prve cerpanie z penize na klik"
             });
         }).then(response => {
-            expectToBe(response.signInfo, {
-                state: 'OPEN',
-                signId: '151112531008724'
-            });
+            testStateOpen(response.signing);
             
+            done();
+        }).catch(e => {
+            logJudgeError(e);
+        });
+    });
+    
+    it('revolves loan disbursement and signs it', done => {
+        judgeSession.setNextCase('signing.tac.accounts.transfer.update').then(() => {
+            return client.accounts.withId('3FB37388FC58076DEAD3DE282E075592A299B596').transfer.update({
+                type: "REVOLVING_LOAN_DISBURSEMENT",
+                amount: {
+                    value: 1000000,
+                    precision: 2,
+                    currency: "CZK"
+                },
+                transferDate: new Date("2015-02-28"),
+                recipientNote: "moje prve cerpanie z penize na klik"
+            });
+        }).then(response => {
+            testStateOpen(response.signing);
+            return response.signing.getInfo();
+        }).then(response => {
+            testAuthorizationTac(response);
+            return response.startSigningWithTac();
+        }).then(response => {
+            
+            return response.finishSigning('00000000');
+        }).then(response => {
+            testStateDone(response);
             done();
         }).catch(e => {
             logJudgeError(e);
@@ -848,7 +931,15 @@ describe("Netbanking SDK",function(){
             return client.accounts.list({
                 type: 'CURRENT',
                 pageNumber: null,
-                pageSize: null
+                pageSize: null,
+                sort: [
+                    'iban',
+                    'balance'
+                ],
+                order: [
+                    'asc',
+                    'desc'
+                ]
             });
         }).then(accounts => {
             processSimpleAccounts(accounts);
@@ -960,7 +1051,15 @@ describe("Netbanking SDK",function(){
             return client.accounts.list({
                 type: 'CURRENT',
                 pageNumber: null,
-                pageSize: null
+                pageSize: null,
+                sort: [
+                    'iban',
+                    'balance'
+                ],
+                order: [
+                    'asc',
+                    'desc'
+                ]
             });
         }).then(accounts => {
             processSimpleAccounts(accounts);
@@ -991,7 +1090,8 @@ describe("Netbanking SDK",function(){
                statementId: '06029392819b0198'
            });
        }).then(response => {
-           expect(response).toBeTruthy();
+           
+           testFile(response);
            
            done();
        }).catch(e => {
@@ -1104,7 +1204,7 @@ describe("Netbanking SDK",function(){
                statementId: '201302520130621180000'
            });
        }).then(response => {
-           expect(response).toBeTruthy();
+           testFile(response);
            
            done();
        }).catch(e => {
@@ -1121,7 +1221,7 @@ describe("Netbanking SDK",function(){
                 statementId: '201302520130621180000'
             });
         }).then(response => {
-            expect(response).toBeTruthy();
+            testFile(response);
             
             return judgeSession.setNextCase('accounts.withId.subAccounts.withId.statements.download');
         }).then(() => {
@@ -1130,7 +1230,7 @@ describe("Netbanking SDK",function(){
                 statementId: '201302520130621180000'
             });
         }).then(response => {
-            expect(response).toBeTruthy();
+            testFile(response);
             
             done();
         }).catch(e => {

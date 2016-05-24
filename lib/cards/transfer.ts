@@ -1,6 +1,6 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
-import {AccountNumber, Amount, Signable} from '../common';
+import {AccountNumber, Amount} from '../common';
 
 /**
  * Resource for paying up credit card debt  
@@ -12,7 +12,13 @@ implements CSCoreSDK.UpdateEnabled<PayUpCreditCardRequest, PayUpCreditCardRespon
      * Pays up the credit card debt and returns sign info  
      */ 
     update = (payload: PayUpCreditCardRequest): Promise<PayUpCreditCardResponse> => {
-        return CSCoreSDK.ResourceUtils.CallUpdate(this, payload);
+        return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(response => {
+            
+            // Remove signInfo from response and add SigningObject with key signing
+            CSCoreSDK.SigningUtils.createSigningObject(response, this.getClient(), this.getPath());
+            
+            return response;
+        })
     }
 }
 
@@ -47,4 +53,4 @@ export interface Sender {
     accountno: AccountNumber;
 }
 
-export interface PayUpCreditCardResponse extends Signable {}
+export interface PayUpCreditCardResponse extends CSCoreSDK.Signable {}

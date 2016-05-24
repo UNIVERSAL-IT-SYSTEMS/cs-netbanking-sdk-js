@@ -9,6 +9,7 @@ var client : CSNetbankingSDK.NetbankingClient = null;
 var expectToBe = CoreSDK.TestUtils.expectToBe;
 var expectDate = CoreSDK.TestUtils.expectDate;
 var logJudgeError = CoreSDK.TestUtils.logJudgeError;
+import {testAuthorizationTac, testStateOpen, testStateDone, testFile} from './helpers';
 
 describe("Netbanking SDK",function(){
     var originalTimeoutInterval = null;
@@ -135,7 +136,18 @@ describe("Netbanking SDK",function(){
         
         it('retrieves a list of cards', done => {
             judgeSession.setNextCase('cards.list').then(() => {
-                return client.cards.list();
+                return client.cards.list({
+                    pageNumber: null,
+                    pageSize: null,
+                    sort: [
+                        'id',
+                        'product'
+                    ],
+                    order: [
+                        'asc',
+                        'desc'
+                    ]
+                });
             }).then(cards => {
                 
                 processSimpleCards(cards);
@@ -212,7 +224,18 @@ describe("Netbanking SDK",function(){
         it('retrieves cards detail by using convenience method on cards listing', done => {
             var response;
             judgeSession.setNextCase('cards.list').then(() => {
-                return client.cards.list();
+                return client.cards.list({
+                    pageNumber: null,
+                    pageSize: null,
+                    sort: [
+                        'id',
+                        'product'
+                    ],
+                    order: [
+                        'asc',
+                        'desc'
+                    ]
+                });
             }).then(cards => {
                 processSimpleCards(cards);
                 response = cards;
@@ -254,7 +277,18 @@ describe("Netbanking SDK",function(){
         it('updates alias of a card by using convenience method on cards listing', done => {
             var response;
             judgeSession.setNextCase('cards.list').then(() => {
-                return client.cards.list();
+               return client.cards.list({
+                    pageNumber: null,
+                    pageSize: null,
+                    sort: [
+                        'id',
+                        'product'
+                    ],
+                    order: [
+                        'asc',
+                        'desc'
+                    ]
+                });
             }).then(cards => {
                 processSimpleCards(cards);
                 response = cards;
@@ -307,7 +341,18 @@ describe("Netbanking SDK",function(){
         it('retrieves current delivery settings of a card by using convenience method on cards listing', done => {
             var response;
             judgeSession.setNextCase('cards.list').then(() => {
-                return client.cards.list();
+                return client.cards.list({
+                    pageNumber: null,
+                    pageSize: null,
+                    sort: [
+                        'id',
+                        'product'
+                    ],
+                    order: [
+                        'asc',
+                        'desc'
+                    ]
+                });
             }).then(cards => {
                 processSimpleCards(cards);
                 response = cards;
@@ -333,59 +378,70 @@ describe("Netbanking SDK",function(){
             });
         });
         
-        it('updates current delivery mode to branch', done => {
-            judgeSession.setNextCase('cards.withId.delivery.update').then(() => {
-                return client.cards.withId('33A813886442D946122C78305EC4E482DE9F574D').delivery.update({
-                    cardDeliveryMode: "BRANCH",
-                    confirmations: [
-                        {
-                            email: "john.doe@test.com",
-                            language: "cs"
-                        }
-                    ] 
-                });
-            }).then(delivery => {
-                expectToBe(delivery, {
-                    cardDeliveryMode: 'BRANCH',
-                    branchId: '1075',
-                });
+        // it('updates current delivery mode to branch', done => {
+        //     judgeSession.setNextCase('cards.withId.delivery.update').then(() => {
+        //         return client.cards.withId('33A813886442D946122C78305EC4E482DE9F574D').delivery.update({
+        //             cardDeliveryMode: "BRANCH",
+        //             confirmations: [
+        //                 {
+        //                     email: "john.doe@test.com",
+        //                     language: "cs"
+        //                 }
+        //             ] 
+        //         });
+        //     }).then(delivery => {
+        //         expectToBe(delivery, {
+        //             cardDeliveryMode: 'BRANCH',
+        //             branchId: '1075',
+        //         });
                 
-                done();
-            }).catch(e => {
-                logJudgeError(e);
-            });
-        });
-        
-        it('updates current delivery mode to branch by convenience method on cards listing', done => {
-            var response;
-            judgeSession.setNextCase('cards.list').then(() => {
-                return client.cards.list();
-            }).then(cards => {
-                processSimpleCards(cards);
-                response = cards;
-            }).then(() => {
-                return judgeSession.setNextCase('cards.withId.delivery.update');
-            }).then(() => {
-                return response.items[0].delivery.update({
-                    cardDeliveryMode: "BRANCH",
-                    confirmations: [
-                        {
-                            email: "john.doe@test.com",
-                            language: "cs"
-                        }
-                    ]
-                });
-            }).then(delivery => {
-                expectToBe(delivery, {
-                    cardDeliveryMode: 'BRANCH',
-                    branchId: '1075',
-                });
+        //         done();
+        //     }).catch(e => {
+        //         logJudgeError(e);
+        //     });
+        // });
+        //
+        // it('updates current delivery mode to branch by convenience method on cards listing', done => {
+        //     var response;
+        //     judgeSession.setNextCase('cards.list').then(() => {
+        //         return client.cards.list({
+        //             pageNumber: null,
+        //             pageSize: null,
+        //             sort: [
+        //                 'id',
+        //                 'product'
+        //             ],
+        //             order: [
+        //                 'asc',
+        //                 'desc'
+        //             ]
+        //         });
+        //     }).then(cards => {
+        //         processSimpleCards(cards);
+        //         response = cards;
+        //     }).then(() => {
+        //         return judgeSession.setNextCase('cards.withId.delivery.update');
+        //     }).then(() => {
+        //         return response.items[0].delivery.update({
+        //             cardDeliveryMode: "BRANCH",
+        //             confirmations: [
+        //                 {
+        //                     email: "john.doe@test.com",
+        //                     language: "cs"
+        //                 }
+        //             ]
+        //         });
+        //     }).then(delivery => {
+        //         expectToBe(delivery, {
+        //             cardDeliveryMode: 'BRANCH',
+        //             branchId: '1075',
+        //         });
                
-               done();
-            }).catch(e => {
-                logJudgeError(e);
-            });         
-        });
+        //        done();
+        //     }).catch(e => {
+        //         logJudgeError(e);
+        //     });         
+        // });
         
         it('changes personal note on a given transactions', done => {
             judgeSession.setNextCase('cards.withId.transactions.withId.update').then(() => {
@@ -410,7 +466,7 @@ describe("Netbanking SDK",function(){
             judgeSession.setNextCase('cards.withId.transactions.export').then(() => {
                 return client.cards.withId('33A813886442D946122C78305EC4E482DE9F574D').transactions.export(exportTransactionsPayload);
             }).then(response => {
-                expect(response).toBeTruthy();
+                testFile(response);
                 
                 done();
             }).catch(e => {
@@ -424,13 +480,13 @@ describe("Netbanking SDK",function(){
             judgeSession.setNextCase('cards.withId.transactions.export').then(() => {
                 return resource.export(exportTransactionsPayload);
             }).then(response => {
-                expect(response).toBeTruthy();
+                testFile(response);
 
                 return judgeSession.setNextCase('cards.withId.transactions.export');
             }).then(() => {
                 return resource.export(exportTransactionsPayload);
             }).then(response => {
-                expect(response).toBeTruthy();
+                testFile(response);
                 
                 done();
             }).catch(e => {
@@ -441,7 +497,18 @@ describe("Netbanking SDK",function(){
         it('exports transactions into pdf by using convenience method on cards listing', done => {
             var response;
             judgeSession.setNextCase('cards.list').then(() => {
-                return client.cards.list();
+                return client.cards.list({
+                    pageNumber: null,
+                    pageSize: null,
+                    sort: [
+                        'id',
+                        'product'
+                    ],
+                    order: [
+                        'asc',
+                        'desc'
+                    ]
+                });
             }).then(cards => {
                 processSimpleCards(cards);
                 response = cards;
@@ -463,7 +530,7 @@ describe("Netbanking SDK",function(){
                     showBalance: true
                 });
             }).then(response => {
-                expect(response).toBeTruthy();
+                testFile(response);
                 
                 done(); 
             }).catch(e => {
@@ -497,7 +564,18 @@ describe("Netbanking SDK",function(){
         it('retrieves limits of a card  by using convenience method on cards listing', done => {
             var response;
             judgeSession.setNextCase('cards.list').then(() => {
-                return client.cards.list();
+                return client.cards.list({
+                    pageNumber: null,
+                    pageSize: null,
+                    sort: [
+                        'id',
+                        'product'
+                    ],
+                    order: [
+                        'asc',
+                        'desc'
+                    ]
+                });
             }).then(cards => {
                 processSimpleCards(cards);
                 response = cards;
@@ -528,11 +606,30 @@ describe("Netbanking SDK",function(){
                   action: 'ACTIVATE_CARD' 
                });
            }).then(response => {
-               expectToBe(response.signInfo, {
-                   state: 'OPEN',
-                   signId: '1883293134'
-               });
+               testStateOpen(response.signing);
                
+               done();
+           }).catch(e => {
+               logJudgeError(e);
+           });
+        });
+        
+        it('actives card with a given id and signs the order', done => {
+           judgeSession.setNextCase('signing.tac.cards.actions.update').then(() => {
+               return client.cards.withId('3FB37388FC58076DEAD3DE282E075592A299B596').actions.update({
+                  action: 'ACTIVATE_CARD' 
+               });
+           }).then(response => {
+               testStateOpen(response.signing);
+               return response.signing.getInfo();
+               
+           }).then(response => {
+               testAuthorizationTac(response);
+               return response.startSigningWithTac();
+           }).then(response => {
+               return response.finishSigning('00000000');
+           }).then(response => {
+               testStateDone(response);
                done();
            }).catch(e => {
                logJudgeError(e);
@@ -542,7 +639,18 @@ describe("Netbanking SDK",function(){
         it('actives card by using convenience method on cards listing', done => {
            var response;
            judgeSession.setNextCase('cards.list').then(() => {
-               return client.cards.list();
+               return client.cards.list({
+                   pageNumber: null,
+                   pageSize: null,
+                   sort: [
+                       'id',
+                       'product'
+                   ],
+                   order: [
+                       'asc',
+                       'desc'
+                   ]
+               });
            }).then(cards => {
                processSimpleCards(cards);
                response = cards;
@@ -553,10 +661,8 @@ describe("Netbanking SDK",function(){
                    action: 'ACTIVATE_CARD'
                });
            }).then(response => {
-               expectToBe(response.signInfo, {
-                   state: 'OPEN',
-                   signId: '1883293134'
-               });
+               testStateOpen(response.signing);
+               
                done();
            }).catch(e => {
                logJudgeError(e);
@@ -579,10 +685,7 @@ describe("Netbanking SDK",function(){
                     ]
                 });
             }).then(response => {
-                expectToBe(response.signInfo, {
-                    state: 'OPEN',
-                    signId: '1480132234'
-                });
+                testStateOpen(response.signing);
                 
                 expectToBe(response.limits[0], {
                     limitType: 'ATM',
@@ -598,6 +701,108 @@ describe("Netbanking SDK",function(){
                 done();
             }).catch(e => {
                 logJudgeError(e);
+            });
+        });
+        
+        it('changes cards limits and signs the order', done => {
+            var info;
+            judgeSession.setNextCase('signing.tac.cards.limits.update').then(() => {
+                return client.cards.withId('3FB37388FC58076DEAD3DE282E075592A299B596').limits.update({
+                    limits: [
+                        {
+                            limitType: "ATM",
+                            limitPeriod: "5D",
+                            limit: {
+                                value: 1100000,
+                                precision: 2,
+                                currency: "CZK"
+                            }
+                        }
+                    ]
+                });
+            }).then(response => {
+                info = response;
+                testStateOpen(response.signing);
+                return response.signing.getInfo();
+            }).then(response => {
+                testAuthorizationTac(info.signing);
+                testAuthorizationTac(response);
+                return response.startSigningWithTac();
+            }).then(response => {
+                testStateOpen(info.signing);
+                return response.finishSigning('00000000');
+            }).then(response => {
+                testStateDone(info.signing);
+                testStateDone(response);
+                done();
+            }).catch(e => {
+                logJudgeError(e);
+            });
+        });
+        
+        it('changes cards limits and fails to sign the order with wrong authorizationType', done => {
+            var info;
+            judgeSession.setNextCase('signing.tac.cards.limits.update.authorizationType.invalid').then(() => {
+                return client.cards.withId('3FB37388FC58076DEAD3DE282E075592A299B596').limits.update({
+                    limits: [
+                        {
+                            limitType: "ATM",
+                            limitPeriod: "5D",
+                            limit: {
+                                value: 1100000,
+                                precision: 2,
+                                currency: "CZK"
+                            }
+                        }
+                    ]
+                });
+            }).then(response => {
+                info = response;
+                testStateOpen(response.signing);
+                return response.signing.getInfo();
+            }).then(response => {
+                testAuthorizationTac(response);
+                testAuthorizationTac(info.signing);
+                return response.startSigningWithCaseMobile();
+            }).catch(e => {
+                expect(e.response.data.errors[0].error).toBe('FIELD_INVALID');
+                expect(e.response.data.errors[0].scope).toBe('authorizationType');
+                testStateOpen(info.signing);
+                done();
+            });
+        });
+        
+        it('changes cards limits and fails to sign the order with wrong password', done => {
+            var info;
+            judgeSession.setNextCase('signing.tac.cards.limits.update.OTP.invalid').then(() => {
+                return client.cards.withId('3FB37388FC58076DEAD3DE282E075592A299B596').limits.update({
+                    limits: [
+                        {
+                            limitType: "ATM",
+                            limitPeriod: "5D",
+                            limit: {
+                                value: 1100000,
+                                precision: 2,
+                                currency: "CZK"
+                            }
+                        }
+                    ]
+                });
+            }).then(response => {
+                info = response;
+                testStateOpen(response.signing);
+                return response.signing.getInfo();
+            }).then(response => {
+                testAuthorizationTac(response);
+                testAuthorizationTac(info.signing);
+                return response.startSigningWithTac();
+            }).then(response => {
+                testStateOpen(info.signing);
+                return response.finishSigning('12345678');
+            }).catch(e => {
+                expect(e.response.data.errors[0].error).toBe('OTP_INVALID');
+                testStateOpen(info.signing);
+                done();
             });
         });
         
@@ -620,7 +825,18 @@ describe("Netbanking SDK",function(){
         it('retrieves 3D secure info by convenience method on cards listing', done => {
             var response;
             judgeSession.setNextCase('cards.list').then(() => {
-                return client.cards.list();
+                return client.cards.list({
+                    pageNumber: null,
+                    pageSize: null,
+                    sort: [
+                        'id',
+                        'product'
+                    ],
+                    order: [
+                        'asc',
+                        'desc'
+                    ]
+                });
             }).then(cards => {
                 processSimpleCards(cards);
                 response = cards;
@@ -657,10 +873,7 @@ describe("Netbanking SDK",function(){
                     }
                 });
             }).then(response => {
-                expectToBe(response.signInfo, {
-                    state: 'OPEN',
-                    signId: '151112531008554'
-                });
+                testStateOpen(response.signing);
                 
                 done();
             }).catch(e => {
@@ -671,7 +884,18 @@ describe("Netbanking SDK",function(){
         it('pays up a credit card debt by convenience method', done => {
             var response;
             judgeSession.setNextCase('cards.list').then(() => {
-                return client.cards.list();
+                return client.cards.list({
+                    pageNumber: null,
+                    pageSize: null,
+                    sort: [
+                        'id',
+                        'product'
+                    ],
+                    order: [
+                        'asc',
+                        'desc'
+                    ]
+                });
             }).then(cards => {
                 processSimpleCards(cards);
                 response = cards;
@@ -693,11 +917,45 @@ describe("Netbanking SDK",function(){
                     }
                 });
             }).then(card => {
-                expectToBe(response.signInfo, {
-                    state: 'OPEN',
-                    signId: '151112531008554'
-                });
+                testStateOpen(card.signing);
                 
+                done();
+            }).catch(e => {
+                logJudgeError(e);
+            });
+        });
+        
+        it('pays up a credit card debt and signs the order', done => {
+            var info;
+            judgeSession.setNextCase('signing.tac.cards.transfer.update').then(() => {
+                return client.cards.withId('3FB37388FC58076DEAD3DE282E075592A299B596').transfer.update({
+                    type: "DEBT_REPAYMENT",
+                    sender: {
+                        accountno: {
+                            number: "2326573123",
+                            bankCode: "0800"
+                        }
+                    },
+                    amount: {
+                        value: 500000,
+                        precision: 2,
+                        currency: "CZK"
+                    }
+                });
+            }).then(response => {
+                info = response;
+                testStateOpen(response.signing);
+                return response.signing.getInfo();
+            }).then(response => {
+                testAuthorizationTac(response);
+                testAuthorizationTac(info.signing);
+                return response.startSigningWithTac();
+            }).then(response => {
+                testStateOpen(info.signing);
+                return response.finishSigning('00000000');
+            }).then(response => {
+                testStateDone(info.signing);
+                testStateDone(response);
                 done();
             }).catch(e => {
                 logJudgeError(e);
@@ -744,7 +1002,18 @@ describe("Netbanking SDK",function(){
         it('retrieves list of statements of cards account by convenience method on cards listing', done => {
             var response;
             judgeSession.setNextCase('cards.list').then(() => {
-                return client.cards.list();
+                return client.cards.list({
+                    pageNumber: null,
+                    pageSize: null,
+                    sort: [
+                        'id',
+                        'product'
+                    ],
+                    order: [
+                        'asc',
+                        'desc'
+                    ]
+                });
             }).then(cards => {
                 processSimpleCards(cards);
                 response = cards;
@@ -845,7 +1114,7 @@ describe("Netbanking SDK",function(){
                     statementId: '06029392819b0198'
                 });
             }).then(response => {
-                expect(response).toBeTruthy();
+                testFile(response);
                 
                 done();
             }).catch(e => {

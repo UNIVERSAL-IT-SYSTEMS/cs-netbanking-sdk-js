@@ -9,6 +9,7 @@ var client : CSNetbankingSDK.NetbankingClient = null;
 var expectToBe = CoreSDK.TestUtils.expectToBe;
 var expectDate = CoreSDK.TestUtils.expectDate;
 var logJudgeError = CoreSDK.TestUtils.logJudgeError;
+import {testAuthorizationTac, testStateOpen, testStateDone} from './helpers';
 
 describe("Netbanking SDK",function(){
     var originalTimeoutInterval = null;
@@ -64,10 +65,7 @@ describe("Netbanking SDK",function(){
             phoneNumber: '777952341'
         });
         
-        expectToBe(response.signInfo, {
-            state: 'OPEN',
-            signId: '1671744209'
-        });
+        testStateOpen(response.signing);
     }
     
     function processPayment(payment) {
@@ -84,6 +82,8 @@ describe("Netbanking SDK",function(){
             senderName: 'Aleš Vrba',
             receiverName: 'Vrba Aleš'
         });
+        
+        testStateOpen(payment.signing);
     }
     
     describe('payments', () => {
@@ -103,7 +103,7 @@ describe("Netbanking SDK",function(){
                     pageCount: 1,
                     pageSize: 2
                 });
-                 
+                
                 processPayment(payments.items[0]);
                 
                 done();
@@ -139,6 +139,9 @@ describe("Netbanking SDK",function(){
                     modificationDate: '2016-03-21T10:33:41+01:00',
                     transferDate: '2016-03-23'
                 });
+                
+                testStateOpen(payment.signing);
+                
                 response = payments;
             }).then(() => {
                 return judgeSession.setNextCase('payments.list.page1');
@@ -166,6 +169,8 @@ describe("Netbanking SDK",function(){
                     executionDate: '2016-03-22T00:00:00+01:00',
                     transferDate: '2016-03-22',
                 });
+                
+                expect(payment.signing.state).toBe('NONE');
                 
                 done();
             }).catch(e => {
@@ -294,7 +299,47 @@ describe("Netbanking SDK",function(){
             });
         });
         
-        it('updates domesic payment', done => {
+        it('creates domestic payment and signs the order', done => {
+            var info;
+            judgeSession.setNextCase('signing.tac.payments.domestic.create').then(() => {
+                return client.orders.payments.domestic.create({
+                    senderName: "Vrba",
+                    sender: {
+                        number: "2328489013",
+                        bankCode: "0800"
+                    },
+                    receiverName: "Vojtíšková",
+                    receiver: {
+                        number: "2059930033",
+                        bankCode: "0800"
+                    },
+                    amount: {
+                        value: 110,
+                        precision: 2,
+                        currency: "CZK"
+                    }
+                });
+            }).then(response => {
+                info = response;
+                testStateOpen(response.signing);
+                return response.signing.getInfo();
+            }).then(response => {
+                testAuthorizationTac(response);
+                testAuthorizationTac(info.signing);
+                return response.startSigningWithTac();
+            }).then(response => {
+                testStateOpen(info.signing);
+                return response.finishSigning('00000000');
+            }).then(response => {
+                testStateDone(response);
+                testStateDone(info.signing);
+                done();
+            }).catch(e => {
+                logJudgeError(e);
+            });
+        });
+        
+        it('updates domestic payment', done => {
             judgeSession.setNextCase('payments.domestic.update').then(() => {
                 return client.orders.payments.domestic.withId('1154226597').update({
                     senderName: "Vrba",
@@ -327,6 +372,46 @@ describe("Netbanking SDK",function(){
                     receiverName: 'Vojtíšková Alena' 
                 });
                  
+                done();
+            }).catch(e => {
+                logJudgeError(e);
+            });
+        });
+        
+        it('updates domestic payment and signs the order', done => {
+            var info;
+            judgeSession.setNextCase('signing.tac.payments.domestic.withId.update').then(() => {
+                return client.orders.payments.domestic.withId('160429968927553').update({
+                    senderName: "Vrba",
+                    sender: {
+                        number: "2059930033",
+                        bankCode: "0800"
+                    },
+                    receiverName: "Vojtíšková Alena",
+                    receiver: {
+                        number: "2328489013",
+                        bankCode: "0800"
+                    },
+                    amount: {
+                        value: 110,
+                        precision: 2,
+                        currency: "CZK"
+                    }
+                });
+            }).then(response => {
+                info = response;
+                testStateOpen(response.signing);
+                return response.signing.getInfo();
+            }).then(response => {
+                testAuthorizationTac(response);
+                testAuthorizationTac(info.signing);
+                return response.startSigningWithTac();
+            }).then(response => {
+                testStateOpen(info.signing);
+                return response.finishSigning('00000000');
+            }).then(response => {
+                testStateDone(response);
+                testStateDone(info.signing);
                 done();
             }).catch(e => {
                 logJudgeError(e);
@@ -370,6 +455,46 @@ describe("Netbanking SDK",function(){
             });
         });
         
+        it('recharges the credit on prepaid card and signs the order', done => {
+            var info;
+            judgeSession.setNextCase('signing.tac.orders.payments.mobile.create').then(() => {
+                return client.orders.payments.mobile.create({
+                    paymentType: "VODAFONE_PAYMENT",
+                    phoneNumber: "777952341",
+                    sender: {
+                        iban: "CZ1208000000002059930033",
+                        bic: "GIBACZPX",
+                        number: "2059930033",
+                        bankCode: "0800",
+                        countryCode: "CZ"
+                    },
+                    amount: {
+                        value: 3000,
+                        precision: 0,
+                        currency: "CZK"
+                    },
+                    "confirmationPhoneNumber": "777952341"
+                });
+            }).then(response => {
+                info = response;
+                testStateOpen(response.signing);
+                return response.signing.getInfo();
+            }).then(response => {
+                testAuthorizationTac(response);
+                testAuthorizationTac(info.signing);
+                return response.startSigningWithTac();               
+            }).then(response => {
+                testStateOpen(info.signing);
+                return response.finishSigning('00000000');
+            }).then(response => {
+                testStateDone(response);
+                testStateDone(info.signing);
+                done();
+            }).catch(e => {
+                logJudgeError(e);
+            });
+        });
+        
         it('recharges the credit on prepaid card twice from same resource', done => {
             var resource = client.orders.payments.mobile;
             
@@ -379,6 +504,8 @@ describe("Netbanking SDK",function(){
                 processMobilePayment(response);
                 
                 return judgeSession.setNextCase('payments.mobile.create');
+            }).then(response => {
+                return resource.create(mobilePaymentPayload);
             }).then(response => {
                 processMobilePayment(response);
                 

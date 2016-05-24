@@ -46,6 +46,9 @@ implements CSCoreSDK.PaginatedListEnabled<Statement> {
     * Returns all subaccount's statements in a promise
     */
     list = (params?: NetbankingParameters): Promise<StatementList> => {
+        
+        // transform "sort" and "order" parameters to comma separated list from array
+        CSCoreSDK.EntityUtils.transformArrayParamsToString(params, ['sort', 'order']);
            
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'statements', params, response => {
             
@@ -60,6 +63,6 @@ implements CSCoreSDK.PaginatedListEnabled<Statement> {
     * Downloads statements file
     */
     download = (params: DownloadStatementParameters): Promise<any> => {
-        return CSCoreSDK.ResourceUtils.CallApiWithSuffix(this, 'download', 'POST', params);
+        return CSCoreSDK.ResourceUtils.CallDownload(this, 'download', 'POST', params);
     }
 }

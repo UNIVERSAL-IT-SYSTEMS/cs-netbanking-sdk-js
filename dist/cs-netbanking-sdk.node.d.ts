@@ -204,6 +204,7 @@ declare module 'cs-netbanking-sdk/accounts/services' {
 	* Get information about the account's services
 	*/
 	export class AccountServicesResource extends CSCoreSDK.Resource implements CSCoreSDK.PaginatedListEnabled<Service> {
+	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
 	    /**
 	    * Fetches the services and returns them in a promise
 	    */
@@ -302,6 +303,7 @@ declare module 'cs-netbanking-sdk/accounts/repayments' {
 	* Get information about the account's repayments
 	*/
 	export class AccountRepaymentsResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<Repayment> {
+	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
 	    /**
 	    * Fetches the repayments and returns them in a promise
 	    */
@@ -370,6 +372,7 @@ declare module 'cs-netbanking-sdk/accounts/subAccounts' {
 	* List all subaccount's statements
 	*/
 	export class SubAccountStatementsResource extends CSCoreSDK.Resource implements CSCoreSDK.PaginatedListEnabled<Statement> {
+	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
 	    /**
 	    * Returns all subaccount's statements in a promise
 	    */
@@ -412,17 +415,18 @@ declare module 'cs-netbanking-sdk/accounts/transactions' {
 declare module 'cs-netbanking-sdk/accounts/transfer' {
 	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	import CSCoreSDK = require('cs-core-sdk');
-	import { Signable, Amount } from 'cs-netbanking-sdk/common';
+	import { Amount } from 'cs-netbanking-sdk/common';
 	/**
 	* Revolve a loan
 	*/
 	export class AccountTransferResource extends CSCoreSDK.Resource implements CSCoreSDK.UpdateEnabled<TransferRequest, TransferResponse> {
+	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
 	    /**
 	    * Revolves the loan. Currently only REVOLVING_LOAN subtype is supported.
 	    */
 	    update: (payload: TransferRequest) => Promise<TransferResponse>;
 	}
-	export interface TransferResponse extends Signable {
+	export interface TransferResponse extends CSCoreSDK.Signable {
 	}
 	export interface TransferRequest {
 	    /**
@@ -850,15 +854,11 @@ declare module 'cs-netbanking-sdk/cards/delivery' {
 	/**
 	 * Get current delivery settings
 	 */
-	export class CardDeliveryResource extends CSCoreSDK.Resource implements CSCoreSDK.GetEnabled<DeliveryListing>, CSCoreSDK.UpdateEnabled<ChangeDeliverySettingsRequest, ChangeDeliverySettingsResponse> {
+	export class CardDeliveryResource extends CSCoreSDK.Resource implements CSCoreSDK.GetEnabled<DeliveryListing> {
 	    /**
 	     * Returns current delivery settings
 	     */
 	    get: () => Promise<DeliveryListing>;
-	    /**
-	     * Change current delivery settings
-	     */
-	    update: (payload: ChangeDeliverySettingsRequest) => Promise<ChangeDeliverySettingsResponse>;
 	}
 	export interface DeliveryListing {
 	    /**
@@ -943,7 +943,7 @@ declare module 'cs-netbanking-sdk/cards/delivery' {
 declare module 'cs-netbanking-sdk/cards/transactions' {
 	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	import CSCoreSDK = require('cs-core-sdk');
-	import { AddNoteAndMarkTransactionRequest, ExportTransactionsParameters, Transaction } from 'cs-netbanking-sdk/common';
+	import { AddNoteAndMarkTransactionRequest, ExportTransactionsParameters, Transaction, Signable } from 'cs-netbanking-sdk/common';
 	/**
 	* Allows to add or change a client's personal note and mark/star the card transaction as favorite/important for one specific transaction
 	*/
@@ -966,7 +966,7 @@ declare module 'cs-netbanking-sdk/cards/transactions' {
 	    */
 	    update: (payload: AddNoteAndMarkTransactionRequest) => Promise<AddNoteAndMarkCardTransactionResponse>;
 	}
-	export interface AddNoteAndMarkCardTransactionResponse {
+	export interface AddNoteAndMarkCardTransactionResponse extends Signable {
 	    cardTransaction: Transaction;
 	}
 
@@ -974,7 +974,6 @@ declare module 'cs-netbanking-sdk/cards/transactions' {
 declare module 'cs-netbanking-sdk/cards/actions' {
 	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	import CSCoreSDK = require('cs-core-sdk');
-	import { Signable } from 'cs-netbanking-sdk/common';
 	import { Confirmation } from 'cs-netbanking-sdk/cards/delivery';
 	/**
 	 * Issue various actions on a single card.
@@ -985,7 +984,7 @@ declare module 'cs-netbanking-sdk/cards/actions' {
 	     */
 	    update: (payload: CardActionRequest) => Promise<CardActionResponse>;
 	}
-	export interface CardActionResponse extends Signable {
+	export interface CardActionResponse extends CSCoreSDK.Signable {
 	}
 	export interface CardActionRequest {
 	    /**
@@ -1006,7 +1005,7 @@ declare module 'cs-netbanking-sdk/cards/actions' {
 declare module 'cs-netbanking-sdk/cards/limits' {
 	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	import CSCoreSDK = require('cs-core-sdk');
-	import { Amount, Signable } from 'cs-netbanking-sdk/common';
+	import { Amount } from 'cs-netbanking-sdk/common';
 	import { Confirmation } from 'cs-netbanking-sdk/cards/delivery';
 	/**
 	* Get information about different limits
@@ -1049,7 +1048,7 @@ declare module 'cs-netbanking-sdk/cards/limits' {
 	    */
 	    bankLimit?: Amount;
 	}
-	export interface ChangeCardLimitsResponse extends Signable {
+	export interface ChangeCardLimitsResponse extends CSCoreSDK.Signable {
 	    /**
 	    * Card's limits
 	    */
@@ -1106,7 +1105,7 @@ declare module 'cs-netbanking-sdk/cards/secure3D' {
 declare module 'cs-netbanking-sdk/cards/transfer' {
 	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	import CSCoreSDK = require('cs-core-sdk');
-	import { AccountNumber, Amount, Signable } from 'cs-netbanking-sdk/common';
+	import { AccountNumber, Amount } from 'cs-netbanking-sdk/common';
 	/**
 	 * Resource for paying up credit card debt
 	 */
@@ -1140,7 +1139,7 @@ declare module 'cs-netbanking-sdk/cards/transfer' {
 	    */
 	    accountno: AccountNumber;
 	}
-	export interface PayUpCreditCardResponse extends Signable {
+	export interface PayUpCreditCardResponse extends CSCoreSDK.Signable {
 	}
 
 }
@@ -1177,7 +1176,7 @@ declare module 'cs-netbanking-sdk/cards/statements' {
 	    /**
 	     * Download PDF with statements
 	     */
-	    download: (params: DownloadStatementParameters) => Promise<any>;
+	    download: (params: DownloadStatementParameters) => Promise<{}>;
 	}
 
 }
@@ -1456,7 +1455,7 @@ declare module 'cs-netbanking-sdk/orders/bookingDate' {
 declare module 'cs-netbanking-sdk/orders/domestic' {
 	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	import CSCoreSDK = require('cs-core-sdk');
-	import { Amount, Signable } from 'cs-netbanking-sdk/common';
+	import { Amount } from 'cs-netbanking-sdk/common';
 	import { Info, Symbols, Payment } from 'cs-netbanking-sdk/orders/orders';
 	/**
 	* Create domestic payment order
@@ -1500,7 +1499,7 @@ declare module 'cs-netbanking-sdk/orders/domestic' {
 	    */
 	    stateOk?: boolean;
 	}
-	export interface DomesticPaymentResponse extends Payment, Signable {
+	export interface DomesticPaymentResponse extends Payment, CSCoreSDK.Signable {
 	}
 	export interface DomesticPaymentCreateRequest {
 	    /**
@@ -1606,11 +1605,15 @@ declare module 'cs-netbanking-sdk/orders/limits' {
 declare module 'cs-netbanking-sdk/orders/mobile' {
 	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	import CSCoreSDK = require('cs-core-sdk');
-	import { Amount, Signable } from 'cs-netbanking-sdk/common';
+	import { Amount } from 'cs-netbanking-sdk/common';
 	/**
 	* Recharging the credit available on prepaid cards provided by Vodafone, T-Mobile or O2.
 	*/
 	export class PaymentMobileResource extends CSCoreSDK.Resource implements CSCoreSDK.CreateEnabled<MobilePaymentsRequest, MobilePaymentsResponse> {
+	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
+	    /**
+	    * Recharge the credit on prepaid card
+	    */
 	    create: (payload: MobilePaymentsRequest) => Promise<MobilePaymentsResponse>;
 	}
 	export interface MobilePaymentsRequest {
@@ -1639,7 +1642,7 @@ declare module 'cs-netbanking-sdk/orders/mobile' {
 	    */
 	    confirmationPhoneNumber: string;
 	}
-	export interface MobilePaymentsResponse extends MobilePaymentsRequest, Signable {
+	export interface MobilePaymentsResponse extends MobilePaymentsRequest, CSCoreSDK.Signable {
 	}
 	export interface MobilePaymentSender {
 	    /**
@@ -1726,7 +1729,7 @@ declare module 'cs-netbanking-sdk/orders/orders' {
 	}
 	export interface PaymentList extends CSCoreSDK.PaginatedListResponse<Payment> {
 	}
-	export interface Payment extends Signable {
+	export interface Payment extends CSCoreSDK.Signable {
 	    /**
 	    * Internal identifier of payment order. Note that after signing of the order the id could change.
 	    */

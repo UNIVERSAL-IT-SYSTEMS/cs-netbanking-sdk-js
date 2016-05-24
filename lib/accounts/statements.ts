@@ -14,7 +14,7 @@ implements CSCoreSDK.PaginatedListEnabled<Statement> {
     list = (params?: NetbankingParameters) : Promise<StatementList> => {
         
         // transform "sort" and "order" parameters to comma separated list from array
-        
+        CSCoreSDK.EntityUtils.transformArrayParamsToString(params, ['sort', 'order']);
         
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'statements', params, response => {
             
@@ -29,6 +29,6 @@ implements CSCoreSDK.PaginatedListEnabled<Statement> {
     * Downloads statements file
     */
     download = (params: DownloadStatementParameters): Promise<any> => {
-        return CSCoreSDK.ResourceUtils.CallApiWithSuffix(this, 'signed/download', 'POST', params);
+        return CSCoreSDK.ResourceUtils.CallDownload(this, 'signed/download', 'POST', params);
     }
 }

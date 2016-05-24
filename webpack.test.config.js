@@ -27,8 +27,9 @@ if(args.indexOf('--target-browser') != -1){
   target = 'web';
   libraryTarget = 'var'
   externals = {};
-  externals['cs-core-sdk'] = 'CSCoreSDK'
-  externals['../build/cs-netbanking-sdk.node.js'] = 'CSNetbankingSDK'  
+  externals['cs-core-sdk'] = 'CSCoreSDK';
+  externals['../build/cs-netbanking-sdk.node.js'] = 'CSNetbankingSDK';
+  externals['fs'] = {}
 }else{
   console.log('Targeting node.js');
   externals = {};
@@ -57,6 +58,9 @@ module.exports = {
     libraryTarget: libraryTarget
   },
   target: target,
+  node: {
+    __dirname: true
+  },
   resolve: {
     extensions: ['', '.webpack.js', '.web.js', '.ts', '.js']
   },
@@ -65,6 +69,7 @@ module.exports = {
   devtool: 'source-map',
   // Add minification
   plugins: plugins,
+  
   module: {
     loaders: [
       { test: /\.json$/, loader: "json-loader" },

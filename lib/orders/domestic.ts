@@ -1,6 +1,6 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
-import {Amount, Signable, AccountNumber} from '../common';
+import {Amount, AccountNumber} from '../common';
 import {Info, Symbols, Payment} from './orders';
 
 /**
@@ -21,6 +21,9 @@ implements CSCoreSDK.CreateEnabled<DomesticPaymentCreateRequest, DomesticPayment
             
             // transform ISO dates to native Date objects
             CSCoreSDK.EntityUtils.addDatesFromISO(['cz-orderingDate', 'executionDate', 'modificationDate', 'transferDate'], response);
+            
+            // Remove signInfo from response and add SigningObject with key signing
+            CSCoreSDK.SigningUtils.createSigningObject(response, this.getClient(), `${this.getClient().getPath()}/orders/payments/${(<DomesticPaymentResponse>response).id}`);
             
             return response;
         });
@@ -57,6 +60,9 @@ implements CSCoreSDK.UpdateEnabled<DomesticPaymentUpdateRequest, DomesticPayment
             // transform ISO dates to native Date objects
             CSCoreSDK.EntityUtils.addDatesFromISO(['cz-orderingDate', 'executionDate', 'modificationDate', 'transferDate'], response);
             
+            // Remove signInfo from response and add SigningObject with key signing
+            CSCoreSDK.SigningUtils.createSigningObject(response, this.getClient(), `${this.getClient().getPath()}/orders/payments/${(<DomesticPaymentResponse>response).id}`);
+            
             return response;
         });
     }
@@ -88,7 +94,7 @@ export interface DomesticPaymentUpdateRequest extends DomesticPaymentCreateReque
     stateOk?: boolean;
 }
 
-export interface DomesticPaymentResponse extends Payment, Signable {}
+export interface DomesticPaymentResponse extends Payment, CSCoreSDK.Signable {}
 
 export interface DomesticPaymentCreateRequest {
     
