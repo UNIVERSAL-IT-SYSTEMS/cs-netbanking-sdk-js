@@ -30,7 +30,7 @@ export class NetbankingClient extends CSCoreSDK.WebApiClient {
      */
     constructor(config: CSCoreSDK.WebApiConfiguration, context: CSCoreSDK.WebApiContext) {
         super(config, '/api/v3/netbanking/my');
-        this.accessTokenProvider = context;
+        this.sharedContext = context;
     }
     
    /**
