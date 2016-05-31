@@ -27,7 +27,8 @@ describe("Netbanking SDK",function(){
     
     beforeEach(function(){
         CoreSDK.useWebApiKey("TEST_API_KEY").useEnvironment(judge.testEnvironment);
-        client =  netbanking.getClient();	
+        client =  netbanking.getClient();
+        client.accessTokenProvider = null;
         judgeSession = judge.startNewSession();
     });
     
