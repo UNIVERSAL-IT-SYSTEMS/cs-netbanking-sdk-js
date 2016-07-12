@@ -63,7 +63,7 @@ var CSNetbankingSDK =
 	 */
 	function getClient() {
 	    if (sharedClient === null) {
-	        return new NetbankingClient(CSCoreSDK.config.copy(), CSCoreSDK._sharedContext);
+	        return new NetbankingClient(CSCoreSDK.config.copy(), CSCoreSDK.sharedContext);
 	    }
 	    return sharedClient;
 	}
@@ -81,6 +81,7 @@ var CSNetbankingSDK =
 	     */
 	    function NetbankingClient(config, context) {
 	        _super.call(this, config, '/api/v3/netbanking/my');
+	        this.accessTokenProvider = context;
 	    }
 	    Object.defineProperty(NetbankingClient.prototype, "accounts", {
 	        /**
@@ -1620,7 +1621,6 @@ var CSNetbankingSDK =
 	            return CSCoreSDK.ResourceUtils.CallCreate(_this, payload).then(function (response) {
 	                // Remove signInfo from response and add SigningObject with key signing
 	                CSCoreSDK.SigningUtils.createSigningObject(response, _this.getClient(), _this.getPath());
-	                console.log(_this.getPath());
 	                return response;
 	            });
 	        };

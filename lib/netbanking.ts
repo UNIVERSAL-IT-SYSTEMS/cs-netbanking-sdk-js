@@ -12,7 +12,7 @@ var sharedClient : NetbankingClient = null;
  */
 export function getClient() {
     if (sharedClient === null) {
-        return new NetbankingClient(CSCoreSDK.config.copy(), CSCoreSDK._sharedContext);
+        return new NetbankingClient(CSCoreSDK.config.copy(), CSCoreSDK.sharedContext);
     }
     return sharedClient;
 }
@@ -30,6 +30,7 @@ export class NetbankingClient extends CSCoreSDK.WebApiClient {
      */
     constructor(config: CSCoreSDK.WebApiConfiguration, context: CSCoreSDK.WebApiContext) {
         super(config, '/api/v3/netbanking/my');
+        this.sharedContext = context;
     }
     
    /**
