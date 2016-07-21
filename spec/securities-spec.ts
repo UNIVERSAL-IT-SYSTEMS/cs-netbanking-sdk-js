@@ -9,6 +9,7 @@ var client : CSNetbankingSDK.NetbankingClient = null;
 var expectToBe = CoreSDK.TestUtils.expectToBe;
 var expectDate = CoreSDK.TestUtils.expectDate;
 var logJudgeError = CoreSDK.TestUtils.logJudgeError;
+import {testFile} from './helpers';
 
 describe("Netbanking SDK",function(){
     var originalTimeoutInterval = null;
@@ -130,6 +131,57 @@ describe("Netbanking SDK",function(){
                logJudgeError(e);
            });
            
+        });
+
+        it('updates transaction', done => {
+            judgeSession.setNextCase('securities.withId.transactions.withId.update').then(() => {
+                return client.securities.withId('420A817C20E4814C7C516A53ABA8E78F0CDBE324').transactions.withId('100000189114334').update({
+                    id: "100000189114334",
+                    note: "New client's personal note for transaction",
+                    flags: [
+                        "hasStar"
+                    ]
+                });
+            }).then(response => {
+                expectToBe(response.transaction, {
+                    id: '100000189114334',
+                    note: 'New client\'s personal note for transaction',
+                });
+                
+                expect(response.transaction.flags.length).toBe(2);
+                expect(response.transaction.flags[0]).toBe('hasNote');
+                expect(response.transaction.flags[1]).toBe('hasStar');
+
+                done();
+            }).catch(e => {
+               logJudgeError(e);
+            });
+        });
+
+        it('exports transactions', done => {
+
+            judgeSession.setNextCase('securities.withId.transactions.export').then(() => {
+                return client.securities.withId('420A817C20E4814C7C516A53ABA8E78F0CDBE324').transactions.export({
+                    dateFrom: new Date(1999, 8, 27), 
+                    dateTo: new Date(2000, 8, 27),
+                    fields: [
+                        'bookingDate',
+                        'partner',
+                        'amount',
+                        'currency'
+                    ],
+                    showAccountName: true,
+                    showAccountNumber: true,
+                    showTimespan: true,
+                    showBalance: true
+                });
+            }).then(response => {
+                testFile(response);
+
+                done();
+            }).catch(e => {
+                logJudgeError(e);                
+            });
         });
     });
 });
