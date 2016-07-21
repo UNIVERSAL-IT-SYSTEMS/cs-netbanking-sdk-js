@@ -58,6 +58,7 @@ module.exports =
 	var profile_1 = __webpack_require__(11);
 	var cards_1 = __webpack_require__(13);
 	var orders_1 = __webpack_require__(21);
+	var securities_1 = __webpack_require__(26);
 	var sharedClient = null;
 	/*+
 	 * Returns the singleton NetbankingClient
@@ -82,7 +83,7 @@ module.exports =
 	     */
 	    function NetbankingClient(config, context) {
 	        _super.call(this, config, '/api/v3/netbanking/my');
-	        this.accessTokenProvider = context;
+	        this.sharedContext = context;
 	    }
 	    Object.defineProperty(NetbankingClient.prototype, "accounts", {
 	        /**
@@ -120,6 +121,13 @@ module.exports =
 	        */
 	        get: function () {
 	            return new orders_1.OrdersResource(this.getPath() + '/orders', this);
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    Object.defineProperty(NetbankingClient.prototype, "securities", {
+	        get: function () {
+	            return new securities_1.SecuritiesResource(this.getPath() + '/securities', this);
 	        },
 	        enumerable: true,
 	        configurable: true
@@ -1631,6 +1639,52 @@ module.exports =
 	    return PaymentMobileResource;
 	}(CSCoreSDK.Resource));
 	exports.PaymentMobileResource = PaymentMobileResource;
+
+
+/***/ },
+/* 26 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
+	var CSCoreSDK = __webpack_require__(1);
+	var SecuritiesResource = (function (_super) {
+	    __extends(SecuritiesResource, _super);
+	    function SecuritiesResource() {
+	        var _this = this;
+	        _super.apply(this, arguments);
+	        this.list = function (params) {
+	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'securitiesAccounts', params, function (response) {
+	                return response;
+	            });
+	        };
+	        this.withId = function (id) {
+	            return new SecurityResource(id, _this.getPath(), _this.getClient());
+	        };
+	    }
+	    return SecuritiesResource;
+	}(CSCoreSDK.Resource));
+	exports.SecuritiesResource = SecuritiesResource;
+	var SecurityResource = (function (_super) {
+	    __extends(SecurityResource, _super);
+	    function SecurityResource() {
+	        var _this = this;
+	        _super.apply(this, arguments);
+	        this.get = function () {
+	            return CSCoreSDK.ResourceUtils.CallGet(_this, null);
+	        };
+	        this.update = function (payload) {
+	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload);
+	        };
+	    }
+	    return SecurityResource;
+	}(CSCoreSDK.InstanceResource));
+	exports.SecurityResource = SecurityResource;
 
 
 /***/ }
