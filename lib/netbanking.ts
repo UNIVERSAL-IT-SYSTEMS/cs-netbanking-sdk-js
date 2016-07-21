@@ -7,6 +7,7 @@ import {OrdersResource} from './orders/orders';
 import {SecuritiesResource} from './securities/securities';
 import {SettingsResource} from './settings/settings';
 import {ContactsResource} from './contacts/contacts';
+import {PluginsResource} from './plugins/plugins';
 
 var sharedClient : NetbankingClient = null;
 
@@ -74,5 +75,9 @@ export class NetbankingClient extends CSCoreSDK.WebApiClient {
 
     get contacts() {
         return new ContactsResource(`${this.getPath()}/contacts`, this);
+    }
+
+    get plugins() {
+        return new PluginsResource(`${this.getPath()}/plugins`, this);
     }
 }
