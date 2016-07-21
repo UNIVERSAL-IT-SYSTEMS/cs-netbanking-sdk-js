@@ -1863,6 +1863,19 @@ declare module 'cs-netbanking-sdk/orders/orders' {
 	}
 
 }
+declare module 'cs-netbanking-sdk/securities/securities' {
+	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
+	import CSCoreSDK = require('cs-core-sdk');
+	export class SecuritiesResource extends CSCoreSDK.Resource implements CSCoreSDK.PaginatedListEnabled<any>, CSCoreSDK.HasInstanceResource<SecurityResource> {
+	    list: (params?: any) => Promise<any>;
+	    withId: (id: string) => SecurityResource;
+	}
+	export class SecurityResource extends CSCoreSDK.InstanceResource implements CSCoreSDK.GetEnabled<any>, CSCoreSDK.UpdateEnabled<any, any> {
+	    get: () => Promise<any>;
+	    update: (payload: any) => Promise<any>;
+	}
+
+}
 declare module 'cs-netbanking-sdk/netbanking' {
 	/// <reference path="../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	import CSCoreSDK = require('cs-core-sdk');
@@ -1870,6 +1883,7 @@ declare module 'cs-netbanking-sdk/netbanking' {
 	import { ProfileResource } from 'cs-netbanking-sdk/profile/profile';
 	import { CardsResource } from 'cs-netbanking-sdk/cards/cards';
 	import { OrdersResource } from 'cs-netbanking-sdk/orders/orders';
+	import { SecuritiesResource } from 'cs-netbanking-sdk/securities/securities';
 	export function getClient(): NetbankingClient;
 	/**
 	 * Netbanking client
@@ -1898,6 +1912,7 @@ declare module 'cs-netbanking-sdk/netbanking' {
 	    * List, update and get payments, booking date or create and update domestic payments.
 	    */
 	    orders: OrdersResource;
+	    securities: SecuritiesResource;
 	}
 
 }

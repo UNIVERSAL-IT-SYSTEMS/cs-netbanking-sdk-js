@@ -1864,7 +1864,21 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
+	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
+	
+	export class SecuritiesResource extends CSCoreSDK.Resource implements CSCoreSDK.PaginatedListEnabled<any>, CSCoreSDK.HasInstanceResource<SecurityResource> {
+	    list: (params?: any) => Promise<any>;
+	    withId: (id: string) => SecurityResource;
+	}
+	export class SecurityResource extends CSCoreSDK.InstanceResource implements CSCoreSDK.GetEnabled<any>, CSCoreSDK.UpdateEnabled<any, any> {
+	    get: () => Promise<any>;
+	    update: (payload: any) => Promise<any>;
+	}
+
+}
+declare module CSNetbankingSDK {
 	/// <reference path="../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
+	
 	
 	
 	
@@ -1898,6 +1912,7 @@ declare module CSNetbankingSDK {
 	    * List, update and get payments, booking date or create and update domestic payments.
 	    */
 	    orders: OrdersResource;
+	    securities: SecuritiesResource;
 	}
 
 }
