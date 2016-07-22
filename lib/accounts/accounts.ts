@@ -9,6 +9,7 @@ import {AccountStatementsResource} from './statements';
 import {AccountSubAccountsResource} from './subAccounts';
 import {AccountTransactionsResource} from './transactions';
 import {AccountTransferResource} from './transfer';
+import {AccountStandingOrdersResource} from './standing-orders';
 
 /**
 * List all accounts and get individual account instance resource 
@@ -57,7 +58,7 @@ implements CSCoreSDK.GetEnabled<MainAccount>, CSCoreSDK.UpdateEnabled<ChangeAcco
     get = (): Promise<MainAccount> => {
         return CSCoreSDK.ResourceUtils.CallGet(this, null).then(response => {
             
-            // add convenience methods
+            // add convenienxce methods
             resourcifyListing(<MainAccount>response, this, false);
             
             // transform ISO dates to native Date objects
@@ -138,6 +139,10 @@ implements CSCoreSDK.GetEnabled<MainAccount>, CSCoreSDK.UpdateEnabled<ChangeAcco
     get transfer() {
         return new AccountTransferResource(this.getPath() + '/transfer', this._client);
     }
+
+    get standingOrders() {
+        return new AccountStandingOrdersResource(this.getPath() + '/standingorders', this.getClient());
+    }
 }
 
 function resourcifyListing(accountListing: MainAccount, account: AccountResource, isFromList: boolean) : void {
@@ -151,6 +156,7 @@ function resourcifyListing(accountListing: MainAccount, account: AccountResource
     accountListing.transfer = account.transfer;
     accountListing.statements = account.statements;
     accountListing.repayments = account.repayments;
+    accountListing.standingOrders = account.standingOrders;
 }
 
 function transformResponse(accountListing) {
@@ -269,6 +275,11 @@ export interface MainAccount extends Account {
     * Convenience getter for getting accounts's repayments resource
     */
     repayments: AccountRepaymentsResource;
+
+    /**
+    * Convenience getter for getting accounts's standing orders resource
+    */
+    standingOrders: AccountStandingOrdersResource;
 }
 
 export interface OverdraftAmount extends Amount {

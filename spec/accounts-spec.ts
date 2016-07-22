@@ -207,6 +207,21 @@ describe("Netbanking SDK",function(){
             currency: 'CZK'
         });
     }
+
+    function processStandingOrders(response) {
+        expectToBe(response.pagination, {
+            pageNumber: 0,
+            pageCount: 3,
+            pageSize: 2,
+            nextPage: 1
+        });
+
+        expectToBe(response.items[0], {
+            number: '1',
+            type: 'STANDING_ORDER',
+            status: 'OK',
+        });
+    }
     
     describe('Netbanking SDK accounts', () => {
        
@@ -1233,6 +1248,126 @@ describe("Netbanking SDK",function(){
         }).then(response => {
             testFile(response);
             
+            done();
+        }).catch(e => {
+            logJudgeError(e);
+        });
+    });
+
+    it('tests pagination for standing orders', done => {
+        let list;
+        judgeSession.setNextCase('accounts.withId.standingOrders.list.page0').then(() => {
+            return client.accounts.withId('4B2F9EBE742BCAE1E98A78E12F6FBC62464A74EE').standingOrders.list({
+                pageNumber: 0,
+                pageSize: 2,
+                sort: ['nextExecutionDate'],
+                order: ['desc']
+            });
+        }).then(response => {
+            
+            // date transforms
+            processStandingOrders(response);
+
+            list = response;
+            return judgeSession.setNextCase('accounts.withId.standingOrders.list.page1');         
+        }).then(() => {
+            return list.nextPage();
+        }).then(response => {
+            expectToBe(response.pagination, {
+                pageNumber: 1,
+                pageCount: 3,
+                pageSize: 2,
+                nextPage: 2
+            });
+
+            expectToBe(response.items[0], {
+                number: '3',
+                type: 'STANDING_ORDER',
+                status: 'OK',
+            });
+            list = response;
+            return judgeSession.setNextCase('accounts.withId.standingOrders.list.page0');
+        }).then(() => {
+            return list.prevPage();
+        }).then(response => {
+            processStandingOrders(response);
+            done();
+        }).catch(e => {
+            logJudgeError(e);
+        });
+    });
+
+    it('retrieves standing order with a given id', done => {
+        judgeSession.setNextCase('accounts.withId.standingOrders.withId.get').then(() => {
+            return client.accounts.withId('4B2F9EBE742BCAE1E98A78E12F6FBC62464A74EE').standingOrders.withId('1').get();
+        }).then(response => {
+
+            // date transforms
+            
+            expectToBe(response, {
+                number: '1',
+                type: 'STANDING_ORDER',
+                alias: 'nájemné'
+            });
+
+            done();
+        }).catch(e => {
+            logJudgeError(e);
+        });
+    });
+
+    it('creates standing order', done => {
+        judgeSession.setNextCase('accounts.withId.standingOrders.create').then(() => {
+            return client.accounts.withId('4B2F9EBE742BCAE1E98A78E12F6FBC62464A74EE').standingOrders.create({
+                // date transform?
+                type: 'STANDING_ORDER',
+                alias: 'Monthly standing order executed on the last day of month',
+                receiverName: 'Name of the receiver',
+                receiver: {
+                    number: '188505042',
+                    bankCode: '0300'
+                },
+                amount: {
+                    value: 30000,
+                    precision: 2,
+                    currency: 'CZK'
+                },
+                nextExecutionDate: '2016-12-31',
+                executionMode: 'UNTIL_CANCELLATION',
+                executionDueMode: 'DUE_LAST_DAY_OF_MONTH',
+                executionInterval: 'MONTHLY',
+                symbols: {
+                    variableSymbol: '854259',
+                    constantSymbol: '0305',
+                    specificSymbol: '785421'
+                }
+            });
+        }).then(response => {
+
+            expectToBe(response, {
+                number: '160526104005956',
+            });
+
+            // date tests
+
+            done();
+
+        }).catch(e => {
+            logJudgeError(e);
+        });
+    });
+
+    it('deletes standing order with a given id', done => {
+        judgeSession.setNextCase('accounts.withId.standingOrders.withId.delete').then(() => {
+            return client.accounts.withId('4B2F9EBE742BCAE1E98A78E12F6FBC62464A74EE').standingOrders.withId('1').delete();
+        }).then(response => {
+
+            expectToBe(response, {
+                number: '1',
+                type: 'STANDING_ORDER',
+                alias: 'nájemné'
+            });
+
             done();
         }).catch(e => {
             logJudgeError(e);
