@@ -223,6 +223,28 @@ describe("Netbanking SDK",function(){
         });
     }
     
+    function processDirectDebits(response) {
+        expectToBe(response.pagination, {
+            pageNumber: 0,
+            pageCount: 2,
+            pageSize: 2,
+            nextPage: 1
+        });
+
+        expectToBe(response.items[0], {
+            number: '2',
+            type: 'DIRECT_DEBIT',
+            periodCycle: 'MONTHLY',
+            periodicity: 1,
+            receiverName: 'Vrba Aleš'
+        });
+
+        expectDate(response.items[0], {
+            startDate: '2012-11-26',
+            versionValidityDate: '2012-11-26'
+        });
+    }
+
     describe('Netbanking SDK accounts', () => {
        
        it('retrieves a list of accounts', done => {
@@ -1367,6 +1389,160 @@ describe("Netbanking SDK",function(){
                 type: 'STANDING_ORDER',
                 alias: 'nájemné'
             });
+
+            done();
+        }).catch(e => {
+            logJudgeError(e);
+        });
+    });
+
+    it('tests pagination for direct debits', done => {
+        let list;
+
+        judgeSession.setNextCase('accounts.withId.directDebts.list.page0').then(() => {
+            return client.accounts.withId('4B2F9EBE742BCAE1E98A78E12F6FBC62464A74EE').directDebits.list({
+                pageNumber: 0,
+                pageSize: 2,
+                sort: ['periodCycle'],
+                order: ['desc'],
+            });
+        }).then(response => {
+
+            processDirectDebits(response);
+
+            list = response;
+            return judgeSession.setNextCase('accounts.withId.directDebts.list.page1');
+        }).then(() => {
+            return list.nextPage();
+        }).then(response => {
+
+            expectToBe(response.pagination, {
+                pageNumber: 1,
+                pageCount: 2,
+                pageSize: 1,
+            });
+
+            expectToBe(response.items[0], {
+                number: '4',
+                type: 'SIPO',
+                periodCycle: 'MONTHLY',
+                periodicity: 1,
+            });
+
+            expectDate(response.items[0], {
+                startDate: '2013-01-08',
+                versionValidityDate: '2013-01-08'
+            });
+
+            list = response;
+            return judgeSession.setNextCase('accounts.withId.directDebts.list.page0');
+        }).then(() => {
+            return list.prevPage();
+        }).then(response => {
+
+            processDirectDebits(response);
+
+            done();
+        }).catch(e => {
+            logJudgeError(e);
+        });
+    });
+
+    it('retrieves direct debit with a given id', done => {
+        judgeSession.setNextCase('accounts.withId.directDebts.withId.get').then(() => {
+            return client.accounts.withId('4B2F9EBE742BCAE1E98A78E12F6FBC62464A74EE').directDebits.withId('4').get();
+        }).then(response => {
+
+            expectToBe(response, {
+                number: '4',
+                type: 'SIPO',
+                periodicity: 1,
+                periodCycle: 'MONTHLY',
+            });
+
+            expectDate(response, {
+                startDate: '2013-01-08',
+                versionValidityDate: '2013-01-08',
+            });
+
+            done();
+        }).catch(e => {
+            logJudgeError(e);
+        });
+    });
+
+    it('deletes direct debit with a given id', done => {
+        judgeSession.setNextCase('accounts.withId.directDebts.withId.delete').then(() => {
+            return client.accounts.withId('4B2F9EBE742BCAE1E98A78E12F6FBC62464A74EE').directDebits.withId('4').delete();
+        }).then(response => {
+
+            expectToBe(response, {
+                number: '4',
+                type: 'SIPO',
+                periodicity: 1,
+                periodCycle: 'MONTHLY',
+            });
+
+            expectDate(response, {
+                startDate: '2013-01-08',
+                versionValidityDate: '2013-01-08',
+            });
+
+            expect(response.signing).toBeDefined();
+
+            done();
+        }).catch(e => {
+            logJudgeError(e);
+        });
+    });
+
+    it('creates direct devit with a given id', done => {
+        judgeSession.setNextCase('accounts.withId.directDebts.create').then(() => {
+            return client.accounts.withId('4B2F9EBE742BCAE1E98A78E12F6FBC62464A74EE').directDebits.create({
+
+                // DATE transform??
+                type: 'DIRECT_DEBIT',
+                receiver: {
+                    number: '428602109',
+                    bankCode: '0800',
+                },
+                alias: 'moje inkaso',
+                periodicity: 1,
+                periodCycle: 'MONTHLY',
+                limit: {
+                    value: 100000,
+                    precision: 2,
+                    currency: 'CZK'
+                },
+                limitSum: {
+                    value: 300000,
+                    precision: 2,
+                    currency: 'CZK'
+                },
+                numberLimit: 5,
+                startDate: '2017-07-14',
+                endDate: '2018-07-14',
+                symbols: {
+                    variableSymbol: '4567',
+                    specificSymbol: '800'
+                }
+            });
+        }).then(response => {
+
+            expectToBe(response, {
+                type: 'DIRECT_DEBIT',
+                alias: 'moje inkaso',
+                periodCycle: 'MONTHLY',
+                numberLimit: 5
+            });
+
+            expectDate(response, {
+                startDate: '2017-07-14',
+                endDate: '2018-07-14',
+            });
+
+            expect(response.signing).toBeDefined();
+            
 
             done();
         }).catch(e => {
