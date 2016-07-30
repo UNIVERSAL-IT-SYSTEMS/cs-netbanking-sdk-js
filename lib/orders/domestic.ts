@@ -1,7 +1,7 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
-import {Amount, AccountNumber} from '../common';
-import {Info, Symbols, Payment} from './orders';
+import {Amount, AccountNumber, Symbols} from '../common';
+import {Info, Payment} from './orders';
 
 /**
 * Create domestic payment order

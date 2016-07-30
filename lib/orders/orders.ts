@@ -5,6 +5,7 @@ import {PaymentBookingDateResource} from './bookingDate';
 import {PaymentsDomesticResource} from './domestic';
 import {PaymentLimitsResource} from './limits';
 import {PaymentMobileResource} from './mobile';
+import {Symbols} from '../common';
 
 /**
 * Get information about payments orders
@@ -260,24 +261,6 @@ export interface Payment extends CSCoreSDK.Signable {
     * Convenience method for removing payment
     */
     delete: () => Promise<NetbankingEmptyResponse>;
-}
-
-export interface Symbols {
-    
-    /**
-    * variable symbol
-    */
-    variableSymbol?: string;
-    
-    /**
-    * constant symbol
-    */
-    constantSymbol?: string;
-    
-    /**
-    * specific symbol
-    */
-    specificSymbol?: string;
 }
 
 export interface Info {

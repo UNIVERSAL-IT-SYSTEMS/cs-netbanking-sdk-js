@@ -93,7 +93,7 @@ export interface StandingOrder extends CreateStandingOrderRequest {
     /**
      * Date and time since the order is valid from.
      */
-    startDate: Date;
+    startDate: Date | string;
 
     /**
      * Array of execution dates (DATEs) when payments will be executed from this standing order since today until today + 30 days.
@@ -141,12 +141,12 @@ export interface CreateStandingOrderRequest {
     /**
      * Relevant only for sweep orders. Either SWEEP_OVER_LIMIT (amount over limit is transferred from account) or SWEEP_UNDER_LIMIT (amount to limit is transferred to account).
      */
-    subtype: string;
+    subtype?: string;
 
     /**
      * Alias name of standing order entered by user for his better orientation in standing order list.
      */
-    alias?: number;
+    alias?: string;
 
     /**
      * Name of the standing order receiver.
@@ -171,12 +171,12 @@ export interface CreateStandingOrderRequest {
     /**
      * Date when the next order is set to be executed. This includes weekends and banking holidays.
      */
-    nextExecutionDate?: Date;
+    nextExecutionDate?: Date | string;
 
     /**
      * Date when the last order will be processed. Only applicable in combination with executionMode .
      */
-    lastExecutionDate: Date;
+    lastExecutionDate?: Date | string;
 
     /**
      * The execution mode defines when or how standing/sweep order will be cancelled, processed the last time. Possible values: UNTIL_DATE (standing order is valid until specific date - field lastExecutionDate), UNTIL_CANCELLATION (standing order is valid forever and must be cancelled by client), AFTER_MAX_ITERATION_EXCEEDED (certain count of executions is specified - field maxIterations) or MAX_AMOUNT_EXCEEDED (maximum amount which can be transferred for this order is specified, if next iteration would exceed this amount it is not executed - field maxAmount).
@@ -196,12 +196,12 @@ export interface CreateStandingOrderRequest {
     /**
      * Value represents order number of the day within particular period when the standing order will be reqularly executed. Possible values: 1-7 (for WEEKLY interval), 1-28 for STANDING_ORDER, 1-27 for type SWEEP_ORDER (for MONTHLY, QUARTERLY, HALFYEARLY and YEARLY - for intervals longer then month also intervalDueMonth is applicable). Field is not relevant for other execution intervals.
      */
-    intervalDueDay: number;
+    intervalDueDay?: number;
 
     /**
      * Due date month in execution interval of standing order processing. Represents order number of the month in particular period. Possible values: 1-2 for BI_MONTHLY, 1-3 for QUARTERLY, 1-6 for HALFYEARLY, 1-12 for YEARLY. Field is not relevant for other execution intervals.
      */
-    intervalDueMonth: number;
+    intervalDueMonth?: number;
 
     symbols?: Symbols
 }

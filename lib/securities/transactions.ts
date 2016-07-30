@@ -59,7 +59,7 @@ export interface SecurityTransactionRequest {
 
 export interface SecurityTransactionResponse extends Signable {
 
-    transactions: {
+    transaction: {
 
         /**
          * Transaction identifier.

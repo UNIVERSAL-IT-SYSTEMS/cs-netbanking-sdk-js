@@ -69,7 +69,7 @@ export interface DirectDebit {
     /**
      * Order number of the direct debit approval. It is unique per approval. Several versions of an approval have the same order number.
      */
-    number: string;
+    number?: string;
 
     /**
      * Type of the approval. Possible values are DIRECT_DEBIT or SIPO.
@@ -104,17 +104,17 @@ export interface DirectDebit {
     /**
      * Limit for the number of direct debits for the period.
      */
-    limitNumber?: number;
+    numberLimit?: number;
 
     /**
      * Beginning date for the approval.
      */
-    startDate: Date;
+    startDate: Date | string;
 
     /**
      * End date for the approval.
      */
-    endDate?: Date;
+    endDate?: Date | string;
 
     /**
      * Symbols structure for Variable symbol, Specific symbol, Constant symbol.
@@ -139,12 +139,12 @@ export interface DirectDebit {
     /**
      * Unique identifier for version of the direct debit approval.
      */
-    versionId: number;
+    versionId?: number;
 
     /**
      * Date when the version comes into use.
      */
-    versionValidityDate: Date;
+    versionValidityDate?: Date;
 
     /**
      * Number of period cycles in one period.
