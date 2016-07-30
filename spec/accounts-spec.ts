@@ -66,7 +66,6 @@ describe("Netbanking SDK",function(){
             description: 'Anna Vojtíšková',
             product: '49',
             productI18N: 'Osobní účet ČS II',
-            subType: 'GIRO_ACCOUNT'
         });
     }
     
@@ -89,11 +88,6 @@ describe("Netbanking SDK",function(){
     function processServices(services) {
         var service = services.items[0];
         expect(services.items.length).toBe(2);
-        
-        expectDate(service, {
-            dateFrom: '2014-07-31+0100',
-            dateTo: '2014-08-31+0100'
-        });
         
         expectToBe(services.pagination, {
             pageNumber: 0,
@@ -221,6 +215,12 @@ describe("Netbanking SDK",function(){
             type: 'STANDING_ORDER',
             status: 'OK',
         });
+
+        expectDate(response.items[0], {
+            startDate: '2013-01-09T00:00:00+01:00',
+            nextExecutionDate: '2016-06-17',
+            realExecutionDate: '2016-06-17',
+        });
     }
     
     function processDirectDebits(response) {
@@ -331,7 +331,6 @@ describe("Netbanking SDK",function(){
                   description: 'Anna Vojtíšková',
                   product: '49',
                   productI18N: 'Osobní účet ČS II',
-                  subType: 'GIRO_ACCOUNT'
               });
               
               expectToBe(account.accountno, {
@@ -381,7 +380,6 @@ describe("Netbanking SDK",function(){
                   description: 'Anna Vojtíšková',
                   product: '49',
                   productI18N: 'Osobní účet ČS II',
-                  subType: 'GIRO_ACCOUNT'
               });
               
               expectToBe(account.accountno, {
@@ -1287,7 +1285,6 @@ describe("Netbanking SDK",function(){
             });
         }).then(response => {
             
-            // date transforms
             processStandingOrders(response);
 
             list = response;
@@ -1496,11 +1493,10 @@ describe("Netbanking SDK",function(){
         });
     });
 
-    it('creates direct devit with a given id', done => {
+    it('creates direct debit with a given id', done => {
         judgeSession.setNextCase('accounts.withId.directDebts.create').then(() => {
             return client.accounts.withId('4B2F9EBE742BCAE1E98A78E12F6FBC62464A74EE').directDebits.create({
 
-                // DATE transform??
                 type: 'DIRECT_DEBIT',
                 receiver: {
                     number: '428602109',
@@ -1533,7 +1529,6 @@ describe("Netbanking SDK",function(){
                 type: 'DIRECT_DEBIT',
                 alias: 'moje inkaso',
                 periodCycle: 'MONTHLY',
-                numberLimit: 5
             });
 
             expectDate(response, {

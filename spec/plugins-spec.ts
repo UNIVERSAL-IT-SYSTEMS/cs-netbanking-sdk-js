@@ -47,11 +47,6 @@ describe("Netbanking SDK",function(){
             validUntil: '2100-01-01'
         });
 
-        expectToBe(response.items[0].standardFees, {
-            timeOfCharging: 'IMMEDIATELY',
-            periodOfCharging: 'NON_RECURRING'
-        });
-
     }
     
     describe('plugins', () => {
@@ -87,7 +82,7 @@ describe("Netbanking SDK",function(){
                     validUntil: '2100-01-01'
                 });
 
-                expectToBe(response.items[0].standardFees, {
+                expectToBe(response.items[0].standardFees[0], {
                     timeOfCharging: 'IMMEDIATELY',
                     periodOfCharging: 'NON_RECURRING'
                 });
@@ -124,7 +119,7 @@ describe("Netbanking SDK",function(){
                     validUntil: '2100-01-01'
                 });
 
-                expectToBe(response.standardFees, {
+                expectToBe(response.standardFees[0], {
                     timeOfCharging: 'IMMEDIATELY',
                     periodOfCharging: 'NON_RECURRING'
                 });
