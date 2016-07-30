@@ -10,6 +10,7 @@ import {AccountSubAccountsResource} from './subAccounts';
 import {AccountTransactionsResource} from './transactions';
 import {AccountTransferResource} from './transfer';
 import {AccountStandingOrdersResource} from './standing-orders';
+import {AccountDirectDebitsResource} from './direct-debits';
 
 /**
 * List all accounts and get individual account instance resource 
@@ -143,6 +144,10 @@ implements CSCoreSDK.GetEnabled<MainAccount>, CSCoreSDK.UpdateEnabled<ChangeAcco
     get standingOrders() {
         return new AccountStandingOrdersResource(this.getPath() + '/standingorders', this.getClient());
     }
+
+    get directDebits() {
+        return new AccountDirectDebitsResource(this.getPath() + '/directdebits', this.getClient());
+    }
 }
 
 function resourcifyListing(accountListing: MainAccount, account: AccountResource, isFromList: boolean) : void {
@@ -157,6 +162,7 @@ function resourcifyListing(accountListing: MainAccount, account: AccountResource
     accountListing.statements = account.statements;
     accountListing.repayments = account.repayments;
     accountListing.standingOrders = account.standingOrders;
+    accountListing.directDebits = account.directDebits;
 }
 
 function transformResponse(accountListing) {
@@ -280,6 +286,11 @@ export interface MainAccount extends Account {
     * Convenience getter for getting accounts's standing orders resource
     */
     standingOrders: AccountStandingOrdersResource;
+
+    /**
+    * Convenience getter for getting accounts's direct debits resource
+    */
+    directDebits: AccountDirectDebitsResource;
 }
 
 export interface OverdraftAmount extends Amount {
