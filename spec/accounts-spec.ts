@@ -1320,14 +1320,20 @@ describe("Netbanking SDK",function(){
         judgeSession.setNextCase('accounts.withId.standingOrders.withId.get').then(() => {
             return client.accounts.withId('4B2F9EBE742BCAE1E98A78E12F6FBC62464A74EE').standingOrders.withId('1').get();
         }).then(response => {
-
-            // date transforms
             
             expectToBe(response, {
                 number: '1',
                 type: 'STANDING_ORDER',
                 alias: 'nájemné'
             });
+
+            expectDate(response, {
+                startDate: '2013-01-09T00:00:00+01:00',
+                nextExecutionDate: '2016-06-17',
+                realExecutionDate: '2016-06-17',
+            });
+            
+            expect(response.scheduledExecutionDates[0].toString()).toBe(new Date(CoreSDK.EntityUtils.parseISODate('2016-06-17')).toString());
 
             done();
         }).catch(e => {
@@ -1338,6 +1344,7 @@ describe("Netbanking SDK",function(){
     it('creates standing order', done => {
         judgeSession.setNextCase('accounts.withId.standingOrders.create').then(() => {
             return client.accounts.withId('4B2F9EBE742BCAE1E98A78E12F6FBC62464A74EE').standingOrders.create({
+
                 // date transform?
                 type: 'STANDING_ORDER',
                 alias: 'Monthly standing order executed on the last day of month',
@@ -1367,7 +1374,10 @@ describe("Netbanking SDK",function(){
                 number: '160526104005956',
             });
 
-            // date tests
+            expectDate(response, {
+                nextExecutionDate: '2016-12-31',
+                startDate: '2016-12-31T00:00:00+01:00',
+            });
 
             done();
 
@@ -1386,6 +1396,14 @@ describe("Netbanking SDK",function(){
                 type: 'STANDING_ORDER',
                 alias: 'nájemné'
             });
+
+            expectDate(response, {
+                startDate: '2013-01-09T00:00:00+01:00',
+                nextExecutionDate: '2016-06-17',
+                realExecutionDate: '2016-06-17',
+            });
+
+            expect(response.scheduledExecutionDates[0].toString()).toBe(new Date(CoreSDK.EntityUtils.parseISODate('2016-06-17')).toString());
 
             done();
         }).catch(e => {

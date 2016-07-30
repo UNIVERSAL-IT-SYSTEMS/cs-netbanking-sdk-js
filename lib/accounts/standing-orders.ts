@@ -10,6 +10,11 @@ implements CSCoreSDK.PaginatedListEnabled<StandingOrder>, CSCoreSDK.HasInstanceR
     list = (params: NetbankingParameters): Promise<StandingOrderList> => {
 
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'standingOrders', params, response => {
+
+            response.items.forEach(item => {
+                addDatesToStandingOrder(item); 
+            });
+
             return response;
         });
     }
@@ -19,7 +24,11 @@ implements CSCoreSDK.PaginatedListEnabled<StandingOrder>, CSCoreSDK.HasInstanceR
     }
 
     create = (payload: CreateStandingOrderRequest): Promise<StandingOrderResponse> => {
-        return CSCoreSDK.ResourceUtils.CallCreate(this, payload);
+        return CSCoreSDK.ResourceUtils.CallCreate(this, payload).then(response => {
+            addDatesToStandingOrder(response);
+
+            return response;
+        });
     }
 }
 
@@ -28,11 +37,31 @@ implements CSCoreSDK.GetEnabled<StandingOrder>, CSCoreSDK.DeleteEnabled<Standing
     
     // date transforms
     get = (): Promise<StandingOrder> => {
-        return CSCoreSDK.ResourceUtils.CallGet(this, null);
+        return CSCoreSDK.ResourceUtils.CallGet(this, null).then(response => {
+            addDatesToStandingOrder(response);
+
+            return response;
+        });
     }
 
     delete = (): Promise<StandingOrderResponse> => {
-        return CSCoreSDK.ResourceUtils.CallDelete(this, null);
+        return CSCoreSDK.ResourceUtils.CallDelete(this, null).then(response => {
+            addDatesToStandingOrder(response);
+
+            return response;
+        });
+    }
+}
+
+function addDatesToStandingOrder(item) {
+    CSCoreSDK.EntityUtils.addDatesFromISO(['startDate', 'realExecutionDate', 'nextExecutionDate', 'lastExecutionDate'], item);
+    if((<StandingOrder>item).break) {
+        CSCoreSDK.EntityUtils.addDatesFromISO(['validFromDate', 'validToDate'], (<StandingOrder>item).break);
+    }
+    if((<StandingOrder>item).scheduledExecutionDates && Array.isArray((<StandingOrder>item).scheduledExecutionDates)) {
+        var datesArr: any = (<StandingOrder>item).scheduledExecutionDates.map(x => new Date(CSCoreSDK.EntityUtils.parseISODate(x)));
+
+        (<StandingOrder>item).scheduledExecutionDates = datesArr;
     }
 }
 
