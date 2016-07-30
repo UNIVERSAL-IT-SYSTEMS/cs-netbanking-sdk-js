@@ -209,3 +209,21 @@ export interface ExportTransactionsParameters {
 }
 
 export interface NetbankingEmptyResponse extends CSCoreSDK.EmptyResponse {}
+
+export interface Symbols {
+
+    /**
+     * Standing order variable symbol.
+     */
+    variableSymbol?: string;
+
+    /**
+     * Standing order constant symbol.
+     */
+    constantSymbol?: string;
+
+    /**
+     * Standing order specific symbol.
+     */
+    specificSymbol?: string;
+}

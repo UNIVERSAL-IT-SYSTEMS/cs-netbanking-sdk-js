@@ -1,6 +1,6 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
-import {AccountNumber, Amount, NetbankingParameters, Signable} from '../common';
+import {AccountNumber, Amount, NetbankingParameters, Signable, Symbols} from '../common';
 
 export class AccountStandingOrdersResource extends CSCoreSDK.Resource
 implements CSCoreSDK.PaginatedListEnabled<StandingOrder>, CSCoreSDK.HasInstanceResource<AccountStandingOrderResource>, CSCoreSDK.CreateEnabled<CreateStandingOrderRequest, StandingOrderResponse> {
@@ -174,21 +174,5 @@ export interface CreateStandingOrderRequest {
      */
     intervalDueMonth: number;
 
-    symbols?: {
-
-        /**
-         * Standing order variable symbol.
-         */
-        variableSymbol?: string;
-
-        /**
-         * Standing order constant symbol.
-         */
-        constantSymbol?: string;
-
-        /**
-         * Standing order specific symbol.
-         */
-        specificSymbol?: string;
-    }
+    symbols?: Symbols
 }
