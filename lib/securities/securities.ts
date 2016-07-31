@@ -10,6 +10,9 @@ implements CSCoreSDK.PaginatedListEnabled<Security>, CSCoreSDK.HasInstanceResour
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'securitiesAccounts', params, response => {
 
             transformDatesInSubSecAccounts(response);
+            response.items.forEach(sec => {
+                resourcifySecurity(<Security>sec, this.withId((<Security>sec).id));
+            });
 
             return response;
         });
@@ -26,6 +29,7 @@ implements CSCoreSDK.GetEnabled<Security>, CSCoreSDK.UpdateEnabled<SecurityReque
     get = (): Promise<Security> => {
         return CSCoreSDK.ResourceUtils.CallGet(this, null).then(response => {
             transformDatesInSubSecAccounts(response);
+            resourcifySecurity(<Security>response, this);
 
             return response;
         });
@@ -34,6 +38,7 @@ implements CSCoreSDK.GetEnabled<Security>, CSCoreSDK.UpdateEnabled<SecurityReque
     update = (payload: SecurityRequest): Promise<SecurityResponse> => {
         return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(response => {
             transformDatesInSubSecAccounts(response);
+            resourcifySecurity(<Security>response, this);
 
             return response;
         });
@@ -51,6 +56,12 @@ function transformDatesInSubSecAccounts(response) {
         });
     }
 }
+
+function resourcifySecurity(security: Security, securityReference: SecurityResource) {
+    security.transactions = securityReference.transactions;
+    security.get = securityReference.get;
+    security.update = securityReference.update;
+} 
 
 export interface SecurityList extends CSCoreSDK.PaginatedListResponse<Security> {}
 
@@ -85,6 +96,21 @@ export interface Security {
      * Array of securities sub accounts
      */
     subSecAccounts?: [SubSecAccount];
+
+    /**
+    * Convenience getter for getting security's transactions resource
+    */
+    transactions: SecurityTransactionsResource;
+
+    /**
+     * Convenience method for getting security detail right from the list 
+     */
+    get: () => Promise<Security>;
+    
+    /**
+    * Convenience method for updating security's details
+    */
+    update: (payload: SecurityRequest) => Promise<SecurityResponse>;
 }
 
 // z dokumentace

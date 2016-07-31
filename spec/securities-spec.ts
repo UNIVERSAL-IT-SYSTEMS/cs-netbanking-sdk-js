@@ -45,6 +45,10 @@ describe("Netbanking SDK",function(){
             description: 'Aleš Vrba',
             accountno: '1034176627'
         });
+
+        expect(list.items[0].transactions).toBeDefined();
+        expect(list.items[0].get).toBeDefined();
+        expect(list.items[0].update).toBeDefined();
     }
     
     function processSecurity(security) {
@@ -53,6 +57,10 @@ describe("Netbanking SDK",function(){
             description: 'Aleš Vrba',
             accountno: '1034176627'
         });
+
+        expect(security.transactions).toBeDefined();
+        expect(security.get).toBeDefined();
+        expect(security.update).toBeDefined();
     }
     
     describe('securities', () => {
@@ -84,6 +92,10 @@ describe("Netbanking SDK",function(){
                     description: 'Aleš Vrba',
                     accountno: '1034176627'
                 });
+
+                expect(response.items[0].transactions).toBeDefined();
+                expect(response.items[0].get).toBeDefined();
+                expect(response.items[0].update).toBeDefined();
                 
                 list = response;
                 
@@ -110,6 +122,10 @@ describe("Netbanking SDK",function(){
                     description: 'Aleš Vrba',
                     accountno: '1034176627'
                 });
+
+                expect(response.transactions).toBeDefined();
+                expect(response.get).toBeDefined();
+                expect(response.update).toBeDefined();
                 
                 done();
             }).catch(e => {
@@ -131,6 +147,101 @@ describe("Netbanking SDK",function(){
                logJudgeError(e);
            });
            
+        });
+
+        it('it retrieves security details through get convenience method', done => {
+            let list;
+            judgeSession.setNextCase('securities.list.page0').then(() => {
+                return client.securities.list({
+                    pageNumber: 0,
+                    pageSize: 1
+                });
+            }).then(response => {
+                processSecurities(response);
+
+                list = response;
+                return judgeSession.setNextCase('securities.withId.get');
+            }).then(() => {
+                return list.items[0].get();
+            }).then(response => {
+                
+                expectToBe(response, {
+                    id: '420A817C20E4814C7C516A53ABA8E78F0CDBE324',
+                    description: 'Aleš Vrba',
+                    accountno: '1034176627'
+                });
+
+                expect(response.transactions).toBeDefined();
+                expect(response.get).toBeDefined();
+                expect(response.update).toBeDefined();
+
+                done();
+            }).catch(e => {
+                logJudgeError(e);
+            });
+        });
+
+        it('it updates security through update convenience method', done => {
+            let list;
+            judgeSession.setNextCase('securities.list.page0').then(() => {
+                return client.securities.list({
+                    pageNumber: 0,
+                    pageSize: 1
+                });
+            }).then(response => {
+                processSecurities(response);
+
+                list = response;
+                return judgeSession.setNextCase('securities.withId.update');
+            }).then(() => {
+                return list.items[0].update({
+                   alias: 'lorem'
+               });
+            }).then(response => {
+                
+                processSecurity(response);
+
+                done();
+            }).catch(e => {
+                logJudgeError(e);
+            });
+        });
+
+        it('it updates security transaction through transactions convenience method', done => {
+            let list;
+            judgeSession.setNextCase('securities.list.page0').then(() => {
+                return client.securities.list({
+                    pageNumber: 0,
+                    pageSize: 1
+                });
+            }).then(response => {
+                processSecurities(response);
+
+                list = response;
+                return judgeSession.setNextCase('securities.withId.transactions.withId.update');
+            }).then(() => {
+                return list.items[0].transactions.withId.('100000189114334').update({
+                    id: "100000189114334",
+                    note: "New client's personal note for transaction",
+                    flags: [
+                        "hasStar"
+                    ]
+               });
+            }).then(response => {
+                
+                expectToBe(response.transaction, {
+                    id: '100000189114334',
+                    note: 'New client\'s personal note for transaction',
+                });
+                
+                expect(response.transaction.flags.length).toBe(2);
+                expect(response.transaction.flags[0]).toBe('hasNote');
+                expect(response.transaction.flags[1]).toBe('hasStar');
+
+                done();
+            }).catch(e => {
+                logJudgeError(e);
+            });
         });
 
         it('updates transaction', done => {
