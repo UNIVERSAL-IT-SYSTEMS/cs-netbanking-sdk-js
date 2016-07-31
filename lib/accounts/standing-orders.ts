@@ -4,8 +4,6 @@ import {AccountNumber, Amount, NetbankingParameters, Signable, Symbols} from '..
 
 export class AccountStandingOrdersResource extends CSCoreSDK.Resource
 implements CSCoreSDK.PaginatedListEnabled<StandingOrder>, CSCoreSDK.HasInstanceResource<AccountStandingOrderResource>, CSCoreSDK.CreateEnabled<CreateStandingOrderRequest, StandingOrderResponse> {
-
-    //date transforms
     
     list = (params: NetbankingParameters): Promise<StandingOrderList> => {
 
@@ -35,7 +33,6 @@ implements CSCoreSDK.PaginatedListEnabled<StandingOrder>, CSCoreSDK.HasInstanceR
 export class AccountStandingOrderResource extends CSCoreSDK.InstanceResource
 implements CSCoreSDK.GetEnabled<StandingOrder>, CSCoreSDK.DeleteEnabled<StandingOrderResponse> {
     
-    // date transforms
     get = (): Promise<StandingOrder> => {
         return CSCoreSDK.ResourceUtils.CallGet(this, null).then(response => {
             addDatesToStandingOrder(response);
