@@ -10,7 +10,8 @@ implements CSCoreSDK.PaginatedListEnabled<StandingOrder>, CSCoreSDK.HasInstanceR
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'standingOrders', params, response => {
 
             response.items.forEach(item => {
-                addDatesToStandingOrder(item); 
+                addDatesToStandingOrder(item);
+                resourcifyStandingOrder(<StandingOrder>item, this.withId((<StandingOrder>item).number));
             });
 
             return response;
@@ -24,6 +25,7 @@ implements CSCoreSDK.PaginatedListEnabled<StandingOrder>, CSCoreSDK.HasInstanceR
     create = (payload: CreateStandingOrderRequest): Promise<StandingOrderResponse> => {
         return CSCoreSDK.ResourceUtils.CallCreate(this, payload).then(response => {
             addDatesToStandingOrder(response);
+            resourcifyStandingOrder(<StandingOrder>response, this.withId((<StandingOrder>response).number));
 
             return response;
         });
@@ -36,6 +38,7 @@ implements CSCoreSDK.GetEnabled<StandingOrder>, CSCoreSDK.DeleteEnabled<Standing
     get = (): Promise<StandingOrder> => {
         return CSCoreSDK.ResourceUtils.CallGet(this, null).then(response => {
             addDatesToStandingOrder(response);
+            resourcifyStandingOrder(<StandingOrder>response, this);
 
             return response;
         });
@@ -44,6 +47,7 @@ implements CSCoreSDK.GetEnabled<StandingOrder>, CSCoreSDK.DeleteEnabled<Standing
     delete = (): Promise<StandingOrderResponse> => {
         return CSCoreSDK.ResourceUtils.CallDelete(this, null).then(response => {
             addDatesToStandingOrder(response);
+            resourcifyStandingOrder(<StandingOrder>response, this);
 
             return response;
         });
@@ -60,6 +64,11 @@ function addDatesToStandingOrder(item) {
 
         (<StandingOrder>item).scheduledExecutionDates = datesArr;
     }
+}
+
+function resourcifyStandingOrder(orderListing: StandingOrder, orderReference: AccountStandingOrderResource) {
+    orderListing.get = orderReference.get;
+    orderListing.delete = orderReference.delete;
 }
 
 export interface StandingOrderList extends CSCoreSDK.PaginatedListResponse<StandingOrder> {}
@@ -124,6 +133,16 @@ export interface StandingOrder extends CreateStandingOrderRequest {
      * Array of optional Flag values to Standing Order. Possible flags: deletable.
      */
     flags?: [string];
+
+    /**
+     * Convience method for getting standing order detail
+     */
+    get: () => Promise<StandingOrder>;
+
+    /**
+     * Conveinience method for deleting standing order
+     */
+    delete: () => Promise<StandingOrderResponse>;
 }
 
 export interface StandingOrderResponse extends StandingOrder, Signable {}

@@ -221,6 +221,9 @@ describe("Netbanking SDK",function(){
             nextExecutionDate: '2016-06-17',
             realExecutionDate: '2016-06-17',
         });
+
+        expect(response.items[0].get).toBeDefined();
+        expect(response.items[0].delete).toBeDefined();
     }
     
     function processDirectDebits(response) {
@@ -1304,6 +1307,10 @@ describe("Netbanking SDK",function(){
                 type: 'STANDING_ORDER',
                 status: 'OK',
             });
+
+            expect(response.items[0].get).toBeDefined();
+            expect(response.items[0].delete).toBeDefined();
+
             list = response;
             return judgeSession.setNextCase('accounts.withId.standingOrders.list.page0');
         }).then(() => {
@@ -1332,6 +1339,9 @@ describe("Netbanking SDK",function(){
                 nextExecutionDate: '2016-06-17',
                 realExecutionDate: '2016-06-17',
             });
+
+            expect(response.get).toBeDefined();
+            expect(response.delete).toBeDefined();
             
             expect(response.scheduledExecutionDates[0].toString()).toBe(new Date(CoreSDK.EntityUtils.parseISODate('2016-06-17')).toString());
 
@@ -1379,6 +1389,9 @@ describe("Netbanking SDK",function(){
                 startDate: '2016-12-31T00:00:00+01:00',
             });
 
+            expect(response.get).toBeDefined();
+            expect(response.delete).toBeDefined();
+
             done();
 
         }).catch(e => {
@@ -1402,6 +1415,95 @@ describe("Netbanking SDK",function(){
                 nextExecutionDate: '2016-06-17',
                 realExecutionDate: '2016-06-17',
             });
+
+            expect(response.get).toBeDefined();
+            expect(response.delete).toBeDefined();
+
+            expect(response.scheduledExecutionDates[0].toString()).toBe(new Date(CoreSDK.EntityUtils.parseISODate('2016-06-17')).toString());
+
+            done();
+        }).catch(e => {
+            logJudgeError(e);
+        });
+    });
+
+    it('retrieves standing order detail through get convenience method', done => {
+        let list;
+
+        judgeSession.setNextCase('accounts.withId.standingOrders.list.page0').then(() => {
+            return client.accounts.withId('4B2F9EBE742BCAE1E98A78E12F6FBC62464A74EE').standingOrders.list({
+                pageNumber: 0,
+                pageSize: 2,
+                sort: ['nextExecutionDate'],
+                order: ['desc']
+            });
+        }).then(response => {
+            
+            processStandingOrders(response);
+
+            list = response;
+            return judgeSession.setNextCase('accounts.withId.standingOrders.withId.get');         
+        }).then(() => {
+            return list.items[0].get();
+        }).then(response => {
+
+            expectToBe(response, {
+                number: '1',
+                type: 'STANDING_ORDER',
+                alias: 'nájemné'
+            });
+
+            expectDate(response, {
+                startDate: '2013-01-09T00:00:00+01:00',
+                nextExecutionDate: '2016-06-17',
+                realExecutionDate: '2016-06-17',
+            });
+
+            expect(response.get).toBeDefined();
+            expect(response.delete).toBeDefined();
+            
+            expect(response.scheduledExecutionDates[0].toString()).toBe(new Date(CoreSDK.EntityUtils.parseISODate('2016-06-17')).toString());
+
+            done();
+        }).catch(e => {
+            logJudgeError(e);
+        });
+    });
+
+    it('deletes standing order through delete convenience method', done => {
+        let list;
+
+        judgeSession.setNextCase('accounts.withId.standingOrders.list.page0').then(() => {
+            return client.accounts.withId('4B2F9EBE742BCAE1E98A78E12F6FBC62464A74EE').standingOrders.list({
+                pageNumber: 0,
+                pageSize: 2,
+                sort: ['nextExecutionDate'],
+                order: ['desc']
+            });
+        }).then(response => {
+            
+            processStandingOrders(response);
+
+            list = response;
+            return judgeSession.setNextCase('accounts.withId.standingOrders.withId.delete');         
+        }).then(() => {
+            return list.items[0].delete();
+        }).then(response => {
+
+            expectToBe(response, {
+                number: '1',
+                type: 'STANDING_ORDER',
+                alias: 'nájemné'
+            });
+
+            expectDate(response, {
+                startDate: '2013-01-09T00:00:00+01:00',
+                nextExecutionDate: '2016-06-17',
+                realExecutionDate: '2016-06-17',
+            });
+
+            expect(response.get).toBeDefined();
+            expect(response.delete).toBeDefined();
 
             expect(response.scheduledExecutionDates[0].toString()).toBe(new Date(CoreSDK.EntityUtils.parseISODate('2016-06-17')).toString());
 
