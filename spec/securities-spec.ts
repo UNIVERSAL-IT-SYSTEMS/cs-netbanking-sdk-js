@@ -220,7 +220,7 @@ describe("Netbanking SDK",function(){
                 list = response;
                 return judgeSession.setNextCase('securities.withId.transactions.withId.update');
             }).then(() => {
-                return list.items[0].transactions.withId.('100000189114334').update({
+                return list.items[0].transactions.withId('100000189114334').update({
                     id: "100000189114334",
                     note: "New client's personal note for transaction",
                     flags: [
