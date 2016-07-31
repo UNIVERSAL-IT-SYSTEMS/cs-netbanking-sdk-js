@@ -8,6 +8,9 @@ implements CSCoreSDK.PaginatedListEnabled<Security>, CSCoreSDK.HasInstanceResour
     
     list = (params?: SecuritiesParams): Promise<SecurityList> => {
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'securitiesAccounts', params, response => {
+
+            transformDatesInSubSecAccounts(response);
+
             return response;
         });
     }
@@ -21,15 +24,31 @@ export class SecurityResource extends CSCoreSDK.InstanceResource
 implements CSCoreSDK.GetEnabled<Security>, CSCoreSDK.UpdateEnabled<SecurityRequest, SecurityResponse> {
     
     get = (): Promise<Security> => {
-        return CSCoreSDK.ResourceUtils.CallGet(this, null);
+        return CSCoreSDK.ResourceUtils.CallGet(this, null).then(response => {
+            transformDatesInSubSecAccounts(response);
+
+            return response;
+        });
     }
     
     update = (payload: SecurityRequest): Promise<SecurityResponse> => {
-        return CSCoreSDK.ResourceUtils.CallUpdate(this, payload);
+        return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(response => {
+            transformDatesInSubSecAccounts(response);
+
+            return response;
+        });
     }
 
     get transactions(): SecurityTransactionsResource {
         return new SecurityTransactionsResource(`${this.getPath()}/transactions`, this.getClient());
+    }
+}
+
+function transformDatesInSubSecAccounts(response) {
+    if(response.subSecAccounts && Array.isArray(response.subSecAccounts)) {
+        response.subSecAccounts.forEach(acc => {
+            CSCoreSDK.EntityUtils.addDatesFromISO('lastPriceDate', acc);
+        });
     }
 }
 
