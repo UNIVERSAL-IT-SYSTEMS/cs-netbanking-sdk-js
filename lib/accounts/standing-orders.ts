@@ -1,6 +1,6 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
-import {AccountNumber, Amount, NetbankingParameters, Signable, Symbols} from '../common';
+import {AccountNumber, Amount, NetbankingParameters, Symbols} from '../common';
 
 export class AccountStandingOrdersResource extends CSCoreSDK.Resource
 implements CSCoreSDK.PaginatedListEnabled<StandingOrder>, CSCoreSDK.HasInstanceResource<AccountStandingOrderResource>, CSCoreSDK.CreateEnabled<CreateStandingOrderRequest, StandingOrderResponse> {
@@ -26,6 +26,7 @@ implements CSCoreSDK.PaginatedListEnabled<StandingOrder>, CSCoreSDK.HasInstanceR
         return CSCoreSDK.ResourceUtils.CallCreate(this, payload).then(response => {
             addDatesToStandingOrder(response);
             resourcifyStandingOrder(<StandingOrder>response, this.withId((<StandingOrder>response).number));
+            CSCoreSDK.SigningUtils.createSigningObject(response, this.getClient(), this.getPath());
 
             return response;
         });
@@ -48,7 +49,8 @@ implements CSCoreSDK.GetEnabled<StandingOrder>, CSCoreSDK.DeleteEnabled<Standing
         return CSCoreSDK.ResourceUtils.CallDelete(this, null).then(response => {
             addDatesToStandingOrder(response);
             resourcifyStandingOrder(<StandingOrder>response, this);
-
+            CSCoreSDK.SigningUtils.createSigningObject(response, this.getClient(), this.getPath());
+            
             return response;
         });
     }
@@ -145,7 +147,7 @@ export interface StandingOrder extends CreateStandingOrderRequest {
     delete: () => Promise<StandingOrderResponse>;
 }
 
-export interface StandingOrderResponse extends StandingOrder, Signable {}
+export interface StandingOrderResponse extends StandingOrder, CSCoreSDK.Signable {}
 
 export interface CreateStandingOrderRequest {
 

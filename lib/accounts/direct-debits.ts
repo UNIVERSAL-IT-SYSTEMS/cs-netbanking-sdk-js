@@ -1,6 +1,6 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
-import {AccountNumber, Amount, NetbankingParameters, Signable, Symbols} from '../common';
+import {AccountNumber, Amount, NetbankingParameters, Symbols} from '../common';
 
 export class AccountDirectDebitsResource extends CSCoreSDK.Resource
 implements CSCoreSDK.PaginatedListEnabled<DirectDebit>, CSCoreSDK.HasInstanceResource<AccountDirectDebitResource>, CSCoreSDK.CreateEnabled<DirectDebit, SignableDirectDebit> {
@@ -157,4 +157,4 @@ export interface DirectDebit {
     periodCycle: string;
 }
 
-export interface SignableDirectDebit extends DirectDebit,  Signable {}
+export interface SignableDirectDebit extends DirectDebit,  CSCoreSDK.Signable {}
