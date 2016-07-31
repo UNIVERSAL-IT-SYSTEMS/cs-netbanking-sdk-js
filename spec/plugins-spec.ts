@@ -42,8 +42,9 @@ describe("Netbanking SDK",function(){
         expectToBe(response.items[0], {
             productCode: 'PI-MOBILEPAYMENTS',
             name: 'Plugin pro mobilní platby',
+        });
 
-            // Date????
+        expectDate(response.items[0], {
             validUntil: '2100-01-01'
         });
 
@@ -77,8 +78,9 @@ describe("Netbanking SDK",function(){
                 expectToBe(response.items[0], {
                     productCode: 'PFM_1',
                     name: 'PluginBudgets pro CZ',
+                });
 
-                    // Date????
+                expectDate(response.items[0], {
                     validUntil: '2100-01-01'
                 });
 
@@ -114,8 +116,9 @@ describe("Netbanking SDK",function(){
                 expectToBe(response, {
                     productCode: 'PI-MOBILEPAYMENTS',
                     name: 'Plugin pro mobilní platby',
+                });
 
-                    // Date????
+                expectDate(response, {
                     validUntil: '2100-01-01'
                 });
 

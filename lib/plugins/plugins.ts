@@ -7,6 +7,9 @@ implements CSCoreSDK.PaginatedListEnabled<Plugin>, CSCoreSDK.HasInstanceResource
 
     list = (params: PluginsParameters): Promise<PluginList> => {
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'plugins', params, response => {
+
+            CSCoreSDK.EntityUtils.addDatesToItems(['validUntil', 'dateOfActivation'], response);            
+
             return response;
         });
     }
@@ -20,7 +23,11 @@ export class PluginResource extends CSCoreSDK.InstanceResource
 implements CSCoreSDK.UpdateEnabled<UpdatePluginRequest, SignablePlugin> {
 
     update = (payload: UpdatePluginRequest): Promise<SignablePlugin> => {
-        return CSCoreSDK.ResourceUtils.CallUpdate(this, payload);
+        return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(response => {
+            CSCoreSDK.EntityUtils.addDatesFromISO(['validUntil', 'dateOfActivation'], response);
+
+            return response;
+        })
     }
 }
 
