@@ -1,7 +1,7 @@
 /// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
 import {BuildingsContractsServicesResource} from './services';
-import {BuildingsContractsTransactionsResource} from './transactions';
+import {ContractsTransactionsResource} from '../transactions';
 import {AccountNumber, Amount, Signable} from '../../common'; 
 
 export class BuildingsContractsResource extends CSCoreSDK.Resource
@@ -52,8 +52,8 @@ implements CSCoreSDK.GetEnabled<BuildingsContract>, CSCoreSDK.UpdateEnabled<Upda
         return new BuildingsContractsServicesResource(this.getPath(), this.getClient());
     }
 
-    get transactions(): BuildingsContractsTransactionsResource {
-        return new BuildingsContractsTransactionsResource(this.getPath(), this.getClient());
+    get transactions(): ContractsTransactionsResource {
+        return new ContractsTransactionsResource(this.getPath(), this.getClient());
     }
 }
 
@@ -209,7 +209,7 @@ export interface BuildingsContract extends UpdateBuildingsContractRequest {
     /**
      * Convenience getter for contracts transactions
      */
-    transactions: BuildingsContractsTransactionsResource;
+    transactions: ContractsTransactionsResource;
 }
 
 export interface BuildingsContractsParameters extends CSCoreSDK.Paginated {}
