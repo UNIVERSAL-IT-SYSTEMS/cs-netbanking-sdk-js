@@ -2,6 +2,8 @@
 import CSCoreSDK = require('cs-core-sdk');
 import {BuildingsContractsResource} from './buildings/buildings';
 import {PensionsContractsResource} from './pensions/pensions';
+import {InsurancesContractsResource} from './insurances/insurances';
+import {LoyaltyContractsResource} from './loyalty/loyalty';
 
 export class ContractsResource extends CSCoreSDK.Resource {
 
@@ -11,5 +13,13 @@ export class ContractsResource extends CSCoreSDK.Resource {
 
     get pensions(): PensionsContractsResource {
         return new PensionsContractsResource(`${this.getPath()}/pensions`, this.getClient());
+    }
+
+    get insurances(): InsurancesContractsResource {
+        return new InsurancesContractsResource(`${this.getPath()}/insurances`, this.getClient());
+    }
+
+    get loyalty(): LoyaltyContractsResource {
+        return new LoyaltyContractsResource(`${this.getPath()}/loyalty`, this.getClient());
     }
 }
