@@ -14,4 +14,4 @@ implements CSCoreSDK.ListEnabled<Message> {
     }
 }
 
-export class MandatoryMessageList extends CSCoreSDK.ListResponse<Message> {}
+export interface MandatoryMessageList extends CSCoreSDK.ListResponse<Message> {}
