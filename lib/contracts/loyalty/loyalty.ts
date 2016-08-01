@@ -5,7 +5,11 @@ export class LoyaltyContractsResource extends CSCoreSDK.Resource
 implements CSCoreSDK.GetEnabled<Loyalty> {
 
     get = (): Promise<Loyalty> => {
-        return CSCoreSDK.ResourceUtils.CallGet(this, null);
+        return CSCoreSDK.ResourceUtils.CallGet(this, null).then(response => {
+            CSCoreSDK.EntityUtils.addDatesFromISO('exportDate', response);
+
+            return response;
+        });
     }
 }
 
