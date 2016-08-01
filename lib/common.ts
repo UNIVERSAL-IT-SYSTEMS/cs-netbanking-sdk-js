@@ -227,3 +227,41 @@ export interface Symbols {
      */
     specificSymbol?: string;
 }
+
+export interface Address {
+
+    /**
+     * Street of the address.
+     */
+    street?: string;
+
+    /**
+     * Number which is unique in street. Not all localities have streets.
+     */
+    streetNumber?: string;
+
+    /**
+     * Number which is unique in locality/town/village.
+     */
+    buildingApartment?: string;
+
+    /**
+     * City.
+     */
+    city?: string;
+
+    /**
+     * Zip code of the address.
+     */
+    zipCode?: string;
+
+    /**
+     * Address country.
+     */
+    country?: string;
+
+    /**
+     * More detailed description of address, company name or department.
+     */
+    description?: string;
+}

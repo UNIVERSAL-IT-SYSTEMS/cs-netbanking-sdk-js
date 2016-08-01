@@ -1,6 +1,6 @@
 /// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import CSCoreSDK = require('cs-core-sdk');
-import {Signable} from '../common';
+import {Signable, Address} from '../common';
 
 /**
  * Get current delivery settings
@@ -46,40 +46,6 @@ export interface DeliveryListing {
     * Information about the confirmation
     */
     confirmations?: [Confirmation];
-}
-
-export interface Address {
-    
-    /**
-    * Street of the address.
-    */
-    street: string;
-    
-    /**
-    * Number which is unique in street. Not all localities have streets.
-    */
-    streetNumber?: number;
-    
-    /**
-    * Number which is unique in locality/town/village.
-    */
-    buildingApartment?: string;
-    
-    /**
-    * Zip code of the address.
-    */
-    zipCode?: string;
-    
-    /**
-    * City
-    */
-    city: string;
-    
-    /**
-    * Address country.
-    */
-    country: string;
-    
 }
 
 export interface Confirmation {
