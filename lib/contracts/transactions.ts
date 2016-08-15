@@ -32,6 +32,7 @@ export class ContractsTransactionResource extends CSCoreSDK.InstanceResource
 implements CSCoreSDK.UpdateEnabled<SecurityTransactionRequest, SecurityTransactionResponse> {
 
     update = (payload: SecurityTransactionRequest): Promise<SecurityTransactionResponse> => {
+        (<any>payload).id = this._id;
         return CSCoreSDK.ResourceUtils.CallUpdate(this, payload);
     }
 }

@@ -33,18 +33,13 @@ export class SecurityTransactionResource extends CSCoreSDK.InstanceResource
 implements CSCoreSDK.UpdateEnabled<SecurityTransactionRequest, SecurityTransactionResponse> {
 
     update = (payload: SecurityTransactionRequest): Promise<SecurityTransactionResponse> => {
+        (<any>payload).id = this._id;
         return CSCoreSDK.ResourceUtils.CallUpdate(this, payload);
     }
 
 }
 
 export interface SecurityTransactionRequest {
-
-    // vzít z resourcu?
-    /**
-     * Transaction identifier.
-     */
-    id: string;
 
     /**
      * Personal, user specific note for transaction. Max. 4 000 characters.

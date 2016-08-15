@@ -49,11 +49,11 @@ implements CSCoreSDK.GetEnabled<BuildingsContract>, CSCoreSDK.UpdateEnabled<Upda
     }
 
     get services(): BuildingsContractsServicesResource {
-        return new BuildingsContractsServicesResource(this.getPath(), this.getClient());
+        return new BuildingsContractsServicesResource(`${this.getPath()}/services`, this.getClient());
     }
 
     get transactions(): ContractsTransactionsResource {
-        return new ContractsTransactionsResource(this.getPath(), this.getClient());
+        return new ContractsTransactionsResource(`${this.getPath()}/transactions`, this.getClient());
     }
 }
 
