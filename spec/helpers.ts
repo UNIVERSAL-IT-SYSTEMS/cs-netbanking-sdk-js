@@ -30,6 +30,21 @@ export function testFile(response) {
     expect(str.length).toBe(7945);
 }
 
+export var exportTransactionsPayload = {
+    dateFrom: new Date(1999, 8, 27), 
+    dateTo: new Date(2000, 8, 27),
+    fields: [
+        'bookingDate',
+        'partner',
+        'amount',
+        'currency'
+    ],
+    showAccountName: true,
+    showAccountNumber: true,
+    showTimespan: true,
+    showBalance: true
+}
+
 function ab2str(buf) {
   return String.fromCharCode.apply(null, new Uint8Array(buf));
 }

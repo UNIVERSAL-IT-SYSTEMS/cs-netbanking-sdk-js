@@ -9,7 +9,7 @@ var client : CSNetbankingSDK.NetbankingClient = null;
 var expectToBe = CoreSDK.TestUtils.expectToBe;
 var expectDate = CoreSDK.TestUtils.expectDate;
 var logJudgeError = CoreSDK.TestUtils.logJudgeError;
-import {testAuthorizationTac, testStateOpen, testStateDone, testFile} from './helpers';
+import {testAuthorizationTac, testStateOpen, testStateDone, testFile, exportTransactionsPayload} from './helpers';
     
 describe("Netbanking SDK",function(){
     var originalTimeoutInterval = null;
@@ -31,21 +31,6 @@ describe("Netbanking SDK",function(){
         client.sharedContext = null;
         judgeSession = judge.startNewSession();
     });
-    
-    var exportTransactionsPayload = {
-        dateFrom: new Date(1999, 8, 27), 
-        dateTo: new Date(2000, 8, 27),
-        fields: [
-            'bookingDate',
-            'partner',
-            'amount',
-            'currency'
-        ],
-        showAccountName: true,
-        showAccountNumber: true,
-        showTimespan: true,
-        showBalance: true
-    }
         
     function processTransfer(response) {
         expect(response.signing).toBeTruthy();

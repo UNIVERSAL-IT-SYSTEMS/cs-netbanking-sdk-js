@@ -247,7 +247,6 @@ describe("Netbanking SDK",function(){
         it('updates transaction', done => {
             judgeSession.setNextCase('securities.withId.transactions.withId.update').then(() => {
                 return client.securities.withId('420A817C20E4814C7C516A53ABA8E78F0CDBE324').transactions.withId('100000189114334').update({
-                    id: "100000189114334",
                     note: "New client's personal note for transaction",
                     flags: [
                         "hasStar"
