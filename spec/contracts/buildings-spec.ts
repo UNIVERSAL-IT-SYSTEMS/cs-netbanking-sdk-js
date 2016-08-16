@@ -51,6 +51,13 @@ describe("Netbanking SDK",function(){
 
     }
 
+    function testBuildingsConvenienceMethods(response) {
+        expect(response.get).toBeDefined();
+        expect(response.update).toBeDefined();
+        expect(response.services).toBeDefined();
+        expect(response.transactions).toBeDefined();
+    }
+
     describe('buildings contracts', () => {
         
         it('tests pagination for listing buildings contracts', done => {
@@ -61,6 +68,7 @@ describe("Netbanking SDK",function(){
                 });
             }).then(response => {
                 processBuildings(response);
+                testBuildingsConvenienceMethods(response.items[0]);
 
                 return response.nextPage();
             }).then(response => {
@@ -94,30 +102,31 @@ describe("Netbanking SDK",function(){
 
                 expect(response.contractHolders[0]).toBe('Hana Bielčíková');
 
+                testBuildingsConvenienceMethods(response);
+
                 done();
             }).catch(e => {
                 logJudgeError(e);
             })
         });
 
-        // it('updates building contract with a given id', done => {
-        //     judgeSession.setNextCase('contracts.buildings.withId.update').then(() => {
-        //         return client.contracts.buildings.withId('BCEF6B001FAE755D163A6CC9475E9FDFD9CD4A79').update({
-        //             alias: 'test alias'
-        //         });
-        //     }).then(response => {
-        //         expectToBe(response, {
-        //             id: 'BCEF6B001FAE755D163A6CC9475E9FDFD9CD4A79',
-        //             alias: 'test alias',
-        //             product: '280',
-        //         });
+        it('updates building contract with a given id', done => {
+            judgeSession.setNextCase('contracts.buildings.withId.update').then(() => {
+                return client.contracts.buildings.withId('BCEF6B001FAE755D163A6CC9475E9FDFD9CD4A79').update({
+                    alias: 'test alias'
+                });
+            }).then(response => {
+                expectToBe(response, {
+                    id: 'BCEF6B001FAE755D163A6CC9475E9FDFD9CD4A79',
+                    alias: 'test alias',
+                    product: '280',
+                });
 
-        //         done();
-        //     }).catch(e => {
-        //         // logJudgeError(e);
-        //         console.log(e.response.data.errors)
-        //     });
-        // });
+                testBuildingsConvenienceMethods(response);
+
+                done();
+            }).catch(logJudgeError);
+        });
 
         it('retrieves list of services', done => {
             judgeSession.setNextCase('contracts.buildings.withId.services.list').then(() => {
