@@ -9,7 +9,6 @@ var client : CSNetbankingSDK.NetbankingClient = null;
 var expectToBe = CoreSDK.TestUtils.expectToBe;
 var expectDate = CoreSDK.TestUtils.expectDate;
 var logJudgeError = CoreSDK.TestUtils.logJudgeError;
-import {testFile, exportTransactionsPayload} from '../helpers';
 
 describe("Netbanking SDK",function(){
     var originalTimeoutInterval = null;
@@ -31,25 +30,6 @@ describe("Netbanking SDK",function(){
         client.sharedContext = null;
         judgeSession = judge.startNewSession();
     });
-    
-    function processBuildings(response) {
-
-        expectToBe(response.pagination, {
-            pageNumber: 0,
-            pageSize: 1,
-            pageCount: 2,
-            nextPage: 1,
-        });
-
-        expectToBe(response.items[0], {
-            id: 'BCEF6B001FAE755D163A6CC9475E9FDFD9CD4A79',
-            type: 'BUILD_SAVING',
-            product: '280',
-        });
-
-        expect(response.items[0].contractHolders[0]).toBe('Hana Bielčíková');
-
-    }
 
     describe('loyalty contracts', () => {
 
