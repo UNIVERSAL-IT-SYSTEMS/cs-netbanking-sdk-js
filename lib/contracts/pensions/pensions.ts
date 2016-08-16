@@ -6,6 +6,13 @@ import {Amount, Address, Signable} from '../../common';
 export class PensionsContractsResource extends CSCoreSDK.Resource
 implements CSCoreSDK.PaginatedListEnabled<Pension>, CSCoreSDK.HasInstanceResource<PensionsContractResource> {
 
+    constructor(basePath: string, client: CSCoreSDK.WebApiClient) {    
+        super(basePath, client);
+        
+        // insert 'cz' resource into the resource's path because the api requires it in some resources
+        this._path = this.getPath().replace('/my', '/cz/my');
+    }
+
     list = (params?: PensionParameters): Promise<PensionList> => {
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'pensions', params, response => {
 
@@ -36,6 +43,7 @@ implements CSCoreSDK.GetEnabled<Pension>, CSCoreSDK.UpdateEnabled<UpdatePensionR
     }
 
     update = (payload: UpdatePensionRequest): Promise<UpdatePensionResponse> => {
+        (<any>payload).id = this._id;
         return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(response => {
             transformDates(response);
             resourcifyPension(<Pension>response, this);
@@ -54,8 +62,10 @@ function transformDates(item) {
     if(item.productAccount) {
         CSCoreSDK.EntityUtils.addDatesFromISO('date', item.productAccount);
     }
-    if(item.beneficiaries) {
-        CSCoreSDK.EntityUtils.addDatesFromISO('birthDate', item.beneficiaries);
+    if(Array.isArray(item.beneficiaries)) {
+        item.beneficiaries.forEach(x => {
+            CSCoreSDK.EntityUtils.addDatesFromISO('birthDate', x);
+        });
     }
 }
 
@@ -306,9 +316,6 @@ export interface UpdatePensionRequest {
     alias?: string;
 }
 
-export interface UpdatePensionResponse extends Signable {
-
-    pension: Pension;
-}
+export interface UpdatePensionResponse extends Signable, Pension {}
 
 export interface PensionParameters extends CSCoreSDK.Paginated {}

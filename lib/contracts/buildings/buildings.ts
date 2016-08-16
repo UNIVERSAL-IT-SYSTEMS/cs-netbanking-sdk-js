@@ -53,7 +53,7 @@ implements CSCoreSDK.GetEnabled<BuildingsContract>, CSCoreSDK.UpdateEnabled<Upda
     }
 
     get transactions(): ContractsTransactionsResource {
-        return new ContractsTransactionsResource(`${this.getPath()}/transactions`, this.getClient());
+        return new ContractsTransactionsResource(`${this.getPath().replace('/my', '/cz/my')}/transactions`, this.getClient());
     }
 }
 

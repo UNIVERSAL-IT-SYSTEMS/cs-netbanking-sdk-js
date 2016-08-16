@@ -6,12 +6,6 @@ import {ExportTransactionsParameters} from '../common';
 export class ContractsTransactionsResource extends CSCoreSDK.Resource
 implements CSCoreSDK.HasInstanceResource<ContractsTransactionResource> {
 
-    constructor(basePath: string, client: CSCoreSDK.WebApiClient) {
-        super(basePath, client);
-        
-        this._path = this.getPath().replace('/my', '/cz/my');
-    }
-
     withId = (id: string): ContractsTransactionResource => {
         return new ContractsTransactionResource(id, this.getPath(), this.getClient());
     }
