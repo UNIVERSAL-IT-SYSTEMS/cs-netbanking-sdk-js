@@ -13,6 +13,7 @@ import {ServicesResource} from './services/services';
 import {MessagesResource} from './messages/messages';
 import {TemplatesResource} from './templates/templates';
 import {PhoneNumbersResource} from './phone-numbers/phone-numbers';
+import {BudgetsResource} from './budgets/budgets';
 
 var sharedClient : NetbankingClient = null;
 
@@ -104,5 +105,9 @@ export class NetbankingClient extends CSCoreSDK.WebApiClient {
 
     get phoneNumbers() {
         return new PhoneNumbersResource(`${this.getPath()}/phone-numbers`, this);
+    }
+
+    get budgets() {
+        return new BudgetsResource(`${this.getPath()}/budgets`, this);
     }
 }
