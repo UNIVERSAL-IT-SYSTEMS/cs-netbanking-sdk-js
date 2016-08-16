@@ -5,6 +5,13 @@ import {Amount, AccountNumber} from '../../common';
 export class InsurancesContractTransferResource extends CSCoreSDK.Resource
 implements CSCoreSDK.UpdateEnabled<UpdateContractTrasferRequest, UpdateContractTrasferResponse> {
 
+    constructor(basePath: string, client: CSCoreSDK.WebApiClient) {    
+        super(basePath, client);
+        
+        // insert 'cz' resource into the resource's path because the api requires it in some resources
+        this._path = this.getPath().replace('/my', '/cz/my');
+    }
+
     update = (payload: UpdateContractTrasferRequest): Promise<UpdateContractTrasferResponse> => {
         return CSCoreSDK.ResourceUtils.CallUpdate(this, payload);
     }

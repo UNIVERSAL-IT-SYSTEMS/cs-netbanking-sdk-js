@@ -2,17 +2,31 @@
 import CSCoreSDK = require('cs-core-sdk');
 
 export class InsurancesContractBeneficiariesResource extends CSCoreSDK.Resource
-implements CSCoreSDK.ListEnabled<InsuranceBeneficiary>, CSCoreSDK.UpdateEnabled<UpdateInsuranceBeneficiariesRequest, InsuranceBeneficiaryList> {
+implements CSCoreSDK.ListEnabled<InsuranceBeneficiary>, CSCoreSDK.UpdateEnabled<UpdateInsuranceBeneficiaries, UpdateInsuranceBeneficiaries> {
+
+    constructor(basePath: string, client: CSCoreSDK.WebApiClient) {    
+        super(basePath, client);
+        
+        // insert 'cz' resource into the resource's path because the api requires it in some resources
+        this._path = this.getPath().replace('/my', '/cz/my');
+    }
 
     list = (): Promise<InsuranceBeneficiaryList> => {
-        return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'beneficiers', null).then(response => {
+        return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'beneficiaries', null).then(response => {
             CSCoreSDK.EntityUtils.addDatesToItems(['birthdate'], response);
 
             return response;
         });
     }
 
-    update = (payload: UpdateInsuranceBeneficiariesRequest): Promise<InsuranceBeneficiaryList> => {
+    update = (payload: UpdateInsuranceBeneficiaries): Promise<UpdateInsuranceBeneficiaries> => {
+
+        if(payload && Array.isArray(payload.beneficiaries)) {
+            payload.beneficiaries.forEach(x => {
+                CSCoreSDK.EntityUtils.transformDatesToSimpleISO(['birthdate'], x);
+            });
+        }
+
         return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(response => {
             CSCoreSDK.EntityUtils.addDatesToItems(['birthdate'], response, 'beneficiaries');
 
@@ -58,7 +72,7 @@ export interface InsuranceBeneficiary {
     flags?: [string];
 }
 
-export interface UpdateInsuranceBeneficiariesRequest {
+export interface UpdateInsuranceBeneficiaries {
 
     beneficiaries: [InsuranceBeneficiary]; 
 }

@@ -4,7 +4,7 @@ import {InsurancesContractFundsResource} from './funds';
 import {InsurancesContractBeneficiariesResource} from './beneficiaries';
 import {InsurancesContractInsureesResource} from './insurees';
 import {InsurancesContractPaymentsResource} from './payments';
-import {InsurancesContractServicesResource} from './services/services';
+import {InsurancesContractServicesResource} from './services';
 import {InsurancesContractEventsResource} from './events';
 import {InsurancesContractTaxBenefitsResource} from './tax-benefits';
 import {InsurancesContractStrategiesResource} from './strategies';
@@ -35,7 +35,8 @@ export class InsurancesContractResource extends CSCoreSDK.InstanceResource
 implements CSCoreSDK.GetEnabled<InsuranceDetail>, CSCoreSDK.UpdateEnabled<UpdateInsuranceRequest, UpdateInsuranceResponse> {
 
     get = (): Promise<InsuranceDetail> => {
-        return CSCoreSDK.ResourceUtils.CallGetWithSuffix(this, 'detail', null).then(response => {
+        
+        return this._client.callApi(`${this.getPath().replace('/my', '/cz/my')}/detail`, 'GET').then(response => {
             transformDates(response);
             resourcifyInsurance(<InsuranceDetail>response, this);
 
@@ -93,7 +94,7 @@ implements CSCoreSDK.GetEnabled<InsuranceDetail>, CSCoreSDK.UpdateEnabled<Update
 
 function transformDates(item) {
     if(item.life) {
-        CSCoreSDK.EntityUtils.addDatesFromISO(['contractEndDate', 'contractStartDate', 'contractTerminationDate', 'premiumLastPaid'], item.life);
+        CSCoreSDK.EntityUtils.addDatesFromISO(['contractEndDate', 'contractStartDate', 'contractTerminationDate', 'lastPremiumDate', 'premiumLastPaid'], item.life);
     }
 }
 
