@@ -4,6 +4,13 @@ import CSCoreSDK = require('cs-core-sdk');
 export class LoyaltyContractsResource extends CSCoreSDK.Resource
 implements CSCoreSDK.GetEnabled<Loyalty> {
 
+    constructor(basePath: string, client: CSCoreSDK.WebApiClient) {    
+        super(basePath, client);
+        
+        // insert 'cz' resource into the resource's path because the api requires it in some resources
+        this._path = this.getPath().replace('/my', '/cz/my');
+    }
+
     get = (): Promise<Loyalty> => {
         return CSCoreSDK.ResourceUtils.CallGet(this, null).then(response => {
             CSCoreSDK.EntityUtils.addDatesFromISO('exportDate', response);
