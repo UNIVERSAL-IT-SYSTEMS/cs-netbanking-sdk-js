@@ -16,6 +16,7 @@ import {PhoneNumbersResource} from './phone-numbers/phone-numbers';
 import {BudgetsResource} from './budgets/budgets';
 import {GoalsResource} from './goals/goals';
 import {PromotionsResource} from './promotions/promotions';
+import {AuthorizationLimitsResource} from './authorization-limits/authorization-limits';
 
 var sharedClient : NetbankingClient = null;
 
@@ -119,5 +120,9 @@ export class NetbankingClient extends CSCoreSDK.WebApiClient {
 
     get promotions() {
         return new PromotionsResource(`${this.getPath()}/promotions`, this);
+    }
+
+    get authorizationLimits() {
+        return new AuthorizationLimitsResource(`${this.getPath()}/authorizationLimits`, this);
     }
 }
