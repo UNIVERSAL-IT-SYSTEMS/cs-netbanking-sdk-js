@@ -11,6 +11,9 @@ implements CSCoreSDK.PaginatedListEnabled<Service> {
         this._path = this.getPath().replace('/my', '/cz/my');
     }
 
+    /**
+     * Returns list of services which are connected or arranged for building saving product instance.
+     */
     list = (params?: ServiceParameters): Promise<ServiceList> => {
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'services', params, response => {
             CSCoreSDK.EntityUtils.addDatesToItems(['dateFrom', 'dateTo'], response);

@@ -12,6 +12,9 @@ implements CSCoreSDK.UpdateEnabled<UpdateContractTrasferRequest, UpdateContractT
         this._path = this.getPath().replace('/my', '/cz/my');
     }
 
+    /**
+     * Creates insurance transfer - premium payment, extra deposit or recommended deposit.
+     */
     update = (payload: UpdateContractTrasferRequest): Promise<UpdateContractTrasferResponse> => {
         return CSCoreSDK.ResourceUtils.CallUpdate(this, payload);
     }

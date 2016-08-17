@@ -12,6 +12,9 @@ implements CSCoreSDK.PaginatedListEnabled<Service> {
         this._path = this.getPath().replace('/my', '/cz/my');
     }
 
+    /**
+     * Returns possibly empty list of services for current user. This resource represents only services which are not bound to any product.
+     */
     list = (params?: ServiceParameters): Promise<ServiceList> => {
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'services', params, response => {
             CSCoreSDK.EntityUtils.addDatesToItems(['dateFrom', 'dateTo'], response);

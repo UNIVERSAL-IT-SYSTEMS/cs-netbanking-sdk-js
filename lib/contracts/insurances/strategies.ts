@@ -11,6 +11,9 @@ implements CSCoreSDK.ListEnabled<any> {
         this._path = this.getPath().replace('/my', '/cz/my');
     }
 
+    /**
+     * Returns list of strategies with corresponsing funds allocation for the life insurance
+     */
     list = (): Promise<any> => {
         return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'strategies');
     }

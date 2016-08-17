@@ -5,6 +5,9 @@ import {AccountNumber, Amount, NetbankingParameters, Symbols} from '../common';
 export class AccountStandingOrdersResource extends CSCoreSDK.Resource
 implements CSCoreSDK.PaginatedListEnabled<StandingOrder>, CSCoreSDK.HasInstanceResource<AccountStandingOrderResource>, CSCoreSDK.CreateEnabled<CreateStandingOrderRequest, StandingOrderResponse> {
     
+    /**
+     * Returns list of actual standing/sweep orders for accounts of the current user.
+     */
     list = (params: NetbankingParameters): Promise<StandingOrderList> => {
 
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'standingOrders', params, response => {
@@ -18,10 +21,16 @@ implements CSCoreSDK.PaginatedListEnabled<StandingOrder>, CSCoreSDK.HasInstanceR
         });
     }
 
+    /**
+     * Get the resource of standing order with a given id
+     */
     withId = (id: string): AccountStandingOrderResource => {
         return new AccountStandingOrderResource(id, this.getPath(), this.getClient());
     }
 
+    /**
+     * Resource for creating standing/sweep order. Once order has been signed new payments are generated and executed according its settings.
+     */
     create = (payload: CreateStandingOrderRequest): Promise<StandingOrderResponse> => {
         return CSCoreSDK.ResourceUtils.CallCreate(this, payload).then(response => {
             addDatesToStandingOrder(response);
@@ -36,6 +45,9 @@ implements CSCoreSDK.PaginatedListEnabled<StandingOrder>, CSCoreSDK.HasInstanceR
 export class AccountStandingOrderResource extends CSCoreSDK.InstanceResource
 implements CSCoreSDK.GetEnabled<StandingOrder>, CSCoreSDK.DeleteEnabled<StandingOrderResponse> {
     
+    /**
+     * Returns detail of actual standing/sweep orders identified by its number.
+     */
     get = (): Promise<StandingOrder> => {
         return CSCoreSDK.ResourceUtils.CallGet(this, null).then(response => {
             addDatesToStandingOrder(response);
@@ -45,6 +57,9 @@ implements CSCoreSDK.GetEnabled<StandingOrder>, CSCoreSDK.DeleteEnabled<Standing
         });
     }
 
+    /**
+     * This call removes existing standing/sweep order. No more payments for the order are executed after the change has been signed.
+     */
     delete = (): Promise<StandingOrderResponse> => {
         return CSCoreSDK.ResourceUtils.CallDelete(this, null).then(response => {
             addDatesToStandingOrder(response);

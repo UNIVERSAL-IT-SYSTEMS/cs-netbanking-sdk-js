@@ -12,6 +12,9 @@ implements CSCoreSDK.GetEnabled<TaxBenefits> {
         this._path = this.getPath().replace('/my', '/cz/my');
     }
 
+    /**
+     * Returns tax benefits for the life insurance 
+     */
     get = (): Promise<TaxBenefits> => {
         return CSCoreSDK.ResourceUtils.CallGet(this, null);
     }

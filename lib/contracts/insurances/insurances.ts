@@ -14,6 +14,9 @@ import {Amount, AccountNumber, Signable} from '../../common';
 export class InsurancesContractsResource extends CSCoreSDK.Resource
 implements CSCoreSDK.PaginatedListEnabled<Insurance>, CSCoreSDK.HasInstanceResource<InsurancesContractResource> {
 
+    /**
+     * Returns list of life insurances for current user.
+     */
     list = (params?: InsurancesParameters): Promise<InsuranceList> => {
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'insurances', params, response => {
 
@@ -26,6 +29,9 @@ implements CSCoreSDK.PaginatedListEnabled<Insurance>, CSCoreSDK.HasInstanceResou
         });
     }
 
+    /**
+     * Get the resource of insurance contracts with a given id
+     */
     withId = (id: string): InsurancesContractResource => {
         return new InsurancesContractResource(id, this.getPath(), this.getClient());
     } 
@@ -34,6 +40,9 @@ implements CSCoreSDK.PaginatedListEnabled<Insurance>, CSCoreSDK.HasInstanceResou
 export class InsurancesContractResource extends CSCoreSDK.InstanceResource
 implements CSCoreSDK.GetEnabled<InsuranceDetail>, CSCoreSDK.UpdateEnabled<UpdateInsuranceRequest, UpdateInsuranceResponse> {
 
+    /**
+     * Returns detail of the life insurance
+     */
     get = (): Promise<InsuranceDetail> => {
         
         return this._client.callApi(`${this.getPath().replace('/my', '/cz/my')}/detail`, 'GET').then(response => {
@@ -44,6 +53,9 @@ implements CSCoreSDK.GetEnabled<InsuranceDetail>, CSCoreSDK.UpdateEnabled<Update
         });
     }
 
+    /**
+     * Allows to change a limited set of insurance settings of one specific contract. Currently only the field alias can be changed. Change only to alias field must not be signed, but response is ready also for signing process.
+     */
     update = (payload: UpdateInsuranceRequest): Promise<UpdateInsuranceResponse> => {
         (<any>payload).id = this._id;
 
@@ -55,38 +67,65 @@ implements CSCoreSDK.GetEnabled<InsuranceDetail>, CSCoreSDK.UpdateEnabled<Update
         });
     }
 
+    /**
+     * Returns funds resource for insurance contract
+     */
     get funds(): InsurancesContractFundsResource {
         return new InsurancesContractFundsResource(`${this.getPath()}/funds`, this.getClient());
     }
 
+    /**
+     * Returns beneficiaries resource for insurance contract
+     */
     get beneficiaries(): InsurancesContractBeneficiariesResource {
         return new InsurancesContractBeneficiariesResource(`${this.getPath()}/beneficiaries`, this.getClient());
     }
 
+    /**
+     * Returns insurees resource for insurance contract
+     */
     get insurees(): InsurancesContractInsureesResource {
         return new InsurancesContractInsureesResource(`${this.getPath()}/insurees`, this.getClient());
     }
 
+    /**
+     * Returns payments resource for insurance contract
+     */
     get payments(): InsurancesContractPaymentsResource {
         return new InsurancesContractPaymentsResource(`${this.getPath()}/payments`, this.getClient());
     }
 
+    /**
+     * Returns services resource for insurance contract
+     */
     get services(): InsurancesContractServicesResource {
         return new InsurancesContractServicesResource(`${this.getPath()}/services`, this.getClient());
     }
 
+    /**
+     * Returns events resource for insurance contract
+     */
     get events(): InsurancesContractEventsResource {
         return new InsurancesContractEventsResource(`${this.getPath()}/events`, this.getClient());
     }
 
+    /**
+     * Returns taxBenefits resource for insurance contract
+     */
     get taxBenefits(): InsurancesContractTaxBenefitsResource {
         return new InsurancesContractTaxBenefitsResource(`${this.getPath()}/taxBenefits`, this.getClient());
     }
 
+    /**
+     * Returns strategies resource for insurance contract
+     */
     get strategies(): InsurancesContractStrategiesResource {
         return new InsurancesContractStrategiesResource(`${this.getPath()}/strategies`, this.getClient());
     }
 
+    /**
+     * Returns transfer resource for insurance contract
+     */
     get transfer(): InsurancesContractTransferResource {
         return new InsurancesContractTransferResource(`${this.getPath()}/transfer`, this.getClient());
     }

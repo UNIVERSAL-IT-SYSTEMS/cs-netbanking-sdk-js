@@ -5,10 +5,16 @@ import {Amount} from '../common';
 export class BudgetsResource extends CSCoreSDK.Resource
 implements CSCoreSDK.ListEnabled<Budget> {
 
+    /**
+     * Returns list of user's tracked categories and its limits.
+     */
     list = (): Promise<BudgetList> => {
         return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'budgets');
     }
 
+    /**
+     * Set new value of tracked categories.
+     */
     update = (payload: UpdateBudgets): Promise<UpdateBudgets> => {
         return CSCoreSDK.ResourceUtils.CallUpdate(this, payload);
     }

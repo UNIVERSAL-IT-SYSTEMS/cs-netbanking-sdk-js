@@ -6,6 +6,9 @@ import {Amount, Signable} from '../common';
 export class SecuritiesResource extends CSCoreSDK.Resource
 implements CSCoreSDK.PaginatedListEnabled<Security>, CSCoreSDK.HasInstanceResource<SecurityResource> {
     
+    /**
+     * Returns list of securities accounts for current user. Securities account represents virtual account which holds securities titles and its shares (funds, bonds, etc.).
+     */
     list = (params?: SecuritiesParams): Promise<SecurityList> => {
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'securitiesAccounts', params, response => {
 
@@ -18,6 +21,9 @@ implements CSCoreSDK.PaginatedListEnabled<Security>, CSCoreSDK.HasInstanceResour
         });
     }
     
+    /**
+     * Get resource of security with a given id 
+     */
     withId = (id: string): SecurityResource => {
         return new SecurityResource(id, this.getPath(), this.getClient());
     }
@@ -26,6 +32,9 @@ implements CSCoreSDK.PaginatedListEnabled<Security>, CSCoreSDK.HasInstanceResour
 export class SecurityResource extends CSCoreSDK.InstanceResource
 implements CSCoreSDK.GetEnabled<Security>, CSCoreSDK.UpdateEnabled<SecurityRequest, SecurityResponse> {
     
+    /**
+     * Get a single securities account with all its details. Securities account represents virtual account which holds securities titles and its shares (funds, bonds, etc.).
+     */
     get = (): Promise<Security> => {
         return CSCoreSDK.ResourceUtils.CallGet(this, null).then(response => {
             transformDatesInSubSecAccounts(response);
@@ -35,6 +44,9 @@ implements CSCoreSDK.GetEnabled<Security>, CSCoreSDK.UpdateEnabled<SecurityReque
         });
     }
     
+    /**
+     * Allows to change a limited set of securities account-settings of one specific contract. Currently only the field alias can be changed. Change only to alias field must not be signed, but response is ready also for signing process.
+     */
     update = (payload: SecurityRequest): Promise<SecurityResponse> => {
         return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(response => {
             transformDatesInSubSecAccounts(response);
@@ -44,6 +56,9 @@ implements CSCoreSDK.GetEnabled<Security>, CSCoreSDK.UpdateEnabled<SecurityReque
         });
     }
 
+    /**
+     * Returns security transactions resource
+     */
     get transactions(): SecurityTransactionsResource {
         return new SecurityTransactionsResource(`${this.getPath()}/transactions`, this.getClient());
     }

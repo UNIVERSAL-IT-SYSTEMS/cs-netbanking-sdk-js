@@ -12,6 +12,9 @@ implements CSCoreSDK.ListEnabled<PhoneNumber>, CSCoreSDK.CreateEnabled<PhoneNumb
         this._path = this.getPath().replace('/my', '/cz/my');
     }
 
+    /**
+     * Returns list of phone numbers
+     */
     list = (): Promise<PhoneNumberList> => {
         return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'phoneNumbers').then(response => {
 
@@ -23,6 +26,9 @@ implements CSCoreSDK.ListEnabled<PhoneNumber>, CSCoreSDK.CreateEnabled<PhoneNumb
         });
     }
 
+    /**
+     * Creates new phone number
+     */
     create = (payload: PhoneNumberRequest): Promise<PhoneNumber> => {
         return CSCoreSDK.ResourceUtils.CallCreate(this, payload).then(response => {
             resourcifyPhoneNumbers(<PhoneNumber>response, this.withId((<PhoneNumber>response).id));
@@ -31,6 +37,9 @@ implements CSCoreSDK.ListEnabled<PhoneNumber>, CSCoreSDK.CreateEnabled<PhoneNumb
         });
     }
 
+    /**
+     * Get single phone number with a given id
+     */
     withId = (id: string): PhoneNumberResource => {
         return new PhoneNumberResource(id, this.getPath(), this.getClient());
     }
@@ -39,6 +48,9 @@ implements CSCoreSDK.ListEnabled<PhoneNumber>, CSCoreSDK.CreateEnabled<PhoneNumb
 export class PhoneNumberResource extends CSCoreSDK.InstanceResource
 implements CSCoreSDK.UpdateEnabled<PhoneNumberRequest, PhoneNumber>, CSCoreSDK.DeleteEnabled<any> {
 
+    /**
+     * Updates phone number
+     */
     update = (payload: PhoneNumberRequest): Promise<PhoneNumber> => {
         (<any>payload).id = this._id;
         return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(response => {
@@ -49,6 +61,9 @@ implements CSCoreSDK.UpdateEnabled<PhoneNumberRequest, PhoneNumber>, CSCoreSDK.D
         });
     }
 
+    /**
+     * Deletes phone number
+     */
     delete = (): Promise<NetbankingEmptyResponse> => {
         return CSCoreSDK.ResourceUtils.CallDelete(this, null);
     }

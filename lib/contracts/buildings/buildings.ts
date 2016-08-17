@@ -7,6 +7,9 @@ import {AccountNumber, Amount, Signable} from '../../common';
 export class BuildingsContractsResource extends CSCoreSDK.Resource
 implements CSCoreSDK.HasInstanceResource<BuildingsContractResource>, CSCoreSDK.PaginatedListEnabled<BuildingsContract> {
 
+    /**
+     * Resource represents list of building savings for current user. It contains building savings and loans from building savings as well.
+     */
     list = (params?: BuildingsContractsParameters): Promise<BuildingsContractList> => {
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'buildings', params, response => {
 
@@ -20,6 +23,9 @@ implements CSCoreSDK.HasInstanceResource<BuildingsContractResource>, CSCoreSDK.P
         });
     } 
 
+    /**
+     * Get the resource of buildings contract with a given id
+     */
     withId = (id: string): BuildingsContractResource => {
         return new BuildingsContractResource(id, this.getPath(), this.getClient());
     }
@@ -28,6 +34,9 @@ implements CSCoreSDK.HasInstanceResource<BuildingsContractResource>, CSCoreSDK.P
 export class BuildingsContractResource extends CSCoreSDK.InstanceResource
 implements CSCoreSDK.GetEnabled<BuildingsContract>, CSCoreSDK.UpdateEnabled<UpdateBuildingsContractRequest, UpdateBuildingsContractResponse> {
 
+    /**
+     * Resource represents one building saving product identified by it's identifier. It can be building saving or loan from building saving.
+     */
     get = (): Promise<BuildingsContract> => {
         return CSCoreSDK.ResourceUtils.CallGet(this, null).then(response => {
             resourcifyBuildingsContracts(<BuildingsContract>response, this);
@@ -37,6 +46,9 @@ implements CSCoreSDK.GetEnabled<BuildingsContract>, CSCoreSDK.UpdateEnabled<Upda
         });
     }
 
+    /**
+     * Allows to change a limited set of building savings contract-settings of one specific contract. Currently only the field alias can be changed. Change only to alias field must not be signed, but response is ready also for signing process.
+     */
     update = (payload: UpdateBuildingsContractRequest): Promise<UpdateBuildingsContractResponse> => {
         (<any>payload).id = this._id;
 
@@ -48,10 +60,16 @@ implements CSCoreSDK.GetEnabled<BuildingsContract>, CSCoreSDK.UpdateEnabled<Upda
         });
     }
 
+    /**
+     * Get buildings contracts services resource
+     */
     get services(): BuildingsContractsServicesResource {
         return new BuildingsContractsServicesResource(`${this.getPath()}/services`, this.getClient());
     }
 
+    /**
+     * Get buildings contracts transactions resource
+     */
     get transactions(): ContractsTransactionsResource {
         return new ContractsTransactionsResource(`${this.getPath().replace('/my', '/cz/my')}/transactions`, this.getClient());
     }

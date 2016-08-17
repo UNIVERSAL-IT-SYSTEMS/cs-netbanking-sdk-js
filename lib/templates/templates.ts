@@ -5,6 +5,9 @@ import {AccountNumber} from '../common';
 export class TemplatesResource extends CSCoreSDK.Resource
 implements CSCoreSDK.PaginatedListEnabled<Template>, CSCoreSDK.HasInstanceResource<TemplateResource> {
 
+    /**
+     * List of payment templates for current user.
+     */
     list = (params?: TemplatesParameters): Promise<TemplateList> => {
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'templates', params, response => {
             
@@ -16,6 +19,9 @@ implements CSCoreSDK.PaginatedListEnabled<Template>, CSCoreSDK.HasInstanceResour
         });
     }
 
+    /**
+     * Get resource for template with a given id 
+     */
     withId = (id: string): TemplateResource => {
         return new TemplateResource(id, this.getPath(), this.getClient());
     }
@@ -24,6 +30,9 @@ implements CSCoreSDK.PaginatedListEnabled<Template>, CSCoreSDK.HasInstanceResour
 export class TemplateResource extends CSCoreSDK.InstanceResource
 implements CSCoreSDK.GetEnabled<Template> {
 
+    /**
+     * Get payment template detail
+     */
     get = (): Promise<Template> => {
         return CSCoreSDK.ResourceUtils.CallGet(this, null).then(response => {
             resourcifyTemplates(<Template>response, this);

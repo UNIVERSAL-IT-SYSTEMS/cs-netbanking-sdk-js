@@ -5,6 +5,9 @@ import {Amount} from '../common';
 export class AuthorizationLimitsResource extends CSCoreSDK.Resource
 implements CSCoreSDK.ParametrizedListEnabled<AuthorizationLimitsParams, AuthorizationLimit>, CSCoreSDK.HasInstanceResource<AuthorizationLimitResource> {
 
+    /**
+     * Return all user local specific payment order entry limits for for all user active authorization methods and channels/applications used in country.
+     */
     list = (params?: AuthorizationLimitsParams): Promise<AuthorizationLimitList> => {
         return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'limits', params).then(response => {
 
@@ -16,6 +19,9 @@ implements CSCoreSDK.ParametrizedListEnabled<AuthorizationLimitsParams, Authoriz
         });
     }
 
+    /**
+     * Get the resource of authorization limit with a given id
+     */
     withId = (id: string): AuthorizationLimitResource => {
         return new AuthorizationLimitResource(id, this.getPath(), this.getClient());
     }
@@ -24,6 +30,9 @@ implements CSCoreSDK.ParametrizedListEnabled<AuthorizationLimitsParams, Authoriz
 export class AuthorizationLimitResource extends CSCoreSDK.InstanceResource
 implements CSCoreSDK.GetEnabled<AuthorizationLimit> {
 
+    /**
+     * Return local specific payment order entry limits valid for combination of user, authorization method and used channel/application. For example user could define different limits for TAC authorization via George and mobile applications.
+     */
     get = (): Promise<AuthorizationLimit> => {
         return CSCoreSDK.ResourceUtils.CallGet(this, null).then(response => {
 

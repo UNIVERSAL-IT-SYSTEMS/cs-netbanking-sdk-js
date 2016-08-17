@@ -12,6 +12,9 @@ implements CSCoreSDK.PaginatedListEnabled<DirectDebit>, CSCoreSDK.HasInstanceRes
         this._path = this.getPath().replace('/my', '/cz/my');
     }
 
+    /**
+     * Resource Direct Debit List represents collection of all direct debit approvals entered by user for the specified user
+     */
     list = (params: NetbankingParameters): Promise<DirectDebitList> => {
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'directDebits', params, response => {
 
@@ -21,10 +24,16 @@ implements CSCoreSDK.PaginatedListEnabled<DirectDebit>, CSCoreSDK.HasInstanceRes
         });
     }
 
+    /**
+     * Get the resource of direct debit with a given id
+     */
     withId = (id: string): AccountDirectDebitResource => {
         return new AccountDirectDebitResource(id, this.getPath(), this.getClient());
     }
 
+    /**
+     * Resource for creating (or allowing) direct debit on certain account. Once signed it can be used by receiver party.
+     */
     create = (payload: DirectDebit): Promise<SignableDirectDebit> => {
 
         return CSCoreSDK.ResourceUtils.CallCreate(this, payload).then(response => {
@@ -41,6 +50,9 @@ implements CSCoreSDK.PaginatedListEnabled<DirectDebit>, CSCoreSDK.HasInstanceRes
 export class AccountDirectDebitResource extends CSCoreSDK.InstanceResource
 implements CSCoreSDK.GetEnabled<DirectDebit>, CSCoreSDK.DeleteEnabled<SignableDirectDebit> {
 
+    /**
+     * Get the single direct debits detail.
+     */
     get = (): Promise<DirectDebit> => {
         return CSCoreSDK.ResourceUtils.CallGet(this, null).then(response => {
 
@@ -50,6 +62,9 @@ implements CSCoreSDK.GetEnabled<DirectDebit>, CSCoreSDK.DeleteEnabled<SignableDi
         });
     }
 
+    /**
+     * Resource for deleting direct debit (permission) on certain account. Once signed no more transfers can be made by receiver party.
+     */
     delete = (): Promise<SignableDirectDebit> => {
         return CSCoreSDK.ResourceUtils.CallDelete(this, null).then(response => {
 

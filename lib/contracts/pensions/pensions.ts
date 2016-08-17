@@ -13,6 +13,9 @@ implements CSCoreSDK.PaginatedListEnabled<Pension>, CSCoreSDK.HasInstanceResourc
         this._path = this.getPath().replace('/my', '/cz/my');
     }
 
+    /**
+     * Returns list of pension products which belongs to current user. This includes Pension Savings, Supplementary Pension Insurance and Supplementary Pension Savings.
+     */
     list = (params?: PensionParameters): Promise<PensionList> => {
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'pensions', params, response => {
 
@@ -25,6 +28,9 @@ implements CSCoreSDK.PaginatedListEnabled<Pension>, CSCoreSDK.HasInstanceResourc
         });
     }
 
+    /**
+     * Get the resource of pension contract with a given id
+     */
     withId = (id: string): PensionsContractResource => {
         return new PensionsContractResource(id, this.getPath(), this.getClient());
     } 
@@ -33,6 +39,9 @@ implements CSCoreSDK.PaginatedListEnabled<Pension>, CSCoreSDK.HasInstanceResourc
 export class PensionsContractResource extends CSCoreSDK.InstanceResource
 implements CSCoreSDK.GetEnabled<Pension>, CSCoreSDK.UpdateEnabled<UpdatePensionRequest, UpdatePensionResponse> {
 
+    /**
+     * Returns detail of pension product which belongs to current user. This can be Pension Saving, Supplementary Pension Insurance and Supplementary Pension Saving.
+     */
     get = (): Promise<Pension> => {
         return CSCoreSDK.ResourceUtils.CallGet(this, null).then(response => {
             transformDates(response);
@@ -42,6 +51,9 @@ implements CSCoreSDK.GetEnabled<Pension>, CSCoreSDK.UpdateEnabled<UpdatePensionR
         });
     }
 
+    /**
+     * Allows to change a limited set of pension contract-settings of one specific contract. Currently only the field alias can be changed. Change only to alias field must not be signed, but response is ready also for signing process.
+     */
     update = (payload: UpdatePensionRequest): Promise<UpdatePensionResponse> => {
         (<any>payload).id = this._id;
         return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(response => {
@@ -52,6 +64,9 @@ implements CSCoreSDK.GetEnabled<Pension>, CSCoreSDK.UpdateEnabled<UpdatePensionR
         });
     }
 
+    /**
+     * Returns transactions resource for pension contract
+     */
     get transactions(): ContractsTransactionsResource {
         return new ContractsTransactionsResource(`${this.getPath()}/transactions`, this.getClient());
     }

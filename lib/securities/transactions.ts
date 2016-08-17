@@ -12,10 +12,16 @@ implements CSCoreSDK.HasInstanceResource<SecurityTransactionResource> {
         this._path = this.getPath().replace('/my', '/cz/my');
     }
 
+    /**
+     * Get resource of security transaction with a given id
+     */
     withId = (id: string): SecurityTransactionResource => {
         return new SecurityTransactionResource(id, this.getPath(), this.getClient());
     }
 
+    /**
+     * Export transaction history into signed pdf. 
+     */
     export = (params: ExportTransactionsParameters): Promise<any> => {
 
         // transform "fields" parameter to comma separated list from array
@@ -32,6 +38,9 @@ implements CSCoreSDK.HasInstanceResource<SecurityTransactionResource> {
 export class SecurityTransactionResource extends CSCoreSDK.InstanceResource
 implements CSCoreSDK.UpdateEnabled<SecurityTransactionRequest, SecurityTransactionResponse> {
 
+    /**
+     * Allows to add or change a client's personal note and mark/star the transaction as favorite/important for one specific transaction on selected product.
+     */
     update = (payload: SecurityTransactionRequest): Promise<SecurityTransactionResponse> => {
         (<any>payload).id = this._id;
         return CSCoreSDK.ResourceUtils.CallUpdate(this, payload);

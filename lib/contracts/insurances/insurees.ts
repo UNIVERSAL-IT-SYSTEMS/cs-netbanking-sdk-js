@@ -12,6 +12,9 @@ implements CSCoreSDK.ListEnabled<Insuree> {
         this._path = this.getPath().replace('/my', '/cz/my');
     }
 
+    /**
+     * Returns list of insurees related to the insurance contract.
+     */
     list = (): Promise<InsureeList> => {
         return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'insurees');
     }

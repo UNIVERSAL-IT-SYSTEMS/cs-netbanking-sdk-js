@@ -11,6 +11,9 @@ implements CSCoreSDK.GetEnabled<Loyalty> {
         this._path = this.getPath().replace('/my', '/cz/my');
     }
 
+    /**
+     * Get data about iBod account of the current client.
+     */
     get = (): Promise<Loyalty> => {
         return CSCoreSDK.ResourceUtils.CallGet(this, null).then(response => {
             CSCoreSDK.EntityUtils.addDatesFromISO('exportDate', response);

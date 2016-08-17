@@ -12,10 +12,16 @@ implements CSCoreSDK.ListEnabled<Fund>, CSCoreSDK.UpdateEnabled<UpdateFundReques
         this._path = this.getPath().replace('/my', '/cz/my');
     }
 
+    /**
+     * Returns detail of distribution of capital value into funds.
+     */
     list = (): Promise<FundList> => {
         return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'funds', null);
     }
 
+    /**
+     * Change the distribution of capital value into funds.
+     */
     update = (payload: UpdateFundRequest): Promise<UpdateFundResponse> => {
         return CSCoreSDK.ResourceUtils.CallUpdate(this, payload);
     }

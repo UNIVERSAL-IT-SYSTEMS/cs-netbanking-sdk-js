@@ -5,10 +5,16 @@ import {Signable} from '../common';
 export class SettingsResource extends CSCoreSDK.Resource
 implements CSCoreSDK.GetEnabled<Settings>, CSCoreSDK.UpdateEnabled<Settings, SignableSettings> {
 
+    /**
+     * Returns basic user settings. 
+     */
     get = (): Promise<Settings> => {
         return CSCoreSDK.ResourceUtils.CallGet(this, null);
     }
 
+    /**
+     * Change user settings. Currently only language can be changed by this endpoint.
+     */
     update = (payload: Settings): Promise<SignableSettings> => {
         return CSCoreSDK.ResourceUtils.CallUpdate(this, payload);
     }

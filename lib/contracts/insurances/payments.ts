@@ -12,6 +12,9 @@ implements CSCoreSDK.ListEnabled<ContractPayment> {
         this._path = this.getPath().replace('/my', '/cz/my');
     }
 
+    /**
+     * Returns list of life insurance payments. List contains one upcoming payment and payments history for 2 years.
+     */
     list = (): Promise<ContractPaymentList> => {
         return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'payments').then(response => {
             CSCoreSDK.EntityUtils.addDatesToItems(['transactionDate', 'instructionFrom', 'instructionTo'], response);

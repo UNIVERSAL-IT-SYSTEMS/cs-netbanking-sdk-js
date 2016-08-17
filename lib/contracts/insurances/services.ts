@@ -12,6 +12,9 @@ implements CSCoreSDK.ListEnabled<InsuranceService> {
         this._path = this.getPath().replace('/my', '/cz/my');
     }
 
+    /**
+     * Returns list of services for the life insurance
+     */
     list = (): Promise<InsuranceServiceList> => {
         return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'services').then(response => {
 
@@ -23,6 +26,9 @@ implements CSCoreSDK.ListEnabled<InsuranceService> {
         });
     }
 
+    /**
+     * Allows activation of risk sports insurance.
+     */
     activateRiskSports = (payload: ActivateRiskSportsRequest): Promise<ActivateRiskSportsResponse> => {
 
         CSCoreSDK.EntityUtils.transformDatesToSimpleISO(['dateFrom', 'dateTo'], payload);
@@ -35,6 +41,9 @@ implements CSCoreSDK.ListEnabled<InsuranceService> {
         });
     }
 
+    /**
+     * Allows deactivation of risk sports insurance.
+     */
     deactivateRiskSports = (payload: any): Promise<DeactivateRiskSportsResponse> => {
         
         CSCoreSDK.EntityUtils.transformDatesToSimpleISO(['dateFrom', 'dateTo'], payload);

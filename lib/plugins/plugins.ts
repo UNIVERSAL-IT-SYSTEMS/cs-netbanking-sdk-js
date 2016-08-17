@@ -5,6 +5,9 @@ import {Amount, AccountNumber} from '../common';
 export class PluginsResource extends CSCoreSDK.Resource
 implements CSCoreSDK.PaginatedListEnabled<Plugin>, CSCoreSDK.HasInstanceResource<PluginResource> {
 
+    /**
+     * Returns list of available plugins for current user. Plugin is application functionality which can be enabled/disabled by user.
+     */
     list = (params: PluginsParameters): Promise<PluginList> => {
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'plugins', params, response => {
 
@@ -14,6 +17,9 @@ implements CSCoreSDK.PaginatedListEnabled<Plugin>, CSCoreSDK.HasInstanceResource
         });
     }
 
+    /**
+     * Returns resource of plugin with a given id
+     */
     withId = (id: string): PluginResource => {
         return new PluginResource(id, this.getPath(), this.getClient());
     }
@@ -22,12 +28,15 @@ implements CSCoreSDK.PaginatedListEnabled<Plugin>, CSCoreSDK.HasInstanceResource
 export class PluginResource extends CSCoreSDK.InstanceResource
 implements CSCoreSDK.UpdateEnabled<UpdatePluginRequest, SignablePlugin> {
 
+    /**
+     * Activation and deactivation of the specific plugin. You can also change settlement account for given plugin and current user.
+     */
     update = (payload: UpdatePluginRequest): Promise<SignablePlugin> => {
         return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(response => {
             CSCoreSDK.EntityUtils.addDatesFromISO(['validUntil', 'dateOfActivation'], response);
 
             return response;
-        })
+        });
     }
 }
 

@@ -4,10 +4,16 @@ import CSCoreSDK = require('cs-core-sdk');
 export class PromotionsResource extends CSCoreSDK.Resource
 implements CSCoreSDK.ListEnabled<Promotion>, CSCoreSDK.CreateEnabled<CreatePromotionRequest, CreatePromotionResponse>  {
 
+    /**
+     * Returns promotion list for the current user 
+     */
     list = (): Promise<PromotionList> => {
         return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null);
     }
 
+    /**
+     * Hide specified promotion
+     */
     create = (payload: CreatePromotionRequest): Promise<CreatePromotionResponse> => {
         return this._client.callApi(this.getPath().replace('promotions', 'actions'), 'POST', null, payload);
     }

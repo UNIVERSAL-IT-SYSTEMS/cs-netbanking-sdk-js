@@ -12,6 +12,9 @@ implements CSCoreSDK.ListEnabled<ContractEvent> {
         this._path = this.getPath().replace('/my', '/cz/my');
     }
 
+    /**
+     * Returns list of events for the life insurance
+     */
     list = (): Promise<ContractEventList> => {
         return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'events').then(response => {
             response.items.forEach(item => {

@@ -11,6 +11,9 @@ implements CSCoreSDK.ListEnabled<InsuranceBeneficiary>, CSCoreSDK.UpdateEnabled<
         this._path = this.getPath().replace('/my', '/cz/my');
     }
 
+    /**
+     * Returns list of beneficiaries related to the insurance contract.
+     */
     list = (): Promise<InsuranceBeneficiaryList> => {
         return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'beneficiaries', null).then(response => {
             CSCoreSDK.EntityUtils.addDatesToItems(['birthdate'], response);
@@ -19,6 +22,9 @@ implements CSCoreSDK.ListEnabled<InsuranceBeneficiary>, CSCoreSDK.UpdateEnabled<
         });
     }
 
+    /**
+     * Change beneficiaries and distribution of insurance among beneficiaries.
+     */
     update = (payload: UpdateInsuranceBeneficiaries): Promise<UpdateInsuranceBeneficiaries> => {
 
         if(payload && Array.isArray(payload.beneficiaries)) {
