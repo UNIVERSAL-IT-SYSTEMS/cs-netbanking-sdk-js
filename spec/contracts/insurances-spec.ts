@@ -325,7 +325,41 @@ describe("Netbanking SDK",function(){
             }).catch(logJudgeError);
         });
 
-        // add tests for risk sport activation and deactivation
+        it('activates risk sports', done => {
+            judgeSession.setNextCase('contracts.insurances.withId.services.activateRiskSports').then(() => {
+                return client.contracts.insurances.withId('3961D3F9E922EEE93E2581E896B34566645FE7E3').services.activateRiskSports({
+                    dateFrom: new Date('2016-08-16'),
+                    dateTo: new Date('2016-08-20'),
+                    phoneNumber: '602123456'
+                });
+            }).then(response => {
+                expectToBe(response, {
+                    policyNumber: '7009689942',
+                    phoneNumber: '602123456'
+                });
+
+                expectDate(response, {
+                    dateFrom: '2016-08-16',
+                    dateTo: '2016-08-20',
+                });
+
+                done();
+            }).catch(logJudgeError);
+        });
+
+        it('deactivates risk sports', done => {
+            judgeSession.setNextCase('contracts.insurances.withId.services.deactivateRiskSports').then(() => {
+                return client.contracts.insurances.withId('3961D3F9E922EEE93E2581E896B34566645FE7E3').services.deactivateRiskSports({
+                    dateFrom: new Date('2016-08-16'),
+                    dateTo: new Date('2016-08-20'),
+                    phoneNumber: '602123456'
+                });
+            }).then(response => {
+                expect(response.signInfo.state).toBe('NONE');
+
+                done();
+            }).catch(logJudgeError);
+        })
 
         it('retrieves events', done => {
             judgeSession.setNextCase('contracts.insurances.withId.events.list').then(() => {
