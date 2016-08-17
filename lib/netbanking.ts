@@ -15,6 +15,7 @@ import {TemplatesResource} from './templates/templates';
 import {PhoneNumbersResource} from './phone-numbers/phone-numbers';
 import {BudgetsResource} from './budgets/budgets';
 import {GoalsResource} from './goals/goals';
+import {PromotionsResource} from './promotions/promotions';
 
 var sharedClient : NetbankingClient = null;
 
@@ -114,5 +115,9 @@ export class NetbankingClient extends CSCoreSDK.WebApiClient {
 
     get goals() {
         return new GoalsResource(`${this.getPath()}/goals`, this);
+    }
+
+    get promotions() {
+        return new PromotionsResource(`${this.getPath()}/promotions`, this);
     }
 }
