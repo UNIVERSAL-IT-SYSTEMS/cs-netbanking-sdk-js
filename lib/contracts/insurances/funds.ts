@@ -23,7 +23,12 @@ implements CSCoreSDK.ListEnabled<Fund>, CSCoreSDK.UpdateEnabled<UpdateFundReques
      * Change the distribution of capital value into funds.
      */
     update = (payload: UpdateFundRequest): Promise<UpdateFundResponse> => {
-        return CSCoreSDK.ResourceUtils.CallUpdate(this, payload);
+        return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(response => {
+            
+            CSCoreSDK.SigningUtils.createSigningObject(response, this.getClient(), this.getPath());
+
+            return response;
+        });
     }
 }
 

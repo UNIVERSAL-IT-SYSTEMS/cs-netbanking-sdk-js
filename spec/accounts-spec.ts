@@ -1412,6 +1412,55 @@ describe("Netbanking SDK",function(){
         });
     });
 
+    it('deletes standing order and signs the order', done => {
+        let info;
+        judgeSession.setNextCase('signing.tac.accounts.withId.standingOrders.withId.delete').then(() => {
+            return client.accounts.withId('4B2F9EBE742BCAE1E98A78E12F6FBC62464A74EE').standingOrders.withId('1').delete();
+        }).then(response => {
+
+            expectToBe(response, {
+                number: '1',
+                type: 'STANDING_ORDER',
+                alias: 'nájemné'
+            });
+
+            expectDate(response, {
+                startDate: '2013-01-09T00:00:00+01:00',
+                nextExecutionDate: '2016-06-17',
+                realExecutionDate: '2016-06-17',
+            });
+
+            expect(response.get).toBeDefined();
+            expect(response.delete).toBeDefined();
+
+            expect(response.scheduledExecutionDates[0].toString()).toBe(new Date(CoreSDK.EntityUtils.parseISODate('2016-06-17')).toString());
+
+            info = response;
+
+            testStateOpen(response.signing);
+
+            return response.signing.getInfo();
+        }).then(response => {
+
+            testStateOpen(response);
+            testStateOpen(info.signing);
+            testAuthorizationTac(response);
+
+            return response.startSigningWithTac();
+        }).then(response => {
+
+            testStateOpen(info.signing);
+
+            return response.finishSigning('00000000');
+        }).then(response => {
+
+            testStateDone(response);
+            testStateDone(info.signing);
+
+            done();
+        }).catch(logJudgeError);
+    });
+
     it('retrieves standing order detail through get convenience method', done => {
         let list;
 
@@ -1598,6 +1647,46 @@ describe("Netbanking SDK",function(){
         });
     });
 
+    it('deletes direct debit and signs the order', done => {
+        let info;
+        judgeSession.setNextCase('signing.tac.accounts.withId.directDebits.withId.delete').then(() => {
+            return client.accounts.withId('4B2F9EBE742BCAE1E98A78E12F6FBC62464A74EE').directDebits.withId('4').delete();
+        }).then(response => {
+
+            expectToBe(response, {
+                number: '4',
+                type: 'SIPO',
+                periodicity: 1,
+                periodCycle: 'MONTHLY',
+            });
+
+            expectDate(response, {
+                startDate: '2013-01-08',
+                versionValidityDate: '2013-01-08',
+            });
+
+            info = response;
+            testStateOpen(response.signing);
+
+            return response.signing.getInfo();  
+        }).then(response => {
+            testStateOpen(response);
+            testStateOpen(info.signing);
+            testAuthorizationTac(response);
+
+            return response.startSigningWithTac();
+        }).then(response => {
+            testStateOpen(info.signing);
+
+            return response.finishSigning('00000000');
+        }).then(response => {
+            testStateDone(response);
+            testStateDone(info.signing);
+
+            done();
+        }).catch(logJudgeError);
+    });
+
     it('creates direct debit with a given id', done => {
         judgeSession.setNextCase('accounts.withId.directDebts.create').then(() => {
             return client.accounts.withId('4B2F9EBE742BCAE1E98A78E12F6FBC62464A74EE').directDebits.create({
@@ -1648,5 +1737,74 @@ describe("Netbanking SDK",function(){
         }).catch(e => {
             logJudgeError(e);
         });
+
+    });
+
+    it('creates direct debit and signs it', done => {
+        let info;
+        judgeSession.setNextCase('signing.tac.accounts.withId.directDebits.create').then(() => {
+            return client.accounts.withId('4B2F9EBE742BCAE1E98A78E12F6FBC62464A74EE').directDebits.create({
+
+                type: 'DIRECT_DEBIT',
+                receiver: {
+                    number: '428602109',
+                    bankCode: '0800',
+                },
+                alias: 'moje inkaso',
+                periodicity: 1,
+                periodCycle: 'MONTHLY',
+                limit: {
+                    value: 100000,
+                    precision: 2,
+                    currency: 'CZK'
+                },
+                limitSum: {
+                    value: 300000,
+                    precision: 2,
+                    currency: 'CZK'
+                },
+                numberLimit: 5,
+                startDate: '2017-07-14',
+                endDate: '2018-07-14',
+                symbols: {
+                    variableSymbol: '4567',
+                    specificSymbol: '800'
+                }
+            });
+        }).then(response => {
+
+            expectToBe(response, {
+                type: 'DIRECT_DEBIT',
+                alias: 'moje inkaso',
+                periodCycle: 'MONTHLY',
+            });
+
+            expectDate(response, {
+                startDate: '2017-07-14',
+                endDate: '2018-07-14',
+            });
+
+            info = response;
+
+            testStateOpen(response.signing);
+
+            return response.signing.getInfo();
+        }).then(response => {
+
+            testStateOpen(response);
+            testStateOpen(info.signing);
+            testAuthorizationTac(response);
+
+            return response.startSigningWithTac();
+        }).then(response => {
+            testStateOpen(info.signing);
+
+            return response.finishSigning('00000000');
+        }).then(response => {
+            testStateDone(response);
+            testStateDone(info.signing);
+
+            done();
+        }).catch(logJudgeError);
     });
 });

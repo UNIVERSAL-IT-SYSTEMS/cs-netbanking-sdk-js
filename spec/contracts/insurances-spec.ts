@@ -9,7 +9,7 @@ var client : CSNetbankingSDK.NetbankingClient = null;
 var expectToBe = CoreSDK.TestUtils.expectToBe;
 var expectDate = CoreSDK.TestUtils.expectDate;
 var logJudgeError = CoreSDK.TestUtils.logJudgeError;
-import {testFile, exportTransactionsPayload} from '../helpers';
+import {testFile, exportTransactionsPayload, testAuthorizationTac, testStateOpen, testStateDone} from '../helpers';
 
 describe("Netbanking SDK",function(){
     var originalTimeoutInterval = null;
@@ -210,6 +210,57 @@ describe("Netbanking SDK",function(){
                 });
 
                 expect(response.investmentProgram).toBe('INVESTMENT_MANAGEMENT');
+
+                done();
+            }).catch(logJudgeError);
+        });
+
+        it('signs funds update', done => {
+            let info;
+            judgeSession.setNextCase('signing.tac.contracts.insurances.withId.funds.update').then(() => {
+                return client.contracts.insurances.withId('3961D3F9E922EEE93E2581E896B34566645FE7E3').funds.update({
+                    funds: [
+                        {
+                            code: '31',
+                            allocation: 35
+                        },
+                        {
+                            code: '32',
+                            allocation: 65
+                        }
+                    ],
+                    investmentProgram: 'INVESTMENT_MANAGEMENT'
+                });
+            }).then(response => {
+                expectToBe(response.funds[0], {
+                    code: '31',
+                    allocation: 35
+                });
+
+                expectToBe(response.funds[1], {
+                    code: '32',
+                    allocation: 65
+                });
+
+                expect(response.investmentProgram).toBe('INVESTMENT_MANAGEMENT');
+
+                testStateOpen(response.signing);
+                info = response;
+                return response.signing.getInfo();
+            }).then(response => {
+
+                testStateOpen(info.signing);
+                testStateOpen(response);
+                testAuthorizationTac(response);
+                return response.startSigningWithTac();
+            }).then(response => {
+                testStateOpen(info.signing);
+                
+                return response.finishSigning('00000000');
+            }).then(response => {
+
+                testStateDone(info.signing);
+                testStateDone(response);
 
                 done();
             }).catch(logJudgeError);
