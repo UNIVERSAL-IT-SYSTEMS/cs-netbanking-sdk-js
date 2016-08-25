@@ -20,9 +20,9 @@ export function testStateDone(signingObject) {
     expect(signingObject.isOpen()).toBe(false);
 }
 
-export function testFile(response) {
+export function testFile(response, fileName = 'test-pdf.pdf') {
     if (fs) {
-        var file = fs.readFileSync(path.join(__dirname, 'test-pdf.pdf'));
+        var file = fs.readFileSync(path.join(__dirname, fileName));
         expect(_.isEqual(file.toString(), response.toString())).toBe(true);    
     }
     expect(response).toBeTruthy();
