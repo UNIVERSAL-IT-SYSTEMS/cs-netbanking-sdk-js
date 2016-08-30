@@ -26,7 +26,7 @@ You can list all of current user's accounts by calling the `list` method on `Acc
 
 ## Get individual current user's account
 
-You can get detail of the individual current user's account by calling the `withId` method on `AccountsResource` with id as a parameter and then calling the `get` method. For complete response see `MainAccount` interface in [`accounts.ts`](../lib/accounts/accounts.ts).
+You can get detail of the individual current user's account by calling the `withId` method on `AccountsResource` with `id` as a parameter and then calling the `get` method. For complete response see `MainAccount` interface in [`accounts.ts`](../lib/accounts/accounts.ts).
 
 ```javascript
 
@@ -289,6 +289,218 @@ Download sub account's statement by getting the `SubAccountsStatementsResource` 
         .download({
             format: 'PDF_A4',
             statementId: 239824534
+        });
+
+```
+
+## Standing/Sweep Orders
+
+### List standing/sweep orders
+
+Retrieve list of actual standing/sweep orders for accounts of the current user by getting the `AccountStandingOrdersResource` and then calling the `list` method on it. The method takes object with properties as a parameters. For all supported parameters see `NetbankingParameters` interface in [`common.ts`](../lib/common.ts).
+
+```javascript
+
+    CSNetbankingSDK
+        .getClient()
+        .accounts
+        .withId('CCA4F9863D686D04')
+        .standingOrders
+        .list({
+            pageNumber: 0,
+            pageSize: 10
+        })
+        .then(function(orders) {
+            var order = orders.items[0];
+            console.log(order.number); // LJL234L243JL
+        });
+
+```
+
+### Get detail of standing/sweep order
+
+Get detail of actual standing/sweep order identified by its number by calling the `withId` method on `AccountStandingOrderResource` with `id` as a parameter and then calling the `get` method. For complete response see `StandingOrder` interface in [`standing-orders.ts`](../lib/accounts/standing-orders.ts).
+
+```javascript
+
+    CSNetbankingSDK
+        .getClient()
+        .accounts
+        .withId('CCA4F9863D686D04')
+        .standingOrders
+        .withId('JK123908JL')
+        .get()
+        .then(function(order) {
+            console.log(order.number); // LJL234L243JL
+        });
+
+```
+
+### Delete standing/sweep order
+
+Remove existing standing/sweep order by calling the `withId` method on `AccountStandingOrdersResource` with `id` as a parameter and then calling the `delete` method. No more payments for the order are executed after the change has been signed.
+
+```javascript
+
+    CSNetbankingSDK
+        .getClient()
+        .accounts
+        .withId('CCA4F9863D686D04')
+        .standingOrders
+        .withId('JK123908JL')
+        .delete()
+        .then(function(orders) {
+            var order = orders.items[0];
+            console.log(order.number); // LJL234L243JL
+        });
+
+```
+
+### Create standing/sweep order
+
+Create standing/sweep order by getting the `AccountStandingOrdersResource` and calling the `create` method on it. The method takes object as a parameter. See `CreateStandingOrderRequest` interface for all properties and `StandingOrderResponse` interface for full response in [`standing-orders.ts`](../lib/accounts/standing-orders.ts). Once order has been signed new payments are generated and executed according its settings.
+
+```javascript
+
+    CSNetbankingSDK
+        .getClient()
+        .accounts
+        .withId('CCA4F9863D686D04')
+        .standingOrders
+        .create({
+            type: 'STANDING_ORDER',
+            alias: 'Monthly standing order executed on the last day of month',
+            receiverName: 'Name of the receiver',
+            receiver: {
+                number: '188505042',
+                bankCode: '0300'
+            },
+            amount: {
+                value: 30000,
+                precision: 2,
+                currency: 'CZK'
+            },
+            nextExecutionDate: '2016-12-31',
+            executionMode: 'UNTIL_CANCELLATION',
+            executionDueMode: 'DUE_LAST_DAY_OF_MONTH',
+            executionInterval: 'MONTHLY',
+            symbols: {
+                variableSymbol: '854259',
+                constantSymbol: '0305',
+                specificSymbol: '785421'
+            }
+        })
+        .then(function(orders) {
+            console.log(order.number); // 160526104005956
+        });
+
+```
+
+## Direct debits
+
+### List all account's direct debits
+
+Direct Debit List represents collection of all direct debit approvals entered by user for the specified user. List all account's direct debits by getting the `AccountDirectDebitsResource` and calling the `list` method on it. The method takes object with properties as a parameters. For all supported parameters see `NetbankingParameters` interface in [`common.ts`](../lib/common.ts).
+
+```javascript
+
+    CSNetbankingSDK
+        .getClient()
+        .accounts
+        .withId('CCA4F9863D686D04')
+        .directDebits
+        .list({
+            pageNumber: 0,
+            pageSize: 1
+        })
+        .then(function(directDebits) {
+            var directDebit = directDebits.items[0];
+            console.log(directDebit.type); // DIRECT_DEBIT
+        });
+
+```
+
+### Get direct debit's detail
+
+
+Get single direct debit's detail by calling the `withId` method on `AccountDirectDebitResource` with `id` as a parameter and then calling the `get` method. For complete response see `DirectDebit` interface in [`direct-debits.ts`](../lib/accounts/direct-debits.ts).
+
+```javascript
+
+    CSNetbankingSDK
+        .getClient()
+        .accounts
+        .withId('CCA4F9863D686D04')
+        .directDebits
+        .withId('2313')
+        .get()
+        .then(function(directDebits) {
+            var directDebit = directDebits.items[0];
+            console.log(directDebit.type); // DIRECT_DEBIT
+        });
+
+```
+
+### Delete direct debit
+
+Remove existing direct debit by calling the `withId` method on `AccountDirectDebitsResource` with `id` as a parameter and then calling the `delete` method. Once signed no more transfers can be made by receiver party.
+
+```javascript
+
+    CSNetbankingSDK
+        .getClient()
+        .accounts
+        .withId('CCA4F9863D686D04')
+        .directDebits
+        .withId('2313')
+        .delete()
+        .then(function(directDebits) {
+            var directDebit = directDebits.items[0];
+            console.log(directDebit.type); // DIRECT_DEBIT
+        });
+
+```
+
+### Create direct debit  
+
+Create (or allow) direct debit on certain account by getting the `AccountDirectDebitsResource` and calling the `create` method on it. The method takes object as a parameter. See `DirectDebit` interface for all properties and `SignableDirectDebit` interface for full response in [`direct-debits.ts`](../lib/accounts/direct-debits.ts). Once signed it can be used by receiver party. 
+
+```javascript
+
+    CSNetbankingSDK
+        .getClient()
+        .accounts
+        .withId('CCA4F9863D686D04')
+        .directDebits
+        .create({
+            type: 'DIRECT_DEBIT',
+            receiver: {
+                number: '428602109',
+                bankCode: '0800',
+            },
+            alias: 'moje inkaso',
+            periodicity: 1,
+            periodCycle: 'MONTHLY',
+            limit: {
+                value: 100000,
+                precision: 2,
+                currency: 'CZK'
+            },
+            limitSum: {
+                value: 300000,
+                precision: 2,
+                currency: 'CZK'
+            },
+            numberLimit: 5,
+            startDate: '2017-07-14',
+            endDate: '2018-07-14',
+            symbols: {
+                variableSymbol: '4567',
+                specificSymbol: '800'
+            }
+        })
+        .then(function(directDebit) {
+            console.log(directDebit.alias); // moje inkaso
         });
 
 ```
