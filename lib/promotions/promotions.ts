@@ -8,7 +8,7 @@ implements CSCoreSDK.ListEnabled<Promotion>, CSCoreSDK.CreateEnabled<CreatePromo
      * Returns promotion list for the current user 
      */
     list = (): Promise<PromotionList> => {
-        return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null);
+        return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'promotions');
     }
 
     /**
@@ -125,7 +125,7 @@ export interface CreatePromotionRequest {
      */
     promotionId: string;
 
-    executedActions: {
+    executedAction: {
 
         actionId: string;
 
