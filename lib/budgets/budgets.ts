@@ -5,6 +5,12 @@ import {Amount} from '../common';
 export class BudgetsResource extends CSCoreSDK.Resource
 implements CSCoreSDK.ListEnabled<Budget> {
 
+    constructor(basePath: string, client: CSCoreSDK.WebApiClient) {
+        super(basePath, client);
+        
+        this._path = this.getPath().replace('/my', '/cz/my');
+    }
+
     /**
      * Returns list of user's tracked categories and its limits.
      */
@@ -42,11 +48,6 @@ export interface Budget {
      * financial limit of the watched category per a given period.
      */
     budget?: Amount;
-
-    /**
-     * Convenience method for updating budgets
-     */
-    update: (payload: UpdateBudgets) => Promise<UpdateBudgets>;
 }
 
 export interface UpdateBudgets {
