@@ -16,14 +16,41 @@ implements CSCoreSDK.ListEnabled<Goal>, CSCoreSDK.UpdateEnabled<UpdateGoal, Upda
      * Returns list of user's saving goals except of completed ones. In price, only CZK currency is supported. If user has never set any goal, the response is empty.
      */
     list = (): Promise<GoalList> => {
-        return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'goals');
+        return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'goals').then(response => {
+
+            response.items.forEach(item => {
+                transformDates(item);
+            });
+
+            return response;
+        });
     }
 
     /**
      * Set new value of goals. In price, only CZK currency is supported. If completed flag is not present, false value is supposed. All goals of given client are replaced - old ones (except of completed) are deleted and these new specified are inserted.
      */
     update = (payload: UpdateGoal): Promise<UpdateGoal> => {
-        return CSCoreSDK.ResourceUtils.CallUpdate(this, payload);
+        if(Array.isArray(payload.goals)) {
+            payload.goals.forEach(goal => {
+                if(goal.deadline && Object.prototype.toString.call(goal.deadline) === '[object Date]') {
+                    (<any>goal).deadline = goal.deadline.getTime();
+                }
+            });
+        }
+        return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(response => {
+
+            (<any>response).goals.forEach(item => {
+                transformDates(item);
+            });
+
+            return response;
+        });
+    }
+}
+
+function transformDates(item) {
+    if((<Goal>item).deadline) {
+        (<Goal>item).deadline = new Date((<any>item).deadline);
     }
 }
 
