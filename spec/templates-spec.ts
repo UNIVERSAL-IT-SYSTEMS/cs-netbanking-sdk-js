@@ -33,7 +33,7 @@ describe("Netbanking SDK",function(){
     
     function testTemplates(response) {
         expectToBe(response.pagination, {
-            pageNumber: 1,
+            pageNumber: 0,
             pageCount: 2,
             pageSize: 1,
             nextPage: 1
@@ -61,7 +61,7 @@ describe("Netbanking SDK",function(){
             }).then(response => {
 
                 expectToBe(response.pagination, {
-                    pageNumber: 2,
+                    pageNumber: 1,
                     pageCount: 2,
                     pageSize: 1
                 });
