@@ -16,7 +16,12 @@ implements CSCoreSDK.GetEnabled<Settings>, CSCoreSDK.UpdateEnabled<Settings, Sig
      * Change user settings. Currently only language can be changed by this endpoint.
      */
     update = (payload: Settings): Promise<SignableSettings> => {
-        return CSCoreSDK.ResourceUtils.CallUpdate(this, payload);
+        return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(response => {
+
+            CSCoreSDK.SigningUtils.createSigningObject(response, this.getClient(), this.getPath());
+
+            return response;
+        });
     }
 }
 

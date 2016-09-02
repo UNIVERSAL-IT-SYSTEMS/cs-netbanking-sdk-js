@@ -36,6 +36,7 @@ implements CSCoreSDK.ListEnabled<InsuranceService> {
         return CSCoreSDK.ResourceUtils.CallUpdateWithSuffix(this, 'riskSportsActivation', payload).then(response => {
 
             transformDates(response);
+            CSCoreSDK.SigningUtils.createSigningObject(response, this.getClient(), this.getPath());
 
             return response;
         });
@@ -48,7 +49,12 @@ implements CSCoreSDK.ListEnabled<InsuranceService> {
         
         CSCoreSDK.EntityUtils.transformDatesToSimpleISO(['dateFrom', 'dateTo'], payload);
 
-        return CSCoreSDK.ResourceUtils.CallUpdateWithSuffix(this, 'riskSportsDeactivation', payload);
+        return CSCoreSDK.ResourceUtils.CallUpdateWithSuffix(this, 'riskSportsDeactivation', payload).then(response => {
+
+            CSCoreSDK.SigningUtils.createSigningObject(response, this.getClient(), this.getPath());
+
+            return response;
+        });
     }
 }
 

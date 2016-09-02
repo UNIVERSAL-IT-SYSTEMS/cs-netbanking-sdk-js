@@ -34,6 +34,7 @@ implements CSCoreSDK.UpdateEnabled<UpdatePluginRequest, SignablePlugin> {
     update = (payload: UpdatePluginRequest): Promise<SignablePlugin> => {
         return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(response => {
             CSCoreSDK.EntityUtils.addDatesFromISO(['validUntil', 'dateOfActivation'], response);
+            CSCoreSDK.SigningUtils.createSigningObject(response, this.getClient(), this.getPath());
 
             return response;
         });

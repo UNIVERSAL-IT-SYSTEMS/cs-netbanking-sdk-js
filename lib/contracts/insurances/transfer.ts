@@ -16,7 +16,12 @@ implements CSCoreSDK.UpdateEnabled<UpdateContractTrasferRequest, UpdateContractT
      * Creates insurance transfer - premium payment, extra deposit or recommended deposit.
      */
     update = (payload: UpdateContractTrasferRequest): Promise<UpdateContractTrasferResponse> => {
-        return CSCoreSDK.ResourceUtils.CallUpdate(this, payload);
+        return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(response => {
+
+            CSCoreSDK.SigningUtils.createSigningObject(response, this.getClient(), this.getPath());
+
+            return response;
+        });
     }
 }
 

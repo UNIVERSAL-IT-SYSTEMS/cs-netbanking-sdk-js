@@ -43,7 +43,12 @@ implements CSCoreSDK.UpdateEnabled<SecurityTransactionRequest, SecurityTransacti
      */
     update = (payload: SecurityTransactionRequest): Promise<SecurityTransactionResponse> => {
         (<any>payload).id = this._id;
-        return CSCoreSDK.ResourceUtils.CallUpdate(this, payload);
+        return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(response => {
+
+            CSCoreSDK.SigningUtils.createSigningObject(response, this.getClient(), this.getPath());
+
+            return response;
+        });
     }
 
 }

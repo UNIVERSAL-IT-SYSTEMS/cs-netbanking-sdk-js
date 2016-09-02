@@ -62,6 +62,7 @@ implements CSCoreSDK.GetEnabled<InsuranceDetail>, CSCoreSDK.UpdateEnabled<Update
         return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(response => {
             transformDates(response);
             resourcifyInsurance(<InsuranceDetail>response, this);
+            CSCoreSDK.SigningUtils.createSigningObject(response, this.getClient(), this.getPath());
 
             return response;
         });

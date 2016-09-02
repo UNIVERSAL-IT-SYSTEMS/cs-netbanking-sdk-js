@@ -55,6 +55,7 @@ implements CSCoreSDK.GetEnabled<BuildingsContract>, CSCoreSDK.UpdateEnabled<Upda
         return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(response => {
             resourcifyBuildingsContracts(<BuildingsContract>response, this);
             transformDates(response);
+            CSCoreSDK.SigningUtils.createSigningObject(response, this.getClient(), this.getPath());
 
             return response;
         });

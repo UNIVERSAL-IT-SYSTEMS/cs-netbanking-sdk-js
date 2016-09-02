@@ -59,6 +59,7 @@ implements CSCoreSDK.GetEnabled<Pension>, CSCoreSDK.UpdateEnabled<UpdatePensionR
         return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(response => {
             transformDates(response);
             resourcifyPension(<Pension>response, this);
+            CSCoreSDK.SigningUtils.createSigningObject(response, this.getClient(), this.getPath());
 
             return response;
         });

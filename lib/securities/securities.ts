@@ -51,6 +51,7 @@ implements CSCoreSDK.GetEnabled<Security>, CSCoreSDK.UpdateEnabled<SecurityReque
         return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(response => {
             transformDatesInSubSecAccounts(response);
             resourcifySecurity(<Security>response, this);
+            CSCoreSDK.SigningUtils.createSigningObject(response, this.getClient(), this.getPath());
 
             return response;
         });
