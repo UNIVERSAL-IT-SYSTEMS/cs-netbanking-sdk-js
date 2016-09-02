@@ -135,7 +135,6 @@ export interface BuildingsContract extends UpdateBuildingsContractRequest {
     /**
      * Debtor. Will only by set for loans.
      */
-    // TODO
     contractHolders?: any;
 
     /**

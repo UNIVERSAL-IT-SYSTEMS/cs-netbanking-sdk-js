@@ -141,7 +141,7 @@ describe("Netbanking SDK",function(){
            judgeSession.setNextCase('messages.withId.attachments.withId.download').then(() => {
                return client.messages.withId('1421721').attachments.withId('palec.png').download();
            }).then(response => {
-               // TODO
+               expect(response).toBeTruthy();
 
                done();
            }).catch(logJudgeError);

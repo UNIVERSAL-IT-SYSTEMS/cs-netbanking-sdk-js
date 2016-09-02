@@ -1117,7 +1117,7 @@ describe("Netbanking SDK",function(){
                     statementId: '06029392819b0198'
                 });
             }).then(response => {
-                // TODO
+                testFile(response);
                 
                 done();
             }).catch(e => {
