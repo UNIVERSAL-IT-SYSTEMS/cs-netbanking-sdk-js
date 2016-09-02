@@ -128,6 +128,9 @@ describe("Netbanking SDK",function(){
                 });
 
                 expect(response.flags[0]).toBe('active');
+
+                expect(response.signing).toBeDefined();
+                
                 done();
             }).catch(e => {
                 logJudgeError(e);

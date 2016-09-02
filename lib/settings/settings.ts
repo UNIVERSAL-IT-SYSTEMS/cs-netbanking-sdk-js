@@ -38,7 +38,7 @@ export interface Settings {
     flags?: [string];
 }
 
-export interface SignableSettings extends Signable {
+export interface SignableSettings extends CSCoreSDK.Signable {
 
     settings: Settings;
 }

@@ -71,6 +71,8 @@ describe("Netbanking SDK",function(){
                 expect(response.settings.flags[2]).toBe('displayCreditCards');
                 expect(response.settings.flags[3]).toBe('displayInvestments');
 
+                expect(response.signing).toBeDefined();
+
                 done();
             }).catch(e => {
                 logJudgeError(e);

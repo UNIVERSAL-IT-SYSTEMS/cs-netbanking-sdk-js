@@ -133,7 +133,7 @@ describe("Netbanking SDK",function(){
             });
         });
         
-        it('updates alias of alias', done => {
+        it('updates alias of security', done => {
            
            judgeSession.setNextCase('securities.withId.update').then(() => {
                return client.securities.withId('420A817C20E4814C7C516A53ABA8E78F0CDBE324').update({
@@ -141,6 +141,7 @@ describe("Netbanking SDK",function(){
                });
            }).then(response => {
                processSecurity(response);
+               expect(response.signing).toBeDefined();
                
                done();               
            }).catch(e => {
@@ -261,6 +262,8 @@ describe("Netbanking SDK",function(){
                 expect(response.transaction.flags.length).toBe(2);
                 expect(response.transaction.flags[0]).toBe('hasNote');
                 expect(response.transaction.flags[1]).toBe('hasStar');
+
+                expect(response.signing).toBeDefined();
 
                 done();
             }).catch(e => {

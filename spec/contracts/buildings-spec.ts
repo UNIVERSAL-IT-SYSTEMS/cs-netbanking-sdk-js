@@ -123,6 +123,7 @@ describe("Netbanking SDK",function(){
                 });
 
                 testBuildingsConvenienceMethods(response);
+                expect(response.signing).toBeDefined();
 
                 done();
             }).catch(logJudgeError);
@@ -170,6 +171,8 @@ describe("Netbanking SDK",function(){
                 expect(response.transaction.flags[0]).toBe('hasNote');
                 expect(response.transaction.flags[1]).toBe('hasStar');
 
+                expect(response.signing).toBeDefined();
+                
                 done();
             }).catch(e => {
                 logJudgeError(e);

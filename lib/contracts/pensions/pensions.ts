@@ -332,6 +332,6 @@ export interface UpdatePensionRequest {
     alias?: string;
 }
 
-export interface UpdatePensionResponse extends Signable, Pension {}
+export interface UpdatePensionResponse extends CSCoreSDK.Signable, Pension {}
 
 export interface PensionParameters extends CSCoreSDK.Paginated {}

@@ -66,7 +66,7 @@ export interface SecurityTransactionRequest {
     flags?: [string];
 }
 
-export interface SecurityTransactionResponse extends Signable {
+export interface SecurityTransactionResponse extends CSCoreSDK.Signable {
 
     transaction: {
 

@@ -126,9 +126,9 @@ export interface ActivateRiskSportsRequest {
     phoneNumber: string;
 }
 
-export interface ActivateRiskSportsResponse extends ActivateRiskSportsRequest, Signable {
+export interface ActivateRiskSportsResponse extends ActivateRiskSportsRequest, CSCoreSDK.Signable {
 
     policyNumber: string;
 }
 
-export interface DeactivateRiskSportsResponse extends Signable {}
+export interface DeactivateRiskSportsResponse extends CSCoreSDK.Signable {}

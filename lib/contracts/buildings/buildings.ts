@@ -241,5 +241,5 @@ export interface UpdateBuildingsContractRequest {
     alias?: string;
 }
 
-export interface UpdateBuildingsContractResponse extends BuildingsContract, Signable {}
+export interface UpdateBuildingsContractResponse extends BuildingsContract, CSCoreSDK.Signable {}
 

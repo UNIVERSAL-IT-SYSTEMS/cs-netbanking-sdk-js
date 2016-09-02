@@ -204,4 +204,4 @@ export interface SecurityRequest {
     alias?: string;
 }
 
-export interface SecurityResponse extends Security, Signable {}
+export interface SecurityResponse extends Security, CSCoreSDK.Signable {}

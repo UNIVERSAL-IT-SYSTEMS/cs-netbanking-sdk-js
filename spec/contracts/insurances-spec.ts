@@ -164,6 +164,8 @@ describe("Netbanking SDK",function(){
 
                 testInsuranceConvenienceMethods(response);
 
+                expect(response.signing).toBeDefined();
+
                 done();
             }).catch(logJudgeError);
         });
@@ -210,6 +212,8 @@ describe("Netbanking SDK",function(){
                 });
 
                 expect(response.investmentProgram).toBe('INVESTMENT_MANAGEMENT');
+
+                expect(response.signing).toBeDefined();
 
                 done();
             }).catch(logJudgeError);
@@ -394,6 +398,8 @@ describe("Netbanking SDK",function(){
                     dateTo: '2016-08-20',
                 });
 
+                expect(response.signing).toBeDefined();
+
                 done();
             }).catch(logJudgeError);
         });
@@ -406,7 +412,7 @@ describe("Netbanking SDK",function(){
                     phoneNumber: '602123456'
                 });
             }).then(response => {
-                expect(response.signInfo.state).toBe('NONE');
+                expect(response.signing).toBeDefined();
 
                 done();
             }).catch(logJudgeError);
@@ -484,6 +490,47 @@ describe("Netbanking SDK",function(){
                     }
                 });
             }).then(response => {
+
+                expect(response.signing).toBeDefined();
+
+                done();
+            }).catch(logJudgeError);
+        });
+
+        it('updates transfer and signs it', done => {
+            let info;
+            judgeSession.setNextCase('signing.tac.contracts.insurances.withId.transfer.update').then(() => {
+                return client.contracts.insurances.withId('3961D3F9E922EEE93E2581E896B34566645FE7E3').transfer.update({
+                    type: 'PAY_PREMIUM',
+                    amount: {
+                        value: 1500,
+                        precision: 2,
+                        currency: 'CZK'
+                    },
+                    sender: {
+                        number: '2723000003',
+                        bankCode: '0800'
+                    }
+                });
+            }).then(response => {
+                testStateOpen(response.signing);
+                info = response;
+                return response.signing.getInfo();
+
+            }).then(response => {
+
+                testStateOpen(info.signing);
+                testStateOpen(response);
+                testAuthorizationTac(response);
+                return response.startSigningWithTac();
+            }).then(response => {
+                testStateOpen(info.signing);
+                
+                return response.finishSigning('00000000');
+            }).then(response => {
+
+                testStateDone(info.signing);
+                testStateDone(response);
 
                 done();
             }).catch(logJudgeError);

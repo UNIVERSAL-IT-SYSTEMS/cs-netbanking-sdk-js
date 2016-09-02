@@ -198,6 +198,8 @@ describe("Netbanking SDK",function(){
             
             testPensionConvenienceMethods(response);
 
+            expect(response.signing).toBeDefined();
+
             done();
         }).catch(logJudgeError);
     });
@@ -239,6 +241,8 @@ describe("Netbanking SDK",function(){
                 id: 'ADAD9879ADKJH9713',
                 note: "New client's personal note for transaction"
             });
+            
+            expect(response.signing).toBeDefined();
 
             done();
         }).catch(logJudgeError);

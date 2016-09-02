@@ -258,7 +258,7 @@ export interface UpdateInsuranceRequest {
     alias?: string;
 }
 
-export interface UpdateInsuranceResponse extends Insurance, Signable {}
+export interface UpdateInsuranceResponse extends Insurance, CSCoreSDK.Signable {}
 
 export interface InsuranceDetail extends Insurance {
 
