@@ -44,6 +44,8 @@ describe("Netbanking SDK",function(){
             name: 'Jan Novák',
             orderCategory: 'DOMESTIC'
         });
+
+        expect(response.items[0].get).toBeDefined();
     }
 
     describe('templates', () => {
@@ -71,10 +73,23 @@ describe("Netbanking SDK",function(){
                     name: 'Marek Nový'
                 });
 
-                done();
                 return response.prevPage();
             }).then(response => {
                 testTemplates(response);
+
+                done();
+            }).catch(logJudgeError);
+        });
+
+        it('retrieves detail', done => {
+            judgeSession.setNextCase('templates.withId.get').then(() => {
+                return client.templates.withId('template_0-123-100').get();
+            }).then(response => {
+                expectToBe(response, {
+                    id: 'template_0-123-100',
+                    name: 'Jan Novák',
+                    orderCategory: 'DOMESTIC',
+                });
 
                 done();
             }).catch(logJudgeError);
