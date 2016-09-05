@@ -39,14 +39,24 @@ export interface AccountNumber {
     countryCode?: string;
     
     /**
-    * IBAN
+    * Local IBAN
     */
     "cz-iban"?: string;
     
     /**
-    * BIC
+    * Local BIC
     */
     "cz-bic"?: string;
+
+    /**
+    * IBAN
+    */
+    iban?: string;
+    
+    /**
+    * BIC
+    */
+    bic?: string;
 }
 
 export interface Amount {
