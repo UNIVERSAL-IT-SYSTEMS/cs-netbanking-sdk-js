@@ -48,6 +48,8 @@ export interface ContractStrategy {
         /**
          * Share in the fund. This is percentage value. 20 means 20%.
          */
-        share: string;
+        share: number;
+
+        changeType?: string;
     }];
 }

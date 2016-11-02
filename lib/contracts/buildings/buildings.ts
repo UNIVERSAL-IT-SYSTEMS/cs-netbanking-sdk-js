@@ -135,7 +135,7 @@ export interface BuildingsContract extends UpdateBuildingsContractRequest {
     /**
      * Debtor. Will only by set for loans.
      */
-    contractHolders?: any;
+    contractHolders?: [string];
 
     /**
      * Basic credit interest rate, used for building saving deposits. Value in percentage, e.g. 1,5 will be displayed as 1,5%.

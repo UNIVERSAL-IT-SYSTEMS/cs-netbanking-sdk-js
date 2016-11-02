@@ -195,7 +195,7 @@ export interface ExportTransactionsParameters {
     * Array of fields which should appear in export. Possible fields are: bookingDate, partner, amount, currency, variableSymbol, 
     * constantSymbol, specificSymbol, transactionType, note, paymentReference, senderReference, cardNumber, investmentInstrumentName, marked, valuationDate, referenceId location
     */
-    fields: string|Array<string>;
+    fields: Array<string>;
     
     /**
     * Indication whether account name should be visible in export. Default is false.
@@ -258,7 +258,7 @@ export interface Address {
     /**
      * City.
      */
-    city?: string;
+    city: string;
 
     /**
      * Zip code of the address.
@@ -268,7 +268,7 @@ export interface Address {
     /**
      * Address country.
      */
-    country?: string;
+    country: string;
 
     /**
      * More detailed description of address, company name or department.

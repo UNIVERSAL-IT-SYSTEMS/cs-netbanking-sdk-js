@@ -125,6 +125,7 @@ function resourcifyListing(paymentListing: Payment, paymentResource: PaymentReso
 
 export interface PaymentList extends CSCoreSDK.PaginatedListResponse<Payment> {}
 
+// TODO callnout jestli to je signable a chodí to ze serveru
 export interface Payment extends CSCoreSDK.Signable {
     
     /**
@@ -225,7 +226,7 @@ export interface Payment extends CSCoreSDK.Signable {
     /**
     * Indicator whether state (stateDetail value) of payment order is OK from user point of view. For mapping between stateDetail and stateOk indicator values see table below.
     */
-    stateOk: string;
+    stateOk: boolean;
     
     /**
     * description of payment order, transaction type

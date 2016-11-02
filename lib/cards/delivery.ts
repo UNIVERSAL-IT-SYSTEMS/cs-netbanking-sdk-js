@@ -20,6 +20,7 @@ implements CSCoreSDK.GetEnabled<DeliveryListing> {
     /**
      * Change current delivery settings  
      */ 
+    // TODO ZJISTIST JESTLI FUNGUJE UŽ
     // update = (payload: ChangeDeliverySettingsRequest): Promise<ChangeDeliverySettingsResponse> => {
     //     return CSCoreSDK.ResourceUtils.CallUpdate(this, payload);
     // }

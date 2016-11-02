@@ -82,6 +82,7 @@ function resourcifyMessages(message: Message, messageReference: MessageResource)
     message.get = messageReference.get;
     message.update = messageReference.update;
     message.delete = messageReference.delete;
+    // Convenience download
 }
 
 export interface MessageList extends CSCoreSDK.PaginatedListResponse<Message> {}
@@ -150,7 +151,7 @@ export interface Message {
     delete: () => Promise<NetbankingEmptyResponse>;
 }
 
-export interface MessagesParameters extends CSCoreSDK.Paginated {}
+export interface MessagesParameters extends CSCoreSDK.Paginated, CSCoreSDK.Sortable {}
 
 export interface UpdateMessageRequest {
     read: boolean;

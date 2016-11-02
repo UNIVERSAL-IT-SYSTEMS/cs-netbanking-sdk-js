@@ -43,7 +43,7 @@ implements CSCoreSDK.ListEnabled<InsuranceBeneficiary>, CSCoreSDK.UpdateEnabled<
 
 
 
-export interface InsuranceBeneficiaryList extends CSCoreSDK.PaginatedListResponse<InsuranceBeneficiary> {}
+export interface InsuranceBeneficiaryList extends CSCoreSDK.ListResponse<InsuranceBeneficiary> {}
 
 export interface InsuranceBeneficiary {
 

@@ -26,6 +26,7 @@ implements CSCoreSDK.ListEnabled<Budget> {
     }
 }
 
+// TODO budgets.list test
 export interface BudgetList extends CSCoreSDK.ListResponse<Budget> {}
 
 export interface Budget {

@@ -18,7 +18,7 @@ implements CSCoreSDK.ListEnabled<ContractEvent> {
     list = (): Promise<ContractEventList> => {
         return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'events').then(response => {
             response.items.forEach(item => {
-                CSCoreSDK.EntityUtils.addDatesFromISO(['substateDate', 'processingDate'], item);
+                CSCoreSDK.EntityUtils.addDatesFromISO(['substateDate', 'processingDate', 'creationDate'], item);
                 
                 if((<ContractEvent>item).indemnities && Array.isArray((<ContractEvent>item).indemnities)) {
                     (<ContractEvent>item).indemnities.forEach(indemnity => {
@@ -44,7 +44,7 @@ export interface ContractEvent {
     /**
      * Creation date of the insurance event.
      */
-    creationDate: string;
+    creationDate: Date;
 
     /**
      * State of the event. Possible values: REPORTED, ATTACHING_DOCS, IN_SOLUTION, CLOSED

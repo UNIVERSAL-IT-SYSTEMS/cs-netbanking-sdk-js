@@ -84,7 +84,7 @@ export interface Promotion {
     /**
      * Possible actions. Each action is represented by related button on the promotion card/message etc.
      */
-    actions: {
+    actions: [{
         
         /**
          * Technical identifier of the action
@@ -115,7 +115,7 @@ export interface Promotion {
          * Element connected to this action. Application specific attribute.
          */
         element: string;
-    }
+    }]
 }
 
 export interface CreatePromotionRequest {

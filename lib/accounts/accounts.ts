@@ -306,7 +306,7 @@ export interface SubAccount extends Account {
     /**
     * In case of interest rate bands this is the interest rate which applies to value over limit.
     */
-    "cz-interestRateOverLimit"?: string;
+    "cz-interestRateOverLimit"?: number;
     
     /**
     * Limit amount for basic credit interest rate used for some saving accounts.
@@ -475,7 +475,7 @@ export interface TransferReceivers {
     /**
     * Identifier of the account which is allowed as a transfer receiver. If id is specified then you can find it among other accounts in GET /netbanking/my/accounts response.
     */
-    id: number;
+    id: string;
     
     /**
     * Account number which is allowed as a transfer receiver.

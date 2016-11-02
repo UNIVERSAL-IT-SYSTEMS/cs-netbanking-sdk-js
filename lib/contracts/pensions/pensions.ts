@@ -285,7 +285,7 @@ export interface Pension extends UpdatePensionRequest {
         /**
          * Beneficiary birth number.
          */
-        birthName: string;
+        birthNumber: string;
 
         /**
          * Address where card should be sent.

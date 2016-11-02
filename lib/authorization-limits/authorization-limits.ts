@@ -92,6 +92,7 @@ export interface AuthorizationLimit {
     get: () => Promise<AuthorizationLimit>;
 }
 
+// TODO zavolat bez channel, co se stane
 export interface AuthorizationLimitsParams {
 
     /**

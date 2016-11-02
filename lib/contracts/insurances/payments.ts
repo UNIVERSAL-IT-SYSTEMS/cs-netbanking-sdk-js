@@ -24,6 +24,7 @@ implements CSCoreSDK.ListEnabled<ContractPayment> {
     }
 }
 
+// TODO dokumentace
 export interface ContractPaymentList extends CSCoreSDK.ListResponse<ContractPayment> {}
 
 export interface ContractPayment {

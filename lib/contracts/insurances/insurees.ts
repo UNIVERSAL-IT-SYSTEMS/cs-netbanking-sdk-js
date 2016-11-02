@@ -20,7 +20,7 @@ implements CSCoreSDK.ListEnabled<Insuree> {
     }
 }
 
-export interface InsureeList extends CSCoreSDK.PaginatedListResponse<Insuree> {}
+export interface InsureeList extends CSCoreSDK.ListResponse<Insuree> {}
 
 export interface Insuree {
 

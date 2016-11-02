@@ -191,7 +191,7 @@ export interface Insurance extends UpdateInsuranceRequest {
      */
     status: string;
 
-    life?: Life;
+    life?: LifeDetail;
 
     /**
      * Convenience get method for fetching Insurance detail
@@ -275,6 +275,10 @@ export interface InsurancesParameters extends CSCoreSDK.Paginated {}
 
 export interface Life {
 
+
+    lastPremiumDate?: Date;
+
+    lastPremiumPaid?: Amount;
     /**
      * Payment Interval. ENUM: ONCE, MONTHLY, QUARTERLY, HALFYEARLY, YEARLY, UNKNOWN
      */
@@ -304,14 +308,21 @@ export interface Life {
      * Capital value of the insurance. Amount of money in saving part of the insurance.
      */
     currentCapitalValue?: Amount;
-}
-
-export interface LifeDetail extends Life {
 
     /**
      * Date of possible contract termination
      */
     contractTerminationDate?: Date;
+
+    /**
+     * Array of flags for life insurance extended detail
+     */
+    flags?: [string];
+}
+
+export interface LifeDetail extends Life {
+
+    
 
     /**
      * Reason of possible contract termination
@@ -332,6 +343,8 @@ export interface LifeDetail extends Life {
      * Date of the last premium payment
      */
     premiumLastPaid?: Date;
+
+    
 
     /**
      * Technical interest rate. Value in percentage, e.g. 0,5 will be displayed as 0,5 %.
@@ -395,8 +408,5 @@ export interface LifeDetail extends Life {
      */
     "cz-capitalValueMaxWithdrawal"?: Amount;
 
-    /**
-     * Array of flags for life insurance extended detail
-     */
-    flags?: [string];
+    
 }

@@ -45,7 +45,7 @@ implements CSCoreSDK.ListEnabled<InsuranceService> {
     /**
      * Allows deactivation of risk sports insurance.
      */
-    deactivateRiskSports = (payload: any): Promise<DeactivateRiskSportsResponse> => {
+    deactivateRiskSports = (payload: ActivateRiskSportsRequest): Promise<DeactivateRiskSportsResponse> => {
         
         CSCoreSDK.EntityUtils.transformDatesToSimpleISO(['dateFrom', 'dateTo'], payload);
 

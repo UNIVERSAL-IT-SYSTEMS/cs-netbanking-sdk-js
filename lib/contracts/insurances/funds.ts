@@ -32,7 +32,7 @@ implements CSCoreSDK.ListEnabled<Fund>, CSCoreSDK.UpdateEnabled<UpdateFundReques
     }
 }
 
-export interface FundList extends CSCoreSDK.PaginatedListResponse<Fund> {
+export interface FundList extends CSCoreSDK.ListResponse<Fund> {
 
     /**
      * Total invested amount into all funds in CZK.
