@@ -126,13 +126,11 @@ export interface DirectDebit {
     /**
      * Beginning date for the approval.
      */
-    // TODO
     startDate: Date | string;
 
     /**
      * End date for the approval.
      */
-    //TODO
     endDate?: Date | string;
 
     /**
