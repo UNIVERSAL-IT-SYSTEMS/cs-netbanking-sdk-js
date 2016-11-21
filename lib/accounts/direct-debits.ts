@@ -36,6 +36,8 @@ implements CSCoreSDK.PaginatedListEnabled<DirectDebit>, CSCoreSDK.HasInstanceRes
      */
     create = (payload: DirectDebit): Promise<SignableDirectDebit> => {
 
+        CSCoreSDK.EntityUtils.transformDatesToSimpleISO(['startDate', 'endDate'], payload);
+
         return CSCoreSDK.ResourceUtils.CallCreate(this, payload).then(response => {
 
             CSCoreSDK.EntityUtils.addDatesFromISO(['startDate', 'endDate', 'versionValidityDate'], response);
