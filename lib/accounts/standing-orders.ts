@@ -32,6 +32,9 @@ implements CSCoreSDK.PaginatedListEnabled<StandingOrder>, CSCoreSDK.HasInstanceR
      * Resource for creating standing/sweep order. Once order has been signed new payments are generated and executed according its settings.
      */
     create = (payload: CreateStandingOrderRequest): Promise<StandingOrderResponse> => {
+
+        CSCoreSDK.EntityUtils.transformDatesToSimpleISO(['nextExecutionDate', 'lastExecutionDate', 'startDate'], payload);
+
         return CSCoreSDK.ResourceUtils.CallCreate(this, payload).then(response => {
             addDatesToStandingOrder(response);
             resourcifyStandingOrder(<StandingOrder>response, this.withId((<StandingOrder>response).number));
@@ -116,7 +119,6 @@ export interface StandingOrder extends CreateStandingOrderRequest {
     /**
      * Date and time since the order is valid from.
      */
-    // TODO
     startDate: Date | string;
 
     /**
@@ -205,13 +207,11 @@ export interface CreateStandingOrderRequest {
     /**
      * Date when the next order is set to be executed. This includes weekends and banking holidays.
      */
-    // TODO
     nextExecutionDate?: Date | string;
 
     /**
      * Date when the last order will be processed. Only applicable in combination with executionMode .
      */
-    // TODO
     lastExecutionDate?: Date | string;
 
     /**
