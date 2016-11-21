@@ -125,7 +125,6 @@ function resourcifyListing(paymentListing: Payment, paymentResource: PaymentReso
 
 export interface PaymentList extends CSCoreSDK.PaginatedListResponse<Payment> {}
 
-// TODO callnout jestli to je signable a chodí to ze serveru
 export interface Payment extends CSCoreSDK.Signable {
     
     /**
