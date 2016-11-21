@@ -6,7 +6,7 @@ import {AccountServicesResource} from './services';
 import {AccountReservationsResource} from './reservations';
 import {AccountRepaymentsResource} from './repayments';
 import {AccountStatementsResource} from './statements';
-import {AccountSubAccountsResource} from './subAccounts';
+import {SubAccountsResource} from './subAccounts';
 import {AccountTransactionsResource} from './transactions';
 import {AccountTransferResource} from './transfer';
 import {AccountStandingOrdersResource} from './standing-orders';
@@ -124,7 +124,7 @@ implements CSCoreSDK.GetEnabled<MainAccount>, CSCoreSDK.UpdateEnabled<ChangeAcco
     * Get information about the account's subaccounts
     */
     get subAccounts() {
-        return new AccountSubAccountsResource(this.getPath() + '/subaccounts', this._client);
+        return new SubAccountsResource(this.getPath() + '/subaccounts', this._client);
     }
     
     /**

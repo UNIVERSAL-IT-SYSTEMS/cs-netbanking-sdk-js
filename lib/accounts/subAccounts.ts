@@ -5,7 +5,7 @@ import {StatementList, Statement, NetbankingParameters, DownloadStatementParamet
 /**
 * Get individual SubAccount resource
 */
-export class AccountSubAccountsResource extends CSCoreSDK.Resource
+export class SubAccountsResource extends CSCoreSDK.Resource
 implements CSCoreSDK.HasInstanceResource<SubAccountResource> {
     
     /**
