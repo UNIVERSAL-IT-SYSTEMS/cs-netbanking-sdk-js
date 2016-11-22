@@ -16,7 +16,7 @@ implements CSCoreSDK.ListEnabled<PaymentLimit> {
     }
 }
 
-export interface PaymentLimitsList extends CSCoreSDK.PaginatedListResponse<PaymentLimit> {}
+export interface PaymentLimitsList extends CSCoreSDK.ListResponse<PaymentLimit> {}
 
 export interface PaymentLimit {
     

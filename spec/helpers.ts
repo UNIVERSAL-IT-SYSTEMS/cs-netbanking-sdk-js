@@ -20,14 +20,29 @@ export function testStateDone(signingObject) {
     expect(signingObject.isOpen()).toBe(false);
 }
 
-export function testFile(response) {
+export function testFile(response, fileName = 'test-pdf.pdf') {
     if (fs) {
-        var file = fs.readFileSync(path.join(__dirname, 'test-pdf.pdf'));
+        var file = fs.readFileSync(path.join(__dirname, fileName));
         expect(_.isEqual(file.toString(), response.toString())).toBe(true);    
     }
     expect(response).toBeTruthy();
     var str = ab2str(response);
     expect(str.length).toBe(7945);
+}
+
+export var exportTransactionsPayload = {
+    dateFrom: new Date(1999, 8, 27), 
+    dateTo: new Date(2000, 8, 27),
+    fields: [
+        'bookingDate',
+        'partner',
+        'amount',
+        'currency'
+    ],
+    showAccountName: true,
+    showAccountNumber: true,
+    showTimespan: true,
+    showBalance: true
 }
 
 function ab2str(buf) {

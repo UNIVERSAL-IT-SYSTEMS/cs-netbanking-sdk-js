@@ -9,6 +9,8 @@ import {AccountStatementsResource} from './statements';
 import {SubAccountsResource} from './subAccounts';
 import {AccountTransactionsResource} from './transactions';
 import {AccountTransferResource} from './transfer';
+import {AccountStandingOrdersResource} from './standing-orders';
+import {AccountDirectDebitsResource} from './direct-debits';
 
 /**
 * List all accounts and get individual account instance resource 
@@ -57,7 +59,7 @@ implements CSCoreSDK.GetEnabled<MainAccount>, CSCoreSDK.UpdateEnabled<ChangeAcco
     get = (): Promise<MainAccount> => {
         return CSCoreSDK.ResourceUtils.CallGet(this, null).then(response => {
             
-            // add convenience methods
+            // add convenienxce methods
             resourcifyListing(<MainAccount>response, this, false);
             
             // transform ISO dates to native Date objects
@@ -138,6 +140,14 @@ implements CSCoreSDK.GetEnabled<MainAccount>, CSCoreSDK.UpdateEnabled<ChangeAcco
     get transfer() {
         return new AccountTransferResource(this.getPath() + '/transfer', this._client);
     }
+
+    get standingOrders() {
+        return new AccountStandingOrdersResource(this.getPath() + '/standingorders', this.getClient());
+    }
+
+    get directDebits() {
+        return new AccountDirectDebitsResource(this.getPath() + '/directdebits', this.getClient());
+    }
 }
 
 function resourcifyListing(accountListing: MainAccount, account: AccountResource, isFromList: boolean) : void {
@@ -151,6 +161,8 @@ function resourcifyListing(accountListing: MainAccount, account: AccountResource
     accountListing.transfer = account.transfer;
     accountListing.statements = account.statements;
     accountListing.repayments = account.repayments;
+    accountListing.standingOrders = account.standingOrders;
+    accountListing.directDebits = account.directDebits;
 }
 
 function transformResponse(accountListing) {
@@ -269,6 +281,16 @@ export interface MainAccount extends Account {
     * Convenience getter for getting accounts's repayments resource
     */
     repayments: AccountRepaymentsResource;
+
+    /**
+    * Convenience getter for getting accounts's standing orders resource
+    */
+    standingOrders: AccountStandingOrdersResource;
+
+    /**
+    * Convenience getter for getting accounts's direct debits resource
+    */
+    directDebits: AccountDirectDebitsResource;
 }
 
 export interface OverdraftAmount extends Amount {
@@ -284,7 +306,7 @@ export interface SubAccount extends Account {
     /**
     * In case of interest rate bands this is the interest rate which applies to value over limit.
     */
-    "cz-interestRateOverLimit"?: string;
+    "cz-interestRateOverLimit"?: number;
     
     /**
     * Limit amount for basic credit interest rate used for some saving accounts.
@@ -453,7 +475,7 @@ export interface TransferReceivers {
     /**
     * Identifier of the account which is allowed as a transfer receiver. If id is specified then you can find it among other accounts in GET /netbanking/my/accounts response.
     */
-    id: number;
+    id: string;
     
     /**
     * Account number which is allowed as a transfer receiver.

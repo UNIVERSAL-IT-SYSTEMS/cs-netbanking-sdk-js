@@ -39,14 +39,24 @@ export interface AccountNumber {
     countryCode?: string;
     
     /**
-    * IBAN
+    * Local IBAN
     */
     "cz-iban"?: string;
     
     /**
-    * BIC
+    * Local BIC
     */
     "cz-bic"?: string;
+
+    /**
+    * IBAN
+    */
+    iban?: string;
+    
+    /**
+    * BIC
+    */
+    bic?: string;
 }
 
 export interface Amount {
@@ -185,7 +195,7 @@ export interface ExportTransactionsParameters {
     * Array of fields which should appear in export. Possible fields are: bookingDate, partner, amount, currency, variableSymbol, 
     * constantSymbol, specificSymbol, transactionType, note, paymentReference, senderReference, cardNumber, investmentInstrumentName, marked, valuationDate, referenceId location
     */
-    fields: string|Array<string>;
+    fields: Array<string>;
     
     /**
     * Indication whether account name should be visible in export. Default is false.
@@ -209,3 +219,59 @@ export interface ExportTransactionsParameters {
 }
 
 export interface NetbankingEmptyResponse extends CSCoreSDK.EmptyResponse {}
+
+export interface Symbols {
+
+    /**
+     * Standing order variable symbol.
+     */
+    variableSymbol?: string;
+
+    /**
+     * Standing order constant symbol.
+     */
+    constantSymbol?: string;
+
+    /**
+     * Standing order specific symbol.
+     */
+    specificSymbol?: string;
+}
+
+export interface Address {
+
+    /**
+     * Street of the address.
+     */
+    street?: string;
+
+    /**
+     * Number which is unique in street. Not all localities have streets.
+     */
+    streetNumber?: string;
+
+    /**
+     * Number which is unique in locality/town/village.
+     */
+    buildingApartment?: string;
+
+    /**
+     * City.
+     */
+    city: string;
+
+    /**
+     * Zip code of the address.
+     */
+    zipCode?: string;
+
+    /**
+     * Address country.
+     */
+    country: string;
+
+    /**
+     * More detailed description of address, company name or department.
+     */
+    description?: string;
+}

@@ -29,7 +29,7 @@ implements CSCoreSDK.UpdateEnabled<PaymentBookingDateRequest, PaymentBookingDate
             CSCoreSDK.EntityUtils.addDatesFromISO('bookingDate', bookingDate);
 
             return bookingDate;
-        })
+        });
     }
 }
 

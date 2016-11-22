@@ -9,7 +9,8 @@ var client : CSNetbankingSDK.NetbankingClient = null;
 var expectToBe = CoreSDK.TestUtils.expectToBe;
 var expectDate = CoreSDK.TestUtils.expectDate;
 var logJudgeError = CoreSDK.TestUtils.logJudgeError;
-import {testAuthorizationTac, testStateOpen, testStateDone, testFile} from './helpers';
+import {testAuthorizationTac, testStateOpen, testStateDone, testFile, exportTransactionsPayload} from './helpers';
+const util = require('util');
     
 describe("Netbanking SDK",function(){
     var originalTimeoutInterval = null;
@@ -31,21 +32,6 @@ describe("Netbanking SDK",function(){
         client.sharedContext = null;
         judgeSession = judge.startNewSession();
     });
-    
-    var exportTransactionsPayload = {
-        dateFrom: new Date(1999, 8, 27), 
-        dateTo: new Date(2000, 8, 27),
-        fields: [
-            'bookingDate',
-            'partner',
-            'amount',
-            'currency'
-        ],
-        showAccountName: true,
-        showAccountNumber: true,
-        showTimespan: true,
-        showBalance: true
-    }
         
     function processTransfer(response) {
         expect(response.signing).toBeTruthy();
@@ -66,7 +52,6 @@ describe("Netbanking SDK",function(){
             description: 'Anna Vojtíšková',
             product: '49',
             productI18N: 'Osobní účet ČS II',
-            subType: 'GIRO_ACCOUNT'
         });
     }
     
@@ -89,11 +74,6 @@ describe("Netbanking SDK",function(){
     function processServices(services) {
         var service = services.items[0];
         expect(services.items.length).toBe(2);
-        
-        expectDate(service, {
-            dateFrom: '2014-07-31+0100',
-            dateTo: '2014-08-31+0100'
-        });
         
         expectToBe(services.pagination, {
             pageNumber: 0,
@@ -207,7 +187,53 @@ describe("Netbanking SDK",function(){
             currency: 'CZK'
         });
     }
+
+    function processStandingOrders(response) {
+        expectToBe(response.pagination, {
+            pageNumber: 0,
+            pageCount: 3,
+            pageSize: 2,
+            nextPage: 1
+        });
+
+        expectToBe(response.items[0], {
+            number: '1',
+            type: 'STANDING_ORDER',
+            status: 'OK',
+        });
+
+        expectDate(response.items[0], {
+            startDate: '2013-01-09T00:00:00+01:00',
+            nextExecutionDate: '2016-06-17',
+            realExecutionDate: '2016-06-17',
+        });
+
+        expect(response.items[0].get).toBeDefined();
+        expect(response.items[0].delete).toBeDefined();
+    }
     
+    function processDirectDebits(response) {
+        expectToBe(response.pagination, {
+            pageNumber: 0,
+            pageCount: 2,
+            pageSize: 2,
+            nextPage: 1
+        });
+
+        expectToBe(response.items[0], {
+            number: '2',
+            type: 'DIRECT_DEBIT',
+            periodCycle: 'MONTHLY',
+            periodicity: 1,
+            receiverName: 'Vrba Aleš'
+        });
+
+        expectDate(response.items[0], {
+            startDate: '2012-11-26',
+            versionValidityDate: '2012-11-26'
+        });
+    }
+
     describe('Netbanking SDK accounts', () => {
        
        it('retrieves a list of accounts', done => {
@@ -294,7 +320,6 @@ describe("Netbanking SDK",function(){
                   description: 'Anna Vojtíšková',
                   product: '49',
                   productI18N: 'Osobní účet ČS II',
-                  subType: 'GIRO_ACCOUNT'
               });
               
               expectToBe(account.accountno, {
@@ -344,7 +369,6 @@ describe("Netbanking SDK",function(){
                   description: 'Anna Vojtíšková',
                   product: '49',
                   productI18N: 'Osobní účet ČS II',
-                  subType: 'GIRO_ACCOUNT'
               });
               
               expectToBe(account.accountno, {
@@ -599,7 +623,7 @@ describe("Netbanking SDK",function(){
             
             done();
         }).catch(e => {
-            logJudgeError(e);
+            console.log(e)
         });
     });
     
@@ -1237,5 +1261,550 @@ describe("Netbanking SDK",function(){
         }).catch(e => {
             logJudgeError(e);
         });
+    });
+
+    it('tests pagination for standing orders', done => {
+        let list;
+        judgeSession.setNextCase('accounts.withId.standingOrders.list.page0').then(() => {
+            return client.accounts.withId('4B2F9EBE742BCAE1E98A78E12F6FBC62464A74EE').standingOrders.list({
+                pageNumber: 0,
+                pageSize: 2,
+                sort: ['nextExecutionDate'],
+                order: ['desc']
+            });
+        }).then(response => {
+            
+            processStandingOrders(response);
+
+            list = response;
+            return judgeSession.setNextCase('accounts.withId.standingOrders.list.page1');         
+        }).then(() => {
+            return list.nextPage();
+        }).then(response => {
+            expectToBe(response.pagination, {
+                pageNumber: 1,
+                pageCount: 3,
+                pageSize: 2,
+                nextPage: 2
+            });
+
+            expectToBe(response.items[0], {
+                number: '3',
+                type: 'STANDING_ORDER',
+                status: 'OK',
+            });
+
+            expect(response.items[0].get).toBeDefined();
+            expect(response.items[0].delete).toBeDefined();
+
+            list = response;
+            return judgeSession.setNextCase('accounts.withId.standingOrders.list.page0');
+        }).then(() => {
+            return list.prevPage();
+        }).then(response => {
+            processStandingOrders(response);
+            done();
+        }).catch(e => {
+            logJudgeError(e);
+        });
+    });
+
+    it('retrieves standing order with a given id', done => {
+        judgeSession.setNextCase('accounts.withId.standingOrders.withId.get').then(() => {
+            return client.accounts.withId('4B2F9EBE742BCAE1E98A78E12F6FBC62464A74EE').standingOrders.withId('1').get();
+        }).then(response => {
+            
+            expectToBe(response, {
+                number: '1',
+                type: 'STANDING_ORDER',
+                alias: 'nájemné'
+            });
+
+            expectDate(response, {
+                startDate: '2013-01-09T00:00:00+01:00',
+                nextExecutionDate: '2016-06-17',
+                realExecutionDate: '2016-06-17',
+            });
+
+            expect(response.get).toBeDefined();
+            expect(response.delete).toBeDefined();
+            
+            expect(response.scheduledExecutionDates[0].toString()).toBe(new Date(CoreSDK.EntityUtils.parseISODate('2016-06-17')).toString());
+
+            done();
+        }).catch(e => {
+            logJudgeError(e);
+        });
+    });
+
+    it('creates standing order', done => {
+        judgeSession.setNextCase('accounts.withId.standingOrders.create').then(() => {
+            return client.accounts.withId('4B2F9EBE742BCAE1E98A78E12F6FBC62464A74EE').standingOrders.create({
+
+                type: 'STANDING_ORDER',
+                alias: 'Monthly standing order executed on the last day of month',
+                receiverName: 'Name of the receiver',
+                receiver: {
+                    number: '188505042',
+                    bankCode: '0300'
+                },
+                amount: {
+                    value: 30000,
+                    precision: 2,
+                    currency: 'CZK'
+                },
+                nextExecutionDate: new Date('2016-12-31'),
+                executionMode: 'UNTIL_CANCELLATION',
+                executionDueMode: 'DUE_LAST_DAY_OF_MONTH',
+                executionInterval: 'MONTHLY',
+                symbols: {
+                    variableSymbol: '854259',
+                    constantSymbol: '0305',
+                    specificSymbol: '785421'
+                }
+            });
+        }).then(response => {
+
+            expectToBe(response, {
+                number: '160526104005956',
+            });
+
+            expectDate(response, {
+                nextExecutionDate: '2016-12-31',
+                startDate: '2016-12-31T00:00:00+01:00',
+            });
+
+            expect(response.get).toBeDefined();
+            expect(response.delete).toBeDefined();
+
+            done();
+
+        }).catch(e => {
+            logJudgeError(e);
+        });
+    });
+
+    it('deletes standing order with a given id', done => {
+        judgeSession.setNextCase('accounts.withId.standingOrders.withId.delete').then(() => {
+            return client.accounts.withId('4B2F9EBE742BCAE1E98A78E12F6FBC62464A74EE').standingOrders.withId('1').delete();
+        }).then(response => {
+
+            expectToBe(response, {
+                number: '1',
+                type: 'STANDING_ORDER',
+                alias: 'nájemné'
+            });
+
+            expectDate(response, {
+                startDate: '2013-01-09T00:00:00+01:00',
+                nextExecutionDate: '2016-06-17',
+                realExecutionDate: '2016-06-17',
+            });
+
+            expect(response.get).toBeDefined();
+            expect(response.delete).toBeDefined();
+
+            expect(response.scheduledExecutionDates[0].toString()).toBe(new Date(CoreSDK.EntityUtils.parseISODate('2016-06-17')).toString());
+
+            done();
+        }).catch(e => {
+            logJudgeError(e);
+        });
+    });
+
+    it('deletes standing order and signs the order', done => {
+        let info;
+        judgeSession.setNextCase('signing.tac.accounts.withId.standingOrders.withId.delete').then(() => {
+            return client.accounts.withId('4B2F9EBE742BCAE1E98A78E12F6FBC62464A74EE').standingOrders.withId('1').delete();
+        }).then(response => {
+
+            expectToBe(response, {
+                number: '1',
+                type: 'STANDING_ORDER',
+                alias: 'nájemné'
+            });
+
+            expectDate(response, {
+                startDate: '2013-01-09T00:00:00+01:00',
+                nextExecutionDate: '2016-06-17',
+                realExecutionDate: '2016-06-17',
+            });
+
+            expect(response.get).toBeDefined();
+            expect(response.delete).toBeDefined();
+
+            expect(response.scheduledExecutionDates[0].toString()).toBe(new Date(CoreSDK.EntityUtils.parseISODate('2016-06-17')).toString());
+
+            info = response;
+
+            testStateOpen(response.signing);
+
+            return response.signing.getInfo();
+        }).then(response => {
+
+            testStateOpen(response);
+            testStateOpen(info.signing);
+            testAuthorizationTac(response);
+
+            return response.startSigningWithTac();
+        }).then(response => {
+
+            testStateOpen(info.signing);
+
+            return response.finishSigning('00000000');
+        }).then(response => {
+
+            testStateDone(response);
+            testStateDone(info.signing);
+
+            done();
+        }).catch(logJudgeError);
+    });
+
+    it('retrieves standing order detail through get convenience method', done => {
+        let list;
+
+        judgeSession.setNextCase('accounts.withId.standingOrders.list.page0').then(() => {
+            return client.accounts.withId('4B2F9EBE742BCAE1E98A78E12F6FBC62464A74EE').standingOrders.list({
+                pageNumber: 0,
+                pageSize: 2,
+                sort: ['nextExecutionDate'],
+                order: ['desc']
+            });
+        }).then(response => {
+            
+            processStandingOrders(response);
+
+            list = response;
+            return judgeSession.setNextCase('accounts.withId.standingOrders.withId.get');         
+        }).then(() => {
+            return list.items[0].get();
+        }).then(response => {
+
+            expectToBe(response, {
+                number: '1',
+                type: 'STANDING_ORDER',
+                alias: 'nájemné'
+            });
+
+            expectDate(response, {
+                startDate: '2013-01-09T00:00:00+01:00',
+                nextExecutionDate: '2016-06-17',
+                realExecutionDate: '2016-06-17',
+            });
+
+            expect(response.get).toBeDefined();
+            expect(response.delete).toBeDefined();
+            
+            expect(response.scheduledExecutionDates[0].toString()).toBe(new Date(CoreSDK.EntityUtils.parseISODate('2016-06-17')).toString());
+
+            done();
+        }).catch(e => {
+            logJudgeError(e);
+        });
+    });
+
+    it('deletes standing order through delete convenience method', done => {
+        let list;
+
+        judgeSession.setNextCase('accounts.withId.standingOrders.list.page0').then(() => {
+            return client.accounts.withId('4B2F9EBE742BCAE1E98A78E12F6FBC62464A74EE').standingOrders.list({
+                pageNumber: 0,
+                pageSize: 2,
+                sort: ['nextExecutionDate'],
+                order: ['desc']
+            });
+        }).then(response => {
+            
+            processStandingOrders(response);
+
+            list = response;
+            return judgeSession.setNextCase('accounts.withId.standingOrders.withId.delete');         
+        }).then(() => {
+            return list.items[0].delete();
+        }).then(response => {
+
+            expectToBe(response, {
+                number: '1',
+                type: 'STANDING_ORDER',
+                alias: 'nájemné'
+            });
+
+            expectDate(response, {
+                startDate: '2013-01-09T00:00:00+01:00',
+                nextExecutionDate: '2016-06-17',
+                realExecutionDate: '2016-06-17',
+            });
+
+            expect(response.get).toBeDefined();
+            expect(response.delete).toBeDefined();
+
+            expect(response.scheduledExecutionDates[0].toString()).toBe(new Date(CoreSDK.EntityUtils.parseISODate('2016-06-17')).toString());
+
+            done();
+        }).catch(e => {
+            logJudgeError(e);
+        });
+    });
+
+    it('tests pagination for direct debits', done => {
+        let list;
+
+        judgeSession.setNextCase('accounts.withId.directDebts.list.page0').then(() => {
+            return client.accounts.withId('4B2F9EBE742BCAE1E98A78E12F6FBC62464A74EE').directDebits.list({
+                pageNumber: 0,
+                pageSize: 2,
+                sort: ['periodCycle'],
+                order: ['desc'],
+            });
+        }).then(response => {
+
+            processDirectDebits(response);
+
+            list = response;
+            return judgeSession.setNextCase('accounts.withId.directDebts.list.page1');
+        }).then(() => {
+            return list.nextPage();
+        }).then(response => {
+
+            expectToBe(response.pagination, {
+                pageNumber: 1,
+                pageCount: 2,
+                pageSize: 1,
+            });
+
+            expectToBe(response.items[0], {
+                number: '4',
+                type: 'SIPO',
+                periodCycle: 'MONTHLY',
+                periodicity: 1,
+            });
+
+            expectDate(response.items[0], {
+                startDate: '2013-01-08',
+                versionValidityDate: '2013-01-08'
+            });
+
+            list = response;
+            return judgeSession.setNextCase('accounts.withId.directDebts.list.page0');
+        }).then(() => {
+            return list.prevPage();
+        }).then(response => {
+
+            processDirectDebits(response);
+
+            done();
+        }).catch(e => {
+            logJudgeError(e);
+        });
+    });
+
+    it('retrieves direct debit with a given id', done => {
+        judgeSession.setNextCase('accounts.withId.directDebts.withId.get').then(() => {
+            return client.accounts.withId('4B2F9EBE742BCAE1E98A78E12F6FBC62464A74EE').directDebits.withId('4').get();
+        }).then(response => {
+
+            expectToBe(response, {
+                number: '4',
+                type: 'SIPO',
+                periodicity: 1,
+                periodCycle: 'MONTHLY',
+            });
+
+            expectDate(response, {
+                startDate: '2013-01-08',
+                versionValidityDate: '2013-01-08',
+            });
+
+            done();
+        }).catch(e => {
+            logJudgeError(e);
+        });
+    });
+
+    it('deletes direct debit with a given id', done => {
+        judgeSession.setNextCase('accounts.withId.directDebts.withId.delete').then(() => {
+            return client.accounts.withId('4B2F9EBE742BCAE1E98A78E12F6FBC62464A74EE').directDebits.withId('4').delete();
+        }).then(response => {
+
+            expectToBe(response, {
+                number: '4',
+                type: 'SIPO',
+                periodicity: 1,
+                periodCycle: 'MONTHLY',
+            });
+
+            expectDate(response, {
+                startDate: '2013-01-08',
+                versionValidityDate: '2013-01-08',
+            });
+
+            expect(response.signing).toBeDefined();
+
+            done();
+        }).catch(e => {
+            logJudgeError(e);
+        });
+    });
+
+    it('deletes direct debit and signs the order', done => {
+        let info;
+        judgeSession.setNextCase('signing.tac.accounts.withId.directDebits.withId.delete').then(() => {
+            return client.accounts.withId('4B2F9EBE742BCAE1E98A78E12F6FBC62464A74EE').directDebits.withId('4').delete();
+        }).then(response => {
+
+            expectToBe(response, {
+                number: '4',
+                type: 'SIPO',
+                periodicity: 1,
+                periodCycle: 'MONTHLY',
+            });
+
+            expectDate(response, {
+                startDate: '2013-01-08',
+                versionValidityDate: '2013-01-08',
+            });
+
+            info = response;
+            testStateOpen(response.signing);
+
+            return response.signing.getInfo();  
+        }).then(response => {
+            testStateOpen(response);
+            testStateOpen(info.signing);
+            testAuthorizationTac(response);
+
+            return response.startSigningWithTac();
+        }).then(response => {
+            testStateOpen(info.signing);
+
+            return response.finishSigning('00000000');
+        }).then(response => {
+            testStateDone(response);
+            testStateDone(info.signing);
+
+            done();
+        }).catch(logJudgeError);
+    });
+
+    it('creates direct debit with a given id', done => {
+        judgeSession.setNextCase('accounts.withId.directDebts.create').then(() => {
+            return client.accounts.withId('4B2F9EBE742BCAE1E98A78E12F6FBC62464A74EE').directDebits.create({
+
+                type: 'DIRECT_DEBIT',
+                receiver: {
+                    number: '428602109',
+                    bankCode: '0800',
+                },
+                alias: 'moje inkaso',
+                periodicity: 1,
+                periodCycle: 'MONTHLY',
+                limit: {
+                    value: 100000,
+                    precision: 2,
+                    currency: 'CZK'
+                },
+                limitSum: {
+                    value: 300000,
+                    precision: 2,
+                    currency: 'CZK'
+                },
+                numberLimit: 5,
+                startDate: new Date('2017-07-14'),
+                endDate: new Date('2018-07-14'),
+                symbols: {
+                    variableSymbol: '4567',
+                    specificSymbol: '800'
+                }
+            });
+        }).then(response => {
+
+            expectToBe(response, {
+                type: 'DIRECT_DEBIT',
+                alias: 'moje inkaso',
+                periodCycle: 'MONTHLY',
+            });
+
+            expectDate(response, {
+                startDate: '2017-07-14',
+                endDate: '2018-07-14',
+            });
+
+            expect(response.signing).toBeDefined();
+            
+
+            done();
+        }).catch(e => {
+            logJudgeError(e);
+        });
+
+    });
+
+    it('creates direct debit and signs it', done => {
+        let info;
+        judgeSession.setNextCase('signing.tac.accounts.withId.directDebits.create').then(() => {
+            return client.accounts.withId('4B2F9EBE742BCAE1E98A78E12F6FBC62464A74EE').directDebits.create({
+
+                type: 'DIRECT_DEBIT',
+                receiver: {
+                    number: '428602109',
+                    bankCode: '0800',
+                },
+                alias: 'moje inkaso',
+                periodicity: 1,
+                periodCycle: 'MONTHLY',
+                limit: {
+                    value: 100000,
+                    precision: 2,
+                    currency: 'CZK'
+                },
+                limitSum: {
+                    value: 300000,
+                    precision: 2,
+                    currency: 'CZK'
+                },
+                numberLimit: 5,
+                startDate: '2017-07-14',
+                endDate: '2018-07-14',
+                symbols: {
+                    variableSymbol: '4567',
+                    specificSymbol: '800'
+                }
+            });
+        }).then(response => {
+
+            expectToBe(response, {
+                type: 'DIRECT_DEBIT',
+                alias: 'moje inkaso',
+                periodCycle: 'MONTHLY',
+            });
+
+            expectDate(response, {
+                startDate: '2017-07-14',
+                endDate: '2018-07-14',
+            });
+
+            info = response;
+
+            testStateOpen(response.signing);
+
+            return response.signing.getInfo();
+        }).then(response => {
+
+            testStateOpen(response);
+            testStateOpen(info.signing);
+            testAuthorizationTac(response);
+
+            return response.startSigningWithTac();
+        }).then(response => {
+            testStateOpen(info.signing);
+
+            return response.finishSigning('00000000');
+        }).then(response => {
+            testStateDone(response);
+            testStateDone(info.signing);
+
+            done();
+        }).catch(logJudgeError);
     });
 });

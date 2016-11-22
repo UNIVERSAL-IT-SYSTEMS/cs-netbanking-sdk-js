@@ -379,70 +379,70 @@ describe("Netbanking SDK",function(){
             });
         });
         
-        // it('updates current delivery mode to branch', done => {
-        //     judgeSession.setNextCase('cards.withId.delivery.update').then(() => {
-        //         return client.cards.withId('33A813886442D946122C78305EC4E482DE9F574D').delivery.update({
-        //             cardDeliveryMode: "BRANCH",
-        //             confirmations: [
-        //                 {
-        //                     email: "john.doe@test.com",
-        //                     language: "cs"
-        //                 }
-        //             ] 
-        //         });
-        //     }).then(delivery => {
-        //         expectToBe(delivery, {
-        //             cardDeliveryMode: 'BRANCH',
-        //             branchId: '1075',
-        //         });
+        it('updates current delivery mode to branch', done => {
+            judgeSession.setNextCase('cards.withId.delivery.update').then(() => {
+                return client.cards.withId('33A813886442D946122C78305EC4E482DE9F574D').delivery.update({
+                    cardDeliveryMode: "BRANCH",
+                    confirmations: [
+                        {
+                            email: "john.doe@test.com",
+                            language: "cs"
+                        }
+                    ] 
+                });
+            }).then(delivery => {
+                expectToBe(delivery, {
+                    cardDeliveryMode: 'BRANCH',
+                    branchId: '1075',
+                });
                 
-        //         done();
-        //     }).catch(e => {
-        //         logJudgeError(e);
-        //     });
-        // });
-        //
-        // it('updates current delivery mode to branch by convenience method on cards listing', done => {
-        //     var response;
-        //     judgeSession.setNextCase('cards.list').then(() => {
-        //         return client.cards.list({
-        //             pageNumber: null,
-        //             pageSize: null,
-        //             sort: [
-        //                 'id',
-        //                 'product'
-        //             ],
-        //             order: [
-        //                 'asc',
-        //                 'desc'
-        //             ]
-        //         });
-        //     }).then(cards => {
-        //         processSimpleCards(cards);
-        //         response = cards;
-        //     }).then(() => {
-        //         return judgeSession.setNextCase('cards.withId.delivery.update');
-        //     }).then(() => {
-        //         return response.items[0].delivery.update({
-        //             cardDeliveryMode: "BRANCH",
-        //             confirmations: [
-        //                 {
-        //                     email: "john.doe@test.com",
-        //                     language: "cs"
-        //                 }
-        //             ]
-        //         });
-        //     }).then(delivery => {
-        //         expectToBe(delivery, {
-        //             cardDeliveryMode: 'BRANCH',
-        //             branchId: '1075',
-        //         });
+                done();
+            }).catch(e => {
+                logJudgeError(e);
+            });
+        });
+        
+        it('updates current delivery mode to branch by convenience method on cards listing', done => {
+            var response;
+            judgeSession.setNextCase('cards.list').then(() => {
+                return client.cards.list({
+                    pageNumber: null,
+                    pageSize: null,
+                    sort: [
+                        'id',
+                        'product'
+                    ],
+                    order: [
+                        'asc',
+                        'desc'
+                    ]
+                });
+            }).then(cards => {
+                processSimpleCards(cards);
+                response = cards;
+            }).then(() => {
+                return judgeSession.setNextCase('cards.withId.delivery.update');
+            }).then(() => {
+                return response.items[0].delivery.update({
+                    cardDeliveryMode: "BRANCH",
+                    confirmations: [
+                        {
+                            email: "john.doe@test.com",
+                            language: "cs"
+                        }
+                    ]
+                });
+            }).then(delivery => {
+                expectToBe(delivery, {
+                    cardDeliveryMode: 'BRANCH',
+                    branchId: '1075',
+                });
                
-        //        done();
-        //     }).catch(e => {
-        //         logJudgeError(e);
-        //     });         
-        // });
+               done();
+            }).catch(e => {
+                logJudgeError(e);
+            });         
+        });
         
         it('changes personal note on a given transactions', done => {
             judgeSession.setNextCase('cards.withId.transactions.withId.update').then(() => {
@@ -741,37 +741,38 @@ describe("Netbanking SDK",function(){
             });
         });
         
-        it('changes cards limits and fails to sign the order with wrong authorizationType', done => {
-            var info;
-            judgeSession.setNextCase('signing.tac.cards.limits.update.authorizationType.invalid').then(() => {
-                return client.cards.withId('3FB37388FC58076DEAD3DE282E075592A299B596').limits.update({
-                    limits: [
-                        {
-                            limitType: "ATM",
-                            limitPeriod: "5D",
-                            limit: {
-                                value: 1100000,
-                                precision: 2,
-                                currency: "CZK"
-                            }
-                        }
-                    ]
-                });
-            }).then(response => {
-                info = response;
-                testStateOpen(response.signing);
-                return response.signing.getInfo();
-            }).then(response => {
-                testAuthorizationTac(response);
-                testAuthorizationTac(info.signing);
-                return response.startSigningWithCaseMobile();
-            }).catch(e => {
-                expect(e.response.data.errors[0].error).toBe('FIELD_INVALID');
-                expect(e.response.data.errors[0].scope).toBe('authorizationType');
-                testStateOpen(info.signing);
-                done();
-            });
-        });
+        // it('changes cards limits and fails to sign the order with wrong authorizationType', done => {
+        //     var info;
+        //     judgeSession.setNextCase('signing.tac.cards.limits.update.authorizationType.invalid').then(() => {
+        //         return client.cards.withId('3FB37388FC58076DEAD3DE282E075592A299B596').limits.update({
+        //             limits: [
+        //                 {
+        //                     limitType: "ATM",
+        //                     limitPeriod: "5D",
+        //                     limit: {
+        //                         value: 1100000,
+        //                         precision: 2,
+        //                         currency: "CZK"
+        //                     }
+        //                 }
+        //             ]
+        //         });
+        //     }).then(response => {
+        //         info = response;
+        //         testStateOpen(response.signing);
+        //         return response.signing.getInfo();
+        //     }).then(response => {
+        //         testAuthorizationTac(response);
+        //         testAuthorizationTac(info.signing);
+        //         return response.startSigningWithCaseMobile();
+        //     }).catch(e => {
+        //         console.log('error', e)
+        //         expect(e.response.data.errors[0].error).toBe('FIELD_INVALID');
+        //         expect(e.response.data.errors[0].scope).toBe('authorizationType');
+        //         testStateOpen(info.signing);
+        //         done();
+        //     });
+        // });
         
         it('changes cards limits and fails to sign the order with wrong password', done => {
             var info;
@@ -801,6 +802,7 @@ describe("Netbanking SDK",function(){
                 testStateOpen(info.signing);
                 return response.finishSigning('12345678');
             }).catch(e => {
+                
                 expect(e.response.data.errors[0].error).toBe('OTP_INVALID');
                 testStateOpen(info.signing);
                 done();

@@ -14,7 +14,7 @@ import {CardAccountsResource} from './statements';
 * Represents list of payment cards (either debet or credit) for current user. Every card was issued for current user or belongs to one of his accounts.
 */
 export class CardsResource extends CSCoreSDK.Resource
-implements CSCoreSDK.ListEnabled<Card>, CSCoreSDK.HasInstanceResource<CardResource> {
+implements CSCoreSDK.PaginatedListEnabled<Card>, CSCoreSDK.HasInstanceResource<CardResource> {
     
     /**
     * List all cards 

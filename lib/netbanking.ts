@@ -4,6 +4,20 @@ import {AccountsResource} from './accounts/accounts';
 import {ProfileResource} from './profile/profile';
 import {CardsResource} from './cards/cards';
 import {OrdersResource} from './orders/orders';
+import {SecuritiesResource} from './securities/securities';
+import {SettingsResource} from './settings/settings';
+import {ContactsResource} from './contacts/contacts';
+import {PluginsResource} from './plugins/plugins';
+import {ContractsResource} from './contracts/contracts';
+import {ServicesResource} from './services/services';
+import {MessagesResource} from './messages/messages';
+import {TemplatesResource} from './templates/templates';
+import {PhoneNumbersResource} from './phone-numbers/phone-numbers';
+import {BudgetsResource} from './budgets/budgets';
+import {GoalsResource} from './goals/goals';
+import {PromotionsResource} from './promotions/promotions';
+import {AuthorizationLimitsResource} from './authorization-limits/authorization-limits';
+import {AuthorizationTokenResource} from './authorization-token/authorization-token';
 
 var sharedClient : NetbankingClient = null;
 
@@ -59,5 +73,61 @@ export class NetbankingClient extends CSCoreSDK.WebApiClient {
     */
     get orders() {
         return new OrdersResource(this.getPath() + '/orders', this);
+    }
+    
+    get securities() {
+        return new SecuritiesResource(this.getPath() + '/securities', this);
+    }
+
+    get settings() {
+        return new SettingsResource(`${this.getPath()}/settings`, this);
+    }
+
+    get contacts() {
+        return new ContactsResource(`${this.getPath()}/contacts`, this);
+    }
+
+    get plugins() {
+        return new PluginsResource(`${this.getPath()}/plugins`, this);
+    }
+
+    get contracts() {
+        return new ContractsResource(`${this.getPath()}/contracts`, this);
+    }
+
+    get services() {
+        return new ServicesResource(`${this.getPath()}/services`, this);
+    }
+
+    get messages() {
+        return new MessagesResource(`${this.getPath()}/messages`, this); 
+    }
+
+    get templates() {
+        return new TemplatesResource(`${this.getPath()}/templates`, this);
+    }
+
+    get phoneNumbers() {
+        return new PhoneNumbersResource(`${this.getPath()}/phone-numbers`, this);
+    }
+
+    get budgets() {
+        return new BudgetsResource(`${this.getPath()}/budgets`, this);
+    }
+
+    get goals() {
+        return new GoalsResource(`${this.getPath()}/goals`, this);
+    }
+
+    get promotions() {
+        return new PromotionsResource(`${this.getPath()}/promotions`, this);
+    }
+
+    get authorizationLimits() {
+        return new AuthorizationLimitsResource(`${this.getPath()}/authorizationLimits`, this);
+    }
+
+    get authorizationToken() {
+        return new AuthorizationTokenResource(`${this.getPath()}/auth/token/invalidate`, this);
     }
 }

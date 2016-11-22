@@ -66,7 +66,7 @@ describe("Netbanking SDK",function(){
                 expect(item.channel).toBe('GEORGE');
                 
                 expectDate(item, {
-                    lastLogin: '2016-03-17T15:01:49+01:00'
+                    lastlogin: '2016-03-17T15:01:49+01:00'
                 });
                 
                 done();

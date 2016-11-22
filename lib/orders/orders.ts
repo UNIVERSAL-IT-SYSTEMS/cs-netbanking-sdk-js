@@ -5,6 +5,7 @@ import {PaymentBookingDateResource} from './bookingDate';
 import {PaymentsDomesticResource} from './domestic';
 import {PaymentLimitsResource} from './limits';
 import {PaymentMobileResource} from './mobile';
+import {Symbols} from '../common';
 
 /**
 * Get information about payments orders
@@ -224,7 +225,7 @@ export interface Payment extends CSCoreSDK.Signable {
     /**
     * Indicator whether state (stateDetail value) of payment order is OK from user point of view. For mapping between stateDetail and stateOk indicator values see table below.
     */
-    stateOk: string;
+    stateOk: boolean;
     
     /**
     * description of payment order, transaction type
@@ -260,24 +261,6 @@ export interface Payment extends CSCoreSDK.Signable {
     * Convenience method for removing payment
     */
     delete: () => Promise<NetbankingEmptyResponse>;
-}
-
-export interface Symbols {
-    
-    /**
-    * variable symbol
-    */
-    variableSymbol?: string;
-    
-    /**
-    * constant symbol
-    */
-    constantSymbol?: string;
-    
-    /**
-    * specific symbol
-    */
-    specificSymbol?: string;
 }
 
 export interface Info {
