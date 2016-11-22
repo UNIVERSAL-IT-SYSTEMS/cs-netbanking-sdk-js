@@ -2,7 +2,7 @@
 
 This guide walks you through retrieving current user's plugins.
 
-[PluginsResource](../plugins/plugins.ts)
+[PluginsResource](../lib/plugins/plugins.ts)
 
 ```javascript
 
@@ -15,7 +15,7 @@ This guide walks you through retrieving current user's plugins.
 
 ## 1. List all of current users plugins
 
-You can list all of current users plugins by calling the `list` method on [PluginsResource](../plugins/plugins.ts). 
+You can list all of current users plugins by calling the `list` method on [PluginsResource](../lib/plugins/plugins.ts). 
 
 ```javascript
 
@@ -31,7 +31,7 @@ You can list all of current users plugins by calling the `list` method on [Plugi
 
 ## 2. Update plugin
 
-Update plugin by getting the [PluginResource](../plugins/plugins.ts) and then calling the `update` method on it. The method takes object with properties as a parameter. Currently only alias can be changed. For all supported parameters see [PluginUpdateRequest](../plugins/plugins.ts) and [PluginUpdateResponse](../plugins/plugins.ts) for full response.
+Update plugin by getting the [PluginResource](../lib/plugins/plugins.ts) and then calling the `update` method on it. The method takes object with properties as a parameter. Currently only alias can be changed. For all supported parameters see [PluginUpdateRequest](../lib/plugins/plugins.ts) and [PluginUpdateResponse](../lib/plugins/plugins.ts) for full response.
 
 ```javascript
 

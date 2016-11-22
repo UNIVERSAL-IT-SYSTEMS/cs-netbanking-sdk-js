@@ -2,7 +2,7 @@
 
 This guide walks you through retrieving current user's accounts goals.
 
-[GoalsResource](../lib/goals/goals)
+[GoalsResource](../lib/goals/goals.ts.ts)
 
 ```javascript
 
@@ -15,7 +15,7 @@ This guide walks you through retrieving current user's accounts goals.
 
 ## 1. List all of current users goals
 
-You can list all of current users goals by calling the `list` method on [GoalsResource](../lib/goals/goals). 
+You can list all of current users goals by calling the `list` method on [GoalsResource](../lib/goals/goals.ts). 
 
 ```javascript
 
@@ -31,7 +31,7 @@ You can list all of current users goals by calling the `list` method on [GoalsRe
 
 ## 2. Update current users goals 
 
-You can update current users goals by calling the `withId` method on [GoalsResource](../lib/goals/goals) with id as a parameter and then calling the update method and giving it payload in object as a parameter. For payload properties please see [GoalsUpdateRequest](../lib/goals/goals) and check also the response [GoalsListResponse](../lib/goals/goals).
+You can update current users goals by calling the `withId` method on [GoalsResource](../lib/goals/goals.ts) with id as a parameter and then calling the update method and giving it payload in object as a parameter. For payload properties please see [GoalsUpdateRequest](../lib/goals/goals.ts) and check also the response [GoalsListResponse](../lib/goals/goals.ts).
 
 ```javascript
 

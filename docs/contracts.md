@@ -7,7 +7,7 @@ This guide walks you through retrieving current user's accounts contracts. Four 
 - Loyalty
 - Pensions
 
-[ContractsResource](../lib/contracts/building/buildings.ts)
+[ContractsResource](../lib/contracts/contracts.ts)
 
 ```javascript
 
@@ -21,7 +21,7 @@ This guide walks you through retrieving current user's accounts contracts. Four 
 ## A. Buildings
 
 ### 1. List all building contracts
-You can list all of current users building contracts by calling the `list` method on [BuildingsContractsResource](../lib/contracts/building/buildings.ts). 
+You can list all of current users building contracts by calling the `list` method on [BuildingsContractsResource](../lib/contracts/buildings/buildings.ts). 
 
 ```javascript
 
@@ -38,7 +38,7 @@ You can list all of current users building contracts by calling the `list` metho
 
 ### 2. Get individual current users building contract
 
-You can get detail of the individual current users building contract by calling the `withId` method on [BuildingsContractsResource](../lib/contracts/building/buildings.ts) with id as a parameter and then calling the get method. For complete response see [BuildingsContract](../lib/contracts/building/buildings.ts).
+You can get detail of the individual current users building contract by calling the `withId` method on [BuildingsContractsResource](../lib/contracts/buildings/buildings.ts) with id as a parameter and then calling the get method. For complete response see [BuildingsContract](../lib/contracts/buildings/buildings.ts).
 
 ```javascript
 
@@ -56,7 +56,7 @@ You can get detail of the individual current users building contract by calling 
 
 ### 3. Update current users building contract
 
-You can update current users building contract by calling the `withId` method on [BuildingsContractsResource](../lib/contracts/building/buildings.ts) with id as a parameter and then calling the update method and giving it payload in object as a parameter. For payload properties please see [BuildingsContractUpdateRequest](../lib/contracts/building/buildings.ts) and check also the response [BuildingsContractUpdateResponse](../lib/contracts/building/buildings.ts).
+You can update current users building contract by calling the `withId` method on [BuildingsContractsResource](../lib/contracts/buildings/buildings.ts) with id as a parameter and then calling the update method and giving it payload in object as a parameter. For payload properties please see [BuildingsContractUpdateRequest](../lib/contracts/buildings/buildings.ts) and check also the response [BuildingsContractUpdateResponse](../lib/contracts/buildings/buildings.ts).
 
 ```javascript
 
