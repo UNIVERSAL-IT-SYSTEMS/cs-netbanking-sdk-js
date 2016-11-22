@@ -47,8 +47,8 @@
     "webpack": "^1.12.9"
   },
   "dependencies": {
-    "cs-core-sdk": "git+ssh:git@github.com:Ceskasporiteln/cs-core-sdk-js.git#v0.7.1",
     "axios": "^0.8.1",
+    "cs-core-sdk": "git+ssh:git@github.com:Ceskasporiteln/cs-core-sdk-js.git#v0.7.2",
     "node-uuid": "^1.4.3",
     "source-map-support": "^0.3.3",
     "standard-error": "^1.1.0"
