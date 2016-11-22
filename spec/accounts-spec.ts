@@ -10,6 +10,7 @@ var expectToBe = CoreSDK.TestUtils.expectToBe;
 var expectDate = CoreSDK.TestUtils.expectDate;
 var logJudgeError = CoreSDK.TestUtils.logJudgeError;
 import {testAuthorizationTac, testStateOpen, testStateDone, testFile, exportTransactionsPayload} from './helpers';
+const util = require('util');
     
 describe("Netbanking SDK",function(){
     var originalTimeoutInterval = null;
@@ -622,7 +623,7 @@ describe("Netbanking SDK",function(){
             
             done();
         }).catch(e => {
-            logJudgeError(e);
+            console.log(e)
         });
     });
     
@@ -1340,7 +1341,6 @@ describe("Netbanking SDK",function(){
         judgeSession.setNextCase('accounts.withId.standingOrders.create').then(() => {
             return client.accounts.withId('4B2F9EBE742BCAE1E98A78E12F6FBC62464A74EE').standingOrders.create({
 
-                // date transform?
                 type: 'STANDING_ORDER',
                 alias: 'Monthly standing order executed on the last day of month',
                 receiverName: 'Name of the receiver',
@@ -1353,7 +1353,7 @@ describe("Netbanking SDK",function(){
                     precision: 2,
                     currency: 'CZK'
                 },
-                nextExecutionDate: '2016-12-31',
+                nextExecutionDate: new Date('2016-12-31'),
                 executionMode: 'UNTIL_CANCELLATION',
                 executionDueMode: 'DUE_LAST_DAY_OF_MONTH',
                 executionInterval: 'MONTHLY',
@@ -1710,8 +1710,8 @@ describe("Netbanking SDK",function(){
                     currency: 'CZK'
                 },
                 numberLimit: 5,
-                startDate: '2017-07-14',
-                endDate: '2018-07-14',
+                startDate: new Date('2017-07-14'),
+                endDate: new Date('2018-07-14'),
                 symbols: {
                     variableSymbol: '4567',
                     specificSymbol: '800'
