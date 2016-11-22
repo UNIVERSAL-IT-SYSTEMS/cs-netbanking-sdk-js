@@ -3,7 +3,7 @@ import CSCoreSDK = require('cs-core-sdk');
 import {Amount, AccountNumber} from '../../common';
 
 export class InsurancesContractTaxBenefitsResource extends CSCoreSDK.Resource
-implements CSCoreSDK.GetEnabled<TaxBenefits> {
+implements CSCoreSDK.GetEnabled<TaxBenefit> {
 
     constructor(basePath: string, client: CSCoreSDK.WebApiClient) {    
         super(basePath, client);
@@ -15,12 +15,12 @@ implements CSCoreSDK.GetEnabled<TaxBenefits> {
     /**
      * Returns tax benefits for the life insurance 
      */
-    get = (): Promise<TaxBenefits> => {
+    get = (): Promise<TaxBenefit> => {
         return CSCoreSDK.ResourceUtils.CallGet(this, null);
     }
 }
 
-export interface TaxBenefits {
+export interface TaxBenefit {
 
     /**
      * Tax deductable premium.

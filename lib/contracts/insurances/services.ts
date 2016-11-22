@@ -29,7 +29,7 @@ implements CSCoreSDK.ListEnabled<InsuranceService> {
     /**
      * Allows activation of risk sports insurance.
      */
-    activateRiskSports = (payload: ActivateRiskSportsRequest): Promise<ActivateRiskSportsResponse> => {
+    activateRiskSports = (payload: RiskSportsUpdateRequest): Promise<ActivateRiskSportsResponse> => {
 
         CSCoreSDK.EntityUtils.transformDatesToSimpleISO(['dateFrom', 'dateTo'], payload);
 
@@ -45,7 +45,7 @@ implements CSCoreSDK.ListEnabled<InsuranceService> {
     /**
      * Allows deactivation of risk sports insurance.
      */
-    deactivateRiskSports = (payload: ActivateRiskSportsRequest): Promise<DeactivateRiskSportsResponse> => {
+    deactivateRiskSports = (payload: RiskSportsUpdateRequest): Promise<DeactivateRiskSportsResponse> => {
         
         CSCoreSDK.EntityUtils.transformDatesToSimpleISO(['dateFrom', 'dateTo'], payload);
 
@@ -117,7 +117,7 @@ export interface InsuranceService {
     state: string;
 }
 
-export interface ActivateRiskSportsRequest {
+export interface RiskSportsUpdateRequest {
 
     dateFrom: Date;
 
@@ -126,7 +126,7 @@ export interface ActivateRiskSportsRequest {
     phoneNumber: string;
 }
 
-export interface ActivateRiskSportsResponse extends ActivateRiskSportsRequest, CSCoreSDK.Signable {
+export interface ActivateRiskSportsResponse extends RiskSportsUpdateRequest, CSCoreSDK.Signable {
 
     policyNumber: string;
 }
