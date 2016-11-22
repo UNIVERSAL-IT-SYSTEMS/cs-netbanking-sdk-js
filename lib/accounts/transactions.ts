@@ -25,10 +25,6 @@ implements CSCoreSDK.HasInstanceResource<AccountTransactionResource> {
         
         // transform Date objects to ISO strings
         CSCoreSDK.EntityUtils.transformDatesToISO(['dateFrom', 'dateTo'], params);
-
-        // params.dateFrom = encodeURIComponent(params.dateFrom);
-        // params.dateTo = encodeURIComponent(params.dateTo);
-        
         
         // insert 'cz' resource into the resource's path once because the api requires it in some resources
         var path = this.getPath().replace('/my', '/cz/my');   
