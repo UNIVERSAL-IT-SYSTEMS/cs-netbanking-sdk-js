@@ -48,7 +48,7 @@
   },
   "dependencies": {
     "axios": "^0.8.1",
-    "cs-core-sdk": "git+ssh:git@github.com:Ceskasporiteln/cs-core-sdk-js.git#v0.7.3",
+    "cs-core-sdk": "git+ssh:git@github.com:Ceskasporiteln/cs-core-sdk-js.git#v0.7.4",
     "node-uuid": "^1.4.3",
     "source-map-support": "^0.3.3",
     "standard-error": "^1.1.0"
