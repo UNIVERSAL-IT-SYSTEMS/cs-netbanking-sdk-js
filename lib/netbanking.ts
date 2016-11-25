@@ -18,6 +18,7 @@ import {GoalsResource} from './goals/goals';
 import {PromotionsResource} from './promotions/promotions';
 import {AuthorizationLimitsResource} from './authorization-limits/authorization-limits';
 import {AuthorizationTokenResource} from './authorization-token/authorization-token';
+import {BundlesResource} from './bundles/bundles';
 
 var sharedClient : NetbankingClient = null;
 
@@ -129,5 +130,9 @@ export class NetbankingClient extends CSCoreSDK.WebApiClient {
 
     get authorizationToken() {
         return new AuthorizationTokenResource(`${this.getPath()}/auth/token/invalidate`, this);
+    }
+
+    get bundles() {
+        return new BundlesResource(`${this.getPath()}/bundles`, this);
     }
 }
