@@ -4278,6 +4278,48 @@ declare module 'cs-netbanking-sdk/authorization-token/authorization-token' {
 	}
 
 }
+declare module 'cs-netbanking-sdk/bundles/bundles' {
+	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
+	import CSCoreSDK = require('cs-core-sdk');
+	import { SignInfo } from 'cs-netbanking-sdk/common';
+	export class BundlesResource extends CSCoreSDK.Resource implements CSCoreSDK.CreateEnabled<BundleCreateRequest, BundleResponse> {
+	    create: (payload: BundleCreateRequest) => Promise<BundleResponse>;
+	}
+	export interface BundleCreateRequest {
+	    /**
+	     * Name of the bundle.
+	     */
+	    name: string;
+	    /**
+	     * Array of items in bundle. Every item represents payment order for batch sign.
+	     */
+	    items: [{
+	        id: string;
+	        signInfo: {
+	            state: string;
+	            signId: string;
+	        };
+	    }];
+	}
+	export interface BundleResponse extends CSCoreSDK.Signable {
+	    /**
+	     * Bundle identifier.
+	     */
+	    id: string;
+	    /**
+	     * Name of the bundle.
+	     */
+	    name?: string;
+	    /**
+	     * Array of items in bundle. Every item represents payment order for batch sign.
+	     */
+	    items: [{
+	        id: string;
+	        signInfo: SignInfo;
+	    }];
+	}
+
+}
 declare module 'cs-netbanking-sdk/netbanking' {
 	/// <reference path="../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	import CSCoreSDK = require('cs-core-sdk');
@@ -4299,6 +4341,7 @@ declare module 'cs-netbanking-sdk/netbanking' {
 	import { PromotionsResource } from 'cs-netbanking-sdk/promotions/promotions';
 	import { AuthorizationLimitsResource } from 'cs-netbanking-sdk/authorization-limits/authorization-limits';
 	import { AuthorizationTokenResource } from 'cs-netbanking-sdk/authorization-token/authorization-token';
+	import { BundlesResource } from 'cs-netbanking-sdk/bundles/bundles';
 	export function getClient(): NetbankingClient;
 	/**
 	 * Netbanking client
@@ -4341,6 +4384,7 @@ declare module 'cs-netbanking-sdk/netbanking' {
 	    promotions: PromotionsResource;
 	    authorizationLimits: AuthorizationLimitsResource;
 	    authorizationToken: AuthorizationTokenResource;
+	    bundles: BundlesResource;
 	}
 
 }

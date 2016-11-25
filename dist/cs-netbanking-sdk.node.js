@@ -72,6 +72,7 @@ module.exports =
 	var promotions_1 = __webpack_require__(57);
 	var authorization_limits_1 = __webpack_require__(58);
 	var authorization_token_1 = __webpack_require__(59);
+	var bundles_1 = __webpack_require__(60);
 	var sharedClient = null;
 	/*+
 	 * Returns the singleton NetbankingClient
@@ -232,6 +233,13 @@ module.exports =
 	    Object.defineProperty(NetbankingClient.prototype, "authorizationToken", {
 	        get: function () {
 	            return new authorization_token_1.AuthorizationTokenResource(this.getPath() + "/auth/token/invalidate", this);
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    Object.defineProperty(NetbankingClient.prototype, "bundles", {
+	        get: function () {
+	            return new bundles_1.BundlesResource(this.getPath() + "/bundles", this);
 	        },
 	        enumerable: true,
 	        configurable: true
@@ -3754,6 +3762,35 @@ module.exports =
 	    return AuthorizationTokenResource;
 	}(CSCoreSDK.Resource));
 	exports.AuthorizationTokenResource = AuthorizationTokenResource;
+
+
+/***/ },
+/* 60 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
+	var CSCoreSDK = __webpack_require__(1);
+	var BundlesResource = (function (_super) {
+	    __extends(BundlesResource, _super);
+	    function BundlesResource() {
+	        var _this = this;
+	        _super.apply(this, arguments);
+	        this.create = function (payload) {
+	            return CSCoreSDK.ResourceUtils.CallCreate(_this, payload).then(function (response) {
+	                CSCoreSDK.SigningUtils.createSigningObject(response, _this.getClient(), _this.getPath() + "/" + response.id);
+	                return response;
+	            });
+	        };
+	    }
+	    return BundlesResource;
+	}(CSCoreSDK.Resource));
+	exports.BundlesResource = BundlesResource;
 
 
 /***/ }
