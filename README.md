@@ -7,10 +7,10 @@ This SDK allows you to access information about Česká spořitelna a.s. Netbank
 
 If you just want to use the SDK, there are compiled files ready to be used in the [`/dist`](./dist) folder.
 
-You can just copy these files directly from the repository or preferably, use `npm` to install it into your project:
+You can just copy these files directly from the repository or preferably, use `yarn` to install it into your project:
 
 ```
-npm install git+ssh://git@github.com:Ceskasporiteln/cs-netbanking-sdk-js.git --save
+yarn add https://github.com/Ceskasporiteln/cs-netbanking-sdk-js.git
 ```
 **IMPORTANT!** You need to have your SSH keys registered with the GitHub since this repository is private.
 
@@ -22,7 +22,7 @@ For usage in browser, pickup the following files from the `/dist` folder:
 
 
 Netbanking SDK is dependent on the [CSCoreSDK](https://github.com/Ceskasporiteln/cs-core-sdk-js). 
-You can find the appropriate verion of CSCoreSDK in `node_modules` of Netbanking SDK if you installed it through `npm`.
+You can find the appropriate verion of CSCoreSDK in `node_modules` of Netbanking SDK if you installed it through `yarn`.
 Include the `cs-core-sdk.sfx.js` in your page **before** the `cs-netbanking-sdk.sfx.js`:
 
 ```html
@@ -36,7 +36,7 @@ The Netbanking SDK will be available in global variable `CSNetbankingSDK`.
 If your environment doesn't support ES6 Promises, you can [polyfill](https://github.com/jakearchibald/es6-promise).
 
 ##Usage in node
-For usage in node, install it through `npm` (see above). You can then require it by:
+For usage in node, install it through `yarn` (see above). You can then require it by:
 ```javascript
 var CSNetbankingSDK = require('cs-netbanking-sdk');
 ``` 
@@ -59,7 +59,7 @@ The SDK itself is written in **TypeScript**, packaged by **webpack**, tested by 
 
 In order to to develop upon this SDK, you will need the following **installed globally**:
 
-* `node` & `npm`
+* `node` & `yarn`
 * `webpack` - For packaging
 * `karma` - For testing
 * `tsd` - For downloading typescript definitions
@@ -68,12 +68,12 @@ In order to to develop upon this SDK, you will need the following **installed gl
 After cloning the repo, run the following command to initialize the repository for development:
 
 ```
-npm install && tsd install
+yarn install && tsd install
 ```
 
 You can verify everything worked as expected by running:
 ```
-npm test
+yarn test
 ```
 
 ##Directory structure
@@ -88,13 +88,13 @@ This project uses the following directory structure:
 
 ##Development commands
 
-* `npm run clean` - cleans `build` and `dist` folders
-* `npm run build` - performs `clean` and builds the SDK into `bulid` folder. It also generates `.d.ts` files using `generate-tsd` command.
-* `npm run dist` - performs `build` command and copies the packaged SDK files into `dist` folder
-* `npm run test` - performs `build` and runs tests in node and browser.
-* `npm run test-browser` - performs tests only in browser
-* `npm run test-node` - performs tests only in node
-* `npm version [major|minor|patch]` - releases new version of the SDK. Requires write access to repository. See [npm-version](https://docs.npmjs.com/cli/version) for more details. 
+* `yarn run clean` - cleans `build` and `dist` folders
+* `yarn run build` - performs `clean` and builds the SDK into `bulid` folder. It also generates `.d.ts` files using `generate-tsd` command.
+* `yarn run dist` - performs `build` command and copies the packaged SDK files into `dist` folder
+* `yarn run test` - performs `build` and runs tests in node and browser.
+* `yarn run test-browser` - performs tests only in browser
+* `yarn run test-node` - performs tests only in node
+* `yarn version [major|minor|patch]` - releases new version of the SDK. Requires write access to repository. See [yarn-version](https://yarnpkg.com/en/docs/cli/version) for more details. 
 
 
 

@@ -4,28 +4,28 @@
   "description": "CS Netbanking SDK for the CSAS Web Api",
   "main": "dist/cs-netbanking-sdk.node.js",
   "scripts": {
-    "dist": "npm run build && node node_modules/cs-core-sdk/tooling/dist",
-    "build": "node node_modules/cs-core-sdk/tooling/clean && webpack && webpack --target-browser && npm run generate-tsd",
-    "test": "npm run build && npm run test-node-run && npm run test-browser-run",
-    "test-node": "npm run build && npm run test-node-run",
-    "test-browser": "npm run build  && npm run test-browser-run",
+    "dist": "yarn run build && node node_modules/cs-core-sdk/tooling/dist",
+    "build": "node node_modules/cs-core-sdk/tooling/clean && webpack && webpack --target-browser && yarn run generate-tsd",
+    "test": "yarn run build && yarn run test-node-run && yarn run test-browser-run",
+    "test-node": "yarn run build && yarn run test-node-run",
+    "test-browser": "yarn run build  && yarn run test-browser-run",
     "generate-tsd": "node node_modules/cs-core-sdk/tooling/generate-tsd cs-netbanking-sdk CSNetbankingSDK netbanking",
     "test-node-run": "webpack --config ./webpack.test.config.js && jasmine ./spec/build/tests.node.js",
     "test-browser-run": "webpack --config ./webpack.test.config.js --target-browser && node ./node_modules/karma/bin/karma start karma.conf.js --single-run",
-    "preversion": "npm run build && npm run test-node-run && npm run test-browser-run",
-    "version": "npm run dist && git add -A dist",
+    "preversion": "yarn run build && yarn run test-node-run && yarn run test-browser-run",
+    "version": "yarn run dist && git add -A dist",
     "postversion": "git push && git push --tags"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Ceskasporiteln/cs-netbanking-js.git"
+    "url": "git+https://github.com/Ceskasporitelna/cs-netbanking-js.git"
   },
   "author": "Petr Bažout <petr.bazout@applifting.cz>",
   "license": "Proprietary",
   "bugs": {
-    "url": "https://github.com/Ceskasporiteln/cs-netbanking-js/issues"
+    "url": "https://github.com/Ceskasporitelna/cs-netbanking-js/issues"
   },
-  "homepage": "https://github.com/Ceskasporiteln/cs-netbanking-js#readme",
+  "homepage": "https://github.com/Ceskasporitelna/cs-netbanking-js#readme",
   "devDependencies": {
     "dts-generator": "1.6.0-pre.1",
     "jasmine": "^2.4.1",
@@ -48,7 +48,7 @@
   },
   "dependencies": {
     "axios": "^0.8.1",
-    "cs-core-sdk": "git+ssh:git@github.com:Ceskasporiteln/cs-core-sdk-js.git#v0.7.4",
+    "cs-core-sdk": "https://github.com/Ceskasporitelna/cs-core-sdk-js.git#v0.7.4",
     "node-uuid": "^1.4.3",
     "source-map-support": "^0.3.3",
     "standard-error": "^1.1.0"
