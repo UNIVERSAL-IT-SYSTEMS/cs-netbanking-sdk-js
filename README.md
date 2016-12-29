@@ -1,9 +1,9 @@
-#CSNetbankingSDK
+# CSNetbankingSDK
 This SDK allows you to access information about Česká spořitelna a.s. Netbanking API [Netbanking API](http://docs.netbankingv3.apiary.io/).
 
-#[CHANGELOG](CHANGELOG.md)
+# [CHANGELOG](CHANGELOG.md)
 
-#Usage
+# Usage
 
 If you just want to use the SDK, there are compiled files ready to be used in the [`/dist`](./dist) folder.
 
@@ -13,7 +13,7 @@ You can just copy these files directly from the repository or preferably, use `n
 npm install https://github.com/Ceskasporitelna/cs-netbanking-sdk-js.git --save
 ```
 
-##Usage in browser
+## Usage in browser
 For usage in browser, pickup the following files from the `/dist` folder:
 * `cs-netbanking-sdk.sfx.js` - CSNetbankingSDK packaged for browsers
 * `cs-netbanking-sdk.sfx.d.ts` - CSNetbankingSDK typings for browsers
@@ -34,14 +34,14 @@ The Netbanking SDK will be available in global variable `CSNetbankingSDK`.
 **IMPORTANT!** CSAS SDKs depend on a native ES6 Promise implementation to be [supported](http://caniuse.com/promises).
 If your environment doesn't support ES6 Promises, you can [polyfill](https://github.com/jakearchibald/es6-promise).
 
-##Usage in node
+## Usage in node
 For usage in node, install it through `npm` (see above). You can then require it by:
 ```javascript
 var CSNetbankingSDK = require('cs-netbanking-sdk');
 ``` 
 
 
-##Configuration
+## Configuration
 Before using any CSAS SDKs in your application, you need to initialize CSCoreSDK by providing it your WebApiKey.
 ```javascript
 CSCoreSDK.useWebApiKey( "YourApiKey" )
@@ -50,10 +50,10 @@ var netbankingClient = CSTransparentAccSDK.getClient();
 ```
 **See [CoreSDK configuration guide](https://github.com/Ceskasporitelna/cs-core-sdk-js/blob/master/docs/configuration.md)** for all the available configuration options.
 
-##Usage Guide
+## Usage Guide
 **See [Usage Guide](./docs/netbanking.md)** for usage instructions.
 
-#Development
+# Development
 The SDK itself is written in **TypeScript**, packaged by **webpack**, tested by **jasmine** & **karma** and distributed thorugh **npm**. It uses **tsd** for TypeScript definitions.
 
 In order to to develop upon this SDK, you will need the following **installed globally**:
@@ -63,7 +63,7 @@ In order to to develop upon this SDK, you will need the following **installed gl
 * `karma` - For testing
 * `tsd` - For downloading typescript definitions
 
-##Setup
+## Setup
 After cloning the repo, run the following command to initialize the repository for development:
 
 ```
@@ -75,7 +75,7 @@ You can verify everything worked as expected by running:
 npm test
 ```
 
-##Directory structure
+## Directory structure
 This project uses the following directory structure:
 
 * `dist` - Packaged version of this SDK ready for use.
@@ -85,7 +85,7 @@ This project uses the following directory structure:
 * `typings` - Typings used by the SDK
 * `tooling` - Commands for building and packaging 
 
-##Development commands
+## Development commands
 
 * `npm run clean` - cleans `build` and `dist` folders
 * `npm run build` - performs `clean` and builds the SDK into `bulid` folder. It also generates `.d.ts` files using `generate-tsd` command.
@@ -97,10 +97,10 @@ This project uses the following directory structure:
 
 
 
-#Contributing
+# Contributing
 Contributions are more than welcome!
 
 Please read our [contribution guide](CONTRIBUTING.md) to learn how to contribute to this project.
 
-#Terms and License
-Please read our [terms](TERMS.md) and [license](LICENSE.md).
+# Terms and License
+Please read our [terms & conditions and license](LICENSE.md).
