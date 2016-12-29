@@ -31,6 +31,7 @@ describe("Netbanking SDK",function(){
         client =  netbanking.getClient();
         client.sharedContext = null;
         judgeSession = judge.startNewSession();
+        
     });
         
     function processTransfer(response) {
@@ -623,7 +624,7 @@ describe("Netbanking SDK",function(){
             
             done();
         }).catch(e => {
-            console.log(e)
+            console.log(util.inspect(e, {depth: null}));
         });
     });
     
@@ -1806,5 +1807,5 @@ describe("Netbanking SDK",function(){
 
             done();
         }).catch(logJudgeError);
-    });
+    }); 
 });
