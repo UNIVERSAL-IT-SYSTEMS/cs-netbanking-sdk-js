@@ -1,5 +1,5 @@
-/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-import CSCoreSDK = require('cs-core-sdk');
+
+import * as CSCoreSDK from 'cs-core-sdk';
 import {Amount} from '../common';
 
 export class AuthorizationLimitsResource extends CSCoreSDK.Resource
@@ -10,7 +10,7 @@ implements CSCoreSDK.ParametrizedListEnabled<AuthorizationLimitsParams, Authoriz
      */
     list = (params?: AuthorizationLimitsParams): Promise<AuthorizationLimitList> => {
         return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'limits', params).then(response => {
-
+            
             response.items.forEach(x => {
                 resourcifyLimits(<AuthorizationLimit>x, this.withId((<AuthorizationLimit>x).id));
             });

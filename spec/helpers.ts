@@ -1,6 +1,6 @@
 var path = require('path');
 var fs = require('fs');
-var _ = <UnderscoreStatic>(require('underscore'));
+var _ = require('underscore');
 
 export function testAuthorizationTac(signingObject) {
     expect(signingObject.getPossibleAuthorizationTypes()[0]).toBe('TAC');

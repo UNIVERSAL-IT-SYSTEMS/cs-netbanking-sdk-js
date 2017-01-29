@@ -1,5 +1,5 @@
-/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-import CSCoreSDK = require('cs-core-sdk');
+
+import * as CSCoreSDK from 'cs-core-sdk';
 
 export class PromotionsResource extends CSCoreSDK.Resource
 implements CSCoreSDK.ListEnabled<Promotion>, CSCoreSDK.CreateEnabled<CreatePromotionRequest, CreatePromotionResponse>  {

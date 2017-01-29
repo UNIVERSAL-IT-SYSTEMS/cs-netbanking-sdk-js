@@ -1,5 +1,5 @@
-/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-import CSCoreSDK = require('cs-core-sdk');
+
+import * as CSCoreSDK from 'cs-core-sdk';
 import {ServiceList, Service, ServiceParameters} from '../accounts/services'; 
 
 export class ServicesResource extends CSCoreSDK.Resource

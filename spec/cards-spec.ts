@@ -1,21 +1,21 @@
-/// <reference path="../node_modules/cs-core-sdk/dist/cs-core-sdk.sfx.d.ts"/>
+
 /// <reference path="../build/cs-netbanking-sdk.sfx.d.ts"/>
-/// <reference path="../typings/tsd.d.ts"/>
-var CoreSDK = require('cs-core-sdk');
+
+import * as CSCoreSDK from 'cs-core-sdk';
 var netbanking  = require('../build/cs-netbanking-sdk.node.js');
 var judge : CSCoreSDK.Judge = null;
 var judgeSession : CSCoreSDK.JudgeSession = null;
 var client : CSNetbankingSDK.NetbankingClient = null;
-var expectToBe = CoreSDK.TestUtils.expectToBe;
-var expectDate = CoreSDK.TestUtils.expectDate;
-var logJudgeError = CoreSDK.TestUtils.logJudgeError;
+var expectToBe = CSCoreSDK.TestUtils.expectToBe;
+var expectDate = CSCoreSDK.TestUtils.expectDate;
+var logJudgeError = CSCoreSDK.TestUtils.logJudgeError;
 import {testAuthorizationTac, testStateOpen, testStateDone, testFile} from './helpers';
 
 describe("Netbanking SDK",function(){
     var originalTimeoutInterval = null;
     
     beforeAll(function(){
-        judge = new CoreSDK.Judge();
+        judge = new CSCoreSDK.Judge();
         //Because Judge starts slowly on the first request
         originalTimeoutInterval = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
@@ -26,7 +26,7 @@ describe("Netbanking SDK",function(){
     });    
     
     beforeEach(function(){
-        CoreSDK.useWebApiKey("TEST_API_KEY").useEnvironment(judge.testEnvironment)
+        CSCoreSDK.useWebApiKey("TEST_API_KEY").useEnvironment(judge.testEnvironment)
         client =  netbanking.getClient();	
         client.sharedContext = null;
         judgeSession = judge.startNewSession();

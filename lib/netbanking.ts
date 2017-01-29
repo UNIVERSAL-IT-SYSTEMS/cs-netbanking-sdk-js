@@ -1,5 +1,7 @@
-/// <reference path="../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-import CSCoreSDK = require('cs-core-sdk');
+
+/// <reference types="es6-promise" />
+
+import * as CSCoreSDK from 'cs-core-sdk';
 import {AccountsResource} from './accounts/accounts';
 import {ProfileResource} from './profile/profile';
 import {CardsResource} from './cards/cards';
@@ -29,6 +31,7 @@ export function getClient() {
     if (sharedClient === null) {
         return new NetbankingClient(CSCoreSDK.config.copy(), CSCoreSDK.sharedContext);
     }
+    
     return sharedClient;
 }
 
