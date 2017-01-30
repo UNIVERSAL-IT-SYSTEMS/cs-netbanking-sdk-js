@@ -1,6 +1,12 @@
 # Changelog
 
 ## [Unreleased]
+### Changed
+  - Migrate to Typescript 2
+  - Make changes for CI publishing
+  
+### Added
+  - Add sign script
 
 ## [0.1.2] - 2016-12-29
 ### Added
