@@ -1,5 +1,5 @@
+/// <reference types="es6-promise" />
 declare module CSNetbankingSDK {
-	/// <reference path="../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	export interface Signable {
 	    /**
@@ -221,7 +221,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
 	/**
@@ -250,7 +249,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	/**
 	* Get information about the account's services
@@ -291,7 +289,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
 	/**
@@ -348,7 +345,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
 	/**
@@ -380,7 +376,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
 	/**
@@ -399,7 +394,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
 	/**
@@ -418,7 +412,7 @@ declare module CSNetbankingSDK {
 	    /**
 	    * Get information about the subaccount's statements
 	    */
-	    statements: SubAccountStatementsResource;
+	    readonly statements: SubAccountStatementsResource;
 	}
 	/**
 	* List all subaccount's statements
@@ -437,7 +431,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
 	/**
@@ -465,7 +458,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
 	/**
@@ -501,7 +493,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
 	export class AccountStandingOrdersResource extends CSCoreSDK.Resource implements CSCoreSDK.PaginatedListEnabled<StandingOrder>, CSCoreSDK.HasInstanceResource<AccountStandingOrderResource>, CSCoreSDK.CreateEnabled<CreateStandingOrderRequest, StandingOrderResponse> {
@@ -650,7 +641,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
 	export class AccountDirectDebitsResource extends CSCoreSDK.Resource implements CSCoreSDK.PaginatedListEnabled<DirectDebit>, CSCoreSDK.HasInstanceResource<AccountDirectDebitResource>, CSCoreSDK.CreateEnabled<DirectDebit, SignableDirectDebit> {
@@ -759,7 +749,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
 	
@@ -800,37 +789,37 @@ declare module CSNetbankingSDK {
 	    /**
 	    * Get information about the account's balance
 	    */
-	    balance: AccountBalanceResource;
+	    readonly balance: AccountBalanceResource;
 	    /**
 	    * Get information about the account's services
 	    */
-	    services: AccountServicesResource;
+	    readonly services: AccountServicesResource;
 	    /**
 	    * Get information about the account's reservations
 	    */
-	    reservations: AccountReservationsResource;
+	    readonly reservations: AccountReservationsResource;
 	    /**
 	    * Get information about the account's repayments
 	    */
-	    repayments: AccountRepaymentsResource;
+	    readonly repayments: AccountRepaymentsResource;
 	    /**
 	    * Get information about the account's statements
 	    */
-	    statements: AccountStatementsResource;
+	    readonly statements: AccountStatementsResource;
 	    /**
 	    * Get information about the account's subaccounts
 	    */
-	    subAccounts: SubAccountsResource;
+	    readonly subAccounts: SubAccountsResource;
 	    /**
 	    * Get information about the account's transactions
 	    */
-	    transactions: AccountTransactionsResource;
+	    readonly transactions: AccountTransactionsResource;
 	    /**
 	    * Revolve a loan
 	    */
-	    transfer: AccountTransferResource;
-	    standingOrders: AccountStandingOrdersResource;
-	    directDebits: AccountDirectDebitsResource;
+	    readonly transfer: AccountTransferResource;
+	    readonly standingOrders: AccountStandingOrdersResource;
+	    readonly directDebits: AccountDirectDebitsResource;
 	}
 	export interface AccountList extends CSCoreSDK.PaginatedListResponse<MainAccount> {
 	}
@@ -1091,7 +1080,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	/**
 	 * List all past logins
@@ -1117,7 +1105,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
 	/**
@@ -1131,7 +1118,7 @@ declare module CSNetbankingSDK {
 	    /**
 	     * Returns LastLoginsResource for listing past logins
 	     */
-	    lastLogins: LastLoginsResource;
+	    readonly lastLogins: LastLoginsResource;
 	}
 	export interface Profile {
 	    /**
@@ -1170,7 +1157,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
 	/**
@@ -1241,7 +1227,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
 	/**
@@ -1272,7 +1257,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
 	/**
@@ -1303,7 +1287,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
 	
@@ -1371,7 +1354,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	/**
 	 * Get the 3D secure online shopping status
@@ -1403,7 +1385,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
 	/**
@@ -1444,7 +1425,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
 	/**
@@ -1463,7 +1443,7 @@ declare module CSNetbankingSDK {
 	    /**
 	     * Get statements of the account
 	     */
-	    statements: CardStatementsResource;
+	    readonly statements: CardStatementsResource;
 	}
 	/**
 	 * Get statements for an account
@@ -1481,7 +1461,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
 	
@@ -1516,32 +1495,32 @@ declare module CSNetbankingSDK {
 	    /**
 	    * Get current delivery settings
 	    */
-	    delivery: CardDeliveryResource;
+	    readonly delivery: CardDeliveryResource;
 	    /**
 	    * Allows to add or change a client's personal note and mark/star the card transaction as favorite/important for one specific transaction
 	    */
-	    transactions: CardTransactionsResource;
+	    readonly transactions: CardTransactionsResource;
 	    /**
 	    * Issue various actions on a single card. Currently supported actions are:
 	    * reissue pin, lock card, unlock card, activate card, set automatic card replacement on, set automatic card replacement off, replacement card request
 	    */
-	    actions: CardActionsResource;
+	    readonly actions: CardActionsResource;
 	    /**
 	    * Get information about different limits
 	    */
-	    limits: CardLimitsResource;
+	    readonly limits: CardLimitsResource;
 	    /**
 	    * Get the 3D secure online shopping status
 	    */
-	    secure3d: CardSecure3DResource;
+	    readonly secure3d: CardSecure3DResource;
 	    /**
 	    * Resource for paying up credit card debt
 	    */
-	    transfer: CardTransferResource;
+	    readonly transfer: CardTransferResource;
 	    /**
 	    * Account resource for listing statements
 	    */
-	    accounts: CardAccountsResource;
+	    readonly accounts: CardAccountsResource;
 	}
 	export interface CardList extends CSCoreSDK.PaginatedListResponse<Card> {
 	}
@@ -1718,7 +1697,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
 	/**
@@ -1753,7 +1731,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
 	
@@ -1868,7 +1845,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
 	/**
@@ -1903,7 +1879,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
 	/**
@@ -1969,7 +1944,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
 	
@@ -1984,7 +1958,7 @@ declare module CSNetbankingSDK {
 	    /**
 	    * Returns PaymentsResource for listing, deleting and accessing other information about payments
 	    */
-	    payments: PaymentsResource;
+	    readonly payments: PaymentsResource;
 	}
 	/**
 	* List payments, get individual payment and other resources
@@ -2001,19 +1975,19 @@ declare module CSNetbankingSDK {
 	    /**
 	    * Get currently available booking date
 	    */
-	    bookingDate: PaymentBookingDateResource;
+	    readonly bookingDate: PaymentBookingDateResource;
 	    /**
 	    * Create domestic payment order
 	    */
-	    domestic: PaymentsDomesticResource;
+	    readonly domestic: PaymentsDomesticResource;
 	    /**
 	    * Get remaining amounts for payment orders
 	    */
-	    limits: PaymentLimitsResource;
+	    readonly limits: PaymentLimitsResource;
 	    /**
 	    * Recharging the credit available on prepaid cards provided by Vodafone, T-Mobile or O2.
 	    */
-	    mobile: PaymentMobileResource;
+	    readonly mobile: PaymentMobileResource;
 	}
 	/**
 	* Individual Payment order resource
@@ -2151,7 +2125,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
 	export class SecurityTransactionsResource extends CSCoreSDK.Resource implements CSCoreSDK.HasInstanceResource<SecurityTransactionResource> {
@@ -2200,7 +2173,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
 	
@@ -2226,7 +2198,7 @@ declare module CSNetbankingSDK {
 	    /**
 	     * Returns security transactions resource
 	     */
-	    transactions: SecurityTransactionsResource;
+	    readonly transactions: SecurityTransactionsResource;
 	}
 	export interface SecurityList extends CSCoreSDK.PaginatedListResponse<Security> {
 	}
@@ -2332,7 +2304,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	export class SettingsResource extends CSCoreSDK.Resource implements CSCoreSDK.GetEnabled<Settings>, CSCoreSDK.UpdateEnabled<Settings, SignableSettings> {
 	    /**
@@ -2360,7 +2331,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	export class ContactsResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<Contact>, CSCoreSDK.HasInstanceResource<ContactResource> {
 	    /**
@@ -2455,7 +2425,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
 	export class PluginsResource extends CSCoreSDK.Resource implements CSCoreSDK.PaginatedListEnabled<Plugin>, CSCoreSDK.HasInstanceResource<PluginResource> {
@@ -2538,7 +2507,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
 	
@@ -2588,11 +2556,11 @@ declare module CSNetbankingSDK {
 	    /**
 	     * Get buildings contracts services resource
 	     */
-	    services: BuildingsContractsServicesResource;
+	    readonly services: BuildingsContractsServicesResource;
 	    /**
 	     * Get buildings contracts transactions resource
 	     */
-	    transactions: ContractsTransactionsResource;
+	    readonly transactions: ContractsTransactionsResource;
 	}
 	export interface BuildingsContractList extends CSCoreSDK.PaginatedListResponse<BuildingsContract> {
 	}
@@ -2742,7 +2710,7 @@ declare module CSNetbankingSDK {
 	    /**
 	     * Returns transactions resource for pension contract
 	     */
-	    transactions: ContractsTransactionsResource;
+	    readonly transactions: ContractsTransactionsResource;
 	}
 	export interface PensionList extends CSCoreSDK.PaginatedListResponse<Pension> {
 	}
@@ -3473,39 +3441,39 @@ declare module CSNetbankingSDK {
 	    /**
 	     * Returns funds resource for insurance contract
 	     */
-	    funds: InsurancesContractFundsResource;
+	    readonly funds: InsurancesContractFundsResource;
 	    /**
 	     * Returns beneficiaries resource for insurance contract
 	     */
-	    beneficiaries: InsurancesContractBeneficiariesResource;
+	    readonly beneficiaries: InsurancesContractBeneficiariesResource;
 	    /**
 	     * Returns insurees resource for insurance contract
 	     */
-	    insurees: InsurancesContractInsureesResource;
+	    readonly insurees: InsurancesContractInsureesResource;
 	    /**
 	     * Returns payments resource for insurance contract
 	     */
-	    payments: InsurancesContractPaymentsResource;
+	    readonly payments: InsurancesContractPaymentsResource;
 	    /**
 	     * Returns services resource for insurance contract
 	     */
-	    services: InsurancesContractServicesResource;
+	    readonly services: InsurancesContractServicesResource;
 	    /**
 	     * Returns events resource for insurance contract
 	     */
-	    events: InsurancesContractEventsResource;
+	    readonly events: InsurancesContractEventsResource;
 	    /**
 	     * Returns taxBenefits resource for insurance contract
 	     */
-	    taxBenefits: InsurancesContractTaxBenefitsResource;
+	    readonly taxBenefits: InsurancesContractTaxBenefitsResource;
 	    /**
 	     * Returns strategies resource for insurance contract
 	     */
-	    strategies: InsurancesContractStrategiesResource;
+	    readonly strategies: InsurancesContractStrategiesResource;
 	    /**
 	     * Returns transfer resource for insurance contract
 	     */
-	    transfer: InsurancesContractTransferResource;
+	    readonly transfer: InsurancesContractTransferResource;
 	}
 	export interface InsuranceList extends CSCoreSDK.PaginatedListResponse<Insurance> {
 	}
@@ -3736,7 +3704,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
 	
@@ -3746,24 +3713,23 @@ declare module CSNetbankingSDK {
 	    /**
 	     * Get buildings contracts resource
 	     */
-	    buildings: BuildingsContractsResource;
+	    readonly buildings: BuildingsContractsResource;
 	    /**
 	     * Get pensions contracts resource
 	     */
-	    pensions: PensionsContractsResource;
+	    readonly pensions: PensionsContractsResource;
 	    /**
 	     * Get insurances contracts resource
 	     */
-	    insurances: InsurancesContractsResource;
+	    readonly insurances: InsurancesContractsResource;
 	    /**
 	     * Get loyalty contracts resource
 	     */
-	    loyalty: LoyaltyContractsResource;
+	    readonly loyalty: LoyaltyContractsResource;
 	}
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
 	export class ServicesResource extends CSCoreSDK.Resource implements CSCoreSDK.PaginatedListEnabled<Service> {
@@ -3776,7 +3742,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
 	export class MessagesMandatoryResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<Message> {
@@ -3790,7 +3755,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	export class MessageAttachmentsResource extends CSCoreSDK.Resource implements CSCoreSDK.HasInstanceResource<MessageAttachmentResource> {
 	    /**
@@ -3807,7 +3771,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
 	
@@ -3824,7 +3787,7 @@ declare module CSNetbankingSDK {
 	    /**
 	     * Get messages mandatory resource
 	     */
-	    mandatory: MessagesMandatoryResource;
+	    readonly mandatory: MessagesMandatoryResource;
 	}
 	export class MessageResource extends CSCoreSDK.InstanceResource implements CSCoreSDK.GetEnabled<Message>, CSCoreSDK.UpdateEnabled<UpdateMessageRequest, NetbankingEmptyResponse>, CSCoreSDK.DeleteEnabled<NetbankingEmptyResponse> {
 	    /**
@@ -3842,7 +3805,7 @@ declare module CSNetbankingSDK {
 	    /**
 	     * Get messages attachments resource
 	     */
-	    attachments: MessageAttachmentsResource;
+	    readonly attachments: MessageAttachmentsResource;
 	}
 	export interface MessageList extends CSCoreSDK.PaginatedListResponse<Message> {
 	}
@@ -3905,7 +3868,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
 	export class TemplatesResource extends CSCoreSDK.Resource implements CSCoreSDK.PaginatedListEnabled<Template>, CSCoreSDK.HasInstanceResource<TemplateResource> {
@@ -3953,7 +3915,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
 	export class PhoneNumbersResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<PhoneNumber>, CSCoreSDK.CreateEnabled<PhoneNumberRequest, PhoneNumber>, CSCoreSDK.HasInstanceResource<PhoneNumberResource> {
@@ -4014,7 +3975,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
 	export class BudgetsResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<Budget> {
@@ -4053,7 +4013,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
 	export class GoalsResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<Goal>, CSCoreSDK.UpdateEnabled<UpdateGoal, UpdateGoal> {
@@ -4093,7 +4052,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	export class PromotionsResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<Promotion>, CSCoreSDK.CreateEnabled<CreatePromotionRequest, CreatePromotionResponse> {
 	    /**
@@ -4203,7 +4161,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
 	export class AuthorizationLimitsResource extends CSCoreSDK.Resource implements CSCoreSDK.ParametrizedListEnabled<AuthorizationLimitsParams, AuthorizationLimit>, CSCoreSDK.HasInstanceResource<AuthorizationLimitResource> {
@@ -4267,7 +4224,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
 	export class AuthorizationTokenResource extends CSCoreSDK.Resource implements CSCoreSDK.DeleteEnabled<NetbankingEmptyResponse> {
@@ -4279,7 +4235,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
 	export class BundlesResource extends CSCoreSDK.Resource implements CSCoreSDK.CreateEnabled<BundleCreateRequest, BundleResponse> {
@@ -4321,7 +4276,6 @@ declare module CSNetbankingSDK {
 
 }
 declare module CSNetbankingSDK {
-	/// <reference path="../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	
 	
 	
@@ -4357,34 +4311,34 @@ declare module CSNetbankingSDK {
 	    /**
 	     * List all accounts and get other information like balance, services, statements etc.
 	     */
-	    accounts: AccountsResource;
+	    readonly accounts: AccountsResource;
 	    /**
 	    * Get information about the current user's profile and past logins.
 	    */
-	    profile: ProfileResource;
+	    readonly profile: ProfileResource;
 	    /**
 	    * List all cards and other information like delivery, transactions, limits etc.
 	    */
-	    cards: CardsResource;
+	    readonly cards: CardsResource;
 	    /**
 	    * List, update and get payments, booking date or create and update domestic payments.
 	    */
-	    orders: OrdersResource;
-	    securities: SecuritiesResource;
-	    settings: SettingsResource;
-	    contacts: ContactsResource;
-	    plugins: PluginsResource;
-	    contracts: ContractsResource;
-	    services: ServicesResource;
-	    messages: MessagesResource;
-	    templates: TemplatesResource;
-	    phoneNumbers: PhoneNumbersResource;
-	    budgets: BudgetsResource;
-	    goals: GoalsResource;
-	    promotions: PromotionsResource;
-	    authorizationLimits: AuthorizationLimitsResource;
-	    authorizationToken: AuthorizationTokenResource;
-	    bundles: BundlesResource;
+	    readonly orders: OrdersResource;
+	    readonly securities: SecuritiesResource;
+	    readonly settings: SettingsResource;
+	    readonly contacts: ContactsResource;
+	    readonly plugins: PluginsResource;
+	    readonly contracts: ContractsResource;
+	    readonly services: ServicesResource;
+	    readonly messages: MessagesResource;
+	    readonly templates: TemplatesResource;
+	    readonly phoneNumbers: PhoneNumbersResource;
+	    readonly budgets: BudgetsResource;
+	    readonly goals: GoalsResource;
+	    readonly promotions: PromotionsResource;
+	    readonly authorizationLimits: AuthorizationLimitsResource;
+	    readonly authorizationToken: AuthorizationTokenResource;
+	    readonly bundles: BundlesResource;
 	}
 
 }

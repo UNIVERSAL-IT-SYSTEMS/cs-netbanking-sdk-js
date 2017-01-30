@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+        
+## [0.2.0] - 2017-01-30
 ### Changed
   - Migrate to Typescript 2
   - Make changes for CI publishing

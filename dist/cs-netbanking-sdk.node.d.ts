@@ -1,6 +1,6 @@
+/// <reference types="es6-promise" />
 declare module 'cs-netbanking-sdk/common' {
-	/// <reference path="../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	export interface Signable {
 	    /**
 	    * Infomation about the signing
@@ -221,8 +221,7 @@ declare module 'cs-netbanking-sdk/common' {
 
 }
 declare module 'cs-netbanking-sdk/accounts/balance' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Amount } from 'cs-netbanking-sdk/common';
 	/**
 	* Get information about the account's balance
@@ -250,8 +249,7 @@ declare module 'cs-netbanking-sdk/accounts/balance' {
 
 }
 declare module 'cs-netbanking-sdk/accounts/services' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	/**
 	* Get information about the account's services
 	*/
@@ -291,8 +289,7 @@ declare module 'cs-netbanking-sdk/accounts/services' {
 
 }
 declare module 'cs-netbanking-sdk/accounts/reservations' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Amount } from 'cs-netbanking-sdk/common';
 	/**
 	* Get information about the account's reservations
@@ -348,8 +345,7 @@ declare module 'cs-netbanking-sdk/accounts/reservations' {
 
 }
 declare module 'cs-netbanking-sdk/accounts/repayments' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Amount } from 'cs-netbanking-sdk/common';
 	/**
 	* Get information about the account's repayments
@@ -380,8 +376,7 @@ declare module 'cs-netbanking-sdk/accounts/repayments' {
 
 }
 declare module 'cs-netbanking-sdk/accounts/statements' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { StatementList, Statement, NetbankingParameters, DownloadStatementParameters } from 'cs-netbanking-sdk/common';
 	/**
 	* Get information about the account's statements
@@ -399,8 +394,7 @@ declare module 'cs-netbanking-sdk/accounts/statements' {
 
 }
 declare module 'cs-netbanking-sdk/accounts/subAccounts' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { StatementList, Statement, NetbankingParameters, DownloadStatementParameters } from 'cs-netbanking-sdk/common';
 	/**
 	* Get individual SubAccount resource
@@ -418,7 +412,7 @@ declare module 'cs-netbanking-sdk/accounts/subAccounts' {
 	    /**
 	    * Get information about the subaccount's statements
 	    */
-	    statements: SubAccountStatementsResource;
+	    readonly statements: SubAccountStatementsResource;
 	}
 	/**
 	* List all subaccount's statements
@@ -437,8 +431,7 @@ declare module 'cs-netbanking-sdk/accounts/subAccounts' {
 
 }
 declare module 'cs-netbanking-sdk/accounts/transactions' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { AddNoteAndMarkTransactionRequest, AddNoteAndMarkTransactionResponse, ExportTransactionsParameters } from 'cs-netbanking-sdk/common';
 	/**
 	* Get individual AccountsTransactionsResource
@@ -465,8 +458,7 @@ declare module 'cs-netbanking-sdk/accounts/transactions' {
 
 }
 declare module 'cs-netbanking-sdk/accounts/transfer' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Amount } from 'cs-netbanking-sdk/common';
 	/**
 	* Revolve a loan
@@ -501,8 +493,7 @@ declare module 'cs-netbanking-sdk/accounts/transfer' {
 
 }
 declare module 'cs-netbanking-sdk/accounts/standing-orders' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { AccountNumber, Amount, NetbankingParameters, Symbols } from 'cs-netbanking-sdk/common';
 	export class AccountStandingOrdersResource extends CSCoreSDK.Resource implements CSCoreSDK.PaginatedListEnabled<StandingOrder>, CSCoreSDK.HasInstanceResource<AccountStandingOrderResource>, CSCoreSDK.CreateEnabled<CreateStandingOrderRequest, StandingOrderResponse> {
 	    /**
@@ -650,8 +641,7 @@ declare module 'cs-netbanking-sdk/accounts/standing-orders' {
 
 }
 declare module 'cs-netbanking-sdk/accounts/direct-debits' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { AccountNumber, Amount, NetbankingParameters, Symbols } from 'cs-netbanking-sdk/common';
 	export class AccountDirectDebitsResource extends CSCoreSDK.Resource implements CSCoreSDK.PaginatedListEnabled<DirectDebit>, CSCoreSDK.HasInstanceResource<AccountDirectDebitResource>, CSCoreSDK.CreateEnabled<DirectDebit, SignableDirectDebit> {
 	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
@@ -759,8 +749,7 @@ declare module 'cs-netbanking-sdk/accounts/direct-debits' {
 
 }
 declare module 'cs-netbanking-sdk/accounts/accounts' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Signable, AccountNumber, Amount, NetbankingParameters } from 'cs-netbanking-sdk/common';
 	import { AccountBalanceResource } from 'cs-netbanking-sdk/accounts/balance';
 	import { AccountServicesResource } from 'cs-netbanking-sdk/accounts/services';
@@ -800,37 +789,37 @@ declare module 'cs-netbanking-sdk/accounts/accounts' {
 	    /**
 	    * Get information about the account's balance
 	    */
-	    balance: AccountBalanceResource;
+	    readonly balance: AccountBalanceResource;
 	    /**
 	    * Get information about the account's services
 	    */
-	    services: AccountServicesResource;
+	    readonly services: AccountServicesResource;
 	    /**
 	    * Get information about the account's reservations
 	    */
-	    reservations: AccountReservationsResource;
+	    readonly reservations: AccountReservationsResource;
 	    /**
 	    * Get information about the account's repayments
 	    */
-	    repayments: AccountRepaymentsResource;
+	    readonly repayments: AccountRepaymentsResource;
 	    /**
 	    * Get information about the account's statements
 	    */
-	    statements: AccountStatementsResource;
+	    readonly statements: AccountStatementsResource;
 	    /**
 	    * Get information about the account's subaccounts
 	    */
-	    subAccounts: SubAccountsResource;
+	    readonly subAccounts: SubAccountsResource;
 	    /**
 	    * Get information about the account's transactions
 	    */
-	    transactions: AccountTransactionsResource;
+	    readonly transactions: AccountTransactionsResource;
 	    /**
 	    * Revolve a loan
 	    */
-	    transfer: AccountTransferResource;
-	    standingOrders: AccountStandingOrdersResource;
-	    directDebits: AccountDirectDebitsResource;
+	    readonly transfer: AccountTransferResource;
+	    readonly standingOrders: AccountStandingOrdersResource;
+	    readonly directDebits: AccountDirectDebitsResource;
 	}
 	export interface AccountList extends CSCoreSDK.PaginatedListResponse<MainAccount> {
 	}
@@ -1091,8 +1080,7 @@ declare module 'cs-netbanking-sdk/accounts/accounts' {
 
 }
 declare module 'cs-netbanking-sdk/profile/lastLogins' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	/**
 	 * List all past logins
 	 */
@@ -1117,8 +1105,7 @@ declare module 'cs-netbanking-sdk/profile/lastLogins' {
 
 }
 declare module 'cs-netbanking-sdk/profile/profile' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { LastLoginsResource } from 'cs-netbanking-sdk/profile/lastLogins';
 	/**
 	* Get information about the profile and past logins.
@@ -1131,7 +1118,7 @@ declare module 'cs-netbanking-sdk/profile/profile' {
 	    /**
 	     * Returns LastLoginsResource for listing past logins
 	     */
-	    lastLogins: LastLoginsResource;
+	    readonly lastLogins: LastLoginsResource;
 	}
 	export interface Profile {
 	    /**
@@ -1170,8 +1157,7 @@ declare module 'cs-netbanking-sdk/profile/profile' {
 
 }
 declare module 'cs-netbanking-sdk/cards/delivery' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Signable, Address } from 'cs-netbanking-sdk/common';
 	/**
 	 * Get current delivery settings
@@ -1241,8 +1227,7 @@ declare module 'cs-netbanking-sdk/cards/delivery' {
 
 }
 declare module 'cs-netbanking-sdk/cards/transactions' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { AddNoteAndMarkTransactionRequest, ExportTransactionsParameters, Transaction, Signable } from 'cs-netbanking-sdk/common';
 	/**
 	* Allows to add or change a client's personal note and mark/star the card transaction as favorite/important for one specific transaction
@@ -1272,8 +1257,7 @@ declare module 'cs-netbanking-sdk/cards/transactions' {
 
 }
 declare module 'cs-netbanking-sdk/cards/actions' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Confirmation } from 'cs-netbanking-sdk/cards/delivery';
 	/**
 	 * Issue various actions on a single card.
@@ -1303,8 +1287,7 @@ declare module 'cs-netbanking-sdk/cards/actions' {
 
 }
 declare module 'cs-netbanking-sdk/cards/limits' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Amount } from 'cs-netbanking-sdk/common';
 	import { Confirmation } from 'cs-netbanking-sdk/cards/delivery';
 	/**
@@ -1371,8 +1354,7 @@ declare module 'cs-netbanking-sdk/cards/limits' {
 
 }
 declare module 'cs-netbanking-sdk/cards/secure3D' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	/**
 	 * Get the 3D secure online shopping status
 	 */
@@ -1403,8 +1385,7 @@ declare module 'cs-netbanking-sdk/cards/secure3D' {
 
 }
 declare module 'cs-netbanking-sdk/cards/transfer' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { AccountNumber, Amount } from 'cs-netbanking-sdk/common';
 	/**
 	 * Resource for paying up credit card debt
@@ -1444,8 +1425,7 @@ declare module 'cs-netbanking-sdk/cards/transfer' {
 
 }
 declare module 'cs-netbanking-sdk/cards/statements' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { StatementList, Statement, NetbankingParameters, DownloadStatementParameters } from 'cs-netbanking-sdk/common';
 	/**
 	 * Account resource for listing statements
@@ -1463,7 +1443,7 @@ declare module 'cs-netbanking-sdk/cards/statements' {
 	    /**
 	     * Get statements of the account
 	     */
-	    statements: CardStatementsResource;
+	    readonly statements: CardStatementsResource;
 	}
 	/**
 	 * Get statements for an account
@@ -1481,8 +1461,7 @@ declare module 'cs-netbanking-sdk/cards/statements' {
 
 }
 declare module 'cs-netbanking-sdk/cards/cards' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Amount, AccountNumber, Signable, NetbankingParameters } from 'cs-netbanking-sdk/common';
 	import { CardDeliveryResource } from 'cs-netbanking-sdk/cards/delivery';
 	import { CardTransactionsResource } from 'cs-netbanking-sdk/cards/transactions';
@@ -1516,32 +1495,32 @@ declare module 'cs-netbanking-sdk/cards/cards' {
 	    /**
 	    * Get current delivery settings
 	    */
-	    delivery: CardDeliveryResource;
+	    readonly delivery: CardDeliveryResource;
 	    /**
 	    * Allows to add or change a client's personal note and mark/star the card transaction as favorite/important for one specific transaction
 	    */
-	    transactions: CardTransactionsResource;
+	    readonly transactions: CardTransactionsResource;
 	    /**
 	    * Issue various actions on a single card. Currently supported actions are:
 	    * reissue pin, lock card, unlock card, activate card, set automatic card replacement on, set automatic card replacement off, replacement card request
 	    */
-	    actions: CardActionsResource;
+	    readonly actions: CardActionsResource;
 	    /**
 	    * Get information about different limits
 	    */
-	    limits: CardLimitsResource;
+	    readonly limits: CardLimitsResource;
 	    /**
 	    * Get the 3D secure online shopping status
 	    */
-	    secure3d: CardSecure3DResource;
+	    readonly secure3d: CardSecure3DResource;
 	    /**
 	    * Resource for paying up credit card debt
 	    */
-	    transfer: CardTransferResource;
+	    readonly transfer: CardTransferResource;
 	    /**
 	    * Account resource for listing statements
 	    */
-	    accounts: CardAccountsResource;
+	    readonly accounts: CardAccountsResource;
 	}
 	export interface CardList extends CSCoreSDK.PaginatedListResponse<Card> {
 	}
@@ -1718,8 +1697,7 @@ declare module 'cs-netbanking-sdk/cards/cards' {
 
 }
 declare module 'cs-netbanking-sdk/orders/bookingDate' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { AccountNumber } from 'cs-netbanking-sdk/common';
 	/**
 	* Get currently available booking date
@@ -1753,8 +1731,7 @@ declare module 'cs-netbanking-sdk/orders/bookingDate' {
 
 }
 declare module 'cs-netbanking-sdk/orders/domestic' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Amount, Symbols } from 'cs-netbanking-sdk/common';
 	import { Info, Payment } from 'cs-netbanking-sdk/orders/orders';
 	/**
@@ -1868,8 +1845,7 @@ declare module 'cs-netbanking-sdk/orders/domestic' {
 
 }
 declare module 'cs-netbanking-sdk/orders/limits' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Amount } from 'cs-netbanking-sdk/common';
 	/**
 	* Get remaining amounts for payment orders
@@ -1903,8 +1879,7 @@ declare module 'cs-netbanking-sdk/orders/limits' {
 
 }
 declare module 'cs-netbanking-sdk/orders/mobile' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Amount } from 'cs-netbanking-sdk/common';
 	/**
 	* Recharging the credit available on prepaid cards provided by Vodafone, T-Mobile or O2.
@@ -1969,8 +1944,7 @@ declare module 'cs-netbanking-sdk/orders/mobile' {
 
 }
 declare module 'cs-netbanking-sdk/orders/orders' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Amount, Signable, AccountNumber, NetbankingParameters, NetbankingEmptyResponse } from 'cs-netbanking-sdk/common';
 	import { PaymentBookingDateResource } from 'cs-netbanking-sdk/orders/bookingDate';
 	import { PaymentsDomesticResource } from 'cs-netbanking-sdk/orders/domestic';
@@ -1984,7 +1958,7 @@ declare module 'cs-netbanking-sdk/orders/orders' {
 	    /**
 	    * Returns PaymentsResource for listing, deleting and accessing other information about payments
 	    */
-	    payments: PaymentsResource;
+	    readonly payments: PaymentsResource;
 	}
 	/**
 	* List payments, get individual payment and other resources
@@ -2001,19 +1975,19 @@ declare module 'cs-netbanking-sdk/orders/orders' {
 	    /**
 	    * Get currently available booking date
 	    */
-	    bookingDate: PaymentBookingDateResource;
+	    readonly bookingDate: PaymentBookingDateResource;
 	    /**
 	    * Create domestic payment order
 	    */
-	    domestic: PaymentsDomesticResource;
+	    readonly domestic: PaymentsDomesticResource;
 	    /**
 	    * Get remaining amounts for payment orders
 	    */
-	    limits: PaymentLimitsResource;
+	    readonly limits: PaymentLimitsResource;
 	    /**
 	    * Recharging the credit available on prepaid cards provided by Vodafone, T-Mobile or O2.
 	    */
-	    mobile: PaymentMobileResource;
+	    readonly mobile: PaymentMobileResource;
 	}
 	/**
 	* Individual Payment order resource
@@ -2151,8 +2125,7 @@ declare module 'cs-netbanking-sdk/orders/orders' {
 
 }
 declare module 'cs-netbanking-sdk/securities/transactions' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { ExportTransactionsParameters } from 'cs-netbanking-sdk/common';
 	export class SecurityTransactionsResource extends CSCoreSDK.Resource implements CSCoreSDK.HasInstanceResource<SecurityTransactionResource> {
 	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
@@ -2200,8 +2173,7 @@ declare module 'cs-netbanking-sdk/securities/transactions' {
 
 }
 declare module 'cs-netbanking-sdk/securities/securities' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { SecurityTransactionsResource } from 'cs-netbanking-sdk/securities/transactions';
 	import { Amount } from 'cs-netbanking-sdk/common';
 	export class SecuritiesResource extends CSCoreSDK.Resource implements CSCoreSDK.PaginatedListEnabled<Security>, CSCoreSDK.HasInstanceResource<SecurityResource> {
@@ -2226,7 +2198,7 @@ declare module 'cs-netbanking-sdk/securities/securities' {
 	    /**
 	     * Returns security transactions resource
 	     */
-	    transactions: SecurityTransactionsResource;
+	    readonly transactions: SecurityTransactionsResource;
 	}
 	export interface SecurityList extends CSCoreSDK.PaginatedListResponse<Security> {
 	}
@@ -2332,8 +2304,7 @@ declare module 'cs-netbanking-sdk/securities/securities' {
 
 }
 declare module 'cs-netbanking-sdk/settings/settings' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	export class SettingsResource extends CSCoreSDK.Resource implements CSCoreSDK.GetEnabled<Settings>, CSCoreSDK.UpdateEnabled<Settings, SignableSettings> {
 	    /**
 	     * Returns basic user settings.
@@ -2360,8 +2331,7 @@ declare module 'cs-netbanking-sdk/settings/settings' {
 
 }
 declare module 'cs-netbanking-sdk/contacts/contacts' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	export class ContactsResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<Contact>, CSCoreSDK.HasInstanceResource<ContactResource> {
 	    /**
 	     * Resource represents list of contact information for current user. It can contain addresses, phones and email addresses.
@@ -2455,8 +2425,7 @@ declare module 'cs-netbanking-sdk/contacts/contacts' {
 
 }
 declare module 'cs-netbanking-sdk/plugins/plugins' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Amount, AccountNumber } from 'cs-netbanking-sdk/common';
 	export class PluginsResource extends CSCoreSDK.Resource implements CSCoreSDK.PaginatedListEnabled<Plugin>, CSCoreSDK.HasInstanceResource<PluginResource> {
 	    /**
@@ -2526,7 +2495,7 @@ declare module 'cs-netbanking-sdk/plugins/plugins' {
 }
 declare module 'cs-netbanking-sdk/contracts/buildings/services' {
 	/// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { ServiceList, Service, ServiceParameters } from 'cs-netbanking-sdk/accounts/services';
 	export class BuildingsContractsServicesResource extends CSCoreSDK.Resource implements CSCoreSDK.PaginatedListEnabled<Service> {
 	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
@@ -2538,8 +2507,7 @@ declare module 'cs-netbanking-sdk/contracts/buildings/services' {
 
 }
 declare module 'cs-netbanking-sdk/contracts/transactions' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { SecurityTransactionRequest, SecurityTransactionResponse } from 'cs-netbanking-sdk/securities/transactions';
 	import { ExportTransactionsParameters } from 'cs-netbanking-sdk/common';
 	export class ContractsTransactionsResource extends CSCoreSDK.Resource implements CSCoreSDK.HasInstanceResource<ContractsTransactionResource> {
@@ -2562,7 +2530,7 @@ declare module 'cs-netbanking-sdk/contracts/transactions' {
 }
 declare module 'cs-netbanking-sdk/contracts/buildings/buildings' {
 	/// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { BuildingsContractsServicesResource } from 'cs-netbanking-sdk/contracts/buildings/services';
 	import { ContractsTransactionsResource } from 'cs-netbanking-sdk/contracts/transactions';
 	import { AccountNumber, Amount } from 'cs-netbanking-sdk/common';
@@ -2588,11 +2556,11 @@ declare module 'cs-netbanking-sdk/contracts/buildings/buildings' {
 	    /**
 	     * Get buildings contracts services resource
 	     */
-	    services: BuildingsContractsServicesResource;
+	    readonly services: BuildingsContractsServicesResource;
 	    /**
 	     * Get buildings contracts transactions resource
 	     */
-	    transactions: ContractsTransactionsResource;
+	    readonly transactions: ContractsTransactionsResource;
 	}
 	export interface BuildingsContractList extends CSCoreSDK.PaginatedListResponse<BuildingsContract> {
 	}
@@ -2716,7 +2684,7 @@ declare module 'cs-netbanking-sdk/contracts/buildings/buildings' {
 }
 declare module 'cs-netbanking-sdk/contracts/pensions/pensions' {
 	/// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { ContractsTransactionsResource } from 'cs-netbanking-sdk/contracts/transactions';
 	import { Amount, Address } from 'cs-netbanking-sdk/common';
 	export class PensionsContractsResource extends CSCoreSDK.Resource implements CSCoreSDK.PaginatedListEnabled<Pension>, CSCoreSDK.HasInstanceResource<PensionsContractResource> {
@@ -2742,7 +2710,7 @@ declare module 'cs-netbanking-sdk/contracts/pensions/pensions' {
 	    /**
 	     * Returns transactions resource for pension contract
 	     */
-	    transactions: ContractsTransactionsResource;
+	    readonly transactions: ContractsTransactionsResource;
 	}
 	export interface PensionList extends CSCoreSDK.PaginatedListResponse<Pension> {
 	}
@@ -2940,7 +2908,7 @@ declare module 'cs-netbanking-sdk/contracts/pensions/pensions' {
 }
 declare module 'cs-netbanking-sdk/contracts/insurances/funds' {
 	/// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Amount } from 'cs-netbanking-sdk/common';
 	export class InsurancesContractFundsResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<Fund>, CSCoreSDK.UpdateEnabled<UpdateFundRequest, UpdateFundResponse> {
 	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
@@ -3008,7 +2976,7 @@ declare module 'cs-netbanking-sdk/contracts/insurances/funds' {
 }
 declare module 'cs-netbanking-sdk/contracts/insurances/beneficiaries' {
 	/// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	export class InsurancesContractBeneficiariesResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<InsuranceBeneficiary>, CSCoreSDK.UpdateEnabled<UpdateInsuranceBeneficiaries, UpdateInsuranceBeneficiaries> {
 	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
 	    /**
@@ -3055,7 +3023,7 @@ declare module 'cs-netbanking-sdk/contracts/insurances/beneficiaries' {
 }
 declare module 'cs-netbanking-sdk/contracts/insurances/insurees' {
 	/// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Address, Amount } from 'cs-netbanking-sdk/common';
 	export class InsurancesContractInsureesResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<Insuree> {
 	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
@@ -3122,7 +3090,7 @@ declare module 'cs-netbanking-sdk/contracts/insurances/insurees' {
 }
 declare module 'cs-netbanking-sdk/contracts/insurances/payments' {
 	/// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Amount } from 'cs-netbanking-sdk/common';
 	export class InsurancesContractPaymentsResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<ContractPayment> {
 	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
@@ -3182,7 +3150,7 @@ declare module 'cs-netbanking-sdk/contracts/insurances/payments' {
 }
 declare module 'cs-netbanking-sdk/contracts/insurances/services' {
 	/// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Amount } from 'cs-netbanking-sdk/common';
 	export class InsurancesContractServicesResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<InsuranceService> {
 	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
@@ -3257,7 +3225,7 @@ declare module 'cs-netbanking-sdk/contracts/insurances/services' {
 }
 declare module 'cs-netbanking-sdk/contracts/insurances/events' {
 	/// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Amount } from 'cs-netbanking-sdk/common';
 	export class InsurancesContractEventsResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<ContractEvent> {
 	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
@@ -3327,7 +3295,7 @@ declare module 'cs-netbanking-sdk/contracts/insurances/events' {
 }
 declare module 'cs-netbanking-sdk/contracts/insurances/tax-benefits' {
 	/// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Amount, AccountNumber } from 'cs-netbanking-sdk/common';
 	export class InsurancesContractTaxBenefitsResource extends CSCoreSDK.Resource implements CSCoreSDK.GetEnabled<TaxBenefit> {
 	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
@@ -3372,7 +3340,7 @@ declare module 'cs-netbanking-sdk/contracts/insurances/tax-benefits' {
 }
 declare module 'cs-netbanking-sdk/contracts/insurances/strategies' {
 	/// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	export class InsurancesContractStrategiesResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<any> {
 	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
 	    /**
@@ -3411,7 +3379,7 @@ declare module 'cs-netbanking-sdk/contracts/insurances/strategies' {
 }
 declare module 'cs-netbanking-sdk/contracts/insurances/transfer' {
 	/// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Amount, AccountNumber } from 'cs-netbanking-sdk/common';
 	export class InsurancesContractTransferResource extends CSCoreSDK.Resource implements CSCoreSDK.UpdateEnabled<UpdateContractTrasferRequest, UpdateContractTrasferResponse> {
 	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
@@ -3440,7 +3408,7 @@ declare module 'cs-netbanking-sdk/contracts/insurances/transfer' {
 }
 declare module 'cs-netbanking-sdk/contracts/insurances/insurances' {
 	/// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { InsurancesContractFundsResource } from 'cs-netbanking-sdk/contracts/insurances/funds';
 	import { InsurancesContractBeneficiariesResource } from 'cs-netbanking-sdk/contracts/insurances/beneficiaries';
 	import { InsurancesContractInsureesResource } from 'cs-netbanking-sdk/contracts/insurances/insurees';
@@ -3473,39 +3441,39 @@ declare module 'cs-netbanking-sdk/contracts/insurances/insurances' {
 	    /**
 	     * Returns funds resource for insurance contract
 	     */
-	    funds: InsurancesContractFundsResource;
+	    readonly funds: InsurancesContractFundsResource;
 	    /**
 	     * Returns beneficiaries resource for insurance contract
 	     */
-	    beneficiaries: InsurancesContractBeneficiariesResource;
+	    readonly beneficiaries: InsurancesContractBeneficiariesResource;
 	    /**
 	     * Returns insurees resource for insurance contract
 	     */
-	    insurees: InsurancesContractInsureesResource;
+	    readonly insurees: InsurancesContractInsureesResource;
 	    /**
 	     * Returns payments resource for insurance contract
 	     */
-	    payments: InsurancesContractPaymentsResource;
+	    readonly payments: InsurancesContractPaymentsResource;
 	    /**
 	     * Returns services resource for insurance contract
 	     */
-	    services: InsurancesContractServicesResource;
+	    readonly services: InsurancesContractServicesResource;
 	    /**
 	     * Returns events resource for insurance contract
 	     */
-	    events: InsurancesContractEventsResource;
+	    readonly events: InsurancesContractEventsResource;
 	    /**
 	     * Returns taxBenefits resource for insurance contract
 	     */
-	    taxBenefits: InsurancesContractTaxBenefitsResource;
+	    readonly taxBenefits: InsurancesContractTaxBenefitsResource;
 	    /**
 	     * Returns strategies resource for insurance contract
 	     */
-	    strategies: InsurancesContractStrategiesResource;
+	    readonly strategies: InsurancesContractStrategiesResource;
 	    /**
 	     * Returns transfer resource for insurance contract
 	     */
-	    transfer: InsurancesContractTransferResource;
+	    readonly transfer: InsurancesContractTransferResource;
 	}
 	export interface InsuranceList extends CSCoreSDK.PaginatedListResponse<Insurance> {
 	}
@@ -3707,7 +3675,7 @@ declare module 'cs-netbanking-sdk/contracts/insurances/insurances' {
 }
 declare module 'cs-netbanking-sdk/contracts/loyalty/loyalty' {
 	/// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	export class LoyaltyContractsResource extends CSCoreSDK.Resource implements CSCoreSDK.GetEnabled<Loyalty> {
 	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
 	    /**
@@ -3736,8 +3704,7 @@ declare module 'cs-netbanking-sdk/contracts/loyalty/loyalty' {
 
 }
 declare module 'cs-netbanking-sdk/contracts/contracts' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { BuildingsContractsResource } from 'cs-netbanking-sdk/contracts/buildings/buildings';
 	import { PensionsContractsResource } from 'cs-netbanking-sdk/contracts/pensions/pensions';
 	import { InsurancesContractsResource } from 'cs-netbanking-sdk/contracts/insurances/insurances';
@@ -3746,25 +3713,24 @@ declare module 'cs-netbanking-sdk/contracts/contracts' {
 	    /**
 	     * Get buildings contracts resource
 	     */
-	    buildings: BuildingsContractsResource;
+	    readonly buildings: BuildingsContractsResource;
 	    /**
 	     * Get pensions contracts resource
 	     */
-	    pensions: PensionsContractsResource;
+	    readonly pensions: PensionsContractsResource;
 	    /**
 	     * Get insurances contracts resource
 	     */
-	    insurances: InsurancesContractsResource;
+	    readonly insurances: InsurancesContractsResource;
 	    /**
 	     * Get loyalty contracts resource
 	     */
-	    loyalty: LoyaltyContractsResource;
+	    readonly loyalty: LoyaltyContractsResource;
 	}
 
 }
 declare module 'cs-netbanking-sdk/services/services' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { ServiceList, Service, ServiceParameters } from 'cs-netbanking-sdk/accounts/services';
 	export class ServicesResource extends CSCoreSDK.Resource implements CSCoreSDK.PaginatedListEnabled<Service> {
 	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
@@ -3776,8 +3742,7 @@ declare module 'cs-netbanking-sdk/services/services' {
 
 }
 declare module 'cs-netbanking-sdk/messages/mandatory' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Message } from 'cs-netbanking-sdk/messages/messages';
 	export class MessagesMandatoryResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<Message> {
 	    /**
@@ -3790,8 +3755,7 @@ declare module 'cs-netbanking-sdk/messages/mandatory' {
 
 }
 declare module 'cs-netbanking-sdk/messages/attachments' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	export class MessageAttachmentsResource extends CSCoreSDK.Resource implements CSCoreSDK.HasInstanceResource<MessageAttachmentResource> {
 	    /**
 	     * Get the resource of attachments
@@ -3807,8 +3771,7 @@ declare module 'cs-netbanking-sdk/messages/attachments' {
 
 }
 declare module 'cs-netbanking-sdk/messages/messages' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { MessagesMandatoryResource } from 'cs-netbanking-sdk/messages/mandatory';
 	import { MessageAttachmentsResource } from 'cs-netbanking-sdk/messages/attachments';
 	import { NetbankingEmptyResponse } from 'cs-netbanking-sdk/common';
@@ -3824,7 +3787,7 @@ declare module 'cs-netbanking-sdk/messages/messages' {
 	    /**
 	     * Get messages mandatory resource
 	     */
-	    mandatory: MessagesMandatoryResource;
+	    readonly mandatory: MessagesMandatoryResource;
 	}
 	export class MessageResource extends CSCoreSDK.InstanceResource implements CSCoreSDK.GetEnabled<Message>, CSCoreSDK.UpdateEnabled<UpdateMessageRequest, NetbankingEmptyResponse>, CSCoreSDK.DeleteEnabled<NetbankingEmptyResponse> {
 	    /**
@@ -3842,7 +3805,7 @@ declare module 'cs-netbanking-sdk/messages/messages' {
 	    /**
 	     * Get messages attachments resource
 	     */
-	    attachments: MessageAttachmentsResource;
+	    readonly attachments: MessageAttachmentsResource;
 	}
 	export interface MessageList extends CSCoreSDK.PaginatedListResponse<Message> {
 	}
@@ -3905,8 +3868,7 @@ declare module 'cs-netbanking-sdk/messages/messages' {
 
 }
 declare module 'cs-netbanking-sdk/templates/templates' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { AccountNumber } from 'cs-netbanking-sdk/common';
 	export class TemplatesResource extends CSCoreSDK.Resource implements CSCoreSDK.PaginatedListEnabled<Template>, CSCoreSDK.HasInstanceResource<TemplateResource> {
 	    /**
@@ -3953,8 +3915,7 @@ declare module 'cs-netbanking-sdk/templates/templates' {
 
 }
 declare module 'cs-netbanking-sdk/phone-numbers/phone-numbers' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { NetbankingEmptyResponse } from 'cs-netbanking-sdk/common';
 	export class PhoneNumbersResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<PhoneNumber>, CSCoreSDK.CreateEnabled<PhoneNumberRequest, PhoneNumber>, CSCoreSDK.HasInstanceResource<PhoneNumberResource> {
 	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
@@ -4014,8 +3975,7 @@ declare module 'cs-netbanking-sdk/phone-numbers/phone-numbers' {
 
 }
 declare module 'cs-netbanking-sdk/budgets/budgets' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Amount } from 'cs-netbanking-sdk/common';
 	export class BudgetsResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<Budget> {
 	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
@@ -4053,8 +4013,7 @@ declare module 'cs-netbanking-sdk/budgets/budgets' {
 
 }
 declare module 'cs-netbanking-sdk/goals/goals' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Amount } from 'cs-netbanking-sdk/common';
 	export class GoalsResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<Goal>, CSCoreSDK.UpdateEnabled<UpdateGoal, UpdateGoal> {
 	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
@@ -4093,8 +4052,7 @@ declare module 'cs-netbanking-sdk/goals/goals' {
 
 }
 declare module 'cs-netbanking-sdk/promotions/promotions' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	export class PromotionsResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<Promotion>, CSCoreSDK.CreateEnabled<CreatePromotionRequest, CreatePromotionResponse> {
 	    /**
 	     * Returns promotion list for the current user
@@ -4203,8 +4161,7 @@ declare module 'cs-netbanking-sdk/promotions/promotions' {
 
 }
 declare module 'cs-netbanking-sdk/authorization-limits/authorization-limits' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Amount } from 'cs-netbanking-sdk/common';
 	export class AuthorizationLimitsResource extends CSCoreSDK.Resource implements CSCoreSDK.ParametrizedListEnabled<AuthorizationLimitsParams, AuthorizationLimit>, CSCoreSDK.HasInstanceResource<AuthorizationLimitResource> {
 	    /**
@@ -4267,8 +4224,7 @@ declare module 'cs-netbanking-sdk/authorization-limits/authorization-limits' {
 
 }
 declare module 'cs-netbanking-sdk/authorization-token/authorization-token' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { NetbankingEmptyResponse } from 'cs-netbanking-sdk/common';
 	export class AuthorizationTokenResource extends CSCoreSDK.Resource implements CSCoreSDK.DeleteEnabled<NetbankingEmptyResponse> {
 	    /**
@@ -4279,8 +4235,7 @@ declare module 'cs-netbanking-sdk/authorization-token/authorization-token' {
 
 }
 declare module 'cs-netbanking-sdk/bundles/bundles' {
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { SignInfo } from 'cs-netbanking-sdk/common';
 	export class BundlesResource extends CSCoreSDK.Resource implements CSCoreSDK.CreateEnabled<BundleCreateRequest, BundleResponse> {
 	    create: (payload: BundleCreateRequest) => Promise<BundleResponse>;
@@ -4321,8 +4276,7 @@ declare module 'cs-netbanking-sdk/bundles/bundles' {
 
 }
 declare module 'cs-netbanking-sdk/netbanking' {
-	/// <reference path="../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
-	import CSCoreSDK = require('cs-core-sdk');
+	import * as CSCoreSDK from 'cs-core-sdk';
 	import { AccountsResource } from 'cs-netbanking-sdk/accounts/accounts';
 	import { ProfileResource } from 'cs-netbanking-sdk/profile/profile';
 	import { CardsResource } from 'cs-netbanking-sdk/cards/cards';
@@ -4357,34 +4311,34 @@ declare module 'cs-netbanking-sdk/netbanking' {
 	    /**
 	     * List all accounts and get other information like balance, services, statements etc.
 	     */
-	    accounts: AccountsResource;
+	    readonly accounts: AccountsResource;
 	    /**
 	    * Get information about the current user's profile and past logins.
 	    */
-	    profile: ProfileResource;
+	    readonly profile: ProfileResource;
 	    /**
 	    * List all cards and other information like delivery, transactions, limits etc.
 	    */
-	    cards: CardsResource;
+	    readonly cards: CardsResource;
 	    /**
 	    * List, update and get payments, booking date or create and update domestic payments.
 	    */
-	    orders: OrdersResource;
-	    securities: SecuritiesResource;
-	    settings: SettingsResource;
-	    contacts: ContactsResource;
-	    plugins: PluginsResource;
-	    contracts: ContractsResource;
-	    services: ServicesResource;
-	    messages: MessagesResource;
-	    templates: TemplatesResource;
-	    phoneNumbers: PhoneNumbersResource;
-	    budgets: BudgetsResource;
-	    goals: GoalsResource;
-	    promotions: PromotionsResource;
-	    authorizationLimits: AuthorizationLimitsResource;
-	    authorizationToken: AuthorizationTokenResource;
-	    bundles: BundlesResource;
+	    readonly orders: OrdersResource;
+	    readonly securities: SecuritiesResource;
+	    readonly settings: SettingsResource;
+	    readonly contacts: ContactsResource;
+	    readonly plugins: PluginsResource;
+	    readonly contracts: ContractsResource;
+	    readonly services: ServicesResource;
+	    readonly messages: MessagesResource;
+	    readonly templates: TemplatesResource;
+	    readonly phoneNumbers: PhoneNumbersResource;
+	    readonly budgets: BudgetsResource;
+	    readonly goals: GoalsResource;
+	    readonly promotions: PromotionsResource;
+	    readonly authorizationLimits: AuthorizationLimitsResource;
+	    readonly authorizationToken: AuthorizationTokenResource;
+	    readonly bundles: BundlesResource;
 	}
 
 }

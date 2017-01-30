@@ -46,13 +46,13 @@ module.exports =
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/// <reference types="es6-promise" />
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
 	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	var accounts_1 = __webpack_require__(2);
 	var profile_1 = __webpack_require__(13);
@@ -96,8 +96,9 @@ module.exports =
 	     * @param context WebApiContext object that allows for data sharing between clients
 	     */
 	    function NetbankingClient(config, context) {
-	        _super.call(this, config, '/api/v3/netbanking/my');
-	        this.sharedContext = context;
+	        var _this = _super.call(this, config, '/api/v3/netbanking/my') || this;
+	        _this.sharedContext = context;
+	        return _this;
 	    }
 	    Object.defineProperty(NetbankingClient.prototype, "accounts", {
 	        /**
@@ -265,7 +266,6 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	var balance_1 = __webpack_require__(3);
 	var services_1 = __webpack_require__(4);
@@ -283,12 +283,11 @@ module.exports =
 	var AccountsResource = (function (_super) {
 	    __extends(AccountsResource, _super);
 	    function AccountsResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * List all accounts
 	         */
-	        this.list = function (params) {
+	        _this.list = function (params) {
 	            // transform "sort" and "order" parameters to comma separated list from array
 	            CSCoreSDK.EntityUtils.transformArrayParamsToString(params, ['sort', 'order']);
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'accounts', params, function (response) {
@@ -304,9 +303,10 @@ module.exports =
 	        /**
 	        * Get the detail of the account with a given id
 	        */
-	        this.withId = function (id) {
+	        _this.withId = function (id) {
 	            return new AccountResource(id, _this.getPath(), _this._client);
 	        };
+	        return _this;
 	    }
 	    return AccountsResource;
 	}(CSCoreSDK.Resource));
@@ -317,12 +317,11 @@ module.exports =
 	var AccountResource = (function (_super) {
 	    __extends(AccountResource, _super);
 	    function AccountResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	        * Get account detail
 	        */
-	        this.get = function () {
+	        _this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null).then(function (response) {
 	                // add convenienxce methods
 	                resourcifyListing(response, _this, false);
@@ -334,7 +333,7 @@ module.exports =
 	        /**
 	        * Update account's settings.
 	        */
-	        this.update = function (payload) {
+	        _this.update = function (payload) {
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (response) {
 	                // add convenience methods
 	                resourcifyListing(response, _this, false);
@@ -343,6 +342,7 @@ module.exports =
 	                return response;
 	            });
 	        };
+	        return _this;
 	    }
 	    Object.defineProperty(AccountResource.prototype, "balance", {
 	        /**
@@ -479,7 +479,6 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	/**
 	* Get information about the account's balance
@@ -487,14 +486,14 @@ module.exports =
 	var AccountBalanceResource = (function (_super) {
 	    __extends(AccountBalanceResource, _super);
 	    function AccountBalanceResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	        * Fetches the balance and returns them in a promise
 	        */
-	        this.get = function () {
+	        _this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null);
 	        };
+	        return _this;
 	    }
 	    return AccountBalanceResource;
 	}(CSCoreSDK.Resource));
@@ -511,7 +510,6 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	/**
 	* Get information about the account's services
@@ -519,12 +517,11 @@ module.exports =
 	var AccountServicesResource = (function (_super) {
 	    __extends(AccountServicesResource, _super);
 	    function AccountServicesResource(basePath, client) {
-	        var _this = this;
-	        _super.call(this, basePath, client);
+	        var _this = _super.call(this, basePath, client) || this;
 	        /**
 	        * Fetches the services and returns them in a promise
 	        */
-	        this.list = function (params) {
+	        _this.list = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'services', params, function (response) {
 	                // transform ISO dates to native Date objects
 	                CSCoreSDK.EntityUtils.addDatesToItems(['dateFrom', 'dateTo'], response);
@@ -532,7 +529,8 @@ module.exports =
 	            });
 	        };
 	        // insert 'cz' resource into the resource's path because the api requires it in some resources
-	        this._path = this.getPath().replace('/my', '/cz/my');
+	        _this._path = _this.getPath().replace('/my', '/cz/my');
+	        return _this;
 	    }
 	    return AccountServicesResource;
 	}(CSCoreSDK.Resource));
@@ -549,7 +547,6 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	/**
 	* Get information about the account's reservations
@@ -557,18 +554,18 @@ module.exports =
 	var AccountReservationsResource = (function (_super) {
 	    __extends(AccountReservationsResource, _super);
 	    function AccountReservationsResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	        * Fetches the reservations and returns them in a promise
 	        */
-	        this.list = function (params) {
+	        _this.list = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'reservations', params, function (response) {
 	                // transform ISO dates to native Date objects
 	                CSCoreSDK.EntityUtils.addDatesToItems(['creationDate', 'expirationDate'], response);
 	                return response;
 	            });
 	        };
+	        return _this;
 	    }
 	    return AccountReservationsResource;
 	}(CSCoreSDK.Resource));
@@ -585,7 +582,6 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	/**
 	* Get information about the account's repayments
@@ -593,12 +589,11 @@ module.exports =
 	var AccountRepaymentsResource = (function (_super) {
 	    __extends(AccountRepaymentsResource, _super);
 	    function AccountRepaymentsResource(basePath, client) {
-	        var _this = this;
-	        _super.call(this, basePath, client);
+	        var _this = _super.call(this, basePath, client) || this;
 	        /**
 	        * Fetches the repayments and returns them in a promise
 	        */
-	        this.list = function () {
+	        _this.list = function () {
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'repayments', null).then(function (response) {
 	                // transform ISO dates to native Date objects
 	                CSCoreSDK.EntityUtils.addDatesToItems('repaymentDate', response);
@@ -606,7 +601,8 @@ module.exports =
 	            });
 	        };
 	        // insert 'cz' resource into the resource's path because the api requires it in some resources
-	        this._path = this.getPath().replace('/my', '/cz/my');
+	        _this._path = _this.getPath().replace('/my', '/cz/my');
+	        return _this;
 	    }
 	    return AccountRepaymentsResource;
 	}(CSCoreSDK.Resource));
@@ -623,7 +619,6 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	/**
 	* Get information about the account's statements
@@ -631,12 +626,11 @@ module.exports =
 	var AccountStatementsResource = (function (_super) {
 	    __extends(AccountStatementsResource, _super);
 	    function AccountStatementsResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	        * Fetches the statements and returns them in a promise
 	        */
-	        this.list = function (params) {
+	        _this.list = function (params) {
 	            // transform "sort" and "order" parameters to comma separated list from array
 	            CSCoreSDK.EntityUtils.transformArrayParamsToString(params, ['sort', 'order']);
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'statements', params, function (response) {
@@ -648,9 +642,10 @@ module.exports =
 	        /**
 	        * Downloads statements file
 	        */
-	        this.download = function (params) {
+	        _this.download = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallDownload(_this, 'signed/download', 'POST', params);
 	        };
+	        return _this;
 	    }
 	    return AccountStatementsResource;
 	}(CSCoreSDK.Resource));
@@ -667,7 +662,6 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	/**
 	* Get individual SubAccount resource
@@ -675,14 +669,14 @@ module.exports =
 	var SubAccountsResource = (function (_super) {
 	    __extends(SubAccountsResource, _super);
 	    function SubAccountsResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	        * Returns individual SubAccount resource with a given id
 	        */
-	        this.withId = function (id) {
+	        _this.withId = function (id) {
 	            return new SubAccountResource(id, _this.getPath(), _this._client);
 	        };
+	        return _this;
 	    }
 	    return SubAccountsResource;
 	}(CSCoreSDK.Resource));
@@ -693,7 +687,7 @@ module.exports =
 	var SubAccountResource = (function (_super) {
 	    __extends(SubAccountResource, _super);
 	    function SubAccountResource() {
-	        _super.apply(this, arguments);
+	        return _super !== null && _super.apply(this, arguments) || this;
 	    }
 	    Object.defineProperty(SubAccountResource.prototype, "statements", {
 	        /**
@@ -714,12 +708,11 @@ module.exports =
 	var SubAccountStatementsResource = (function (_super) {
 	    __extends(SubAccountStatementsResource, _super);
 	    function SubAccountStatementsResource(basePath, client) {
-	        var _this = this;
-	        _super.call(this, basePath, client);
+	        var _this = _super.call(this, basePath, client) || this;
 	        /**
 	        * Returns all subaccount's statements in a promise
 	        */
-	        this.list = function (params) {
+	        _this.list = function (params) {
 	            // transform "sort" and "order" parameters to comma separated list from array
 	            CSCoreSDK.EntityUtils.transformArrayParamsToString(params, ['sort', 'order']);
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'statements', params, function (response) {
@@ -731,11 +724,12 @@ module.exports =
 	        /**
 	        * Downloads statements file
 	        */
-	        this.download = function (params) {
+	        _this.download = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallDownload(_this, 'download', 'POST', params);
 	        };
 	        // insert 'cz' resource into the resource's path because the api requires it in some resources
-	        this._path = this.getPath().replace('/my', '/cz/my');
+	        _this._path = _this.getPath().replace('/my', '/cz/my');
+	        return _this;
 	    }
 	    return SubAccountStatementsResource;
 	}(CSCoreSDK.Resource));
@@ -752,7 +746,6 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	/**
 	* Get individual AccountsTransactionsResource
@@ -760,18 +753,17 @@ module.exports =
 	var AccountTransactionsResource = (function (_super) {
 	    __extends(AccountTransactionsResource, _super);
 	    function AccountTransactionsResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	        * Returns individual AccountsTransactionResource with a given id
 	        */
-	        this.withId = function (id) {
+	        _this.withId = function (id) {
 	            return new AccountTransactionResource(id, _this.getPath(), _this._client);
 	        };
 	        /**
 	        * Exports transaction history into signed pdf
 	        */
-	        this.export = function (params) {
+	        _this.export = function (params) {
 	            // transform "fields" parameter to comma separated list from array
 	            CSCoreSDK.EntityUtils.transformArrayParamsToString(params, 'fields');
 	            // transform Date objects to ISO strings
@@ -780,6 +772,7 @@ module.exports =
 	            var path = _this.getPath().replace('/my', '/cz/my');
 	            return _this._client.callApi(path + "/export", 'POST', params, null, null, 'arraybuffer');
 	        };
+	        return _this;
 	    }
 	    return AccountTransactionsResource;
 	}(CSCoreSDK.Resource));
@@ -790,14 +783,14 @@ module.exports =
 	var AccountTransactionResource = (function (_super) {
 	    __extends(AccountTransactionResource, _super);
 	    function AccountTransactionResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	        * Adds, changes of marks transaction
 	        */
-	        this.update = function (payload) {
+	        _this.update = function (payload) {
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload);
 	        };
+	        return _this;
 	    }
 	    return AccountTransactionResource;
 	}(CSCoreSDK.InstanceResource));
@@ -814,7 +807,6 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	/**
 	* Revolve a loan
@@ -822,12 +814,11 @@ module.exports =
 	var AccountTransferResource = (function (_super) {
 	    __extends(AccountTransferResource, _super);
 	    function AccountTransferResource(basePath, client) {
-	        var _this = this;
-	        _super.call(this, basePath, client);
+	        var _this = _super.call(this, basePath, client) || this;
 	        /**
 	        * Revolves the loan. Currently only REVOLVING_LOAN subtype is supported.
 	        */
-	        this.update = function (payload) {
+	        _this.update = function (payload) {
 	            // transform Date objects to ISO strings
 	            CSCoreSDK.EntityUtils.transformDatesToSimpleISO('transferDate', payload);
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (response) {
@@ -837,7 +828,8 @@ module.exports =
 	            });
 	        };
 	        // insert 'cz' resource into the resource's path because the api requires it in some resources
-	        this._path = this.getPath().replace('/my', '/cz/my');
+	        _this._path = _this.getPath().replace('/my', '/cz/my');
+	        return _this;
 	    }
 	    return AccountTransferResource;
 	}(CSCoreSDK.Resource));
@@ -854,17 +846,15 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	var AccountStandingOrdersResource = (function (_super) {
 	    __extends(AccountStandingOrdersResource, _super);
 	    function AccountStandingOrdersResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Returns list of actual standing/sweep orders for accounts of the current user.
 	         */
-	        this.list = function (params) {
+	        _this.list = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'standingOrders', params, function (response) {
 	                response.items.forEach(function (item) {
 	                    addDatesToStandingOrder(item);
@@ -876,13 +866,13 @@ module.exports =
 	        /**
 	         * Get the resource of standing order with a given id
 	         */
-	        this.withId = function (id) {
+	        _this.withId = function (id) {
 	            return new AccountStandingOrderResource(id, _this.getPath(), _this.getClient());
 	        };
 	        /**
 	         * Resource for creating standing/sweep order. Once order has been signed new payments are generated and executed according its settings.
 	         */
-	        this.create = function (payload) {
+	        _this.create = function (payload) {
 	            CSCoreSDK.EntityUtils.transformDatesToSimpleISO(['nextExecutionDate', 'lastExecutionDate', 'startDate'], payload);
 	            return CSCoreSDK.ResourceUtils.CallCreate(_this, payload).then(function (response) {
 	                addDatesToStandingOrder(response);
@@ -891,6 +881,7 @@ module.exports =
 	                return response;
 	            });
 	        };
+	        return _this;
 	    }
 	    return AccountStandingOrdersResource;
 	}(CSCoreSDK.Resource));
@@ -898,12 +889,11 @@ module.exports =
 	var AccountStandingOrderResource = (function (_super) {
 	    __extends(AccountStandingOrderResource, _super);
 	    function AccountStandingOrderResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Returns detail of actual standing/sweep orders identified by its number.
 	         */
-	        this.get = function () {
+	        _this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null).then(function (response) {
 	                addDatesToStandingOrder(response);
 	                resourcifyStandingOrder(response, _this);
@@ -913,7 +903,7 @@ module.exports =
 	        /**
 	         * This call removes existing standing/sweep order. No more payments for the order are executed after the change has been signed.
 	         */
-	        this.delete = function () {
+	        _this.delete = function () {
 	            return CSCoreSDK.ResourceUtils.CallDelete(_this, null).then(function (response) {
 	                addDatesToStandingOrder(response);
 	                resourcifyStandingOrder(response, _this);
@@ -921,6 +911,7 @@ module.exports =
 	                return response;
 	            });
 	        };
+	        return _this;
 	    }
 	    return AccountStandingOrderResource;
 	}(CSCoreSDK.InstanceResource));
@@ -951,17 +942,15 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	var AccountDirectDebitsResource = (function (_super) {
 	    __extends(AccountDirectDebitsResource, _super);
 	    function AccountDirectDebitsResource(basePath, client) {
-	        var _this = this;
-	        _super.call(this, basePath, client);
+	        var _this = _super.call(this, basePath, client) || this;
 	        /**
 	         * Resource Direct Debit List represents collection of all direct debit approvals entered by user for the specified user
 	         */
-	        this.list = function (params) {
+	        _this.list = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'directDebits', params, function (response) {
 	                CSCoreSDK.EntityUtils.addDatesToItems(['startDate', 'endDate', 'versionValidityDate'], response);
 	                return response;
@@ -970,13 +959,13 @@ module.exports =
 	        /**
 	         * Get the resource of direct debit with a given id
 	         */
-	        this.withId = function (id) {
+	        _this.withId = function (id) {
 	            return new AccountDirectDebitResource(id, _this.getPath(), _this.getClient());
 	        };
 	        /**
 	         * Resource for creating (or allowing) direct debit on certain account. Once signed it can be used by receiver party.
 	         */
-	        this.create = function (payload) {
+	        _this.create = function (payload) {
 	            CSCoreSDK.EntityUtils.transformDatesToSimpleISO(['startDate', 'endDate'], payload);
 	            return CSCoreSDK.ResourceUtils.CallCreate(_this, payload).then(function (response) {
 	                CSCoreSDK.EntityUtils.addDatesFromISO(['startDate', 'endDate', 'versionValidityDate'], response);
@@ -985,7 +974,8 @@ module.exports =
 	            });
 	        };
 	        // insert 'cz' resource into the resource's path because the api requires it in some resources
-	        this._path = this.getPath().replace('/my', '/cz/my');
+	        _this._path = _this.getPath().replace('/my', '/cz/my');
+	        return _this;
 	    }
 	    return AccountDirectDebitsResource;
 	}(CSCoreSDK.Resource));
@@ -993,12 +983,11 @@ module.exports =
 	var AccountDirectDebitResource = (function (_super) {
 	    __extends(AccountDirectDebitResource, _super);
 	    function AccountDirectDebitResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Get the single direct debits detail.
 	         */
-	        this.get = function () {
+	        _this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null).then(function (response) {
 	                CSCoreSDK.EntityUtils.addDatesFromISO(['startDate', 'endDate', 'versionValidityDate'], response);
 	                return response;
@@ -1007,13 +996,14 @@ module.exports =
 	        /**
 	         * Resource for deleting direct debit (permission) on certain account. Once signed no more transfers can be made by receiver party.
 	         */
-	        this.delete = function () {
+	        _this.delete = function () {
 	            return CSCoreSDK.ResourceUtils.CallDelete(_this, null).then(function (response) {
 	                CSCoreSDK.EntityUtils.addDatesFromISO(['startDate', 'endDate', 'versionValidityDate'], response);
 	                CSCoreSDK.SigningUtils.createSigningObject(response, _this.getClient(), _this.getPath());
 	                return response;
 	            });
 	        };
+	        return _this;
 	    }
 	    return AccountDirectDebitResource;
 	}(CSCoreSDK.InstanceResource));
@@ -1030,7 +1020,6 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	var lastLogins_1 = __webpack_require__(14);
 	/**
@@ -1039,12 +1028,11 @@ module.exports =
 	var ProfileResource = (function (_super) {
 	    __extends(ProfileResource, _super);
 	    function ProfileResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Returns information about the profile
 	         */
-	        this.get = function () {
+	        _this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null).then(function (profile) {
 	                if (profile.lastlogin) {
 	                    // transform ISO dates to native Date objects
@@ -1053,6 +1041,7 @@ module.exports =
 	                return profile;
 	            });
 	        };
+	        return _this;
 	    }
 	    Object.defineProperty(ProfileResource.prototype, "lastLogins", {
 	        /**
@@ -1079,7 +1068,6 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	/**
 	 * List all past logins
@@ -1087,18 +1075,18 @@ module.exports =
 	var LastLoginsResource = (function (_super) {
 	    __extends(LastLoginsResource, _super);
 	    function LastLoginsResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Returns promise with a list of past logins
 	         */
-	        this.list = function () {
+	        _this.list = function () {
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'lastlogin').then(function (response) {
 	                // transform ISO dates to native Date objects
 	                CSCoreSDK.EntityUtils.addDatesToItems('lastlogin', response);
 	                return response;
 	            });
 	        };
+	        return _this;
 	    }
 	    return LastLoginsResource;
 	}(CSCoreSDK.Resource));
@@ -1115,7 +1103,6 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	var delivery_1 = __webpack_require__(16);
 	var transactions_1 = __webpack_require__(17);
@@ -1130,12 +1117,11 @@ module.exports =
 	var CardsResource = (function (_super) {
 	    __extends(CardsResource, _super);
 	    function CardsResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	        * List all cards
 	        */
-	        this.list = function (params) {
+	        _this.list = function (params) {
 	            // transform "sort" and "order" parameters to comma separated list from array
 	            CSCoreSDK.EntityUtils.transformArrayParamsToString(params, ['sort', 'order']);
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'cards', params, function (response) {
@@ -1151,9 +1137,10 @@ module.exports =
 	        /**
 	        * Get a resource for card with a given id
 	        */
-	        this.withId = function (id) {
+	        _this.withId = function (id) {
 	            return new CardResource(id, _this.getPath(), _this.getClient());
 	        };
+	        return _this;
 	    }
 	    return CardsResource;
 	}(CSCoreSDK.Resource));
@@ -1161,12 +1148,11 @@ module.exports =
 	var CardResource = (function (_super) {
 	    __extends(CardResource, _super);
 	    function CardResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	        * Get detail of the card
 	        */
-	        this.get = function () {
+	        _this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null).then(function (card) {
 	                // add convenient methods to items in the list
 	                resourcifyListing(card, _this, false);
@@ -1178,7 +1164,7 @@ module.exports =
 	        /**
 	        * Update card's alias
 	        */
-	        this.update = function (payload) {
+	        _this.update = function (payload) {
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (card) {
 	                // add convenient methods to items in the list
 	                resourcifyListing(card, _this, false);
@@ -1187,6 +1173,7 @@ module.exports =
 	                return card;
 	            });
 	        };
+	        return _this;
 	    }
 	    Object.defineProperty(CardResource.prototype, "delivery", {
 	        /**
@@ -1290,7 +1277,6 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	/**
 	 * Get current delivery settings
@@ -1300,20 +1286,20 @@ module.exports =
 	var CardDeliveryResource = (function (_super) {
 	    __extends(CardDeliveryResource, _super);
 	    function CardDeliveryResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Returns current delivery settings
 	         */
-	        this.get = function () {
+	        _this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null);
 	        };
 	        /**
 	         * Change current delivery settings
 	         */
-	        this.update = function (payload) {
+	        _this.update = function (payload) {
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload);
 	        };
+	        return _this;
 	    }
 	    return CardDeliveryResource;
 	}(CSCoreSDK.Resource));
@@ -1330,7 +1316,6 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	/**
 	* Allows to add or change a client's personal note and mark/star the card transaction as favorite/important for one specific transaction
@@ -1338,18 +1323,17 @@ module.exports =
 	var CardTransactionsResource = (function (_super) {
 	    __extends(CardTransactionsResource, _super);
 	    function CardTransactionsResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Returns CardTransactionResource for a given id
 	         */
-	        this.withId = function (id) {
+	        _this.withId = function (id) {
 	            return new CardTransactionResource(id, _this.getPath(), _this._client);
 	        };
 	        /**
 	         * Export transactions to PDF
 	         */
-	        this.export = function (params) {
+	        _this.export = function (params) {
 	            // transform "fields" parameter to comma separated list from array
 	            CSCoreSDK.EntityUtils.transformArrayParamsToString(params, 'fields');
 	            // transform Date objects to ISO strings
@@ -1358,6 +1342,7 @@ module.exports =
 	            var path = _this.getPath().replace('/my', '/cz/my');
 	            return _this._client.callApi(path + "/export", 'POST', params, null, null, 'arraybuffer');
 	        };
+	        return _this;
 	    }
 	    return CardTransactionsResource;
 	}(CSCoreSDK.Resource));
@@ -1368,14 +1353,14 @@ module.exports =
 	var CardTransactionResource = (function (_super) {
 	    __extends(CardTransactionResource, _super);
 	    function CardTransactionResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	        * Adds, changes of marks transaction
 	        */
-	        this.update = function (payload) {
+	        _this.update = function (payload) {
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload);
 	        };
+	        return _this;
 	    }
 	    return CardTransactionResource;
 	}(CSCoreSDK.InstanceResource));
@@ -1392,7 +1377,6 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	/**
 	 * Issue various actions on a single card.
@@ -1400,18 +1384,18 @@ module.exports =
 	var CardActionsResource = (function (_super) {
 	    __extends(CardActionsResource, _super);
 	    function CardActionsResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Issues various actions on a single card
 	         */
-	        this.update = function (payload) {
+	        _this.update = function (payload) {
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (response) {
 	                // Remove signInfo from response and add SigningObject with key signing
 	                CSCoreSDK.SigningUtils.createSigningObject(response, _this.getClient(), _this.getPath());
 	                return response;
 	            });
 	        };
+	        return _this;
 	    }
 	    return CardActionsResource;
 	}(CSCoreSDK.Resource));
@@ -1428,7 +1412,6 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	/**
 	* Get information about different limits
@@ -1436,12 +1419,11 @@ module.exports =
 	var CardLimitsResource = (function (_super) {
 	    __extends(CardLimitsResource, _super);
 	    function CardLimitsResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * List all limits
 	         */
-	        this.list = function () {
+	        _this.list = function () {
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'limits').then(function (response) {
 	                // transform ISO dates to native Date objects
 	                CSCoreSDK.EntityUtils.addDatesToItems('temporaryLimitExpiration', response);
@@ -1451,7 +1433,7 @@ module.exports =
 	        /**
 	         * Update individual limits
 	         */
-	        this.update = function (payload) {
+	        _this.update = function (payload) {
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (response) {
 	                // transform ISO dates to native Date objects
 	                CSCoreSDK.EntityUtils.addDatesToItems('temporaryLimitExpiration', response, 'limits');
@@ -1460,6 +1442,7 @@ module.exports =
 	                return response;
 	            });
 	        };
+	        return _this;
 	    }
 	    return CardLimitsResource;
 	}(CSCoreSDK.Resource));
@@ -1476,7 +1459,6 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	/**
 	 * Get the 3D secure online shopping status
@@ -1484,14 +1466,14 @@ module.exports =
 	var CardSecure3DResource = (function (_super) {
 	    __extends(CardSecure3DResource, _super);
 	    function CardSecure3DResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Returns 3D secure online shopping status
 	         */
-	        this.get = function () {
+	        _this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null);
 	        };
+	        return _this;
 	    }
 	    return CardSecure3DResource;
 	}(CSCoreSDK.Resource));
@@ -1508,7 +1490,6 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	/**
 	 * Resource for paying up credit card debt
@@ -1516,18 +1497,18 @@ module.exports =
 	var CardTransferResource = (function (_super) {
 	    __extends(CardTransferResource, _super);
 	    function CardTransferResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Pays up the credit card debt and returns sign info
 	         */
-	        this.update = function (payload) {
+	        _this.update = function (payload) {
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (response) {
 	                // Remove signInfo from response and add SigningObject with key signing
 	                CSCoreSDK.SigningUtils.createSigningObject(response, _this.getClient(), _this.getPath());
 	                return response;
 	            });
 	        };
+	        return _this;
 	    }
 	    return CardTransferResource;
 	}(CSCoreSDK.Resource));
@@ -1544,7 +1525,6 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	/**
 	 * Account resource for listing statements
@@ -1552,14 +1532,14 @@ module.exports =
 	var CardAccountsResource = (function (_super) {
 	    __extends(CardAccountsResource, _super);
 	    function CardAccountsResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Returns CardAccountResource for an account with a given id
 	         */
-	        this.withId = function (id) {
+	        _this.withId = function (id) {
 	            return new CardAccountResource(id, _this.getPath(), _this._client);
 	        };
+	        return _this;
 	    }
 	    return CardAccountsResource;
 	}(CSCoreSDK.Resource));
@@ -1570,7 +1550,7 @@ module.exports =
 	var CardAccountResource = (function (_super) {
 	    __extends(CardAccountResource, _super);
 	    function CardAccountResource() {
-	        _super.apply(this, arguments);
+	        return _super !== null && _super.apply(this, arguments) || this;
 	    }
 	    Object.defineProperty(CardAccountResource.prototype, "statements", {
 	        /**
@@ -1591,12 +1571,11 @@ module.exports =
 	var CardStatementsResource = (function (_super) {
 	    __extends(CardStatementsResource, _super);
 	    function CardStatementsResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * List all statements
 	         */
-	        this.list = function (params) {
+	        _this.list = function (params) {
 	            // transform "sort" and "order" parameters to comma separated list from array
 	            CSCoreSDK.EntityUtils.transformArrayParamsToString(params, ['sort', 'order']);
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'statements', params, function (response) {
@@ -1608,9 +1587,10 @@ module.exports =
 	        /**
 	         * Download PDF with statements
 	         */
-	        this.download = function (params) {
+	        _this.download = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallDownload(_this, 'signed/download', 'POST', params);
 	        };
+	        return _this;
 	    }
 	    return CardStatementsResource;
 	}(CSCoreSDK.Resource));
@@ -1627,7 +1607,6 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	var bookingDate_1 = __webpack_require__(24);
 	var domestic_1 = __webpack_require__(25);
@@ -1639,7 +1618,7 @@ module.exports =
 	var OrdersResource = (function (_super) {
 	    __extends(OrdersResource, _super);
 	    function OrdersResource() {
-	        _super.apply(this, arguments);
+	        return _super !== null && _super.apply(this, arguments) || this;
 	    }
 	    Object.defineProperty(OrdersResource.prototype, "payments", {
 	        /**
@@ -1660,12 +1639,11 @@ module.exports =
 	var PaymentsResource = (function (_super) {
 	    __extends(PaymentsResource, _super);
 	    function PaymentsResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	        * List all payments
 	        */
-	        this.list = function (params) {
+	        _this.list = function (params) {
 	            // transform "sort" and "order" parameters to comma separated list from array
 	            CSCoreSDK.EntityUtils.transformArrayParamsToString(params, ['sort', 'order']);
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'order', params, function (response) {
@@ -1683,9 +1661,10 @@ module.exports =
 	        /**
 	        * Get individual payment with a given id
 	        */
-	        this.withId = function (id) {
+	        _this.withId = function (id) {
 	            return new PaymentResource(id, _this.getPath(), _this._client);
 	        };
+	        return _this;
 	    }
 	    Object.defineProperty(PaymentsResource.prototype, "bookingDate", {
 	        /**
@@ -1736,12 +1715,11 @@ module.exports =
 	var PaymentResource = (function (_super) {
 	    __extends(PaymentResource, _super);
 	    function PaymentResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	        * Get detail of the payment
 	        */
-	        this.get = function () {
+	        _this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null).then(function (payment) {
 	                // transform ISO dates to native Date objects
 	                CSCoreSDK.EntityUtils.addDatesFromISO(['cz-orderingDate', 'executionDate', 'modificationDate', 'transferDate'], payment);
@@ -1753,9 +1731,10 @@ module.exports =
 	        /**
 	        * Remove payment
 	        */
-	        this.delete = function () {
+	        _this.delete = function () {
 	            return CSCoreSDK.ResourceUtils.CallDelete(_this, null);
 	        };
+	        return _this;
 	    }
 	    return PaymentResource;
 	}(CSCoreSDK.InstanceResource));
@@ -1776,7 +1755,6 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	/**
 	* Get currently available booking date
@@ -1784,12 +1762,11 @@ module.exports =
 	var PaymentBookingDateResource = (function (_super) {
 	    __extends(PaymentBookingDateResource, _super);
 	    function PaymentBookingDateResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	        * Returns current available booking date based on the provided account and optional payment order category parameters
 	        */
-	        this.update = function (payload) {
+	        _this.update = function (payload) {
 	            // make copy of payload
 	            payload = JSON.parse(JSON.stringify(payload));
 	            // get account's ID from passed object
@@ -1803,6 +1780,7 @@ module.exports =
 	                return bookingDate;
 	            });
 	        };
+	        return _this;
 	    }
 	    return PaymentBookingDateResource;
 	}(CSCoreSDK.Resource));
@@ -1819,7 +1797,6 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	/**
 	* Create domestic payment order
@@ -1827,12 +1804,11 @@ module.exports =
 	var PaymentsDomesticResource = (function (_super) {
 	    __extends(PaymentsDomesticResource, _super);
 	    function PaymentsDomesticResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	        * Creates domestic payment order and returns it in promise
 	        */
-	        this.create = function (payload) {
+	        _this.create = function (payload) {
 	            // transform Date object to ISO strings
 	            CSCoreSDK.EntityUtils.transformDatesToISO('transferDate', payload);
 	            return CSCoreSDK.ResourceUtils.CallCreate(_this, payload).then(function (response) {
@@ -1846,9 +1822,10 @@ module.exports =
 	        /**
 	        * Returns PaymentDomesticResource resource for updating domestic payment
 	        */
-	        this.withId = function (id) {
+	        _this.withId = function (id) {
 	            return new PaymentDomesticResource(id, _this.getPath(), _this.getClient());
 	        };
+	        return _this;
 	    }
 	    return PaymentsDomesticResource;
 	}(CSCoreSDK.Resource));
@@ -1859,12 +1836,11 @@ module.exports =
 	var PaymentDomesticResource = (function (_super) {
 	    __extends(PaymentDomesticResource, _super);
 	    function PaymentDomesticResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	        * Updates domestic payment and returns it in promise
 	        */
-	        this.update = function (payload) {
+	        _this.update = function (payload) {
 	            // add ID to payload from resource id property
 	            payload.id = _this._id;
 	            // transform Date object to ISO strings
@@ -1877,6 +1853,7 @@ module.exports =
 	                return response;
 	            });
 	        };
+	        return _this;
 	    }
 	    return PaymentDomesticResource;
 	}(CSCoreSDK.InstanceResource));
@@ -1893,7 +1870,6 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	/**
 	* Get remaining amounts for payment orders
@@ -1901,14 +1877,14 @@ module.exports =
 	var PaymentLimitsResource = (function (_super) {
 	    __extends(PaymentLimitsResource, _super);
 	    function PaymentLimitsResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	        * List all limits for payment orders
 	        */
-	        this.list = function () {
+	        _this.list = function () {
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'remainingLimits', null);
 	        };
+	        return _this;
 	    }
 	    return PaymentLimitsResource;
 	}(CSCoreSDK.Resource));
@@ -1925,7 +1901,6 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	/**
 	* Recharging the credit available on prepaid cards provided by Vodafone, T-Mobile or O2.
@@ -1933,12 +1908,11 @@ module.exports =
 	var PaymentMobileResource = (function (_super) {
 	    __extends(PaymentMobileResource, _super);
 	    function PaymentMobileResource(basePath, client) {
-	        var _this = this;
-	        _super.call(this, basePath, client);
+	        var _this = _super.call(this, basePath, client) || this;
 	        /**
 	        * Recharge the credit on prepaid card
 	        */
-	        this.create = function (payload) {
+	        _this.create = function (payload) {
 	            return CSCoreSDK.ResourceUtils.CallCreate(_this, payload).then(function (response) {
 	                // Remove signInfo from response and add SigningObject with key signing
 	                CSCoreSDK.SigningUtils.createSigningObject(response, _this.getClient(), _this.getPath());
@@ -1946,7 +1920,8 @@ module.exports =
 	            });
 	        };
 	        // insert 'cz' resource into the resource's path because the api requires it in some resources
-	        this._path = this.getPath().replace('/my', '/cz/my');
+	        _this._path = _this.getPath().replace('/my', '/cz/my');
+	        return _this;
 	    }
 	    return PaymentMobileResource;
 	}(CSCoreSDK.Resource));
@@ -1963,18 +1938,16 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	var transactions_1 = __webpack_require__(29);
 	var SecuritiesResource = (function (_super) {
 	    __extends(SecuritiesResource, _super);
 	    function SecuritiesResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Returns list of securities accounts for current user. Securities account represents virtual account which holds securities titles and its shares (funds, bonds, etc.).
 	         */
-	        this.list = function (params) {
+	        _this.list = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'securitiesAccounts', params, function (response) {
 	                transformDatesInSubSecAccounts(response);
 	                response.items.forEach(function (sec) {
@@ -1986,9 +1959,10 @@ module.exports =
 	        /**
 	         * Get resource of security with a given id
 	         */
-	        this.withId = function (id) {
+	        _this.withId = function (id) {
 	            return new SecurityResource(id, _this.getPath(), _this.getClient());
 	        };
+	        return _this;
 	    }
 	    return SecuritiesResource;
 	}(CSCoreSDK.Resource));
@@ -1996,12 +1970,11 @@ module.exports =
 	var SecurityResource = (function (_super) {
 	    __extends(SecurityResource, _super);
 	    function SecurityResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Get a single securities account with all its details. Securities account represents virtual account which holds securities titles and its shares (funds, bonds, etc.).
 	         */
-	        this.get = function () {
+	        _this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null).then(function (response) {
 	                transformDatesInSubSecAccounts(response);
 	                resourcifySecurity(response, _this);
@@ -2011,7 +1984,7 @@ module.exports =
 	        /**
 	         * Allows to change a limited set of securities account-settings of one specific contract. Currently only the field alias can be changed. Change only to alias field must not be signed, but response is ready also for signing process.
 	         */
-	        this.update = function (payload) {
+	        _this.update = function (payload) {
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (response) {
 	                transformDatesInSubSecAccounts(response);
 	                resourcifySecurity(response, _this);
@@ -2019,6 +1992,7 @@ module.exports =
 	                return response;
 	            });
 	        };
+	        return _this;
 	    }
 	    Object.defineProperty(SecurityResource.prototype, "transactions", {
 	        /**
@@ -2057,30 +2031,29 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	var SecurityTransactionsResource = (function (_super) {
 	    __extends(SecurityTransactionsResource, _super);
 	    function SecurityTransactionsResource(basePath, client) {
-	        var _this = this;
-	        _super.call(this, basePath, client);
+	        var _this = _super.call(this, basePath, client) || this;
 	        /**
 	         * Get resource of security transaction with a given id
 	         */
-	        this.withId = function (id) {
+	        _this.withId = function (id) {
 	            return new SecurityTransactionResource(id, _this.getPath(), _this.getClient());
 	        };
 	        /**
 	         * Export transaction history into signed pdf.
 	         */
-	        this.export = function (params) {
+	        _this.export = function (params) {
 	            // transform "fields" parameter to comma separated list from array
 	            CSCoreSDK.EntityUtils.transformArrayParamsToString(params, 'fields');
 	            // transform Date objects to ISO strings
 	            CSCoreSDK.EntityUtils.transformDatesToISO(['dateFrom', 'dateTo'], params);
 	            return _this._client.callApi(_this.getPath() + "/export", 'POST', params, null, null, 'arraybuffer');
 	        };
-	        this._path = this.getPath().replace('/my', '/cz/my');
+	        _this._path = _this.getPath().replace('/my', '/cz/my');
+	        return _this;
 	    }
 	    return SecurityTransactionsResource;
 	}(CSCoreSDK.Resource));
@@ -2088,18 +2061,18 @@ module.exports =
 	var SecurityTransactionResource = (function (_super) {
 	    __extends(SecurityTransactionResource, _super);
 	    function SecurityTransactionResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Allows to add or change a client's personal note and mark/star the transaction as favorite/important for one specific transaction on selected product.
 	         */
-	        this.update = function (payload) {
+	        _this.update = function (payload) {
 	            payload.id = _this._id;
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (response) {
 	                CSCoreSDK.SigningUtils.createSigningObject(response, _this.getClient(), _this.getPath());
 	                return response;
 	            });
 	        };
+	        return _this;
 	    }
 	    return SecurityTransactionResource;
 	}(CSCoreSDK.InstanceResource));
@@ -2116,28 +2089,27 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	var SettingsResource = (function (_super) {
 	    __extends(SettingsResource, _super);
 	    function SettingsResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Returns basic user settings.
 	         */
-	        this.get = function () {
+	        _this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null);
 	        };
 	        /**
 	         * Change user settings. Currently only language can be changed by this endpoint.
 	         */
-	        this.update = function (payload) {
+	        _this.update = function (payload) {
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (response) {
 	                CSCoreSDK.SigningUtils.createSigningObject(response, _this.getClient(), _this.getPath());
 	                return response;
 	            });
 	        };
+	        return _this;
 	    }
 	    return SettingsResource;
 	}(CSCoreSDK.Resource));
@@ -2154,25 +2126,24 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	var ContactsResource = (function (_super) {
 	    __extends(ContactsResource, _super);
 	    function ContactsResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Resource represents list of contact information for current user. It can contain addresses, phones and email addresses.
 	         */
-	        this.list = function () {
+	        _this.list = function () {
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'contacts');
 	        };
 	        /**
 	         * Get the resource of contact with a given id
 	         */
-	        this.withId = function (id) {
+	        _this.withId = function (id) {
 	            return new ContactResource(id, _this.getPath(), _this.getClient());
 	        };
+	        return _this;
 	    }
 	    return ContactsResource;
 	}(CSCoreSDK.Resource));
@@ -2180,14 +2151,14 @@ module.exports =
 	var ContactResource = (function (_super) {
 	    __extends(ContactResource, _super);
 	    function ContactResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Resource represents one specific contact information identified by its id. It can be address, phone or email address.
 	         */
-	        this.get = function () {
+	        _this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null);
 	        };
+	        return _this;
 	    }
 	    return ContactResource;
 	}(CSCoreSDK.InstanceResource));
@@ -2204,17 +2175,15 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	var PluginsResource = (function (_super) {
 	    __extends(PluginsResource, _super);
 	    function PluginsResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Returns list of available plugins for current user. Plugin is application functionality which can be enabled/disabled by user.
 	         */
-	        this.list = function (params) {
+	        _this.list = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'plugins', params, function (response) {
 	                CSCoreSDK.EntityUtils.addDatesToItems(['validUntil', 'dateOfActivation'], response);
 	                return response;
@@ -2223,9 +2192,10 @@ module.exports =
 	        /**
 	         * Returns resource of plugin with a given id
 	         */
-	        this.withId = function (id) {
+	        _this.withId = function (id) {
 	            return new PluginResource(id, _this.getPath(), _this.getClient());
 	        };
+	        return _this;
 	    }
 	    return PluginsResource;
 	}(CSCoreSDK.Resource));
@@ -2233,18 +2203,18 @@ module.exports =
 	var PluginResource = (function (_super) {
 	    __extends(PluginResource, _super);
 	    function PluginResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Activation and deactivation of the specific plugin. You can also change settlement account for given plugin and current user.
 	         */
-	        this.update = function (payload) {
+	        _this.update = function (payload) {
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (response) {
 	                CSCoreSDK.EntityUtils.addDatesFromISO(['validUntil', 'dateOfActivation'], response);
 	                CSCoreSDK.SigningUtils.createSigningObject(response, _this.getClient(), _this.getPath());
 	                return response;
 	            });
 	        };
+	        return _this;
 	    }
 	    return PluginResource;
 	}(CSCoreSDK.InstanceResource));
@@ -2261,7 +2231,6 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	var buildings_1 = __webpack_require__(34);
 	var pensions_1 = __webpack_require__(37);
@@ -2270,7 +2239,7 @@ module.exports =
 	var ContractsResource = (function (_super) {
 	    __extends(ContractsResource, _super);
 	    function ContractsResource() {
-	        _super.apply(this, arguments);
+	        return _super !== null && _super.apply(this, arguments) || this;
 	    }
 	    Object.defineProperty(ContractsResource.prototype, "buildings", {
 	        /**
@@ -2334,12 +2303,11 @@ module.exports =
 	var BuildingsContractsResource = (function (_super) {
 	    __extends(BuildingsContractsResource, _super);
 	    function BuildingsContractsResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Resource represents list of building savings for current user. It contains building savings and loans from building savings as well.
 	         */
-	        this.list = function (params) {
+	        _this.list = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'buildings', params, function (response) {
 	                response.items.forEach(function (item) {
 	                    resourcifyBuildingsContracts(item, _this.withId(item.id));
@@ -2351,9 +2319,10 @@ module.exports =
 	        /**
 	         * Get the resource of buildings contract with a given id
 	         */
-	        this.withId = function (id) {
+	        _this.withId = function (id) {
 	            return new BuildingsContractResource(id, _this.getPath(), _this.getClient());
 	        };
+	        return _this;
 	    }
 	    return BuildingsContractsResource;
 	}(CSCoreSDK.Resource));
@@ -2361,12 +2330,11 @@ module.exports =
 	var BuildingsContractResource = (function (_super) {
 	    __extends(BuildingsContractResource, _super);
 	    function BuildingsContractResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Resource represents one building saving product identified by it's identifier. It can be building saving or loan from building saving.
 	         */
-	        this.get = function () {
+	        _this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null).then(function (response) {
 	                resourcifyBuildingsContracts(response, _this);
 	                transformDates(response);
@@ -2376,7 +2344,7 @@ module.exports =
 	        /**
 	         * Allows to change a limited set of building savings contract-settings of one specific contract. Currently only the field alias can be changed. Change only to alias field must not be signed, but response is ready also for signing process.
 	         */
-	        this.update = function (payload) {
+	        _this.update = function (payload) {
 	            payload.id = _this._id;
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (response) {
 	                resourcifyBuildingsContracts(response, _this);
@@ -2385,6 +2353,7 @@ module.exports =
 	                return response;
 	            });
 	        };
+	        return _this;
 	    }
 	    Object.defineProperty(BuildingsContractResource.prototype, "services", {
 	        /**
@@ -2440,18 +2409,18 @@ module.exports =
 	var BuildingsContractsServicesResource = (function (_super) {
 	    __extends(BuildingsContractsServicesResource, _super);
 	    function BuildingsContractsServicesResource(basePath, client) {
-	        var _this = this;
-	        _super.call(this, basePath, client);
+	        var _this = _super.call(this, basePath, client) || this;
 	        /**
 	         * Returns list of services which are connected or arranged for building saving product instance.
 	         */
-	        this.list = function (params) {
+	        _this.list = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'services', params, function (response) {
 	                CSCoreSDK.EntityUtils.addDatesToItems(['dateFrom', 'dateTo'], response);
 	                return response;
 	            });
 	        };
-	        this._path = this.getPath().replace('/my', '/cz/my');
+	        _this._path = _this.getPath().replace('/my', '/cz/my');
+	        return _this;
 	    }
 	    return BuildingsContractsServicesResource;
 	}(CSCoreSDK.Resource));
@@ -2468,29 +2437,28 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	var ContractsTransactionsResource = (function (_super) {
 	    __extends(ContractsTransactionsResource, _super);
 	    function ContractsTransactionsResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Get contract transaction resource with a given id
 	         */
-	        this.withId = function (id) {
+	        _this.withId = function (id) {
 	            return new ContractsTransactionResource(id, _this.getPath(), _this.getClient());
 	        };
 	        /**
 	         * Export transaction history into signed pdf.
 	         */
-	        this.export = function (params) {
+	        _this.export = function (params) {
 	            // transform "fields" parameter to comma separated list from array
 	            CSCoreSDK.EntityUtils.transformArrayParamsToString(params, 'fields');
 	            // transform Date objects to ISO strings
 	            CSCoreSDK.EntityUtils.transformDatesToISO(['dateFrom', 'dateTo'], params);
 	            return _this._client.callApi(_this.getPath() + "/export", 'POST', params, null, null, 'arraybuffer');
 	        };
+	        return _this;
 	    }
 	    return ContractsTransactionsResource;
 	}(CSCoreSDK.Resource));
@@ -2498,18 +2466,18 @@ module.exports =
 	var ContractsTransactionResource = (function (_super) {
 	    __extends(ContractsTransactionResource, _super);
 	    function ContractsTransactionResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Allows to add or change a client's personal note and mark/star the transaction as favorite/important for one specific transaction on selected product.
 	         */
-	        this.update = function (payload) {
+	        _this.update = function (payload) {
 	            payload.id = _this._id;
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (response) {
 	                CSCoreSDK.SigningUtils.createSigningObject(response, _this.getClient(), _this.getPath());
 	                return response;
 	            });
 	        };
+	        return _this;
 	    }
 	    return ContractsTransactionResource;
 	}(CSCoreSDK.InstanceResource));
@@ -2532,12 +2500,11 @@ module.exports =
 	var PensionsContractsResource = (function (_super) {
 	    __extends(PensionsContractsResource, _super);
 	    function PensionsContractsResource(basePath, client) {
-	        var _this = this;
-	        _super.call(this, basePath, client);
+	        var _this = _super.call(this, basePath, client) || this;
 	        /**
 	         * Returns list of pension products which belongs to current user. This includes Pension Savings, Supplementary Pension Insurance and Supplementary Pension Savings.
 	         */
-	        this.list = function (params) {
+	        _this.list = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'pensions', params, function (response) {
 	                response.items.forEach(function (item) {
 	                    transformDates(item);
@@ -2549,11 +2516,12 @@ module.exports =
 	        /**
 	         * Get the resource of pension contract with a given id
 	         */
-	        this.withId = function (id) {
+	        _this.withId = function (id) {
 	            return new PensionsContractResource(id, _this.getPath(), _this.getClient());
 	        };
 	        // insert 'cz' resource into the resource's path because the api requires it in some resources
-	        this._path = this.getPath().replace('/my', '/cz/my');
+	        _this._path = _this.getPath().replace('/my', '/cz/my');
+	        return _this;
 	    }
 	    return PensionsContractsResource;
 	}(CSCoreSDK.Resource));
@@ -2561,12 +2529,11 @@ module.exports =
 	var PensionsContractResource = (function (_super) {
 	    __extends(PensionsContractResource, _super);
 	    function PensionsContractResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Returns detail of pension product which belongs to current user. This can be Pension Saving, Supplementary Pension Insurance and Supplementary Pension Saving.
 	         */
-	        this.get = function () {
+	        _this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null).then(function (response) {
 	                transformDates(response);
 	                resourcifyPension(response, _this);
@@ -2576,7 +2543,7 @@ module.exports =
 	        /**
 	         * Allows to change a limited set of pension contract-settings of one specific contract. Currently only the field alias can be changed. Change only to alias field must not be signed, but response is ready also for signing process.
 	         */
-	        this.update = function (payload) {
+	        _this.update = function (payload) {
 	            payload.id = _this._id;
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (response) {
 	                transformDates(response);
@@ -2585,6 +2552,7 @@ module.exports =
 	                return response;
 	            });
 	        };
+	        return _this;
 	    }
 	    Object.defineProperty(PensionsContractResource.prototype, "transactions", {
 	        /**
@@ -2641,12 +2609,11 @@ module.exports =
 	var InsurancesContractsResource = (function (_super) {
 	    __extends(InsurancesContractsResource, _super);
 	    function InsurancesContractsResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Returns list of life insurances for current user.
 	         */
-	        this.list = function (params) {
+	        _this.list = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'insurances', params, function (response) {
 	                response.items.forEach(function (item) {
 	                    transformDates(item);
@@ -2658,9 +2625,10 @@ module.exports =
 	        /**
 	         * Get the resource of insurance contracts with a given id
 	         */
-	        this.withId = function (id) {
+	        _this.withId = function (id) {
 	            return new InsurancesContractResource(id, _this.getPath(), _this.getClient());
 	        };
+	        return _this;
 	    }
 	    return InsurancesContractsResource;
 	}(CSCoreSDK.Resource));
@@ -2668,12 +2636,11 @@ module.exports =
 	var InsurancesContractResource = (function (_super) {
 	    __extends(InsurancesContractResource, _super);
 	    function InsurancesContractResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Returns detail of the life insurance
 	         */
-	        this.get = function () {
+	        _this.get = function () {
 	            return _this._client.callApi(_this.getPath().replace('/my', '/cz/my') + "/detail", 'GET').then(function (response) {
 	                transformDates(response);
 	                resourcifyInsurance(response, _this);
@@ -2683,7 +2650,7 @@ module.exports =
 	        /**
 	         * Allows to change a limited set of insurance settings of one specific contract. Currently only the field alias can be changed. Change only to alias field must not be signed, but response is ready also for signing process.
 	         */
-	        this.update = function (payload) {
+	        _this.update = function (payload) {
 	            payload.id = _this._id;
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (response) {
 	                transformDates(response);
@@ -2692,6 +2659,7 @@ module.exports =
 	                return response;
 	            });
 	        };
+	        return _this;
 	    }
 	    Object.defineProperty(InsurancesContractResource.prototype, "funds", {
 	        /**
@@ -2821,25 +2789,25 @@ module.exports =
 	var InsurancesContractFundsResource = (function (_super) {
 	    __extends(InsurancesContractFundsResource, _super);
 	    function InsurancesContractFundsResource(basePath, client) {
-	        var _this = this;
-	        _super.call(this, basePath, client);
+	        var _this = _super.call(this, basePath, client) || this;
 	        /**
 	         * Returns detail of distribution of capital value into funds.
 	         */
-	        this.list = function () {
+	        _this.list = function () {
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'funds', null);
 	        };
 	        /**
 	         * Change the distribution of capital value into funds.
 	         */
-	        this.update = function (payload) {
+	        _this.update = function (payload) {
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (response) {
 	                CSCoreSDK.SigningUtils.createSigningObject(response, _this.getClient(), _this.getPath());
 	                return response;
 	            });
 	        };
 	        // insert 'cz' resource into the resource's path because the api requires it in some resources
-	        this._path = this.getPath().replace('/my', '/cz/my');
+	        _this._path = _this.getPath().replace('/my', '/cz/my');
+	        return _this;
 	    }
 	    return InsurancesContractFundsResource;
 	}(CSCoreSDK.Resource));
@@ -2861,12 +2829,11 @@ module.exports =
 	var InsurancesContractBeneficiariesResource = (function (_super) {
 	    __extends(InsurancesContractBeneficiariesResource, _super);
 	    function InsurancesContractBeneficiariesResource(basePath, client) {
-	        var _this = this;
-	        _super.call(this, basePath, client);
+	        var _this = _super.call(this, basePath, client) || this;
 	        /**
 	         * Returns list of beneficiaries related to the insurance contract.
 	         */
-	        this.list = function () {
+	        _this.list = function () {
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'beneficiaries', null).then(function (response) {
 	                CSCoreSDK.EntityUtils.addDatesToItems(['birthdate'], response);
 	                return response;
@@ -2875,7 +2842,7 @@ module.exports =
 	        /**
 	         * Change beneficiaries and distribution of insurance among beneficiaries.
 	         */
-	        this.update = function (payload) {
+	        _this.update = function (payload) {
 	            if (payload && Array.isArray(payload.beneficiaries)) {
 	                payload.beneficiaries.forEach(function (x) {
 	                    CSCoreSDK.EntityUtils.transformDatesToSimpleISO(['birthdate'], x);
@@ -2887,7 +2854,8 @@ module.exports =
 	            });
 	        };
 	        // insert 'cz' resource into the resource's path because the api requires it in some resources
-	        this._path = this.getPath().replace('/my', '/cz/my');
+	        _this._path = _this.getPath().replace('/my', '/cz/my');
+	        return _this;
 	    }
 	    return InsurancesContractBeneficiariesResource;
 	}(CSCoreSDK.Resource));
@@ -2909,16 +2877,16 @@ module.exports =
 	var InsurancesContractInsureesResource = (function (_super) {
 	    __extends(InsurancesContractInsureesResource, _super);
 	    function InsurancesContractInsureesResource(basePath, client) {
-	        var _this = this;
-	        _super.call(this, basePath, client);
+	        var _this = _super.call(this, basePath, client) || this;
 	        /**
 	         * Returns list of insurees related to the insurance contract.
 	         */
-	        this.list = function () {
+	        _this.list = function () {
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'insurees');
 	        };
 	        // insert 'cz' resource into the resource's path because the api requires it in some resources
-	        this._path = this.getPath().replace('/my', '/cz/my');
+	        _this._path = _this.getPath().replace('/my', '/cz/my');
+	        return _this;
 	    }
 	    return InsurancesContractInsureesResource;
 	}(CSCoreSDK.Resource));
@@ -2940,19 +2908,19 @@ module.exports =
 	var InsurancesContractPaymentsResource = (function (_super) {
 	    __extends(InsurancesContractPaymentsResource, _super);
 	    function InsurancesContractPaymentsResource(basePath, client) {
-	        var _this = this;
-	        _super.call(this, basePath, client);
+	        var _this = _super.call(this, basePath, client) || this;
 	        /**
 	         * Returns list of life insurance payments. List contains one upcoming payment and payments history for 2 years.
 	         */
-	        this.list = function () {
+	        _this.list = function () {
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'payments').then(function (response) {
 	                CSCoreSDK.EntityUtils.addDatesToItems(['transactionDate', 'instructionFrom', 'instructionTo'], response);
 	                return response;
 	            });
 	        };
 	        // insert 'cz' resource into the resource's path because the api requires it in some resources
-	        this._path = this.getPath().replace('/my', '/cz/my');
+	        _this._path = _this.getPath().replace('/my', '/cz/my');
+	        return _this;
 	    }
 	    return InsurancesContractPaymentsResource;
 	}(CSCoreSDK.Resource));
@@ -2974,12 +2942,11 @@ module.exports =
 	var InsurancesContractServicesResource = (function (_super) {
 	    __extends(InsurancesContractServicesResource, _super);
 	    function InsurancesContractServicesResource(basePath, client) {
-	        var _this = this;
-	        _super.call(this, basePath, client);
+	        var _this = _super.call(this, basePath, client) || this;
 	        /**
 	         * Returns list of services for the life insurance
 	         */
-	        this.list = function () {
+	        _this.list = function () {
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'services').then(function (response) {
 	                response.items.forEach(function (x) {
 	                    transformDates(x);
@@ -2990,7 +2957,7 @@ module.exports =
 	        /**
 	         * Allows activation of risk sports insurance.
 	         */
-	        this.activateRiskSports = function (payload) {
+	        _this.activateRiskSports = function (payload) {
 	            CSCoreSDK.EntityUtils.transformDatesToSimpleISO(['dateFrom', 'dateTo'], payload);
 	            return CSCoreSDK.ResourceUtils.CallUpdateWithSuffix(_this, 'riskSportsActivation', payload).then(function (response) {
 	                transformDates(response);
@@ -3001,7 +2968,7 @@ module.exports =
 	        /**
 	         * Allows deactivation of risk sports insurance.
 	         */
-	        this.deactivateRiskSports = function (payload) {
+	        _this.deactivateRiskSports = function (payload) {
 	            CSCoreSDK.EntityUtils.transformDatesToSimpleISO(['dateFrom', 'dateTo'], payload);
 	            return CSCoreSDK.ResourceUtils.CallUpdateWithSuffix(_this, 'riskSportsDeactivation', payload).then(function (response) {
 	                CSCoreSDK.SigningUtils.createSigningObject(response, _this.getClient(), _this.getPath());
@@ -3009,7 +2976,8 @@ module.exports =
 	            });
 	        };
 	        // insert 'cz' resource into the resource's path because the api requires it in some resources
-	        this._path = this.getPath().replace('/my', '/cz/my');
+	        _this._path = _this.getPath().replace('/my', '/cz/my');
+	        return _this;
 	    }
 	    return InsurancesContractServicesResource;
 	}(CSCoreSDK.Resource));
@@ -3034,12 +3002,11 @@ module.exports =
 	var InsurancesContractEventsResource = (function (_super) {
 	    __extends(InsurancesContractEventsResource, _super);
 	    function InsurancesContractEventsResource(basePath, client) {
-	        var _this = this;
-	        _super.call(this, basePath, client);
+	        var _this = _super.call(this, basePath, client) || this;
 	        /**
 	         * Returns list of events for the life insurance
 	         */
-	        this.list = function () {
+	        _this.list = function () {
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'events').then(function (response) {
 	                response.items.forEach(function (item) {
 	                    CSCoreSDK.EntityUtils.addDatesFromISO(['substateDate', 'processingDate', 'creationDate'], item);
@@ -3053,7 +3020,8 @@ module.exports =
 	            });
 	        };
 	        // insert 'cz' resource into the resource's path because the api requires it in some resources
-	        this._path = this.getPath().replace('/my', '/cz/my');
+	        _this._path = _this.getPath().replace('/my', '/cz/my');
+	        return _this;
 	    }
 	    return InsurancesContractEventsResource;
 	}(CSCoreSDK.Resource));
@@ -3075,16 +3043,16 @@ module.exports =
 	var InsurancesContractTaxBenefitsResource = (function (_super) {
 	    __extends(InsurancesContractTaxBenefitsResource, _super);
 	    function InsurancesContractTaxBenefitsResource(basePath, client) {
-	        var _this = this;
-	        _super.call(this, basePath, client);
+	        var _this = _super.call(this, basePath, client) || this;
 	        /**
 	         * Returns tax benefits for the life insurance
 	         */
-	        this.get = function () {
+	        _this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null);
 	        };
 	        // insert 'cz' resource into the resource's path because the api requires it in some resources
-	        this._path = this.getPath().replace('/my', '/cz/my');
+	        _this._path = _this.getPath().replace('/my', '/cz/my');
+	        return _this;
 	    }
 	    return InsurancesContractTaxBenefitsResource;
 	}(CSCoreSDK.Resource));
@@ -3106,16 +3074,16 @@ module.exports =
 	var InsurancesContractStrategiesResource = (function (_super) {
 	    __extends(InsurancesContractStrategiesResource, _super);
 	    function InsurancesContractStrategiesResource(basePath, client) {
-	        var _this = this;
-	        _super.call(this, basePath, client);
+	        var _this = _super.call(this, basePath, client) || this;
 	        /**
 	         * Returns list of strategies with corresponsing funds allocation for the life insurance
 	         */
-	        this.list = function () {
+	        _this.list = function () {
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'strategies');
 	        };
 	        // insert 'cz' resource into the resource's path because the api requires it in some resources
-	        this._path = this.getPath().replace('/my', '/cz/my');
+	        _this._path = _this.getPath().replace('/my', '/cz/my');
+	        return _this;
 	    }
 	    return InsurancesContractStrategiesResource;
 	}(CSCoreSDK.Resource));
@@ -3137,19 +3105,19 @@ module.exports =
 	var InsurancesContractTransferResource = (function (_super) {
 	    __extends(InsurancesContractTransferResource, _super);
 	    function InsurancesContractTransferResource(basePath, client) {
-	        var _this = this;
-	        _super.call(this, basePath, client);
+	        var _this = _super.call(this, basePath, client) || this;
 	        /**
 	         * Creates insurance transfer - premium payment, extra deposit or recommended deposit.
 	         */
-	        this.update = function (payload) {
+	        _this.update = function (payload) {
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (response) {
 	                CSCoreSDK.SigningUtils.createSigningObject(response, _this.getClient(), _this.getPath());
 	                return response;
 	            });
 	        };
 	        // insert 'cz' resource into the resource's path because the api requires it in some resources
-	        this._path = this.getPath().replace('/my', '/cz/my');
+	        _this._path = _this.getPath().replace('/my', '/cz/my');
+	        return _this;
 	    }
 	    return InsurancesContractTransferResource;
 	}(CSCoreSDK.Resource));
@@ -3171,19 +3139,19 @@ module.exports =
 	var LoyaltyContractsResource = (function (_super) {
 	    __extends(LoyaltyContractsResource, _super);
 	    function LoyaltyContractsResource(basePath, client) {
-	        var _this = this;
-	        _super.call(this, basePath, client);
+	        var _this = _super.call(this, basePath, client) || this;
 	        /**
 	         * Get data about iBod account of the current client.
 	         */
-	        this.get = function () {
+	        _this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null).then(function (response) {
 	                CSCoreSDK.EntityUtils.addDatesFromISO('exportDate', response);
 	                return response;
 	            });
 	        };
 	        // insert 'cz' resource into the resource's path because the api requires it in some resources
-	        this._path = this.getPath().replace('/my', '/cz/my');
+	        _this._path = _this.getPath().replace('/my', '/cz/my');
+	        return _this;
 	    }
 	    return LoyaltyContractsResource;
 	}(CSCoreSDK.Resource));
@@ -3200,24 +3168,23 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	var ServicesResource = (function (_super) {
 	    __extends(ServicesResource, _super);
 	    function ServicesResource(basePath, client) {
-	        var _this = this;
-	        _super.call(this, basePath, client);
+	        var _this = _super.call(this, basePath, client) || this;
 	        /**
 	         * Returns possibly empty list of services for current user. This resource represents only services which are not bound to any product.
 	         */
-	        this.list = function (params) {
+	        _this.list = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'services', params, function (response) {
 	                CSCoreSDK.EntityUtils.addDatesToItems(['dateFrom', 'dateTo'], response);
 	                return response;
 	            });
 	        };
 	        // insert 'cz' resource into the resource's path because the api requires it in some resources
-	        this._path = this.getPath().replace('/my', '/cz/my');
+	        _this._path = _this.getPath().replace('/my', '/cz/my');
+	        return _this;
 	    }
 	    return ServicesResource;
 	}(CSCoreSDK.Resource));
@@ -3234,19 +3201,17 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	var mandatory_1 = __webpack_require__(51);
 	var attachments_1 = __webpack_require__(52);
 	var MessagesResource = (function (_super) {
 	    __extends(MessagesResource, _super);
 	    function MessagesResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Get all messages for current user generated by bank itself. Message can be read or unread, mandatory and non-mandatory. This call might return different messages based on appId of the caller (for example, some messages might be specific to an application).
 	         */
-	        this.list = function (params) {
+	        _this.list = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'messages', params, function (response) {
 	                response.items.forEach(function (item) {
 	                    transformDates(item);
@@ -3258,9 +3223,10 @@ module.exports =
 	        /**
 	         * Get the resource of message with a given id
 	         */
-	        this.withId = function (id) {
+	        _this.withId = function (id) {
 	            return new MessageResource(id, _this.getPath(), _this.getClient());
 	        };
+	        return _this;
 	    }
 	    Object.defineProperty(MessagesResource.prototype, "mandatory", {
 	        /**
@@ -3278,12 +3244,11 @@ module.exports =
 	var MessageResource = (function (_super) {
 	    __extends(MessageResource, _super);
 	    function MessageResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Get one specific messages for current user generated by bank itself. Message can be read or unread, mandatory and non-mandatory.
 	         */
-	        this.get = function () {
+	        _this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null).then(function (response) {
 	                transformDates(response);
 	                resourcifyMessages(response, _this);
@@ -3293,15 +3258,16 @@ module.exports =
 	        /**
 	         * After message has been read by user it should be marked accordingly by this endpoint.
 	         */
-	        this.update = function (payload) {
+	        _this.update = function (payload) {
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload);
 	        };
 	        /**
 	         * Resource for deleting message by its identifier. Only read messages can be deleted.
 	         */
-	        this.delete = function () {
+	        _this.delete = function () {
 	            return CSCoreSDK.ResourceUtils.CallDelete(_this, null);
 	        };
+	        return _this;
 	    }
 	    Object.defineProperty(MessageResource.prototype, "attachments", {
 	        /**
@@ -3337,22 +3303,21 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	var MessagesMandatoryResource = (function (_super) {
 	    __extends(MessagesMandatoryResource, _super);
 	    function MessagesMandatoryResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Returns all mandatory messages. This call might return different messages based on appId of the caller (for example, some messages might be specific to an application). Which messages can be seen by which application can be configured on the presto server side.
 	         */
-	        this.list = function () {
+	        _this.list = function () {
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'messages').then(function (response) {
 	                CSCoreSDK.EntityUtils.addDatesToItems(['date'], response);
 	                return response;
 	            });
 	        };
+	        return _this;
 	    }
 	    return MessagesMandatoryResource;
 	}(CSCoreSDK.Resource));
@@ -3369,19 +3334,18 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	var MessageAttachmentsResource = (function (_super) {
 	    __extends(MessageAttachmentsResource, _super);
 	    function MessageAttachmentsResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Get the resource of attachments
 	         */
-	        this.withId = function (id) {
+	        _this.withId = function (id) {
 	            return new MessageAttachmentResource(id, _this.getPath(), _this.getClient());
 	        };
+	        return _this;
 	    }
 	    return MessageAttachmentsResource;
 	}(CSCoreSDK.Resource));
@@ -3389,14 +3353,14 @@ module.exports =
 	var MessageAttachmentResource = (function (_super) {
 	    __extends(MessageAttachmentResource, _super);
 	    function MessageAttachmentResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Downloads attachment file. The binary representation of an attachment file, with a “Content-Disposition” header of type attachment (including the filename), in order to instruct the browser to open a save dialog.
 	         */
-	        this.download = function () {
+	        _this.download = function () {
 	            return CSCoreSDK.ResourceUtils.CallDownload(_this, null, 'POST');
 	        };
+	        return _this;
 	    }
 	    return MessageAttachmentResource;
 	}(CSCoreSDK.InstanceResource));
@@ -3413,17 +3377,15 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	var TemplatesResource = (function (_super) {
 	    __extends(TemplatesResource, _super);
 	    function TemplatesResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * List of payment templates for current user.
 	         */
-	        this.list = function (params) {
+	        _this.list = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'templates', params, function (response) {
 	                response.items.forEach(function (item) {
 	                    resourcifyTemplates(item, _this.withId(item.id));
@@ -3434,9 +3396,10 @@ module.exports =
 	        /**
 	         * Get resource for template with a given id
 	         */
-	        this.withId = function (id) {
+	        _this.withId = function (id) {
 	            return new TemplateResource(id, _this.getPath(), _this.getClient());
 	        };
+	        return _this;
 	    }
 	    return TemplatesResource;
 	}(CSCoreSDK.Resource));
@@ -3444,17 +3407,17 @@ module.exports =
 	var TemplateResource = (function (_super) {
 	    __extends(TemplateResource, _super);
 	    function TemplateResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Get payment template detail
 	         */
-	        this.get = function () {
+	        _this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null).then(function (response) {
 	                resourcifyTemplates(response, _this);
 	                return response;
 	            });
 	        };
+	        return _this;
 	    }
 	    return TemplateResource;
 	}(CSCoreSDK.InstanceResource));
@@ -3474,17 +3437,15 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	var PhoneNumbersResource = (function (_super) {
 	    __extends(PhoneNumbersResource, _super);
 	    function PhoneNumbersResource(basePath, client) {
-	        var _this = this;
-	        _super.call(this, basePath, client);
+	        var _this = _super.call(this, basePath, client) || this;
 	        /**
 	         * Returns list of phone numbers
 	         */
-	        this.list = function () {
+	        _this.list = function () {
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'phoneNumbers').then(function (response) {
 	                response.items.forEach(function (x) {
 	                    resourcifyPhoneNumbers(x, _this.withId(x.id));
@@ -3495,7 +3456,7 @@ module.exports =
 	        /**
 	         * Creates new phone number
 	         */
-	        this.create = function (payload) {
+	        _this.create = function (payload) {
 	            return CSCoreSDK.ResourceUtils.CallCreate(_this, payload).then(function (response) {
 	                resourcifyPhoneNumbers(response, _this.withId(response.id));
 	                return response;
@@ -3504,11 +3465,12 @@ module.exports =
 	        /**
 	         * Get single phone number with a given id
 	         */
-	        this.withId = function (id) {
+	        _this.withId = function (id) {
 	            return new PhoneNumberResource(id, _this.getPath(), _this.getClient());
 	        };
 	        // insert 'cz' resource into the resource's path because the api requires it in some resources
-	        this._path = this.getPath().replace('/my', '/cz/my');
+	        _this._path = _this.getPath().replace('/my', '/cz/my');
+	        return _this;
 	    }
 	    return PhoneNumbersResource;
 	}(CSCoreSDK.Resource));
@@ -3516,12 +3478,11 @@ module.exports =
 	var PhoneNumberResource = (function (_super) {
 	    __extends(PhoneNumberResource, _super);
 	    function PhoneNumberResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Updates phone number
 	         */
-	        this.update = function (payload) {
+	        _this.update = function (payload) {
 	            payload.id = _this._id;
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (response) {
 	                resourcifyPhoneNumbers(response, _this);
@@ -3531,9 +3492,10 @@ module.exports =
 	        /**
 	         * Deletes phone number
 	         */
-	        this.delete = function () {
+	        _this.delete = function () {
 	            return CSCoreSDK.ResourceUtils.CallDelete(_this, null);
 	        };
+	        return _this;
 	    }
 	    return PhoneNumberResource;
 	}(CSCoreSDK.InstanceResource));
@@ -3554,26 +3516,25 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	var BudgetsResource = (function (_super) {
 	    __extends(BudgetsResource, _super);
 	    function BudgetsResource(basePath, client) {
-	        var _this = this;
-	        _super.call(this, basePath, client);
+	        var _this = _super.call(this, basePath, client) || this;
 	        /**
 	         * Returns list of user's tracked categories and its limits.
 	         */
-	        this.list = function () {
+	        _this.list = function () {
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'budgets');
 	        };
 	        /**
 	         * Set new value of tracked categories.
 	         */
-	        this.update = function (payload) {
+	        _this.update = function (payload) {
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload);
 	        };
-	        this._path = this.getPath().replace('/my', '/cz/my');
+	        _this._path = _this.getPath().replace('/my', '/cz/my');
+	        return _this;
 	    }
 	    return BudgetsResource;
 	}(CSCoreSDK.Resource));
@@ -3590,17 +3551,15 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	var GoalsResource = (function (_super) {
 	    __extends(GoalsResource, _super);
 	    function GoalsResource(basePath, client) {
-	        var _this = this;
-	        _super.call(this, basePath, client);
+	        var _this = _super.call(this, basePath, client) || this;
 	        /**
 	         * Returns list of user's saving goals except of completed ones. In price, only CZK currency is supported. If user has never set any goal, the response is empty.
 	         */
-	        this.list = function () {
+	        _this.list = function () {
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'goals').then(function (response) {
 	                response.items.forEach(function (item) {
 	                    transformDates(item);
@@ -3611,7 +3570,7 @@ module.exports =
 	        /**
 	         * Set new value of goals. In price, only CZK currency is supported. If completed flag is not present, false value is supposed. All goals of given client are replaced - old ones (except of completed) are deleted and these new specified are inserted.
 	         */
-	        this.update = function (payload) {
+	        _this.update = function (payload) {
 	            if (Array.isArray(payload.goals)) {
 	                payload.goals.forEach(function (goal) {
 	                    if (goal.deadline && Object.prototype.toString.call(goal.deadline) === '[object Date]') {
@@ -3627,7 +3586,8 @@ module.exports =
 	            });
 	        };
 	        // insert 'cz' resource into the resource's path because the api requires it in some resources
-	        this._path = this.getPath().replace('/my', '/cz/my');
+	        _this._path = _this.getPath().replace('/my', '/cz/my');
+	        return _this;
 	    }
 	    return GoalsResource;
 	}(CSCoreSDK.Resource));
@@ -3649,25 +3609,24 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	var PromotionsResource = (function (_super) {
 	    __extends(PromotionsResource, _super);
 	    function PromotionsResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Returns promotion list for the current user
 	         */
-	        this.list = function () {
+	        _this.list = function () {
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'promotions');
 	        };
 	        /**
 	         * Hide specified promotion
 	         */
-	        this.create = function (payload) {
+	        _this.create = function (payload) {
 	            return _this._client.callApi(_this.getPath().replace('promotions', 'actions'), 'POST', null, payload);
 	        };
+	        return _this;
 	    }
 	    return PromotionsResource;
 	}(CSCoreSDK.Resource));
@@ -3684,17 +3643,15 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	var AuthorizationLimitsResource = (function (_super) {
 	    __extends(AuthorizationLimitsResource, _super);
 	    function AuthorizationLimitsResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Return all user local specific payment order entry limits for for all user active authorization methods and channels/applications used in country.
 	         */
-	        this.list = function (params) {
+	        _this.list = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'limits', params).then(function (response) {
 	                response.items.forEach(function (x) {
 	                    resourcifyLimits(x, _this.withId(x.id));
@@ -3705,9 +3662,10 @@ module.exports =
 	        /**
 	         * Get the resource of authorization limit with a given id
 	         */
-	        this.withId = function (id) {
+	        _this.withId = function (id) {
 	            return new AuthorizationLimitResource(id, _this.getPath(), _this.getClient());
 	        };
+	        return _this;
 	    }
 	    return AuthorizationLimitsResource;
 	}(CSCoreSDK.Resource));
@@ -3715,17 +3673,17 @@ module.exports =
 	var AuthorizationLimitResource = (function (_super) {
 	    __extends(AuthorizationLimitResource, _super);
 	    function AuthorizationLimitResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Return local specific payment order entry limits valid for combination of user, authorization method and used channel/application. For example user could define different limits for TAC authorization via George and mobile applications.
 	         */
-	        this.get = function () {
+	        _this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null).then(function (response) {
 	                resourcifyLimits(response, _this);
 	                return response;
 	            });
 	        };
+	        return _this;
 	    }
 	    return AuthorizationLimitResource;
 	}(CSCoreSDK.InstanceResource));
@@ -3745,19 +3703,18 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	var AuthorizationTokenResource = (function (_super) {
 	    __extends(AuthorizationTokenResource, _super);
 	    function AuthorizationTokenResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Invalidate authorization token.
 	         */
-	        this.delete = function () {
+	        _this.delete = function () {
 	            return _this._client.callApi(_this.getPath().replace('/my', ''), 'DELETE');
 	        };
+	        return _this;
 	    }
 	    return AuthorizationTokenResource;
 	}(CSCoreSDK.Resource));
@@ -3774,19 +3731,18 @@ module.exports =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	/// <reference path="../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	var BundlesResource = (function (_super) {
 	    __extends(BundlesResource, _super);
 	    function BundlesResource() {
-	        var _this = this;
-	        _super.apply(this, arguments);
-	        this.create = function (payload) {
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
+	        _this.create = function (payload) {
 	            return CSCoreSDK.ResourceUtils.CallCreate(_this, payload).then(function (response) {
 	                CSCoreSDK.SigningUtils.createSigningObject(response, _this.getClient(), _this.getPath() + "/" + response.id);
 	                return response;
 	            });
 	        };
+	        return _this;
 	    }
 	    return BundlesResource;
 	}(CSCoreSDK.Resource));
