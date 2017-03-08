@@ -2,11 +2,18 @@ import * as CSCoreSDK from 'cs-core-sdk';
 import { Amount } from '../common';
 
 /**
-* Get information about the account's repayments
-*/
+ * Get information about the account's repayments
+ * @class AccountRepaymentsResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.ListEnabled<Repayment>}
+ */
 export class AccountRepaymentsResource extends CSCoreSDK.Resource
   implements CSCoreSDK.ListEnabled<Repayment> {
 
+  /**
+   * @param {string} basePath
+   * @param {CSCoreSDK.WebApiClient} client 
+   */
   constructor(basePath: string, client: CSCoreSDK.WebApiClient) {
     super(basePath, client);
 
@@ -15,8 +22,9 @@ export class AccountRepaymentsResource extends CSCoreSDK.Resource
   }
 
   /**
-  * Fetches the repayments and returns them in a promise
-  */
+   * Fetches the repayments and returns them in a promise
+   * @returns {Promise<RepaymentList>}
+   */
   list = (): Promise<RepaymentList> => {
 
     return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'repayments', null).then(response => {
@@ -29,8 +37,15 @@ export class AccountRepaymentsResource extends CSCoreSDK.Resource
   }
 }
 
+/**
+ * @interface RepaymentList
+ * @extends {CSCoreSDK.PaginatedListResponse<Repayment>}
+ */
 export interface RepaymentList extends CSCoreSDK.PaginatedListResponse<Repayment> { }
 
+/**
+ * @interface Repayment
+ */
 export interface Repayment {
 
   /**

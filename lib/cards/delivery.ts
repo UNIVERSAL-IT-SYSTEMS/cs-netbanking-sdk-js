@@ -3,27 +3,35 @@ import { Signable, Address } from '../common';
 
 /**
  * Get current delivery settings
+ * @class CardDeliveryResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.GetEnabled<DeliveryListing>}
+ * @implements {CSCoreSDK.UpdateEnabled<ChangeDeliverySettingsRequest, ChangeDeliverySettingsResponse>}
  */
-// export class CardDeliveryResource extends CSCoreSDK.Resource
-// implements CSCoreSDK.GetEnabled<DeliveryListing>, CSCoreSDK.UpdateEnabled<ChangeDeliverySettingsRequest, ChangeDeliverySettingsResponse> {
 export class CardDeliveryResource extends CSCoreSDK.Resource
-  implements CSCoreSDK.GetEnabled<DeliveryListing> {
+  implements CSCoreSDK.GetEnabled<DeliveryListing>, CSCoreSDK.UpdateEnabled<ChangeDeliverySettingsRequest, ChangeDeliverySettingsResponse> {
 
   /**
-   * Returns current delivery settings  
+   * Returns current delivery settings
+   * @returns {Promise<DeliveryListing>}
    */
   get = (): Promise<DeliveryListing> => {
     return CSCoreSDK.ResourceUtils.CallGet(this, null);
   }
 
   /**
-   * Change current delivery settings  
+   * Change current delivery settings 
+   * @param {ChangeDeliverySettingsRequest} payload
+   * @returns {Promise<ChangeDeliverySettingsResponse>}
    */
   update = (payload: ChangeDeliverySettingsRequest): Promise<ChangeDeliverySettingsResponse> => {
     return CSCoreSDK.ResourceUtils.CallUpdate(this, payload);
   }
 }
 
+/**
+ * @interface DeliveryListing
+ */
 export interface DeliveryListing {
 
   /**
@@ -47,6 +55,9 @@ export interface DeliveryListing {
   confirmations?: [Confirmation];
 }
 
+/**
+ * @interface Confirmation
+ */
 export interface Confirmation {
 
   /**
@@ -60,8 +71,16 @@ export interface Confirmation {
   language: string;
 }
 
+/**
+ * @interface ChangeDeliverySettingsResponse
+ * @extends {DeliveryListing}
+ * @extends {Signable}
+ */
 export interface ChangeDeliverySettingsResponse extends DeliveryListing, Signable { }
 
+/**
+ * @interface ChangeDeliverySettingsRequest
+ */
 export interface ChangeDeliverySettingsRequest {
 
   /**

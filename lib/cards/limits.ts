@@ -3,13 +3,18 @@ import { Amount } from '../common';
 import { Confirmation } from './delivery';
 
 /**
-* Get information about different limits
-*/
+ * Get information about different limits
+ * @class CardLimitsResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.ListEnabled<CardLimit>}
+ * @implements {CSCoreSDK.UpdateEnabled<ChangeCardLimitsRequest, ChangeCardLimitsResponse>}
+ */
 export class CardLimitsResource extends CSCoreSDK.Resource
   implements CSCoreSDK.ListEnabled<CardLimit>, CSCoreSDK.UpdateEnabled<ChangeCardLimitsRequest, ChangeCardLimitsResponse> {
 
   /**
-   * List all limits  
+   * List all limits
+   * @returns {Promise<CardLimitsList>}
    */
   list = (): Promise<CardLimitsList> => {
     return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'limits').then(response => {
@@ -18,11 +23,13 @@ export class CardLimitsResource extends CSCoreSDK.Resource
       CSCoreSDK.EntityUtils.addDatesToItems('temporaryLimitExpiration', response);
 
       return response;
-    })
+    });
   }
 
   /**
-   * Update individual limits  
+   * Update individual limits
+   * @param {ChangeCardLimitsRequest} payload
+   * @returns {Promise<ChangeCardLimitsResponse>}
    */
   update = (payload: ChangeCardLimitsRequest): Promise<ChangeCardLimitsResponse> => {
     return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(response => {
@@ -38,8 +45,15 @@ export class CardLimitsResource extends CSCoreSDK.Resource
   }
 }
 
+/**
+ * @interface CardLimitsList
+ * @extends {CSCoreSDK.ListResponse<CardLimit>}
+ */
 export interface CardLimitsList extends CSCoreSDK.ListResponse<CardLimit> { }
 
+/**
+ * @interface CardLimit
+ */
 export interface CardLimit {
 
   /**
@@ -73,6 +87,10 @@ export interface CardLimit {
   bankLimit?: Amount;
 }
 
+/**
+ * @interface {ChangeCardLimitsResponse}
+ * @extends {CSCoreSDK.Signable}
+ */
 export interface ChangeCardLimitsResponse extends CSCoreSDK.Signable {
 
   /**
@@ -86,6 +104,9 @@ export interface ChangeCardLimitsResponse extends CSCoreSDK.Signable {
   confirmations?: [Confirmation];
 }
 
+/**
+ * @interface ChangeCardLimitsRequest
+ */
 export interface ChangeCardLimitsRequest {
 
   /**

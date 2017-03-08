@@ -2,11 +2,18 @@ import * as CSCoreSDK from 'cs-core-sdk';
 import { Amount } from '../common';
 
 /**
-* Recharging the credit available on prepaid cards provided by Vodafone, T-Mobile or O2.
-*/
+ * Recharging the credit available on prepaid cards provided by Vodafone, T-Mobile or O2.
+ * @class PaymentMobileResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.CreateEnabled<MobilePaymentsRequest, MobilePaymentsResponse>}
+ */
 export class PaymentMobileResource extends CSCoreSDK.Resource
   implements CSCoreSDK.CreateEnabled<MobilePaymentsRequest, MobilePaymentsResponse> {
 
+  /**
+   * @param {string} basePath
+   * @param {CSCoreSDK.WebApiClient} client 
+   */
   constructor(basePath: string, client: CSCoreSDK.WebApiClient) {
     super(basePath, client);
 
@@ -15,8 +22,10 @@ export class PaymentMobileResource extends CSCoreSDK.Resource
   }
 
   /**
-  * Recharge the credit on prepaid card
-  */
+   * Recharge the credit on prepaid card
+   * @param {MobilePaymentsRequest} payload
+   * @returns {Promise<MobilePaymentsResponse>}
+   */
   create = (payload: MobilePaymentsRequest): Promise<MobilePaymentsResponse> => {
 
     return CSCoreSDK.ResourceUtils.CallCreate(this, payload).then(response => {
@@ -29,6 +38,9 @@ export class PaymentMobileResource extends CSCoreSDK.Resource
   }
 }
 
+/**
+ * @interface MobilePaymentsRequest
+ */
 export interface MobilePaymentsRequest {
 
   /**
@@ -62,8 +74,16 @@ export interface MobilePaymentsRequest {
   confirmationPhoneNumber: string;
 }
 
+/**
+ * @interface MobilePaymentsResponse
+ * @extends {MobilePaymentsRequest}
+ * @extends {CSCoreSDK.Signable}
+ */
 export interface MobilePaymentsResponse extends MobilePaymentsRequest, CSCoreSDK.Signable { }
 
+/**
+ * @interface MobilePaymentSender
+ */
 export interface MobilePaymentSender {
 
   /**

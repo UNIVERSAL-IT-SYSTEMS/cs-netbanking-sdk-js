@@ -1,10 +1,18 @@
 import * as CSCoreSDK from 'cs-core-sdk';
 import { Signable, ExportTransactionsParameters } from '../common';
 
+/**
+ * @class SecurityTransactionsResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.HasInstanceResource<SecurityTransactionResource>}
+ */
 export class SecurityTransactionsResource extends CSCoreSDK.Resource
   implements CSCoreSDK.HasInstanceResource<SecurityTransactionResource> {
 
-
+  /**
+   * @param {string} basePath
+   * @param {CSCoreSDK.WebApiClient} client 
+   */
   constructor(basePath: string, client: CSCoreSDK.WebApiClient) {
     super(basePath, client);
 
@@ -13,6 +21,8 @@ export class SecurityTransactionsResource extends CSCoreSDK.Resource
 
   /**
    * Get resource of security transaction with a given id
+   * @param {string} id
+   * @returns {SecurityTransactionResource}
    */
   withId = (id: string): SecurityTransactionResource => {
     return new SecurityTransactionResource(id, this.getPath(), this.getClient());
@@ -20,6 +30,8 @@ export class SecurityTransactionsResource extends CSCoreSDK.Resource
 
   /**
    * Export transaction history into signed pdf. 
+   * @param {ExportTransactionsParameters} params
+   * @return {Promise<any>}
    */
   export = (params: ExportTransactionsParameters): Promise<any> => {
 
@@ -34,11 +46,18 @@ export class SecurityTransactionsResource extends CSCoreSDK.Resource
 
 }
 
+/**
+ * @class SecurityTransactionResource
+ * @extends {CSCoreSDK.InstanceResource}
+ * @implements {CSCoreSDK.UpdateEnabled<SecurityTransactionRequest, SecurityTransactionResponse>}
+ */
 export class SecurityTransactionResource extends CSCoreSDK.InstanceResource
   implements CSCoreSDK.UpdateEnabled<SecurityTransactionRequest, SecurityTransactionResponse> {
 
   /**
    * Allows to add or change a client's personal note and mark/star the transaction as favorite/important for one specific transaction on selected product.
+   * @param {SecurityTransactionRequest} payload
+   * @returns {Promise<SecurityTransactionResponse>}
    */
   update = (payload: SecurityTransactionRequest): Promise<SecurityTransactionResponse> => {
     (<any>payload).id = this._id;
@@ -49,9 +68,11 @@ export class SecurityTransactionResource extends CSCoreSDK.InstanceResource
       return response;
     });
   }
-
 }
 
+/**
+ * @interface SecurityTransactionRequest
+ */
 export interface SecurityTransactionRequest {
 
   /**
@@ -65,6 +86,10 @@ export interface SecurityTransactionRequest {
   flags?: [string];
 }
 
+/**
+ * @interface SecurityTransactionResponse
+ * @extends {CSCoreSDK.Signable}
+ */
 export interface SecurityTransactionResponse extends CSCoreSDK.Signable {
 
   transaction: {

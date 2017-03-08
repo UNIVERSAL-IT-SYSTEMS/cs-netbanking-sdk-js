@@ -2,11 +2,19 @@ import * as CSCoreSDK from 'cs-core-sdk';
 import { SecurityTransactionsResource } from './transactions';
 import { Amount, Signable } from '../common';
 
+/**
+ * @class SecuritiesResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.PaginatedListEnabled<Security>}
+ * @implements {CSCoreSDK.HasInstanceResource<SecurityResource>}
+ */
 export class SecuritiesResource extends CSCoreSDK.Resource
   implements CSCoreSDK.PaginatedListEnabled<Security>, CSCoreSDK.HasInstanceResource<SecurityResource> {
 
   /**
    * Returns list of securities accounts for current user. Securities account represents virtual account which holds securities titles and its shares (funds, bonds, etc.).
+   * @param {SecuritiesParams=} params
+   * @returns {Promise<SecurityList>}
    */
   list = (params?: SecuritiesParams): Promise<SecurityList> => {
     return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'securitiesAccounts', params, response => {
@@ -22,17 +30,26 @@ export class SecuritiesResource extends CSCoreSDK.Resource
 
   /**
    * Get resource of security with a given id 
+   * @param {string} id
+   * @returns {SecuritiesResource}
    */
   withId = (id: string): SecurityResource => {
     return new SecurityResource(id, this.getPath(), this.getClient());
   }
 }
 
+/**
+ * @class SecurityResource
+ * @extends {CSCoreSDK.InstanceResource}
+ * @implements {CSCoreSDK.GetEnabled<Security>}
+ * @implements {CSCoreSDK.UpdateEnabled<SecurityRequest, SecurityResponse>}
+ */
 export class SecurityResource extends CSCoreSDK.InstanceResource
   implements CSCoreSDK.GetEnabled<Security>, CSCoreSDK.UpdateEnabled<SecurityRequest, SecurityResponse> {
 
   /**
    * Get a single securities account with all its details. Securities account represents virtual account which holds securities titles and its shares (funds, bonds, etc.).
+   * @returns {Promise<Security>}
    */
   get = (): Promise<Security> => {
     return CSCoreSDK.ResourceUtils.CallGet(this, null).then(response => {
@@ -45,6 +62,8 @@ export class SecurityResource extends CSCoreSDK.InstanceResource
 
   /**
    * Allows to change a limited set of securities account-settings of one specific contract. Currently only the field alias can be changed. Change only to alias field must not be signed, but response is ready also for signing process.
+   * @param {SecurityRequest} payload
+   * @returns {Promise<SecurityResponse>}
    */
   update = (payload: SecurityRequest): Promise<SecurityResponse> => {
     return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(response => {
@@ -58,6 +77,7 @@ export class SecurityResource extends CSCoreSDK.InstanceResource
 
   /**
    * Returns security transactions resource
+   * @returns {SecurityTransactionsResource}
    */
   get transactions(): SecurityTransactionsResource {
     return new SecurityTransactionsResource(`${this.getPath()}/transactions`, this.getClient());
@@ -78,8 +98,15 @@ function resourcifySecurity(security: Security, securityReference: SecurityResou
   security.update = securityReference.update;
 }
 
+/**
+ * @interface SecurityList
+ * @extends {CSCoreSDK.PaginatedListResponse<Security>}
+ */
 export interface SecurityList extends CSCoreSDK.PaginatedListResponse<Security> { }
 
+/**
+ * @interface Security
+ */
 export interface Security {
 
   /**
@@ -119,16 +146,21 @@ export interface Security {
 
   /**
    * Convenience method for getting security detail right from the list 
+   * @returns {Promise<Security>}
    */
   get: () => Promise<Security>;
 
   /**
-  * Convenience method for updating security's details
-  */
+   * Convenience method for updating security's details
+   * @param {SecurityRequest} payload
+   * @returns {Promise<SecurityResponse>}
+   */
   update: (payload: SecurityRequest) => Promise<SecurityResponse>;
 }
 
-// z dokumentace
+/**
+ * @interface SubSecAccount
+ */
 export interface SubSecAccount {
 
   /**
@@ -193,8 +225,15 @@ export interface SubSecAccount {
   flags: [string]
 }
 
+/**
+ * @interface SecuritiesParams
+ * @extends {CSCoreSDK.Paginated}
+ */
 export interface SecuritiesParams extends CSCoreSDK.Paginated { }
 
+/**
+ * @interface SecurityRequest
+ */
 export interface SecurityRequest {
 
   /**
@@ -203,4 +242,9 @@ export interface SecurityRequest {
   alias?: string;
 }
 
+/**
+ * @interface SecurityResponse
+ * @extends {Security}
+ * @extends {CSCoreSDK.Signable}
+ */
 export interface SecurityResponse extends Security, CSCoreSDK.Signable { }

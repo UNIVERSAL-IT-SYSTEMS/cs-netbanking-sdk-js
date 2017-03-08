@@ -1,9 +1,18 @@
 import * as CSCoreSDK from 'cs-core-sdk';
 import { Amount, Signable } from '../../common';
 
+/**
+ * @class InsurancesContractServicesResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.ListEnabled<InsuranceService>}
+ */
 export class InsurancesContractServicesResource extends CSCoreSDK.Resource
   implements CSCoreSDK.ListEnabled<InsuranceService> {
 
+  /**
+   * @param {string} basePath
+   * @param {CSCoreSDK.WebApiClient} client 
+   */
   constructor(basePath: string, client: CSCoreSDK.WebApiClient) {
     super(basePath, client);
 
@@ -13,6 +22,7 @@ export class InsurancesContractServicesResource extends CSCoreSDK.Resource
 
   /**
    * Returns list of services for the life insurance
+   * @returns {Promise<InsuranceServiceList>}
    */
   list = (): Promise<InsuranceServiceList> => {
     return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'services').then(response => {
@@ -27,6 +37,8 @@ export class InsurancesContractServicesResource extends CSCoreSDK.Resource
 
   /**
    * Allows activation of risk sports insurance.
+   * @param {RiskSportsUpdateRequest} payload
+   * @returns {Promise<ActivateRiskSportsResponse>}
    */
   activateRiskSports = (payload: RiskSportsUpdateRequest): Promise<ActivateRiskSportsResponse> => {
 
@@ -43,6 +55,8 @@ export class InsurancesContractServicesResource extends CSCoreSDK.Resource
 
   /**
    * Allows deactivation of risk sports insurance.
+   * @param {RiskSportsUpdateRequest} payload
+   * @returns {Promise<DeactivateRiskSportsResponse>}
    */
   deactivateRiskSports = (payload: RiskSportsUpdateRequest): Promise<DeactivateRiskSportsResponse> => {
 
@@ -61,8 +75,15 @@ function transformDates(response) {
   CSCoreSDK.EntityUtils.addDatesFromISO(['dateFrom', 'dateTo'], response);
 }
 
+/**
+ * @interface InsuranceServiceList
+ * @extends {CSCoreSDK.ListResponse<InsuranceService>}
+ */
 export interface InsuranceServiceList extends CSCoreSDK.ListResponse<InsuranceService> { }
 
+/**
+ * @interface InsuranceService
+ */
 export interface InsuranceService {
 
   /**
@@ -116,6 +137,9 @@ export interface InsuranceService {
   state: string;
 }
 
+/**
+ * @interface RiskSportsUpdateRequest
+ */
 export interface RiskSportsUpdateRequest {
 
   dateFrom: Date;
@@ -125,9 +149,18 @@ export interface RiskSportsUpdateRequest {
   phoneNumber: string;
 }
 
+/**
+ * @interface ActivateRiskSportsResponse
+ * @extends {RiskSportsUpdateRequest}
+ * @extends {CSCoreSDK.Signable}
+ */
 export interface ActivateRiskSportsResponse extends RiskSportsUpdateRequest, CSCoreSDK.Signable {
 
   policyNumber: string;
 }
 
+/**
+ * @interface DeactivateRiskSportsResponse
+ * @extends {CSCoreSDK.Signable}
+ */
 export interface DeactivateRiskSportsResponse extends CSCoreSDK.Signable { }

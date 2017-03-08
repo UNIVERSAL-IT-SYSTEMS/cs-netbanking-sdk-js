@@ -3,9 +3,19 @@ import * as CSCoreSDK from 'cs-core-sdk';
 import {ContractsTransactionsResource} from '../transactions';
 import {Amount, Address, Signable} from '../../common';
 
+/**
+ * @class PensionsContractsResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.PaginatedListEnabled<Pension>}
+ * @implements {CSCoreSDK.HasInstanceResource<PensionsContractResource>}
+ */
 export class PensionsContractsResource extends CSCoreSDK.Resource
 implements CSCoreSDK.PaginatedListEnabled<Pension>, CSCoreSDK.HasInstanceResource<PensionsContractResource> {
 
+    /**
+     * @param {string} basePath
+     * @param {CSCoreSDK.WebApiClient} client 
+     */
     constructor(basePath: string, client: CSCoreSDK.WebApiClient) {    
         super(basePath, client);
         
@@ -15,6 +25,8 @@ implements CSCoreSDK.PaginatedListEnabled<Pension>, CSCoreSDK.HasInstanceResourc
 
     /**
      * Returns list of pension products which belongs to current user. This includes Pension Savings, Supplementary Pension Insurance and Supplementary Pension Savings.
+     * @param {PensionParameters=} params
+     * @returns {Promise<PensionList>}
      */
     list = (params?: PensionParameters): Promise<PensionList> => {
         return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'pensions', params, response => {
@@ -30,17 +42,26 @@ implements CSCoreSDK.PaginatedListEnabled<Pension>, CSCoreSDK.HasInstanceResourc
 
     /**
      * Get the resource of pension contract with a given id
+     * @param {string} id
+     * @returns {PensionsContractResource}
      */
     withId = (id: string): PensionsContractResource => {
         return new PensionsContractResource(id, this.getPath(), this.getClient());
     } 
 }
 
+/**
+ * @class PensionsContractResource
+ * @extends {CSCoreSDK.InstanceResource}
+ * @implements {CSCoreSDK.GetEnabled<Pension>}
+ * @implements {CSCoreSDK.UpdateEnabled<UpdatePensionRequest, UpdatePensionResponse>}
+ */
 export class PensionsContractResource extends CSCoreSDK.InstanceResource
 implements CSCoreSDK.GetEnabled<Pension>, CSCoreSDK.UpdateEnabled<UpdatePensionRequest, UpdatePensionResponse> {
 
     /**
      * Returns detail of pension product which belongs to current user. This can be Pension Saving, Supplementary Pension Insurance and Supplementary Pension Saving.
+     * @returns {Promise<Pension>}
      */
     get = (): Promise<Pension> => {
         return CSCoreSDK.ResourceUtils.CallGet(this, null).then(response => {
@@ -53,6 +74,8 @@ implements CSCoreSDK.GetEnabled<Pension>, CSCoreSDK.UpdateEnabled<UpdatePensionR
 
     /**
      * Allows to change a limited set of pension contract-settings of one specific contract. Currently only the field alias can be changed. Change only to alias field must not be signed, but response is ready also for signing process.
+     * @param {UpdatePensionRequest} payload
+     * @returns {Promise<UpdatePensionResponse>}
      */
     update = (payload: UpdatePensionRequest): Promise<UpdatePensionResponse> => {
         (<any>payload).id = this._id;
@@ -67,6 +90,7 @@ implements CSCoreSDK.GetEnabled<Pension>, CSCoreSDK.UpdateEnabled<UpdatePensionR
 
     /**
      * Returns transactions resource for pension contract
+     * @returns {ContractsTransactionsResource}
      */
     get transactions(): ContractsTransactionsResource {
         return new ContractsTransactionsResource(`${this.getPath()}/transactions`, this.getClient());
@@ -90,9 +114,16 @@ function resourcifyPension(pension: Pension, pensionReference: PensionsContractR
     pension.update = pensionReference.update;
     pension.transactions = pensionReference.transactions;
 }
-
+/**
+ * @interface PensionList
+ * @extends {CSCoreSDK.PaginatedListResponse<Pension>}
+ */
 export interface PensionList extends CSCoreSDK.PaginatedListResponse<Pension> {}
 
+/**
+ * @interface Pension
+ * @extends {UpdatePensionRequest}
+ */
 export interface Pension extends UpdatePensionRequest {
 
     /**
@@ -310,11 +341,14 @@ export interface Pension extends UpdatePensionRequest {
 
     /**
      * Convenience get method for fetching Pensions detail
+     * @returns {Promise<Pension>}
      */
     get: () => Promise<Pension>;
 
     /**
      * Convenience update method for updating Pension
+     * @param {UpdatePensionRequest} payload
+     * @returns {Promise<UpdatePensionResponse>}
      */
     update: (payload: UpdatePensionRequest) => Promise<UpdatePensionResponse>;
 
@@ -324,6 +358,9 @@ export interface Pension extends UpdatePensionRequest {
     transactions: ContractsTransactionsResource;
 }
 
+/**
+ * @interface UpdatePensionRequest
+ */
 export interface UpdatePensionRequest {
 
     /**
@@ -332,6 +369,14 @@ export interface UpdatePensionRequest {
     alias?: string;
 }
 
+/**
+ * @interface UpdatePensionResponse
+ * @extends {CSCoreSDK.Signable, Pension}
+ */
 export interface UpdatePensionResponse extends CSCoreSDK.Signable, Pension {}
 
+/**
+ * @interface PensionParameters
+ * @extends {CSCoreSDK.Paginated}
+ */
 export interface PensionParameters extends CSCoreSDK.Paginated {}

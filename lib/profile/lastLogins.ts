@@ -2,12 +2,16 @@ import * as CSCoreSDK from 'cs-core-sdk';
 
 /** 
  * List all past logins
+ * @class LastLoginsResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.ListEnabled<LastLoginInfo>}
  */
 export class LastLoginsResource extends CSCoreSDK.Resource
   implements CSCoreSDK.ListEnabled<LastLoginInfo> {
 
   /** 
    * Returns promise with a list of past logins
+   * @returns {Promise<LastLoginList>}
    */
   list = (): Promise<LastLoginList> => {
     return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'lastlogin').then(response => {
@@ -20,8 +24,15 @@ export class LastLoginsResource extends CSCoreSDK.Resource
   }
 }
 
+/**
+ * @interface LastLoginList
+ * @extends {CSCoreSDK.ListResponse<LastLoginInfo>}
+ */
 export interface LastLoginList extends CSCoreSDK.ListResponse<LastLoginInfo> { }
 
+/**
+ * @interface LastLoginInfo
+ */
 export interface LastLoginInfo {
 
   /**

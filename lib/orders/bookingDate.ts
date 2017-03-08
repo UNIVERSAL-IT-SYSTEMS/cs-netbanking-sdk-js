@@ -2,14 +2,19 @@ import * as CSCoreSDK from 'cs-core-sdk';
 import { AccountNumber } from '../common';
 
 /**
-* Get currently available booking date
-*/
+ * Get currently available booking date
+ * @class PaymentBookingDateResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.UpdateEnabled<PaymentBookingDateRequest, PaymentBookingDateResponse>}
+ */
 export class PaymentBookingDateResource extends CSCoreSDK.Resource
   implements CSCoreSDK.UpdateEnabled<PaymentBookingDateRequest, PaymentBookingDateResponse> {
 
   /**
-  * Returns current available booking date based on the provided account and optional payment order category parameters
-  */
+   * Returns current available booking date based on the provided account and optional payment order category parameters
+   * @param {PaymentBookingDateRequest} payload
+   * @returns {Promise<PaymentBookingDateResponse>}
+   */
   update = (payload: PaymentBookingDateRequest): Promise<PaymentBookingDateResponse> => {
 
     // make copy of payload
@@ -32,6 +37,9 @@ export class PaymentBookingDateResource extends CSCoreSDK.Resource
   }
 }
 
+/**
+ * @interface PaymentBookingDateRequest
+ */
 export interface PaymentBookingDateRequest {
 
   /**
@@ -50,6 +58,9 @@ export interface PaymentBookingDateRequest {
   priority?: string;
 }
 
+/**
+ * @interface PaymentBookingDateResponse
+ */
 export interface PaymentBookingDateResponse {
 
   /**

@@ -4,12 +4,17 @@ import { Confirmation } from './delivery';
 
 /**
  * Issue various actions on a single card. 
+ * @class CardActionsResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.UpdateEnabled<CardActionRequest, CardActionResponse>}
  */
 export class CardActionsResource extends CSCoreSDK.Resource
   implements CSCoreSDK.UpdateEnabled<CardActionRequest, CardActionResponse> {
 
   /**
-   * Issues various actions on a single card  
+   * Issues various actions on a single card
+   * @param {CardActionRequest} payload
+   * @returns {Promise<CardActionResponse>}
    */
   update = (payload: CardActionRequest): Promise<CardActionResponse> => {
     return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(response => {
@@ -18,12 +23,19 @@ export class CardActionsResource extends CSCoreSDK.Resource
       CSCoreSDK.SigningUtils.createSigningObject(response, this.getClient(), this.getPath());
 
       return response;
-    })
+    });
   }
 }
 
+/**
+ * @interface CardActionResponse
+ * @extends {CSCoreSDK.Signable}
+ */
 export interface CardActionResponse extends CSCoreSDK.Signable { }
 
+/**
+ * @interface CardActionRequest
+ */
 export interface CardActionRequest {
 
   /**

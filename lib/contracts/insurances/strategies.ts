@@ -1,8 +1,17 @@
 import * as CSCoreSDK from 'cs-core-sdk';
 
+/**
+ * @class InsurancesContractStrategiesResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.ListEnabled<ContractStrategy>}
+ */
 export class InsurancesContractStrategiesResource extends CSCoreSDK.Resource
-  implements CSCoreSDK.ListEnabled<any> {
+  implements CSCoreSDK.ListEnabled<ContractStrategy> {
 
+  /**
+   * @param {string} basePath
+   * @param {CSCoreSDK.WebApiClient} client 
+   */
   constructor(basePath: string, client: CSCoreSDK.WebApiClient) {
     super(basePath, client);
 
@@ -12,14 +21,22 @@ export class InsurancesContractStrategiesResource extends CSCoreSDK.Resource
 
   /**
    * Returns list of strategies with corresponsing funds allocation for the life insurance
+   * @returns {Promise<ContractStrategyList>}
    */
-  list = (): Promise<any> => {
+  list = (): Promise<ContractStrategyList> => {
     return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'strategies');
   }
 }
 
+/**
+ * @interface ContractStrategyList
+ * @extends {CSCoreSDK.ListResponse<ContractStrategy>}
+ */
 export interface ContractStrategyList extends CSCoreSDK.ListResponse<ContractStrategy> { }
 
+/**
+ * @interface ContractStrategy
+ */
 export interface ContractStrategy {
 
   /**

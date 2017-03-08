@@ -3,12 +3,17 @@ import { AccountNumber, Amount } from '../common';
 
 /**
  * Resource for paying up credit card debt  
+ * @class CardTransferResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.UpdateEnabled<PayUpCreditCardRequest, PayUpCreditCardResponse>}
  */
 export class CardTransferResource extends CSCoreSDK.Resource
   implements CSCoreSDK.UpdateEnabled<PayUpCreditCardRequest, PayUpCreditCardResponse> {
 
   /**
    * Pays up the credit card debt and returns sign info  
+   * @param {PayUpCreditCardRequest} payload
+   * @returns {Promise<PayUpCreditCardResponse>}
    */
   update = (payload: PayUpCreditCardRequest): Promise<PayUpCreditCardResponse> => {
     return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(response => {
@@ -17,10 +22,13 @@ export class CardTransferResource extends CSCoreSDK.Resource
       CSCoreSDK.SigningUtils.createSigningObject(response, this.getClient(), this.getPath());
 
       return response;
-    })
+    });
   }
 }
 
+/**
+ * @interface PayUpCreditCardRequest
+ */
 export interface PayUpCreditCardRequest {
 
   /**
@@ -39,6 +47,9 @@ export interface PayUpCreditCardRequest {
   amount: Amount;
 }
 
+/**
+ * @interface Sender
+ */
 export interface Sender {
 
   /**
@@ -52,4 +63,8 @@ export interface Sender {
   accountno: AccountNumber;
 }
 
+/**
+ * @interface PayUpCreditCardResponse
+ * @extends {CSCoreSDK.Signable}
+ */
 export interface PayUpCreditCardResponse extends CSCoreSDK.Signable { }

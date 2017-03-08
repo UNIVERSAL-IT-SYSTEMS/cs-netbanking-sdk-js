@@ -1,9 +1,18 @@
 import * as CSCoreSDK from 'cs-core-sdk';
 import { Amount, AccountNumber } from '../../common';
 
+/**
+ * @class InsurancesContractTransferResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.UpdateEnabled<UpdateContractTrasferRequest, UpdateContractTrasferResponse>}
+ */
 export class InsurancesContractTransferResource extends CSCoreSDK.Resource
   implements CSCoreSDK.UpdateEnabled<UpdateContractTrasferRequest, UpdateContractTrasferResponse> {
 
+  /**
+   * @param {string} basePath
+   * @param {CSCoreSDK.WebApiClient} client 
+   */
   constructor(basePath: string, client: CSCoreSDK.WebApiClient) {
     super(basePath, client);
 
@@ -13,6 +22,8 @@ export class InsurancesContractTransferResource extends CSCoreSDK.Resource
 
   /**
    * Creates insurance transfer - premium payment, extra deposit or recommended deposit.
+   * @param {UpdateContractTrasferRequest} payload
+   * @returns {Promise<UpdateContractTrasferResponse>}
    */
   update = (payload: UpdateContractTrasferRequest): Promise<UpdateContractTrasferResponse> => {
     return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(response => {
@@ -24,6 +35,9 @@ export class InsurancesContractTransferResource extends CSCoreSDK.Resource
   }
 }
 
+/**
+ * @interface UpdateContractTrasferRequest
+ */
 export interface UpdateContractTrasferRequest {
 
   /**
@@ -42,4 +56,8 @@ export interface UpdateContractTrasferRequest {
   sender: AccountNumber;
 }
 
+/**
+ * @interface UpdateContractTrasferResponse
+ * @extends {CSCoreSDK.Signable}
+ */
 export interface UpdateContractTrasferResponse extends CSCoreSDK.Signable { }

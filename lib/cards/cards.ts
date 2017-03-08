@@ -8,16 +8,21 @@ import { CardSecure3DResource } from './secure3D';
 import { CardTransferResource } from './transfer';
 import { CardAccountsResource } from './statements';
 
-
 /**
-* Represents list of payment cards (either debet or credit) for current user. Every card was issued for current user or belongs to one of his accounts.
-*/
+ * Represents list of payment cards (either debet or credit) for current user. Every card was issued for current user or belongs to one of his accounts.
+ * @class CardsResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.PaginatedListEnabled<Card>}
+ * @implements {CSCoreSDK.HasInstanceResource<CardResource>}
+ */
 export class CardsResource extends CSCoreSDK.Resource
   implements CSCoreSDK.PaginatedListEnabled<Card>, CSCoreSDK.HasInstanceResource<CardResource> {
 
   /**
-  * List all cards 
-  */
+   * List all cards 
+   * @param {Promise<CardList>=} params
+   * @returns {Promise<CardList>}
+   */
   list = (params?: NetbankingParameters): Promise<CardList> => {
 
     // transform "sort" and "order" parameters to comma separated list from array
@@ -39,19 +44,28 @@ export class CardsResource extends CSCoreSDK.Resource
   }
 
   /**
-  * Get a resource for card with a given id 
-  */
+   * Get a resource for card with a given id 
+   * @param {string} id
+   * @returns {CardResource}
+   */
   withId = (id: string): CardResource => {
     return new CardResource(id, this.getPath(), this.getClient());
   }
 }
 
+/**
+ * @class CardResource
+ * @extends {CSCoreSDK.InstanceResource}
+ * @implements {CSCoreSDK.GetEnabled<Card>}
+ * @implements {CSCoreSDK.UpdateEnabled<ChangeCardSettingsRequest, ChangeCardSettingsResponse>}
+ */
 export class CardResource extends CSCoreSDK.InstanceResource
   implements CSCoreSDK.GetEnabled<Card>, CSCoreSDK.UpdateEnabled<ChangeCardSettingsRequest, ChangeCardSettingsResponse> {
 
   /**
-  * Get detail of the card 
-  */
+   * Get detail of the card
+   * @returns {Promise<Card>}
+   */
   get = (): Promise<Card> => {
     return CSCoreSDK.ResourceUtils.CallGet(this, null).then(card => {
 
@@ -66,8 +80,10 @@ export class CardResource extends CSCoreSDK.InstanceResource
   }
 
   /**
-  * Update card's alias 
-  */
+   * Update card's alias
+   * @param {ChangeCardSettingsRequest} payload
+   * @returns {Promise<ChangeCardSettingsResponse>}
+   */
   update = (payload: ChangeCardSettingsRequest): Promise<ChangeCardSettingsResponse> => {
     return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(card => {
 
@@ -82,52 +98,59 @@ export class CardResource extends CSCoreSDK.InstanceResource
   }
 
   /**
-  * Get current delivery settings
-  */
-  get delivery() {
+   * Get current delivery settings
+   * @returns {CardDeliveryResource}
+   */
+  get delivery(): CardDeliveryResource {
     return new CardDeliveryResource(this.getPath() + '/delivery', this._client);
   }
 
   /**
-  * Allows to add or change a client's personal note and mark/star the card transaction as favorite/important for one specific transaction
-  */
-  get transactions() {
+   * Allows to add or change a client's personal note and mark/star the card transaction as favorite/important for one specific transaction
+   * @returns {CardTransactionsResource}
+   */
+  get transactions(): CardTransactionsResource {
     return new CardTransactionsResource(this.getPath() + '/transactions', this._client);
   }
 
   /**
-  * Issue various actions on a single card. Currently supported actions are: 
-  * reissue pin, lock card, unlock card, activate card, set automatic card replacement on, set automatic card replacement off, replacement card request
-  */
-  get actions() {
+   * Issue various actions on a single card. Currently supported actions are: 
+   * reissue pin, lock card, unlock card, activate card, set automatic card replacement on, set automatic card replacement off, replacement card request
+   * @returns {CardActionsResource}
+   */
+  get actions(): CardActionsResource {
     return new CardActionsResource(this.getPath() + '/states', this._client);
   }
 
   /**
-  * Get information about different limits
-  */
-  get limits() {
+   * Get information about different limits
+   * @returns {CardLimitsResource}
+   */
+  get limits(): CardLimitsResource {
     return new CardLimitsResource(this.getPath() + '/card-limits', this._client);
   }
 
   /**
-  * Get the 3D secure online shopping status
-  */
-  get secure3d() {
+   * Get the 3D secure online shopping status
+   * @returns {CardSecure3DResource}
+   */
+  get secure3d(): CardSecure3DResource {
     return new CardSecure3DResource(this.getPath() + '/secure-online-shopping', this._client);
   }
 
   /**
-  * Resource for paying up credit card debt
-  */
-  get transfer() {
+   * Resource for paying up credit card debt
+   * @returns {CardTransferResource}
+   */
+  get transfer(): CardTransferResource {
     return new CardTransferResource(this.getPath() + '/transfer', this._client);
   }
 
   /**
-  * Account resource for listing statements
-  */
-  get accounts() {
+   * Account resource for listing statements
+   * @returns {CardAccountsResource}
+   */
+  get accounts(): CardAccountsResource {
     return new CardAccountsResource(this.getPath() + '/mainaccount', this._client);
   }
 }
@@ -150,8 +173,15 @@ function transformResponse(item) {
   CSCoreSDK.EntityUtils.addDatesFromISO(['expiryDate', 'validFromDate'], item);
 }
 
+/**
+ * @interface CardList
+ * @extends {CSCoreSDK.PaginatedListResponse<Card>}
+ */
 export interface CardList extends CSCoreSDK.PaginatedListResponse<Card> { }
 
+/**
+ * @interface Card
+ */
 export interface Card {
 
   /**
@@ -276,12 +306,15 @@ export interface Card {
 
   /**
    * Convenience method for getting detail of the card right from the list 
+   * @returns {Promise<Card>}
    */
   get: () => Promise<Card>;
 
   /**
-  * Convenience method for updating card's settings
-  */
+   * Convenience method for updating card's settings
+   * @param {ChangeCardSettingsRequest} payload
+   * @returns {Promise<ChangeCardSettingsResponse>}
+   */
   update: (payload: ChangeCardSettingsRequest) => Promise<ChangeCardSettingsResponse>;
 
   /**
@@ -320,6 +353,9 @@ export interface Card {
   accounts: CardAccountsResource;
 }
 
+/**
+ * @interface CardAccountLimits
+ */
 export interface CardAccountLimits {
 
   /**
@@ -333,6 +369,9 @@ export interface CardAccountLimits {
   limitPOS?: Amount;
 }
 
+/**
+ * @interface CardMainAccount
+ */
 export interface CardMainAccount {
 
   /**
@@ -351,6 +390,11 @@ export interface CardMainAccount {
   accountno: AccountNumber;
 }
 
+/**
+ * @interface ChangeCardSettingsResponse
+ * @extends {Card}
+ * @extends {Signable}
+ */
 export interface ChangeCardSettingsResponse extends Card, Signable {
 
   /**
@@ -359,6 +403,9 @@ export interface ChangeCardSettingsResponse extends Card, Signable {
   branchId?: string;
 }
 
+/**
+ * @interface ChangeCardSettingsRequest
+ */
 export interface ChangeCardSettingsRequest {
 
   /**

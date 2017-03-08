@@ -1,9 +1,20 @@
 import * as CSCoreSDK from 'cs-core-sdk';
 import { AccountNumber, Amount, NetbankingParameters, Symbols } from '../common';
 
+/**
+ * @class AccountDirectDebitsResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.PaginatedListEnabled<DirectDebit>}
+ * @implements {CSCoreSDK.HasInstanceResource<AccountDirectDebitResource>}
+ * @implements {CSCoreSDK.CreateEnabled<DirectDebit, SignableDirectDebit>}
+ */
 export class AccountDirectDebitsResource extends CSCoreSDK.Resource
   implements CSCoreSDK.PaginatedListEnabled<DirectDebit>, CSCoreSDK.HasInstanceResource<AccountDirectDebitResource>, CSCoreSDK.CreateEnabled<DirectDebit, SignableDirectDebit> {
 
+  /**
+   * @param {string} basePath
+   * @param {CSCoreSDK.WebApiClient} client 
+   */
   constructor(basePath: string, client: CSCoreSDK.WebApiClient) {
     super(basePath, client);
 
@@ -13,6 +24,8 @@ export class AccountDirectDebitsResource extends CSCoreSDK.Resource
 
   /**
    * Resource Direct Debit List represents collection of all direct debit approvals entered by user for the specified user
+   * @param {NetbankingParameters} params
+   * @returns {Promise<DirectDebitList>}
    */
   list = (params: NetbankingParameters): Promise<DirectDebitList> => {
     return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'directDebits', params, response => {
@@ -25,6 +38,8 @@ export class AccountDirectDebitsResource extends CSCoreSDK.Resource
 
   /**
    * Get the resource of direct debit with a given id
+   * @param {string} id
+   * @returns {AccountDirectDebitResource}
    */
   withId = (id: string): AccountDirectDebitResource => {
     return new AccountDirectDebitResource(id, this.getPath(), this.getClient());
@@ -32,6 +47,8 @@ export class AccountDirectDebitsResource extends CSCoreSDK.Resource
 
   /**
    * Resource for creating (or allowing) direct debit on certain account. Once signed it can be used by receiver party.
+   * @param {DirectDebit} payload
+   * @returns {Promise<SignableDirectDebit>}
    */
   create = (payload: DirectDebit): Promise<SignableDirectDebit> => {
 
@@ -48,11 +65,18 @@ export class AccountDirectDebitsResource extends CSCoreSDK.Resource
   }
 }
 
+/**
+ * @class AccountDirectDebitResource
+ * @extends {CSCoreSDK.InstanceResource}
+ * @implements {CSCoreSDK.GetEnabled<DirectDebit>}
+ * @implements {CSCoreSDK.DeleteEnabled<SignableDirectDebit>}
+ */
 export class AccountDirectDebitResource extends CSCoreSDK.InstanceResource
   implements CSCoreSDK.GetEnabled<DirectDebit>, CSCoreSDK.DeleteEnabled<SignableDirectDebit> {
 
   /**
    * Get the single direct debits detail.
+   * @returns {Promise<DirectDebit>}
    */
   get = (): Promise<DirectDebit> => {
     return CSCoreSDK.ResourceUtils.CallGet(this, null).then(response => {
@@ -65,6 +89,7 @@ export class AccountDirectDebitResource extends CSCoreSDK.InstanceResource
 
   /**
    * Resource for deleting direct debit (permission) on certain account. Once signed no more transfers can be made by receiver party.
+   * @returns {Promise<SignableDirectDebit>}
    */
   delete = (): Promise<SignableDirectDebit> => {
     return CSCoreSDK.ResourceUtils.CallDelete(this, null).then(response => {
@@ -78,8 +103,15 @@ export class AccountDirectDebitResource extends CSCoreSDK.InstanceResource
   }
 }
 
+/**
+ * @interface DirectDebitList
+ * @extends {CSCoreSDK.PaginatedListResponse<DirectDebit>}
+ */
 export interface DirectDebitList extends CSCoreSDK.PaginatedListResponse<DirectDebit> { }
 
+/**
+ * @interface DirectDebit
+ */
 export interface DirectDebit {
 
   /**
@@ -173,4 +205,9 @@ export interface DirectDebit {
   periodCycle: string;
 }
 
+/**
+ * @interface SignableDirectDebit
+ * @extends {DirectDebit}
+ * @extends {CSCoreSDK.Signable}
+ */
 export interface SignableDirectDebit extends DirectDebit, CSCoreSDK.Signable { }

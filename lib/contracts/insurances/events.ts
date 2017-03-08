@@ -1,9 +1,18 @@
 import * as CSCoreSDK from 'cs-core-sdk';
 import { Amount } from '../../common';
 
+/**
+ * @class InsurancesContractEventsResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.ListEnabled<ContractEvent>}
+ */
 export class InsurancesContractEventsResource extends CSCoreSDK.Resource
   implements CSCoreSDK.ListEnabled<ContractEvent> {
 
+  /**
+   * @param {string} basePath
+   * @param {CSCoreSDK.WebApiClient} client 
+   */
   constructor(basePath: string, client: CSCoreSDK.WebApiClient) {
     super(basePath, client);
 
@@ -13,6 +22,7 @@ export class InsurancesContractEventsResource extends CSCoreSDK.Resource
 
   /**
    * Returns list of events for the life insurance
+   * @returns {Promise<ContractEventList>}
    */
   list = (): Promise<ContractEventList> => {
     return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'events').then(response => {
@@ -31,8 +41,15 @@ export class InsurancesContractEventsResource extends CSCoreSDK.Resource
   }
 }
 
+/**
+ * @interface ContractEventList
+ * @extends {CSCoreSDK.ListResponse<ContractEvent>}
+ */
 export interface ContractEventList extends CSCoreSDK.ListResponse<ContractEvent> { }
 
+/**
+ * @interface ContractEvent
+ */
 export interface ContractEvent {
 
   /**

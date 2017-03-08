@@ -1,10 +1,17 @@
 import * as CSCoreSDK from 'cs-core-sdk';
 
+/**
+ * @class ContactsResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.ListEnabled<Contact>}
+ * @implements {CSCoreSDK.HasInstanceResource<ContactResource>}
+ */
 export class ContactsResource extends CSCoreSDK.Resource
   implements CSCoreSDK.ListEnabled<Contact>, CSCoreSDK.HasInstanceResource<ContactResource> {
 
   /**
    * Resource represents list of contact information for current user. It can contain addresses, phones and email addresses.
+   * @returns {Promise<ContactList>}
    */
   list = (): Promise<ContactList> => {
     return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'contacts');
@@ -12,25 +19,40 @@ export class ContactsResource extends CSCoreSDK.Resource
 
   /**
    * Get the resource of contact with a given id
+   * @param {string} id
+   * @returns {ContactResource}
    */
   withId = (id: string): ContactResource => {
     return new ContactResource(id, this.getPath(), this.getClient());
   }
 }
 
+/**
+ * @class ContactResource
+ * @extends {CSCoreSDK.InstanceResource}
+ * @implements {CSCoreSDK.GetEnabled<Contact>}
+ */
 export class ContactResource extends CSCoreSDK.InstanceResource
   implements CSCoreSDK.GetEnabled<Contact> {
 
   /**
    * Resource represents one specific contact information identified by its id. It can be address, phone or email address.
+   * @returns {Promise<Contact>}
    */
   get = (): Promise<Contact> => {
     return CSCoreSDK.ResourceUtils.CallGet(this, null);
   }
 }
 
+/**
+ * @interface ContactList
+ * @extends {CSCoreSDK.ListResponse<Contact>}
+ */
 export interface ContactList extends CSCoreSDK.ListResponse<Contact> { }
 
+/**
+ * @interface Contact
+ */
 export interface Contact {
 
   /**

@@ -1,9 +1,19 @@
 import * as CSCoreSDK from 'cs-core-sdk';
 import { Amount } from '../../common';
 
+/**
+ * @class InsurancesContractFundsResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.ListEnabled<Fund>}
+ * @implements {CSCoreSDK.UpdateEnabled<UpdateFundRequest, UpdateFundResponse>}
+ */
 export class InsurancesContractFundsResource extends CSCoreSDK.Resource
   implements CSCoreSDK.ListEnabled<Fund>, CSCoreSDK.UpdateEnabled<UpdateFundRequest, UpdateFundResponse> {
 
+  /**
+   * @param {string} basePath
+   * @param {CSCoreSDK.WebApiClient} client 
+   */
   constructor(basePath: string, client: CSCoreSDK.WebApiClient) {
     super(basePath, client);
 
@@ -13,6 +23,7 @@ export class InsurancesContractFundsResource extends CSCoreSDK.Resource
 
   /**
    * Returns detail of distribution of capital value into funds.
+   * @returns {Promise<FundList>}
    */
   list = (): Promise<FundList> => {
     return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'funds', null);
@@ -20,6 +31,8 @@ export class InsurancesContractFundsResource extends CSCoreSDK.Resource
 
   /**
    * Change the distribution of capital value into funds.
+   * @param {UpdateFundRequest} payload
+   * @returns {Promise<UpdateFundResponse>}
    */
   update = (payload: UpdateFundRequest): Promise<UpdateFundResponse> => {
     return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(response => {
@@ -31,6 +44,10 @@ export class InsurancesContractFundsResource extends CSCoreSDK.Resource
   }
 }
 
+/**
+ * @interface FundList
+ * @extends {CSCoreSDK.ListResponse<Fund>}
+ */
 export interface FundList extends CSCoreSDK.ListResponse<Fund> {
 
   /**
@@ -49,6 +66,9 @@ export interface FundList extends CSCoreSDK.ListResponse<Fund> {
   flags?: [string];
 }
 
+/**
+ * @interface Fund
+ */
 export interface Fund {
 
   /**
@@ -77,6 +97,9 @@ export interface Fund {
   allocation: number;
 }
 
+/**
+ * @interface UpdateFundRequest
+ */
 export interface UpdateFundRequest {
 
   funds: [{
@@ -95,4 +118,9 @@ export interface UpdateFundRequest {
   investmentProgram?: string;
 }
 
+/**
+ * @interface UpdateFundResponse
+ * @extends {UpdateFundRequest}
+ * @extends {CSCoreSDK.Signable}
+ */
 export interface UpdateFundResponse extends UpdateFundRequest, CSCoreSDK.Signable { }

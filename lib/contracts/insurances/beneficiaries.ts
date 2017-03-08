@@ -1,8 +1,18 @@
 import * as CSCoreSDK from 'cs-core-sdk';
 
+/**
+ * @class InsurancesContractBeneficiariesResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.ListEnabled<InsuranceBeneficiary>}
+ * @implements {CSCoreSDK.UpdateEnabled<UpdateInsuranceBeneficiaries, UpdateInsuranceBeneficiaries>}
+ */
 export class InsurancesContractBeneficiariesResource extends CSCoreSDK.Resource
   implements CSCoreSDK.ListEnabled<InsuranceBeneficiary>, CSCoreSDK.UpdateEnabled<UpdateInsuranceBeneficiaries, UpdateInsuranceBeneficiaries> {
 
+  /**
+   * @param {string} basePath
+   * @param {CSCoreSDK.WebApiClient} client 
+   */
   constructor(basePath: string, client: CSCoreSDK.WebApiClient) {
     super(basePath, client);
 
@@ -12,6 +22,7 @@ export class InsurancesContractBeneficiariesResource extends CSCoreSDK.Resource
 
   /**
    * Returns list of beneficiaries related to the insurance contract.
+   * @returns {Promise<InsuranceBeneficiaryList>}
    */
   list = (): Promise<InsuranceBeneficiaryList> => {
     return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'beneficiaries', null).then(response => {
@@ -23,6 +34,8 @@ export class InsurancesContractBeneficiariesResource extends CSCoreSDK.Resource
 
   /**
    * Change beneficiaries and distribution of insurance among beneficiaries.
+   * @param {UpdateInsuranceBeneficiaries} payload
+   * @returns {Promise<UpdateInsuranceBeneficiaries>}
    */
   update = (payload: UpdateInsuranceBeneficiaries): Promise<UpdateInsuranceBeneficiaries> => {
 
@@ -40,10 +53,15 @@ export class InsurancesContractBeneficiariesResource extends CSCoreSDK.Resource
   }
 }
 
-
-
+/**
+ * @interface InsuranceBeneficiaryList
+ * @extends {CSCoreSDK.ListResponse<InsuranceBeneficiary>}
+ */
 export interface InsuranceBeneficiaryList extends CSCoreSDK.ListResponse<InsuranceBeneficiary> { }
 
+/**
+ * @interface InsuranceBeneficiary
+ */
 export interface InsuranceBeneficiary {
 
   /**
@@ -77,6 +95,9 @@ export interface InsuranceBeneficiary {
   flags?: [string];
 }
 
+/**
+ * @interface UpdateInsuranceBeneficiaries
+ */
 export interface UpdateInsuranceBeneficiaries {
 
   beneficiaries: [InsuranceBeneficiary];

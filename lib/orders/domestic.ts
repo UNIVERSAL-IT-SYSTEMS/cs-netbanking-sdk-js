@@ -3,14 +3,19 @@ import { Amount, AccountNumber, Symbols } from '../common';
 import { Info, Payment } from './orders';
 
 /**
-* Create domestic payment order
-*/
+ * Create domestic payment order
+ * @class PaymentsDomesticResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.CreateEnabled<DomesticPaymentCreateRequest, DomesticPaymentResponse>}
+ */
 export class PaymentsDomesticResource extends CSCoreSDK.Resource
   implements CSCoreSDK.CreateEnabled<DomesticPaymentCreateRequest, DomesticPaymentResponse> {
 
   /**
-  * Creates domestic payment order and returns it in promise
-  */
+   * Creates domestic payment order and returns it in promise
+   * @param {DomesticPaymentCreateRequest} payload
+   * @returns {Promise<DomesticPaymentResponse>}
+   */
   create = (payload: DomesticPaymentCreateRequest): Promise<DomesticPaymentResponse> => {
 
     // transform Date object to ISO strings
@@ -29,8 +34,10 @@ export class PaymentsDomesticResource extends CSCoreSDK.Resource
   }
 
   /**
-  * Returns PaymentDomesticResource resource for updating domestic payment
-  */
+   * Returns PaymentDomesticResource resource for updating domestic payment
+   * @param {string} id
+   * @returns {PaymentDomesticResource}
+   */
   withId = (id: string): PaymentDomesticResource => {
     return new PaymentDomesticResource(id, this.getPath(), this.getClient());
   }
@@ -38,14 +45,19 @@ export class PaymentsDomesticResource extends CSCoreSDK.Resource
 }
 
 /**
-* Update domestic payment
-*/
+ * Update domestic payment
+ * @class PaymentDomesticResource
+ * @extends {CSCoreSDK.InstanceResource}
+ * @implements {CSCoreSDK.UpdateEnabled<DomesticPaymentUpdateRequest, DomesticPaymentResponse>}
+ */
 export class PaymentDomesticResource extends CSCoreSDK.InstanceResource
   implements CSCoreSDK.UpdateEnabled<DomesticPaymentUpdateRequest, DomesticPaymentResponse> {
 
   /**
-  * Updates domestic payment and returns it in promise
-  */
+   * Updates domestic payment and returns it in promise
+   * @param {DomesticPaymentUpdateRequest} payload
+   * @returns {Promise<DomesticPaymentResponse>}
+   */
   update = (payload: DomesticPaymentUpdateRequest): Promise<DomesticPaymentResponse> => {
 
     // add ID to payload from resource id property
@@ -67,6 +79,10 @@ export class PaymentDomesticResource extends CSCoreSDK.InstanceResource
   }
 }
 
+/**
+ * @interface FullDomesticPaymentUpdateRequest
+ * @extends {DomesticPaymentUpdateRequest}
+ */
 export interface FullDomesticPaymentUpdateRequest extends DomesticPaymentUpdateRequest {
 
   /**
@@ -75,6 +91,10 @@ export interface FullDomesticPaymentUpdateRequest extends DomesticPaymentUpdateR
   id: string;
 }
 
+/**
+ * @interface DomesticPaymentUpdateRequest
+ * @extends {DomesticPaymentCreateRequest}
+ */
 export interface DomesticPaymentUpdateRequest extends DomesticPaymentCreateRequest {
 
   /**
@@ -93,8 +113,16 @@ export interface DomesticPaymentUpdateRequest extends DomesticPaymentCreateReque
   stateOk?: boolean;
 }
 
+/**
+ * @interface DomesticPaymentResponse
+ * @extends {Payment}
+ * @extends {CSCoreSDK.Signable}
+ */
 export interface DomesticPaymentResponse extends Payment, CSCoreSDK.Signable { }
 
+/**
+ * @interface DomesticPaymentCreateRequest
+ */
 export interface DomesticPaymentCreateRequest {
 
   /**
@@ -148,6 +176,9 @@ export interface DomesticPaymentCreateRequest {
   flags?: [string];
 }
 
+/**
+ * @interface DomesticPaymentAccount
+ */
 export interface DomesticPaymentAccount {
 
   /**

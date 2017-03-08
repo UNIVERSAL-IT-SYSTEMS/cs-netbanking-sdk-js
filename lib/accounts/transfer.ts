@@ -2,11 +2,18 @@ import * as CSCoreSDK from 'cs-core-sdk';
 import { Amount } from '../common';
 
 /**
-* Revolve a loan
-*/
+ * Revolve a loan
+ * @class AccountTransferResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.UpdateEnabled<TransferRequest, TransferResponse>}
+ */
 export class AccountTransferResource extends CSCoreSDK.Resource
   implements CSCoreSDK.UpdateEnabled<TransferRequest, TransferResponse> {
 
+  /**
+   * @param {string} basePath
+   * @param {CSCoreSDK.WebApiClient} client 
+   */
   constructor(basePath: string, client: CSCoreSDK.WebApiClient) {
     super(basePath, client);
 
@@ -15,8 +22,10 @@ export class AccountTransferResource extends CSCoreSDK.Resource
   }
 
   /**
-  * Revolves the loan. Currently only REVOLVING_LOAN subtype is supported.
-  */
+   * Revolves the loan. Currently only REVOLVING_LOAN subtype is supported.
+   * @param {TransferRequest} payload
+   * @returns {Promise<TransferResponse>}
+   */
   update = (payload: TransferRequest): Promise<TransferResponse> => {
 
     // transform Date objects to ISO strings
@@ -32,8 +41,15 @@ export class AccountTransferResource extends CSCoreSDK.Resource
   }
 }
 
+/**
+ * @interface TransferResponse
+ * @extends {CSCoreSDK.Signable}
+ */
 export interface TransferResponse extends CSCoreSDK.Signable { }
 
+/**
+ * @interface TransferRequest
+ */
 export interface TransferRequest {
 
   /**

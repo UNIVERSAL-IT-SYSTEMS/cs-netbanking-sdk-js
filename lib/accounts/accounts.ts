@@ -12,13 +12,18 @@ import { AccountStandingOrdersResource } from './standing-orders';
 import { AccountDirectDebitsResource } from './direct-debits';
 
 /**
-* List all accounts and get individual account instance resource 
-*/
+ * @class AccountsResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.HasInstanceResource<AccountResource>}
+ * @implements {CSCoreSDK.PaginatedListEnabled<MainAccount>}
+ */
 export class AccountsResource extends CSCoreSDK.Resource
   implements CSCoreSDK.HasInstanceResource<AccountResource>, CSCoreSDK.PaginatedListEnabled<MainAccount> {
 
   /**
    * List all accounts
+   * @param {AccountParameters=} params
+   * @returns {Promise<AccountList>}
    */
   list = (params?: AccountParameters): Promise<AccountList> => {
 
@@ -39,22 +44,29 @@ export class AccountsResource extends CSCoreSDK.Resource
   }
 
   /**
-  * Get the detail of the account with a given id
-  */
+   * Get the detail of the account with a given id
+   * @param {string|number} id
+   * @returns {AccountResource}
+   */
   withId = (id: string | number): AccountResource => {
     return new AccountResource(id, this.getPath(), this._client);
   }
 }
 
 /**
-* Get detail of the individual account and additional information about it 
-*/
+ * Get detail of the individual account and additional information about it 
+ * @class AccountResource
+ * @extends {CSCoreSDK.InstanceResource}
+ * @implements {CSCoreSDK.GetEnabled<MainAccount>}
+ * @implements {CSCoreSDK.UpdateEnabled<ChangeAccountSettingsRequest, ChangeAccountSettingsResponse>}
+ */
 export class AccountResource extends CSCoreSDK.InstanceResource
   implements CSCoreSDK.GetEnabled<MainAccount>, CSCoreSDK.UpdateEnabled<ChangeAccountSettingsRequest, ChangeAccountSettingsResponse> {
 
   /**
-  * Get account detail
-  */
+   * Get account detail
+   * @returns {Promise<MainAccount>}
+   */
   get = (): Promise<MainAccount> => {
     return CSCoreSDK.ResourceUtils.CallGet(this, null).then(response => {
 
@@ -69,8 +81,10 @@ export class AccountResource extends CSCoreSDK.InstanceResource
   }
 
   /**
-  * Update account's settings. 
-  */
+   * Update account's settings.
+   * @param {ChangeAccountSettingsRequest} payload
+   * @returns {Promise<ChangeAccountSettingsResponse>}
+   */
   update = (payload: ChangeAccountSettingsRequest): Promise<ChangeAccountSettingsResponse> => {
     return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(response => {
 
@@ -85,66 +99,80 @@ export class AccountResource extends CSCoreSDK.InstanceResource
   }
 
   /**
-  * Get information about the account's balance
-  */
-  get balance() {
+   * Get information about the account's balance
+   * @returns {AccountBalanceResource}
+   */
+  get balance(): AccountBalanceResource {
     return new AccountBalanceResource(this.getPath() + '/balance', this._client);
   }
 
   /**
-  * Get information about the account's services
-  */
-  get services() {
+   * Get information about the account's services
+   * @returns {AccountServicesResource}
+   */
+  get services(): AccountServicesResource {
     return new AccountServicesResource(this.getPath() + '/services', this._client);
   }
 
   /**
-  * Get information about the account's reservations
-  */
-  get reservations() {
+   * Get information about the account's reservations
+   * @returns {AccountReservationsResource}
+   */
+  get reservations(): AccountReservationsResource {
     return new AccountReservationsResource(this.getPath() + '/reservations', this._client);
   }
 
   /**
-  * Get information about the account's repayments
-  */
-  get repayments() {
+   * Get information about the account's repayments
+   * @returns {AccountRepaymentsResource}
+   */
+  get repayments(): AccountRepaymentsResource {
     return new AccountRepaymentsResource(this.getPath() + '/repayments', this._client);
   }
 
   /**
-  * Get information about the account's statements
-  */
-  get statements() {
+   * Get information about the account's statements
+   * @returns {AccountStatementsResource}
+   */
+  get statements(): AccountStatementsResource {
     return new AccountStatementsResource(this.getPath() + '/statements', this._client);
   }
 
   /**
-  * Get information about the account's subaccounts
-  */
-  get subAccounts() {
+   * Get information about the account's subaccounts
+   * @returns {SubAccountsResource}
+   */
+  get subAccounts(): SubAccountsResource {
     return new SubAccountsResource(this.getPath() + '/subaccounts', this._client);
   }
 
   /**
-  * Get information about the account's transactions
-  */
-  get transactions() {
+   * Get information about the account's transactions
+   * @returns {AccountTransactionsResource}
+   */
+  get transactions(): AccountTransactionsResource {
     return new AccountTransactionsResource(this.getPath() + '/transactions', this._client);
   }
 
   /**
-  * Revolve a loan
-  */
-  get transfer() {
+   * Revolve a loan
+   * @returns {AccountTransferResource}
+   */
+  get transfer(): AccountTransferResource {
     return new AccountTransferResource(this.getPath() + '/transfer', this._client);
   }
 
-  get standingOrders() {
+  /**
+   * @returns {AccountStandingOrdersResource}
+   */
+  get standingOrders(): AccountStandingOrdersResource {
     return new AccountStandingOrdersResource(this.getPath() + '/standingorders', this.getClient());
   }
 
-  get directDebits() {
+  /**
+   * @returns {AccountDirectDebitsResource}
+   */
+  get directDebits(): AccountDirectDebitsResource {
     return new AccountDirectDebitsResource(this.getPath() + '/directdebits', this.getClient());
   }
 }
@@ -177,8 +205,16 @@ function transformResponse(accountListing) {
   CSCoreSDK.EntityUtils.addDatesFromISO('overdraftDueDate', accountListing);
 }
 
+/**
+ * @interface AccountList
+ * @extends {CSCoreSDK.PaginatedListResponse<MainAccount>}
+ */
 export interface AccountList extends CSCoreSDK.PaginatedListResponse<MainAccount> { }
 
+/**
+ * @interface MainAccount
+ * @extends {Account}
+ */
 export interface MainAccount extends Account {
 
   /**
@@ -243,12 +279,15 @@ export interface MainAccount extends Account {
 
   /**
    * Convenience method for getting detail of the account right from the list 
+   * @returns {Promise<MainAccount>}
    */
   get: () => Promise<MainAccount>;
 
   /**
-  * Convenience method for updating account's details
-  */
+   * Convenience method for updating account's details
+   * @param {ChangeAccountSettingsRequest} payload
+   * @returns {Promise<ChangeAccountSettingsResponse>}
+   */
   update: (payload: ChangeAccountSettingsRequest) => Promise<ChangeAccountSettingsResponse>;
 
   /**
@@ -292,6 +331,10 @@ export interface MainAccount extends Account {
   directDebits: AccountDirectDebitsResource;
 }
 
+/**
+ * @interface OverdraftAmount
+ * @extends {Amount}
+ */
 export interface OverdraftAmount extends Amount {
 
   /**
@@ -300,6 +343,10 @@ export interface OverdraftAmount extends Amount {
   dueDate?: Date;
 }
 
+/**
+ * @interface SubAccount
+ * @extends {Account}
+ */
 export interface SubAccount extends Account {
 
   /**
@@ -313,6 +360,9 @@ export interface SubAccount extends Account {
   "cz-interestRateLimit"?: Amount;
 }
 
+/**
+ * @interface Account
+ */
 export interface Account {
 
   /**
@@ -358,6 +408,9 @@ export interface Account {
   creditInterestRate: number;
 }
 
+/**
+ * @interface Loan
+ */
 export interface Loan {
 
   /**
@@ -421,6 +474,9 @@ export interface Loan {
   nextRateDate?: Date;
 }
 
+/**
+ * @interface Saving
+ */
 export interface Saving {
 
   /**
@@ -469,6 +525,9 @@ export interface Saving {
   "cz-extraSavingMaximumMonthly"?: Amount;
 }
 
+/**
+ * @interface TransferReceivers
+ */
 export interface TransferReceivers {
 
   /**
@@ -482,6 +541,9 @@ export interface TransferReceivers {
   accountno: AccountNumber;
 }
 
+/**
+ * @interface ChangeAccountSettingsRequest
+ */
 export interface ChangeAccountSettingsRequest {
 
   /**
@@ -490,8 +552,17 @@ export interface ChangeAccountSettingsRequest {
   alias?: string;
 }
 
+/**
+ * @interface ChangeAccountSettingsResponse
+ * @extends {MainAccount}
+ * @extends {Signable}
+ */
 export interface ChangeAccountSettingsResponse extends MainAccount, Signable { }
 
+/**
+ * @interface AccountParameters
+ * @extends {NetbankingParameters}
+ */
 export interface AccountParameters extends NetbankingParameters {
 
   /**

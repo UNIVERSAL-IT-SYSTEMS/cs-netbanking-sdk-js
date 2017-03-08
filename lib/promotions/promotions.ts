@@ -1,10 +1,17 @@
 import * as CSCoreSDK from 'cs-core-sdk';
 
+/**
+ * @class PromotionsResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.ListEnabled<Promotion>}
+ * @implements {CSCoreSDK.CreateEnabled<CreatePromotionRequest, CreatePromotionResponse>}
+ */
 export class PromotionsResource extends CSCoreSDK.Resource
   implements CSCoreSDK.ListEnabled<Promotion>, CSCoreSDK.CreateEnabled<CreatePromotionRequest, CreatePromotionResponse>  {
 
   /**
    * Returns promotion list for the current user 
+   * @returns {Promise<PromotionList>}
    */
   list = (): Promise<PromotionList> => {
     return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'promotions');
@@ -12,14 +19,23 @@ export class PromotionsResource extends CSCoreSDK.Resource
 
   /**
    * Hide specified promotion
+   * @param {CreatePromotionRequest} payload
+   * @returns {Promise<CreatePromotionResponse>}
    */
   create = (payload: CreatePromotionRequest): Promise<CreatePromotionResponse> => {
     return this._client.callApi(this.getPath().replace('promotions', 'actions'), 'POST', null, payload);
   }
 }
 
+/**
+ * @interface PromotionList
+ * @extends {CSCoreSDK.ListResponse<Promotion>}
+ */
 export interface PromotionList extends CSCoreSDK.ListResponse<Promotion> { }
 
+/**
+ * @interface Promotion
+ */
 export interface Promotion {
 
   /**
@@ -117,6 +133,9 @@ export interface Promotion {
   }]
 }
 
+/**
+ * @interface CreatePromotionRequest
+ */
 export interface CreatePromotionRequest {
 
   /**
@@ -132,6 +151,9 @@ export interface CreatePromotionRequest {
   };
 }
 
+/**
+ * @interface CreatePromotionResponse
+ */
 export interface CreatePromotionResponse {
 
   infoItems?: [{

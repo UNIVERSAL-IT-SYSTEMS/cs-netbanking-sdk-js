@@ -1,9 +1,18 @@
 import * as CSCoreSDK from 'cs-core-sdk';
 import { Amount } from '../../common';
 
+/**
+ * @class InsurancesContractPaymentsResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.ListEnabled<ContractPayment>}
+ */
 export class InsurancesContractPaymentsResource extends CSCoreSDK.Resource
   implements CSCoreSDK.ListEnabled<ContractPayment> {
 
+  /**
+   * @param {string} basePath
+   * @param {CSCoreSDK.WebApiClient} client 
+   */
   constructor(basePath: string, client: CSCoreSDK.WebApiClient) {
     super(basePath, client);
 
@@ -13,6 +22,7 @@ export class InsurancesContractPaymentsResource extends CSCoreSDK.Resource
 
   /**
    * Returns list of life insurance payments. List contains one upcoming payment and payments history for 2 years.
+   * @returns {Promise<ContractPaymentList>}
    */
   list = (): Promise<ContractPaymentList> => {
     return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'payments').then(response => {
@@ -25,9 +35,14 @@ export class InsurancesContractPaymentsResource extends CSCoreSDK.Resource
 
 /**
  * List of contract payments
+ * @interface ContractPaymentList
+ * @extends {CSCoreSDK.ListResponse<ContractPayment>}
  */
 export interface ContractPaymentList extends CSCoreSDK.ListResponse<ContractPayment> { }
 
+/**
+ * @interface ContractPayment
+ */
 export interface ContractPayment {
 
   /**

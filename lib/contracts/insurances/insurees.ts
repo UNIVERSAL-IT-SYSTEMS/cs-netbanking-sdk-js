@@ -1,9 +1,18 @@
 import * as CSCoreSDK from 'cs-core-sdk';
 import { Address, Amount } from '../../common';
 
+/**
+ * @class InsurancesContractInsureesResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.ListEnabled<Insuree>}
+ */
 export class InsurancesContractInsureesResource extends CSCoreSDK.Resource
   implements CSCoreSDK.ListEnabled<Insuree> {
 
+  /**
+   * @param {string} basePath
+   * @param {CSCoreSDK.WebApiClient} client 
+   */
   constructor(basePath: string, client: CSCoreSDK.WebApiClient) {
     super(basePath, client);
 
@@ -13,14 +22,22 @@ export class InsurancesContractInsureesResource extends CSCoreSDK.Resource
 
   /**
    * Returns list of insurees related to the insurance contract.
+   * @returns {Promise<InsureeList>}
    */
   list = (): Promise<InsureeList> => {
     return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'insurees');
   }
 }
 
+/**
+ * @interface InsureeList
+ * @extends {CSCoreSDK.ListResponse<Insuree>}
+ */
 export interface InsureeList extends CSCoreSDK.ListResponse<Insuree> { }
 
+/**
+ * @interface Insuree
+ */
 export interface Insuree {
 
   /**

@@ -1,9 +1,19 @@
 import * as CSCoreSDK from 'cs-core-sdk';
 import { Amount } from '../common';
 
+/**
+ * @class GoalsResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.ListEnabled<Goal>}
+ * @implements {CSCoreSDK.UpdateEnabled<UpdateGoal, UpdateGoal>}
+ */
 export class GoalsResource extends CSCoreSDK.Resource
   implements CSCoreSDK.ListEnabled<Goal>, CSCoreSDK.UpdateEnabled<UpdateGoal, UpdateGoal> {
 
+  /**
+   * @param {string} basePath
+   * @param {CSCoreSDK.WebApiClient} client 
+   */
   constructor(basePath: string, client: CSCoreSDK.WebApiClient) {
     super(basePath, client);
 
@@ -13,6 +23,7 @@ export class GoalsResource extends CSCoreSDK.Resource
 
   /**
    * Returns list of user's saving goals except of completed ones. In price, only CZK currency is supported. If user has never set any goal, the response is empty.
+   * @returns {Promise<GoalList>}
    */
   list = (): Promise<GoalList> => {
     return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'goals').then(response => {
@@ -27,6 +38,8 @@ export class GoalsResource extends CSCoreSDK.Resource
 
   /**
    * Set new value of goals. In price, only CZK currency is supported. If completed flag is not present, false value is supposed. All goals of given client are replaced - old ones (except of completed) are deleted and these new specified are inserted.
+   * @param {UpdateGoal} payload
+   * @returns {Promise<UpdateGoal>}
    */
   update = (payload: UpdateGoal): Promise<UpdateGoal> => {
     if (Array.isArray(payload.goals)) {
@@ -53,8 +66,15 @@ function transformDates(item) {
   }
 }
 
+/**
+ * @interface GoalList
+ * @extends {CSCoreSDK.ListResponse<Goal>}
+ */
 export interface GoalList extends CSCoreSDK.ListResponse<Goal> { }
 
+/**
+ * @interface Goal
+ */
 export interface Goal {
 
   /**
@@ -78,6 +98,9 @@ export interface Goal {
   completed: boolean;
 }
 
+/**
+ * @interface UpdateGoal
+ */
 export interface UpdateGoal {
   goals: [Goal]
 }

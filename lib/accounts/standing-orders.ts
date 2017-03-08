@@ -1,11 +1,20 @@
 import * as CSCoreSDK from 'cs-core-sdk';
 import { AccountNumber, Amount, NetbankingParameters, Symbols } from '../common';
 
+/**
+ * @class AccountStandingOrdersResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.PaginatedListEnabled<StandingOrder>}
+ * @implements {CSCoreSDK.HasInstanceResource<AccountStandingOrderResource>}
+ * @implements {CSCoreSDK.CreateEnabled<CreateStandingOrderRequest, StandingOrderResponse>}
+ */
 export class AccountStandingOrdersResource extends CSCoreSDK.Resource
   implements CSCoreSDK.PaginatedListEnabled<StandingOrder>, CSCoreSDK.HasInstanceResource<AccountStandingOrderResource>, CSCoreSDK.CreateEnabled<CreateStandingOrderRequest, StandingOrderResponse> {
 
   /**
    * Returns list of actual standing/sweep orders for accounts of the current user.
+   * @param {NetbankingParameters} params
+   * @returns {Promise<StandingOrderList>}
    */
   list = (params: NetbankingParameters): Promise<StandingOrderList> => {
 
@@ -22,6 +31,8 @@ export class AccountStandingOrdersResource extends CSCoreSDK.Resource
 
   /**
    * Get the resource of standing order with a given id
+   * @param {string} id
+   * @returns {AccountStandingOrderResource}
    */
   withId = (id: string): AccountStandingOrderResource => {
     return new AccountStandingOrderResource(id, this.getPath(), this.getClient());
@@ -29,6 +40,8 @@ export class AccountStandingOrdersResource extends CSCoreSDK.Resource
 
   /**
    * Resource for creating standing/sweep order. Once order has been signed new payments are generated and executed according its settings.
+   * @param {CreateStandingOrderRequest} payload
+   * @returns {Promise<StandingOrderResponse>}
    */
   create = (payload: CreateStandingOrderRequest): Promise<StandingOrderResponse> => {
 
@@ -44,11 +57,18 @@ export class AccountStandingOrdersResource extends CSCoreSDK.Resource
   }
 }
 
+/**
+ * @class AccountStandingOrderResource
+ * @extends {CSCoreSDK.InstanceResource}
+ * @implements {CSCoreSDK.GetEnabled<StandingOrder>}
+ * @implements {CSCoreSDK.DeleteEnabled<StandingOrderResponse>}
+ */
 export class AccountStandingOrderResource extends CSCoreSDK.InstanceResource
   implements CSCoreSDK.GetEnabled<StandingOrder>, CSCoreSDK.DeleteEnabled<StandingOrderResponse> {
 
   /**
    * Returns detail of actual standing/sweep orders identified by its number.
+   * @returns {Promise<StandingOrder>}
    */
   get = (): Promise<StandingOrder> => {
     return CSCoreSDK.ResourceUtils.CallGet(this, null).then(response => {
@@ -61,6 +81,7 @@ export class AccountStandingOrderResource extends CSCoreSDK.InstanceResource
 
   /**
    * This call removes existing standing/sweep order. No more payments for the order are executed after the change has been signed.
+   * @returns {Promise<StandingOrderResponse>}
    */
   delete = (): Promise<StandingOrderResponse> => {
     return CSCoreSDK.ResourceUtils.CallDelete(this, null).then(response => {
@@ -90,8 +111,16 @@ function resourcifyStandingOrder(orderListing: StandingOrder, orderReference: Ac
   orderListing.delete = orderReference.delete;
 }
 
+/**
+ * @interface StandingOrderList
+ * @extends {CSCoreSDK.PaginatedListResponse<StandingOrder>}
+ */
 export interface StandingOrderList extends CSCoreSDK.PaginatedListResponse<StandingOrder> { }
 
+/**
+ * @interface StandingOrder
+ * @extends {CreateStandingOrderRequest}
+ */
 export interface StandingOrder extends CreateStandingOrderRequest {
 
   /**
@@ -155,17 +184,25 @@ export interface StandingOrder extends CreateStandingOrderRequest {
 
   /**
    * Convience method for getting standing order detail
+   * @returns {Promise<StandingOrder>}
    */
   get: () => Promise<StandingOrder>;
 
   /**
    * Conveinience method for deleting standing order
+   * @returns {Promise<StandingOrderResponse>}
    */
   delete: () => Promise<StandingOrderResponse>;
 }
 
+/**
+ * @interface StandingOrderResponse
+ */
 export interface StandingOrderResponse extends StandingOrder, CSCoreSDK.Signable { }
 
+/**
+ * @interface CreateStandingOrderRequest
+ */
 export interface CreateStandingOrderRequest {
 
   /**

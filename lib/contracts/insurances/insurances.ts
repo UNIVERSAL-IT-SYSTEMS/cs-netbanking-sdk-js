@@ -10,11 +10,19 @@ import { InsurancesContractStrategiesResource } from './strategies';
 import { InsurancesContractTransferResource } from './transfer';
 import { Amount, AccountNumber, Signable } from '../../common';
 
+/**
+ * @class InsurancesContractsResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.PaginatedListEnabled<Insurance>}
+ * @implements {CSCoreSDK.HasInstanceResource<InsurancesContractResource>}
+ */
 export class InsurancesContractsResource extends CSCoreSDK.Resource
   implements CSCoreSDK.PaginatedListEnabled<Insurance>, CSCoreSDK.HasInstanceResource<InsurancesContractResource> {
 
   /**
    * Returns list of life insurances for current user.
+   * @param {InsurancesParameters=} params
+   * @returns {Promise<InsuranceList>}
    */
   list = (params?: InsurancesParameters): Promise<InsuranceList> => {
     return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'insurances', params, response => {
@@ -30,17 +38,26 @@ export class InsurancesContractsResource extends CSCoreSDK.Resource
 
   /**
    * Get the resource of insurance contracts with a given id
+   * @param {string} id
+   * @returns {InsurancesContractResource}
    */
   withId = (id: string): InsurancesContractResource => {
     return new InsurancesContractResource(id, this.getPath(), this.getClient());
   }
 }
 
+/**
+ * @class InsurancesContractResource
+ * @extends {CSCoreSDK.InstanceResource}
+ * @implements {CSCoreSDK.GetEnabled<InsuranceDetail>}
+ * @implements {CSCoreSDK.UpdateEnabled<UpdateInsuranceRequest, UpdateInsuranceResponse>}
+ */
 export class InsurancesContractResource extends CSCoreSDK.InstanceResource
   implements CSCoreSDK.GetEnabled<InsuranceDetail>, CSCoreSDK.UpdateEnabled<UpdateInsuranceRequest, UpdateInsuranceResponse> {
 
   /**
    * Returns detail of the life insurance
+   * @returns {Promise<InsuranceDetail>}
    */
   get = (): Promise<InsuranceDetail> => {
 
@@ -54,6 +71,8 @@ export class InsurancesContractResource extends CSCoreSDK.InstanceResource
 
   /**
    * Allows to change a limited set of insurance settings of one specific contract. Currently only the field alias can be changed. Change only to alias field must not be signed, but response is ready also for signing process.
+   * @param {UpdateInsuranceRequest} payload
+   * @returns {Promise<UpdateInsuranceResponse>}
    */
   update = (payload: UpdateInsuranceRequest): Promise<UpdateInsuranceResponse> => {
     (<any>payload).id = this._id;
@@ -69,6 +88,7 @@ export class InsurancesContractResource extends CSCoreSDK.InstanceResource
 
   /**
    * Returns funds resource for insurance contract
+   * @returns {InsurancesContractFundsResource}
    */
   get funds(): InsurancesContractFundsResource {
     return new InsurancesContractFundsResource(`${this.getPath()}/funds`, this.getClient());
@@ -76,6 +96,7 @@ export class InsurancesContractResource extends CSCoreSDK.InstanceResource
 
   /**
    * Returns beneficiaries resource for insurance contract
+   * @returns {InsurancesContractBeneficiariesResource}
    */
   get beneficiaries(): InsurancesContractBeneficiariesResource {
     return new InsurancesContractBeneficiariesResource(`${this.getPath()}/beneficiaries`, this.getClient());
@@ -83,6 +104,7 @@ export class InsurancesContractResource extends CSCoreSDK.InstanceResource
 
   /**
    * Returns insurees resource for insurance contract
+   * @returns {InsurancesContractInsureesResource}
    */
   get insurees(): InsurancesContractInsureesResource {
     return new InsurancesContractInsureesResource(`${this.getPath()}/insurees`, this.getClient());
@@ -90,6 +112,7 @@ export class InsurancesContractResource extends CSCoreSDK.InstanceResource
 
   /**
    * Returns payments resource for insurance contract
+   * @returns {InsurancesContractPaymentsResource}
    */
   get payments(): InsurancesContractPaymentsResource {
     return new InsurancesContractPaymentsResource(`${this.getPath()}/payments`, this.getClient());
@@ -97,6 +120,7 @@ export class InsurancesContractResource extends CSCoreSDK.InstanceResource
 
   /**
    * Returns services resource for insurance contract
+   * @returns {InsurancesContractServicesResource}
    */
   get services(): InsurancesContractServicesResource {
     return new InsurancesContractServicesResource(`${this.getPath()}/services`, this.getClient());
@@ -104,6 +128,7 @@ export class InsurancesContractResource extends CSCoreSDK.InstanceResource
 
   /**
    * Returns events resource for insurance contract
+   * @returns {InsurancesContractEventsResource}
    */
   get events(): InsurancesContractEventsResource {
     return new InsurancesContractEventsResource(`${this.getPath()}/events`, this.getClient());
@@ -111,6 +136,7 @@ export class InsurancesContractResource extends CSCoreSDK.InstanceResource
 
   /**
    * Returns taxBenefits resource for insurance contract
+   * @returns {InsurancesContractTaxBenefitsResource}
    */
   get taxBenefits(): InsurancesContractTaxBenefitsResource {
     return new InsurancesContractTaxBenefitsResource(`${this.getPath()}/taxBenefits`, this.getClient());
@@ -118,6 +144,7 @@ export class InsurancesContractResource extends CSCoreSDK.InstanceResource
 
   /**
    * Returns strategies resource for insurance contract
+   * @returns {InsurancesContractStrategiesResource}
    */
   get strategies(): InsurancesContractStrategiesResource {
     return new InsurancesContractStrategiesResource(`${this.getPath()}/strategies`, this.getClient());
@@ -125,6 +152,7 @@ export class InsurancesContractResource extends CSCoreSDK.InstanceResource
 
   /**
    * Returns transfer resource for insurance contract
+   * @returns {InsurancesContractTransferResource}
    */
   get transfer(): InsurancesContractTransferResource {
     return new InsurancesContractTransferResource(`${this.getPath()}/transfer`, this.getClient());
@@ -151,8 +179,16 @@ function resourcifyInsurance(insurance: Insurance, insuranceReference: Insurance
   insurance.transfer = insuranceReference.transfer;
 }
 
+/**
+ * @interface InsuranceList
+ * @extends {CSCoreSDK.PaginatedListResponse<Insurance>}
+ */
 export interface InsuranceList extends CSCoreSDK.PaginatedListResponse<Insurance> { }
 
+/**
+ * @interface Insurance
+ * @extends {UpdateInsuranceRequest}
+ */
 export interface Insurance extends UpdateInsuranceRequest {
 
   /**
@@ -194,11 +230,14 @@ export interface Insurance extends UpdateInsuranceRequest {
 
   /**
    * Convenience get method for fetching Insurance detail
+   * @returns {Promise<InsuranceDetail>}
    */
   get: () => Promise<InsuranceDetail>;
 
   /**
    * Convenience update method for updating insurance
+   * @param {UpdateInsuranceRequest} payload
+   * @returns {Promise<UpdateInsuranceResponse>}
    */
   update: (payload: UpdateInsuranceRequest) => Promise<UpdateInsuranceResponse>;
 
@@ -249,6 +288,9 @@ export interface Insurance extends UpdateInsuranceRequest {
 
 }
 
+/**
+ * @interface UpdateInsuranceRequest
+ */
 export interface UpdateInsuranceRequest {
 
   /**
@@ -257,8 +299,17 @@ export interface UpdateInsuranceRequest {
   alias?: string;
 }
 
+/**
+ * @interface UpdateInsuranceResponse
+ * @extends {Insurance}
+ * @extends {CSCoreSDK.Signable}
+ */
 export interface UpdateInsuranceResponse extends Insurance, CSCoreSDK.Signable { }
 
+/**
+ * @interface InsuranceDetail
+ * @extends {Insurance}
+ */
 export interface InsuranceDetail extends Insurance {
 
   /**
@@ -270,8 +321,15 @@ export interface InsuranceDetail extends Insurance {
   life?: LifeDetail;
 }
 
+/**
+ * @interface InsurancesParameters
+ * @extends {CSCoreSDK.Paginated}
+ */
 export interface InsurancesParameters extends CSCoreSDK.Paginated { }
 
+/**
+ * @interface Life
+ */
 export interface Life {
 
 
@@ -319,9 +377,11 @@ export interface Life {
   flags?: [string];
 }
 
+/**
+ * @interface LifeDetail
+ * @extends {Life}
+ */
 export interface LifeDetail extends Life {
-
-
 
   /**
    * Reason of possible contract termination
@@ -342,8 +402,6 @@ export interface LifeDetail extends Life {
    * Date of the last premium payment
    */
   premiumLastPaid?: Date;
-
-
 
   /**
    * Technical interest rate. Value in percentage, e.g. 0,5 will be displayed as 0,5 %.
@@ -406,6 +464,4 @@ export interface LifeDetail extends Life {
    * Maximum amount that can be withdrawn from capital value
    */
   "cz-capitalValueMaxWithdrawal"?: Amount;
-
-
 }

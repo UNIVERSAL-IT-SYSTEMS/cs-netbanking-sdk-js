@@ -2,22 +2,29 @@ import * as CSCoreSDK from 'cs-core-sdk';
 import { AddNoteAndMarkTransactionRequest, AddNoteAndMarkTransactionResponse, ExportTransactionsParameters } from '../common';
 
 /**
-* Get individual AccountsTransactionsResource
-*/
+ * Get individual AccountsTransactionsResource
+ * @class AccountTransactionsResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.HasInstanceResource<AccountTransactionResource>}
+ */
 export class AccountTransactionsResource extends CSCoreSDK.Resource
   implements CSCoreSDK.HasInstanceResource<AccountTransactionResource> {
 
   /**
-  * Returns individual AccountsTransactionResource with a given id
-  */
+   * Returns individual AccountsTransactionResource with a given id
+   * @param {AccountTransactionResource} id
+   * @returns {AccountTransactionResource}
+   */
   withId = (id: string | number): AccountTransactionResource => {
     return new AccountTransactionResource(id, this.getPath(), this._client);
   }
 
   /**
-  * Exports transaction history into signed pdf
-  */
-  export = (params: ExportTransactionsParameters): Promise<{}> => {
+   * Exports transaction history into signed pdf
+   * @param {ExportTransactionsParameters} params
+   * @returns {Promise<any>}
+   */
+  export = (params: ExportTransactionsParameters): Promise<any> => {
 
     // transform "fields" parameter to comma separated list from array
     CSCoreSDK.EntityUtils.transformArrayParamsToString(params, 'fields');
@@ -33,14 +40,19 @@ export class AccountTransactionsResource extends CSCoreSDK.Resource
 }
 
 /**
-* Allows to add or change a client's personal transaction note and mark the transaction as favorite/important for one specific transaction on selected account.
-*/
+ * Allows to add or change a client's personal transaction note and mark the transaction as favorite/important for one specific transaction on selected account.
+ * @class AccountTransactionResource
+ * @extends {CSCoreSDK.InstanceResource}
+ * @implements {CSCoreSDK.UpdateEnabled<AddNoteAndMarkTransactionRequest, AddNoteAndMarkTransactionResponse>}
+ */
 export class AccountTransactionResource extends CSCoreSDK.InstanceResource
   implements CSCoreSDK.UpdateEnabled<AddNoteAndMarkTransactionRequest, AddNoteAndMarkTransactionResponse> {
 
   /**
-  * Adds, changes of marks transaction
-  */
+   * Adds, changes of marks transaction
+   * @param {AddNoteAndMarkTransactionRequest} payload
+   * @returns {Promise<AddNoteAndMarkTransactionResponse>}
+   */
   update = (payload: AddNoteAndMarkTransactionRequest): Promise<AddNoteAndMarkTransactionResponse> => {
     return CSCoreSDK.ResourceUtils.CallUpdate(this, payload);
   }

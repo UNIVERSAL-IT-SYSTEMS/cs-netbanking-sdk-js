@@ -1,5 +1,8 @@
 import * as CSCoreSDK from 'cs-core-sdk';
 
+/**
+ * @interface Signable
+ */
 export interface Signable {
   /**
   * Infomation about the signing
@@ -7,6 +10,9 @@ export interface Signable {
   signInfo?: SignInfo;
 }
 
+/**
+ * @interface SignInfo
+ */
 export interface SignInfo {
 
   /**
@@ -20,6 +26,9 @@ export interface SignInfo {
   signId?: string;
 }
 
+/**
+ * @interface AccountNumber
+ */
 export interface AccountNumber {
 
   /**
@@ -58,6 +67,9 @@ export interface AccountNumber {
   bic?: string;
 }
 
+/**
+ * @interface Amount
+ */
 export interface Amount {
 
   /**
@@ -76,8 +88,15 @@ export interface Amount {
   currency: string;
 }
 
+/**
+ * @interface StatementList
+ * @extends {CSCoreSDK.PaginatedListResponse<Statement>}
+ */
 export interface StatementList extends CSCoreSDK.PaginatedListResponse<Statement> { }
 
+/**
+ * @interface Statement
+ */
 export interface Statement {
 
   /**
@@ -121,6 +140,9 @@ export interface Statement {
   "cz-fileOrderNumber": string;
 }
 
+/**
+ * @interface AddNoteAndMarkTransactionRequest
+ */
 export interface AddNoteAndMarkTransactionRequest {
 
   /**
@@ -134,6 +156,10 @@ export interface AddNoteAndMarkTransactionRequest {
   flags?: [string];
 }
 
+/**
+ * @interface AddNoteAndMarkTransactionResponse
+ * @extends {Signable}
+ */
 export interface AddNoteAndMarkTransactionResponse extends Signable {
 
   /**
@@ -143,8 +169,16 @@ export interface AddNoteAndMarkTransactionResponse extends Signable {
 
 }
 
+/**
+ * @interface TransactionList
+ * @extends {CSCoreSDK.PaginatedListResponse<Transaction>}
+ * @extends {Signable}
+ */
 export interface TransactionList extends CSCoreSDK.PaginatedListResponse<Transaction>, Signable { }
 
+/**
+ * @interface Transaction
+ */
 export interface Transaction {
 
   /**
@@ -163,8 +197,16 @@ export interface Transaction {
   flags?: [string];
 }
 
+/**
+ * @interface NetbankingParameters
+ * @extends {CSCoreSDK.Paginated}
+ * @extends {CSCoreSDK.Sortable}
+ */
 export interface NetbankingParameters extends CSCoreSDK.Paginated, CSCoreSDK.Sortable { }
 
+/**
+ * @interface DownloadStatementParameters
+ */
 export interface DownloadStatementParameters {
 
   /**
@@ -178,6 +220,9 @@ export interface DownloadStatementParameters {
   statementId: string;
 }
 
+/**
+ * @interface ExportTransactionsParameters
+ */
 export interface ExportTransactionsParameters {
 
   /**
@@ -217,8 +262,15 @@ export interface ExportTransactionsParameters {
   showBalance?: boolean;
 }
 
+/**
+ * @interface NetbankingEmptyResponse
+ * @extends {CSCoreSDK.EmptyResponse}
+ */
 export interface NetbankingEmptyResponse extends CSCoreSDK.EmptyResponse { }
 
+/**
+ * @interface Symbols
+ */
 export interface Symbols {
 
   /**
@@ -237,6 +289,9 @@ export interface Symbols {
   specificSymbol?: string;
 }
 
+/**
+ * @interface Address
+ */
 export interface Address {
 
   /**

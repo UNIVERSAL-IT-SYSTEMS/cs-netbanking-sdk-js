@@ -2,14 +2,19 @@ import * as CSCoreSDK from 'cs-core-sdk';
 import { Amount } from '../common';
 
 /**
-* Get information about the account's reservations
-*/
+ * Get information about the account's reservations
+ * @class AccountReservationsResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.PaginatedListEnabled<Reservation>}
+ */
 export class AccountReservationsResource extends CSCoreSDK.Resource
   implements CSCoreSDK.PaginatedListEnabled<Reservation> {
 
   /**
-  * Fetches the reservations and returns them in a promise
-  */
+   * Fetches the reservations and returns them in a promise
+   * @param {ReservationParameters=} params
+   * @returns {Promise<ReservationList>}
+   */
   list = (params?: ReservationParameters): Promise<ReservationList> => {
     return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'reservations', params, response => {
 
@@ -21,8 +26,15 @@ export class AccountReservationsResource extends CSCoreSDK.Resource
   }
 }
 
+/**
+ * @interface ReservationList
+ * @extends {CSCoreSDK.PaginatedListResponse<Reservation>}
+ */
 export interface ReservationList extends CSCoreSDK.PaginatedListResponse<Reservation> { }
 
+/**
+ * @interface Reservation
+ */
 export interface Reservation {
 
   /**
@@ -71,4 +83,8 @@ export interface Reservation {
   amountSender?: Amount;
 }
 
+/**
+ * @interface ReservationParameters
+ * @extends {CSCoreSDK.Paginated}
+ */
 export interface ReservationParameters extends CSCoreSDK.Paginated { }

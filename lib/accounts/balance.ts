@@ -2,19 +2,26 @@ import * as CSCoreSDK from 'cs-core-sdk';
 import { Amount } from '../common';
 
 /**
-* Get information about the account's balance
-*/
+ * Get information about the account's balance
+ * @class AccountBalanceResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.GetEnabled<AccountBalance>}
+ */
 export class AccountBalanceResource extends CSCoreSDK.Resource
   implements CSCoreSDK.GetEnabled<AccountBalance> {
 
   /**
-  * Fetches the balance and returns them in a promise
-  */
+   * Fetches the balance and returns them in a promise
+   * @returns {Promise<AccountBalance>}
+   */
   get = (): Promise<AccountBalance> => {
     return CSCoreSDK.ResourceUtils.CallGet(this, null);
   }
 }
 
+/**
+ * @interface AccountBalance
+ */
 export interface AccountBalance {
 
   /**

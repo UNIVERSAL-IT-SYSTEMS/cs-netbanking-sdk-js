@@ -3,11 +3,19 @@ import { BuildingsContractsServicesResource } from './services';
 import { ContractsTransactionsResource } from '../transactions';
 import { AccountNumber, Amount, Signable } from '../../common';
 
+/**
+ * @class BuildingsContractsResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.HasInstanceResource<BuildingsContractResource>}
+ * @implements {CSCoreSDK.PaginatedListEnabled<BuildingsContract>}
+ */
 export class BuildingsContractsResource extends CSCoreSDK.Resource
   implements CSCoreSDK.HasInstanceResource<BuildingsContractResource>, CSCoreSDK.PaginatedListEnabled<BuildingsContract> {
 
   /**
    * Resource represents list of building savings for current user. It contains building savings and loans from building savings as well.
+   * @param {BuildingsContractsParameters=} params
+   * @returns {Promise<BuildingsContractList>}
    */
   list = (params?: BuildingsContractsParameters): Promise<BuildingsContractList> => {
     return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'buildings', params, response => {
@@ -24,17 +32,26 @@ export class BuildingsContractsResource extends CSCoreSDK.Resource
 
   /**
    * Get the resource of buildings contract with a given id
+   * @param {string} id
+   * @returns {BuildingsContractResource}
    */
   withId = (id: string): BuildingsContractResource => {
     return new BuildingsContractResource(id, this.getPath(), this.getClient());
   }
 }
 
+/**
+ * @class BuildingsContractResource
+ * @extends {CSCoreSDK.InstanceResource}
+ * @implements {CSCoreSDK.GetEnabled<BuildingsContract>}
+ * @implements {CSCoreSDK.UpdateEnabled<UpdateBuildingsContractRequest, UpdateBuildingsContractResponse>}
+ */
 export class BuildingsContractResource extends CSCoreSDK.InstanceResource
   implements CSCoreSDK.GetEnabled<BuildingsContract>, CSCoreSDK.UpdateEnabled<UpdateBuildingsContractRequest, UpdateBuildingsContractResponse> {
 
   /**
    * Resource represents one building saving product identified by it's identifier. It can be building saving or loan from building saving.
+   * @returns {Promise<BuildingsContract>}
    */
   get = (): Promise<BuildingsContract> => {
     return CSCoreSDK.ResourceUtils.CallGet(this, null).then(response => {
@@ -47,6 +64,8 @@ export class BuildingsContractResource extends CSCoreSDK.InstanceResource
 
   /**
    * Allows to change a limited set of building savings contract-settings of one specific contract. Currently only the field alias can be changed. Change only to alias field must not be signed, but response is ready also for signing process.
+   * @param {UpdateBuildingsContractRequest} payload
+   * @returns {Promise<UpdateBuildingsContractResponse>}
    */
   update = (payload: UpdateBuildingsContractRequest): Promise<UpdateBuildingsContractResponse> => {
     (<any>payload).id = this._id;
@@ -62,6 +81,7 @@ export class BuildingsContractResource extends CSCoreSDK.InstanceResource
 
   /**
    * Get buildings contracts services resource
+   * @returns {BuildingsContractsServicesResource}
    */
   get services(): BuildingsContractsServicesResource {
     return new BuildingsContractsServicesResource(`${this.getPath()}/services`, this.getClient());
@@ -69,6 +89,7 @@ export class BuildingsContractResource extends CSCoreSDK.InstanceResource
 
   /**
    * Get buildings contracts transactions resource
+   * @returns {ContractsTransactionsResource}
    */
   get transactions(): ContractsTransactionsResource {
     return new ContractsTransactionsResource(`${this.getPath().replace('/my', '/cz/my')}/transactions`, this.getClient());
@@ -92,8 +113,16 @@ function transformDates(contract) {
   }
 }
 
+/**
+ * @interface BuildingsContractList
+ * @extends {CSCoreSDK.PaginatedListResponse<BuildingsContract>}
+ */
 export interface BuildingsContractList extends CSCoreSDK.PaginatedListResponse<BuildingsContract> { }
 
+/**
+ * @interface BuildingsContract
+ * @extends {UpdateBuildingsContractRequest}
+ */
 export interface BuildingsContract extends UpdateBuildingsContractRequest {
 
   /**
@@ -210,11 +239,14 @@ export interface BuildingsContract extends UpdateBuildingsContractRequest {
 
   /**
    * Convenience get method for fetching contracts detail 
+   * @returns {Promise<BuildingsContract>}
    */
   get: () => Promise<BuildingsContract>;
 
   /**
    * Convenience update method for updating contract
+   * @param {UpdateBuildingsContractRequest} payload
+   * @returns {Promise<UpdateBuildingsContractResponse>}
    */
   update: (payload: UpdateBuildingsContractRequest) => Promise<UpdateBuildingsContractResponse>;
 
@@ -229,8 +261,15 @@ export interface BuildingsContract extends UpdateBuildingsContractRequest {
   transactions: ContractsTransactionsResource;
 }
 
+/**
+ * @interface BuildingsContractsParameters
+ * @extends {CSCoreSDK.Paginated}
+ */
 export interface BuildingsContractsParameters extends CSCoreSDK.Paginated { }
 
+/**
+ * @interface UpdateBuildingsContractRequest
+ */
 export interface UpdateBuildingsContractRequest {
 
   /**
@@ -239,5 +278,9 @@ export interface UpdateBuildingsContractRequest {
   alias?: string;
 }
 
+/**
+ * @interface UpdateBuildingsContractResponse
+ * @extends {BuildingsContract}
+ * @extends {CSCoreSDK.Signable}
+ */
 export interface UpdateBuildingsContractResponse extends BuildingsContract, CSCoreSDK.Signable { }
-

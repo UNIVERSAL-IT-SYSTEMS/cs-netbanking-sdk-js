@@ -1,9 +1,18 @@
 import * as CSCoreSDK from 'cs-core-sdk';
 import { SignInfo } from '../common';
 
+/**
+ * @class BundlesResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.CreateEnabled<BundleCreateRequest, BundleResponse>}
+ */
 export class BundlesResource extends CSCoreSDK.Resource
   implements CSCoreSDK.CreateEnabled<BundleCreateRequest, BundleResponse> {
 
+  /**
+   * @param {BundleCreateRequest} payload
+   * @returns {Promise<BundleResponse>}
+   */
   create = (payload: BundleCreateRequest): Promise<BundleResponse> => {
     return CSCoreSDK.ResourceUtils.CallCreate(this, payload).then(response => {
 
@@ -14,6 +23,9 @@ export class BundlesResource extends CSCoreSDK.Resource
   }
 }
 
+/**
+ * @interface BundleCreateRequest
+ */
 export interface BundleCreateRequest {
 
   /**
@@ -33,6 +45,10 @@ export interface BundleCreateRequest {
   }];
 }
 
+/**
+ * @interface BundleResponse
+ * @extends {CSCoreSDK.Signable}
+ */
 export interface BundleResponse extends CSCoreSDK.Signable {
 
   /**

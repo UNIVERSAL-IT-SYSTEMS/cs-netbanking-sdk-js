@@ -1,11 +1,19 @@
 import * as CSCoreSDK from 'cs-core-sdk';
 import { Amount, AccountNumber } from '../common';
 
+/**
+ * @class PluginsResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.PaginatedListEnabled<Plugin>}
+ * @implements {CSCoreSDK.HasInstanceResource<PluginResource>}
+ */
 export class PluginsResource extends CSCoreSDK.Resource
   implements CSCoreSDK.PaginatedListEnabled<Plugin>, CSCoreSDK.HasInstanceResource<PluginResource> {
 
   /**
    * Returns list of available plugins for current user. Plugin is application functionality which can be enabled/disabled by user.
+   * @param {PluginsParameters} params
+   * @returns {Promise<PluginList>}
    */
   list = (params: PluginsParameters): Promise<PluginList> => {
     return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'plugins', params, response => {
@@ -18,17 +26,26 @@ export class PluginsResource extends CSCoreSDK.Resource
 
   /**
    * Returns resource of plugin with a given id
+   * @param {string} id
+   * @returns {PluginResource}
    */
   withId = (id: string): PluginResource => {
     return new PluginResource(id, this.getPath(), this.getClient());
   }
 }
 
+/**
+ * @class PluginResource
+ * @extends {CSCoreSDK.InstanceResource}
+ * @implements {CSCoreSDK.UpdateEnabled<UpdatePluginRequest, SignablePlugin>}
+ */
 export class PluginResource extends CSCoreSDK.InstanceResource
   implements CSCoreSDK.UpdateEnabled<UpdatePluginRequest, SignablePlugin> {
 
   /**
    * Activation and deactivation of the specific plugin. You can also change settlement account for given plugin and current user.
+   * @param {UpdatePluginRequest} payload
+   * @returns {Promise<SignablePlugin>}
    */
   update = (payload: UpdatePluginRequest): Promise<SignablePlugin> => {
     return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(response => {
@@ -40,8 +57,16 @@ export class PluginResource extends CSCoreSDK.InstanceResource
   }
 }
 
+/**
+ * @interface PluginList
+ * @extends {CSCoreSDK.PaginatedListResponse<Plugin>}
+ */
 export interface PluginList extends CSCoreSDK.PaginatedListResponse<Plugin> { }
 
+/**
+ * @interface Plugin
+ * @extends {UpdatePluginRequest}
+ */
 export interface Plugin extends UpdatePluginRequest {
 
   /**
@@ -78,7 +103,9 @@ export interface Plugin extends UpdatePluginRequest {
   }];
 }
 
-
+/**
+ * @interface UpdatePluginRequest
+ */
 export interface UpdatePluginRequest {
 
   /**
@@ -97,6 +124,15 @@ export interface UpdatePluginRequest {
   flags?: [string];
 }
 
+/**
+ * @interface PluginsParameters
+ * @extends {CSCoreSDK.Paginated}
+ */
 export interface PluginsParameters extends CSCoreSDK.Paginated { }
 
+/**
+ * @interface SignablePlugin
+ * @extends {Plugin}
+ * @extends {CSCoreSDK.Signable}
+ */
 export interface SignablePlugin extends Plugin, CSCoreSDK.Signable { }

@@ -7,27 +7,36 @@ import { PaymentMobileResource } from './mobile';
 import { Symbols } from '../common';
 
 /**
-* Get information about payments orders
-*/
+ * Get information about payments orders
+ * @class OrdersResource
+ * @extends {CSCoreSDK.Resource}
+ */
 export class OrdersResource extends CSCoreSDK.Resource {
 
   /**
-  * Returns PaymentsResource for listing, deleting and accessing other information about payments
-  */
-  get payments() {
+   * Returns PaymentsResource for listing, deleting and accessing other information about payments
+   * @returns {PaymentsResource}
+   */
+  get payments(): PaymentsResource {
     return new PaymentsResource(this.getPath() + '/payments', this._client);
   }
 }
 
 /**
-* List payments, get individual payment and other resources
-*/
+ * List payments, get individual payment and other resources
+ * @class PaymentsResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.HasInstanceResource<PaymentResource>}
+ * @implements {CSCoreSDK.PaginatedListEnabled<Payment>}
+ */
 export class PaymentsResource extends CSCoreSDK.Resource
   implements CSCoreSDK.HasInstanceResource<PaymentResource>, CSCoreSDK.PaginatedListEnabled<Payment> {
 
   /**
-  * List all payments
-  */
+   * List all payments
+   * @param {NetbankingParameters=} params
+   * @returns {Promise<PaymentList>}
+   */
   list = (params?: NetbankingParameters): Promise<PaymentList> => {
 
     // transform "sort" and "order" parameters to comma separated list from array
@@ -51,50 +60,61 @@ export class PaymentsResource extends CSCoreSDK.Resource
   }
 
   /**
-  * Get individual payment with a given id
-  */
+   * Get individual payment with a given id
+   * @param {string|number} id
+   * @returns {PaymentResource}
+   */
   withId = (id: string | number): PaymentResource => {
     return new PaymentResource(id, this.getPath(), this._client);
   }
 
   /**
-  * Get currently available booking date
-  */
-  get bookingDate() {
+   * Get currently available booking date
+   * @returns {PaymentBookingDateResource}
+   */
+  get bookingDate(): PaymentBookingDateResource {
     return new PaymentBookingDateResource(this.getPath() + '/bookingdate', this._client);
   }
 
   /**
-  * Create domestic payment order
-  */
-  get domestic() {
+   * Create domestic payment order
+   * @returns {PaymentsDomesticResource}
+   */
+  get domestic(): PaymentsDomesticResource {
     return new PaymentsDomesticResource(this.getPath() + '/domestic', this._client);
   }
 
   /**
-  * Get remaining amounts for payment orders
-  */
-  get limits() {
+   * Get remaining amounts for payment orders
+   * @returns {PaymentLimitsResource}
+   */
+  get limits(): PaymentLimitsResource {
     return new PaymentLimitsResource(this.getPath() + '/limits', this._client);
   }
 
   /**
-  * Recharging the credit available on prepaid cards provided by Vodafone, T-Mobile or O2.
-  */
-  get mobile() {
+   * Recharging the credit available on prepaid cards provided by Vodafone, T-Mobile or O2.
+   * @returns {PaymentMobileResource}
+   */
+  get mobile(): PaymentMobileResource {
     return new PaymentMobileResource(this.getPath() + '/mobile', this._client);
   }
 }
 
 /**
-* Individual Payment order resource
-*/
+ * Individual Payment order resource
+ * @class PaymentResource
+ * @extends {CSCoreSDK.InstanceResource}
+ * @implements {CSCoreSDK.GetEnabled<Payment>}
+ * @implements {CSCoreSDK.DeleteEnabled<NetbankingEmptyResponse>}
+ */
 export class PaymentResource extends CSCoreSDK.InstanceResource
   implements CSCoreSDK.GetEnabled<Payment>, CSCoreSDK.DeleteEnabled<NetbankingEmptyResponse> {
 
   /**
-  * Get detail of the payment
-  */
+   * Get detail of the payment
+   * @returns {Promise<Payment>}
+   */
   get = (): Promise<Payment> => {
     return CSCoreSDK.ResourceUtils.CallGet(this, null).then(payment => {
 
@@ -109,8 +129,9 @@ export class PaymentResource extends CSCoreSDK.InstanceResource
   }
 
   /**
-  * Remove payment
-  */
+   * Delete payment
+   * @returns {Promise<NetbankingEmptyResponse>}
+   */
   delete = (): Promise<NetbankingEmptyResponse> => {
     return CSCoreSDK.ResourceUtils.CallDelete(this, null);
   }
@@ -122,8 +143,16 @@ function resourcifyListing(paymentListing: Payment, paymentResource: PaymentReso
   paymentListing.delete = paymentResource.delete;
 }
 
+/**
+ * @interface PaymentList
+ * @extends {CSCoreSDK.PaginatedListResponse<Payment>}
+ */
 export interface PaymentList extends CSCoreSDK.PaginatedListResponse<Payment> { }
 
+/**
+ * @interface Payment
+ * @extends {CSCoreSDK.Signable}
+ */
 export interface Payment extends CSCoreSDK.Signable {
 
   /**
@@ -252,16 +281,21 @@ export interface Payment extends CSCoreSDK.Signable {
   flags?: [string];
 
   /**
-  * Convenience method for retrieving payment's detail
-  */
+   * Convenience method for retrieving payment's detail
+   * @returns {Promise<Payment>}
+   */
   get: () => Promise<Payment>;
 
   /**
-  * Convenience method for removing payment
-  */
+   * Convenience method for removing payment
+   * @returns {Promise<NetbankingEmptyResponse>}
+   */
   delete: () => Promise<NetbankingEmptyResponse>;
 }
 
+/**
+ * @interface Info
+ */
 export interface Info {
 
   /**
@@ -270,4 +304,8 @@ export interface Info {
   text4x35?: [string];
 }
 
+/**
+ * @interface RemovePaymentOrderResponse
+ * @extends {Signable}
+ */
 export interface RemovePaymentOrderResponse extends Signable { }

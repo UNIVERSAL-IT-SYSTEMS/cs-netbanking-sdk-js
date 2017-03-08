@@ -1,11 +1,19 @@
 import * as CSCoreSDK from 'cs-core-sdk';
 import { Amount } from '../common';
 
+/**
+ * @class AuthorizationLimitsResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.ParametrizedListEnabled<AuthorizationLimitsParams, AuthorizationLimit>}
+ * @implements {CSCoreSDK.HasInstanceResource<AuthorizationLimitResource>}
+ */
 export class AuthorizationLimitsResource extends CSCoreSDK.Resource
   implements CSCoreSDK.ParametrizedListEnabled<AuthorizationLimitsParams, AuthorizationLimit>, CSCoreSDK.HasInstanceResource<AuthorizationLimitResource> {
 
   /**
    * Return all user local specific payment order entry limits for for all user active authorization methods and channels/applications used in country.
+   * @param {AuthorizationLimitsParams=} params
+   * @returns {Promise<AuthorizationLimitList>}
    */
   list = (params?: AuthorizationLimitsParams): Promise<AuthorizationLimitList> => {
     return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'limits', params).then(response => {
@@ -20,17 +28,25 @@ export class AuthorizationLimitsResource extends CSCoreSDK.Resource
 
   /**
    * Get the resource of authorization limit with a given id
+   * @param {string} id
+   * @returns {AuthorizationLimitResource}
    */
   withId = (id: string): AuthorizationLimitResource => {
     return new AuthorizationLimitResource(id, this.getPath(), this.getClient());
   }
 }
 
+/**
+ * @class AuthorizationLimitResource
+ * @extends {CSCoreSDK.InstanceResource}
+ * @implements {CSCoreSDK.GetEnabled<AuthorizationLimit>}
+ */
 export class AuthorizationLimitResource extends CSCoreSDK.InstanceResource
   implements CSCoreSDK.GetEnabled<AuthorizationLimit> {
 
   /**
    * Return local specific payment order entry limits valid for combination of user, authorization method and used channel/application. For example user could define different limits for TAC authorization via George and mobile applications.
+   * @returns {Promise<AuthorizationLimit>}
    */
   get = (): Promise<AuthorizationLimit> => {
     return CSCoreSDK.ResourceUtils.CallGet(this, null).then(response => {
@@ -46,8 +62,15 @@ function resourcifyLimits(limit: AuthorizationLimit, limitReference: Authorizati
   limit.get = limitReference.get;
 }
 
+/**
+ * @interface AuthorizationLimitList
+ * @extends {CSCoreSDK.ListResponse<AuthorizationLimit>}
+ */
 export interface AuthorizationLimitList extends CSCoreSDK.ListResponse<AuthorizationLimit> { }
 
+/**
+ * @interface AuthorizationLimit
+ */
 export interface AuthorizationLimit {
 
   /**
@@ -87,10 +110,14 @@ export interface AuthorizationLimit {
 
   /**
    * Convenience method for fetching authorization limit detail.
+   * @returns {Promise<AuthorizationLimit>}
    */
   get: () => Promise<AuthorizationLimit>;
 }
 
+/**
+ * @interface AuthorizationLimitsParams
+ */
 export interface AuthorizationLimitsParams {
 
   /**

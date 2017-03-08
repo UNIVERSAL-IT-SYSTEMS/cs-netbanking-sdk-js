@@ -1,9 +1,18 @@
 import * as CSCoreSDK from 'cs-core-sdk';
 import { Amount } from '../common';
 
+/**
+ * @class BudgetsResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.ListEnabled<Budget>}
+ */
 export class BudgetsResource extends CSCoreSDK.Resource
   implements CSCoreSDK.ListEnabled<Budget> {
 
+  /**
+   * @param {string} basePath
+   * @param {CSCoreSDK.WebApiClient} client 
+   */
   constructor(basePath: string, client: CSCoreSDK.WebApiClient) {
     super(basePath, client);
 
@@ -12,6 +21,7 @@ export class BudgetsResource extends CSCoreSDK.Resource
 
   /**
    * Returns list of user's tracked categories and its limits.
+   * @returns {Promise<BudgetList>}
    */
   list = (): Promise<BudgetList> => {
     return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'budgets');
@@ -19,14 +29,23 @@ export class BudgetsResource extends CSCoreSDK.Resource
 
   /**
    * Set new value of tracked categories.
+   * @param {UpdateBudgets} payload
+   * @returns {Promise<UpdateBudgets>}
    */
   update = (payload: UpdateBudgets): Promise<UpdateBudgets> => {
     return CSCoreSDK.ResourceUtils.CallUpdate(this, payload);
   }
 }
 
+/**
+ * @interface BudgetList
+ * @extends {CSCoreSDK.ListResponse<Budget>}
+ */
 export interface BudgetList extends CSCoreSDK.ListResponse<Budget> { }
 
+/**
+ * @interface Budget
+ */
 export interface Budget {
 
   category: {
@@ -49,6 +68,9 @@ export interface Budget {
   budget?: Amount;
 }
 
+/**
+ * @interface UpdateBudgets
+ */
 export interface UpdateBudgets {
   budgets: [Budget];
 }

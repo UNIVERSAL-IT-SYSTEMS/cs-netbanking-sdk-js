@@ -1,11 +1,18 @@
 import * as CSCoreSDK from 'cs-core-sdk';
 
 /**
-* Get information about the account's services
-*/
+ * Get information about the account's services
+ * @class AccountServicesResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.PaginatedListEnabled<Service>}
+ */
 export class AccountServicesResource extends CSCoreSDK.Resource
   implements CSCoreSDK.PaginatedListEnabled<Service> {
 
+  /**
+   * @param {string} basePath
+   * @param {CSCoreSDK.WebApiClient} client 
+   */
   constructor(basePath: string, client: CSCoreSDK.WebApiClient) {
     super(basePath, client);
 
@@ -14,8 +21,9 @@ export class AccountServicesResource extends CSCoreSDK.Resource
   }
 
   /**
-  * Fetches the services and returns them in a promise
-  */
+   * Fetches the services and returns them in a promise
+   * @param {ServiceParameters=} params
+   */
   list = (params?: ServiceParameters): Promise<ServiceList> => {
 
     return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(this, null, 'services', params, response => {
@@ -28,8 +36,15 @@ export class AccountServicesResource extends CSCoreSDK.Resource
   }
 }
 
+/**
+ * @interface ServiceList
+ * @extends {CSCoreSDK.PaginatedListResponse<Service>}
+ */
 export interface ServiceList extends CSCoreSDK.PaginatedListResponse<Service> { }
 
+/**
+ * @interface Service
+ */
 export interface Service {
 
   /**
@@ -58,4 +73,8 @@ export interface Service {
   dateTo?: Date;
 }
 
+/**
+ * @interface ServiceParameters
+ * @extends {CSCoreSDK.Paginated}
+ */
 export interface ServiceParameters extends CSCoreSDK.Paginated { }

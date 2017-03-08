@@ -2,21 +2,32 @@ import * as CSCoreSDK from 'cs-core-sdk';
 import { Amount } from '../common';
 
 /**
-* Get remaining amounts for payment orders
-*/
+ * Get remaining amounts for payment orders
+ * @class PaymentLimitsResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.ListEnabled<PaymentLimit>}
+ */
 export class PaymentLimitsResource extends CSCoreSDK.Resource
   implements CSCoreSDK.ListEnabled<PaymentLimit> {
 
   /**
-  * List all limits for payment orders
-  */
+   * List all limits for payment orders
+   * @returns {Promise<PaymentLimitsList>}
+   */
   list = (): Promise<PaymentLimitsList> => {
     return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'remainingLimits', null);
   }
 }
 
+/**
+ * @interface PaymentLimitsList
+ * @extends {CSCoreSDK.ListResponse<PaymentLimit>}
+ */
 export interface PaymentLimitsList extends CSCoreSDK.ListResponse<PaymentLimit> { }
 
+/**
+ * @interface PaymentLimit
+ */
 export interface PaymentLimit {
 
   /**

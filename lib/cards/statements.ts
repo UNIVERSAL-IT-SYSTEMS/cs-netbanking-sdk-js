@@ -3,12 +3,17 @@ import { StatementList, Statement, NetbankingParameters, DownloadStatementParame
 
 /**
  * Account resource for listing statements
+ * @class CardAccountsResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.HasInstanceResource<CardAccountResource>}
  */
 export class CardAccountsResource extends CSCoreSDK.Resource
   implements CSCoreSDK.HasInstanceResource<CardAccountResource> {
 
   /**
    * Returns CardAccountResource for an account with a given id
+   * @param {string} id
+   * @returns {CardAccountResource}
    */
   withId = (id: string): CardAccountResource => {
     return new CardAccountResource(id, this.getPath(), this._client);
@@ -17,25 +22,33 @@ export class CardAccountsResource extends CSCoreSDK.Resource
 
 /**
  * Indidiual account resource with a given id
+ * @class CardAccountResource
+ * @extends {CSCoreSDK.InstanceResource}
  */
 export class CardAccountResource extends CSCoreSDK.InstanceResource {
 
   /**
    * Get statements of the account
+   * @returns {CardStatementsResource}
    */
-  get statements() {
+  get statements(): CardStatementsResource {
     return new CardStatementsResource(this.getPath() + '/statements', this._client);
   }
 }
 
 /**
  * Get statements for an account
+ * @class CardStatementsResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.PaginatedListEnabled<Statement>}
  */
 export class CardStatementsResource extends CSCoreSDK.Resource
   implements CSCoreSDK.PaginatedListEnabled<Statement> {
 
   /**
    * List all statements
+   * @param {NetbankingParameters=} params
+   * @returns {Promise<StatementList>}
    */
   list = (params?: NetbankingParameters): Promise<StatementList> => {
 
@@ -53,8 +66,10 @@ export class CardStatementsResource extends CSCoreSDK.Resource
 
   /**
    * Download PDF with statements
+   * @param {DownloadStatementParameters} params
+   * @returns {Promise<any>}
    */
-  download = (params: DownloadStatementParameters) => {
+  download = (params: DownloadStatementParameters): Promise<any> => {
     return CSCoreSDK.ResourceUtils.CallDownload(this, 'signed/download', 'POST', params);
   }
 }

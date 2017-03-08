@@ -1,11 +1,18 @@
 import * as CSCoreSDK from 'cs-core-sdk';
 import { Signable } from '../common';
 
+/**
+ * @class SettingsResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.GetEnabled<Settings>}
+ * @implements {CSCoreSDK.UpdateEnabled<Settings, SignableSettings>}
+ */
 export class SettingsResource extends CSCoreSDK.Resource
   implements CSCoreSDK.GetEnabled<Settings>, CSCoreSDK.UpdateEnabled<Settings, SignableSettings> {
 
   /**
-   * Returns basic user settings. 
+   * Returns basic user settings.
+   * @returns {Promise<Settings>}
    */
   get = (): Promise<Settings> => {
     return CSCoreSDK.ResourceUtils.CallGet(this, null);
@@ -13,6 +20,8 @@ export class SettingsResource extends CSCoreSDK.Resource
 
   /**
    * Change user settings. Currently only language can be changed by this endpoint.
+   * @param {Settings} payload
+   * @returns {Promise<SignableSettings>}
    */
   update = (payload: Settings): Promise<SignableSettings> => {
     return CSCoreSDK.ResourceUtils.CallUpdate(this, payload).then(response => {
@@ -24,6 +33,9 @@ export class SettingsResource extends CSCoreSDK.Resource
   }
 }
 
+/**
+ * @interface Settings
+ */
 export interface Settings {
 
   /**
@@ -37,6 +49,10 @@ export interface Settings {
   flags?: [string];
 }
 
+/**
+ * @interface SignableSettings
+ * @extends {CSCoreSDK.Signable}
+ */
 export interface SignableSettings extends CSCoreSDK.Signable {
 
   settings: Settings;

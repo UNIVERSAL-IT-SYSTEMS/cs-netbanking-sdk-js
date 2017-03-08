@@ -2,18 +2,25 @@ import * as CSCoreSDK from 'cs-core-sdk';
 
 /**
  * Get the 3D secure online shopping status
+ * @class CardSecure3DResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.GetEnabled<SecureSettings>}
  */
 export class CardSecure3DResource extends CSCoreSDK.Resource
   implements CSCoreSDK.GetEnabled<SecureSettings> {
 
   /**
    * Returns 3D secure online shopping status
+   * @returns {Promise<SecureSettings>}
    */
   get = (): Promise<SecureSettings> => {
     return CSCoreSDK.ResourceUtils.CallGet(this, null);
   }
 }
 
+/**
+ * @interface SecureSettings
+ */
 export interface SecureSettings {
 
   /**

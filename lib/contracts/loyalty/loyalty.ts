@@ -1,9 +1,17 @@
-/// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 import * as CSCoreSDK from 'cs-core-sdk';
 
+/**
+ * @class LoyaltyContractsResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.GetEnabled<Loyalty>}
+ */
 export class LoyaltyContractsResource extends CSCoreSDK.Resource
 implements CSCoreSDK.GetEnabled<Loyalty> {
 
+    /**
+     * @param {string} basePath
+     * @param {CSCoreSDK.WebApiClient} client 
+     */
     constructor(basePath: string, client: CSCoreSDK.WebApiClient) {    
         super(basePath, client);
         
@@ -13,6 +21,7 @@ implements CSCoreSDK.GetEnabled<Loyalty> {
 
     /**
      * Get data about iBod account of the current client.
+     * @returns {Promise<Loyalty>}
      */
     get = (): Promise<Loyalty> => {
         return CSCoreSDK.ResourceUtils.CallGet(this, null).then(response => {
@@ -23,6 +32,9 @@ implements CSCoreSDK.GetEnabled<Loyalty> {
     }
 }
 
+/**
+ * @interface Loyalty
+ */
 export interface Loyalty {
 
     /**

@@ -2,13 +2,17 @@ import * as CSCoreSDK from 'cs-core-sdk';
 import { LastLoginsResource } from './lastLogins';
 
 /**
-* Get information about the profile and past logins.
-*/
+ * Get information about the profile and past logins.
+ * @class ProfileResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.GetEnabled<Profile>}
+ */
 export class ProfileResource extends CSCoreSDK.Resource
   implements CSCoreSDK.GetEnabled<Profile> {
 
   /** 
    * Returns information about the profile 
+   * @returns {Promise<Profile>}
    */
   get = (): Promise<Profile> => {
     return CSCoreSDK.ResourceUtils.CallGet(this, null).then(profile => {
@@ -25,12 +29,16 @@ export class ProfileResource extends CSCoreSDK.Resource
 
   /** 
    * Returns LastLoginsResource for listing past logins
+   * @returns {LastLoginsResource}
    */
-  get lastLogins() {
+  get lastLogins(): LastLoginsResource {
     return new LastLoginsResource(this.getPath() + '/logininfo', this.getClient());
   }
 }
 
+/**
+ * @interface Profile
+ */
 export interface Profile {
 
   /**
