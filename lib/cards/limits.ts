@@ -88,7 +88,7 @@ export interface CardLimit {
 }
 
 /**
- * @interface {ChangeCardLimitsResponse}
+ * @interface ChangeCardLimitsResponse
  * @extends {CSCoreSDK.Signable}
  */
 export interface ChangeCardLimitsResponse extends CSCoreSDK.Signable {
