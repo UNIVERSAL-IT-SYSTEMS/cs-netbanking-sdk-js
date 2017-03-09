@@ -1,128 +1,149 @@
-
 import * as CSCoreSDK from 'cs-core-sdk';
 
+/**
+ * @class ContactsResource
+ * @extends {CSCoreSDK.Resource}
+ * @implements {CSCoreSDK.ListEnabled<Contact>}
+ * @implements {CSCoreSDK.HasInstanceResource<ContactResource>}
+ */
 export class ContactsResource extends CSCoreSDK.Resource
-implements CSCoreSDK.ListEnabled<Contact>, CSCoreSDK.HasInstanceResource<ContactResource> {
+  implements CSCoreSDK.ListEnabled<Contact>, CSCoreSDK.HasInstanceResource<ContactResource> {
 
-    /**
-     * Resource represents list of contact information for current user. It can contain addresses, phones and email addresses.
-     */
-    list = (): Promise<ContactList> => {
-        return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'contacts');
-    }
+  /**
+   * Resource represents list of contact information for current user. It can contain addresses, phones and email addresses.
+   * @returns {Promise<ContactList>}
+   */
+  list = (): Promise<ContactList> => {
+    return CSCoreSDK.ResourceUtils.CallListWithSuffix(this, null, 'contacts');
+  }
 
-    /**
-     * Get the resource of contact with a given id
-     */
-    withId = (id: string): ContactResource => {
-        return new ContactResource(id, this.getPath(), this.getClient());
-    }
+  /**
+   * Get the resource of contact with a given id
+   * @param {string} id
+   * @returns {ContactResource}
+   */
+  withId = (id: string): ContactResource => {
+    return new ContactResource(id, this.getPath(), this.getClient());
+  }
 }
 
+/**
+ * @class ContactResource
+ * @extends {CSCoreSDK.InstanceResource}
+ * @implements {CSCoreSDK.GetEnabled<Contact>}
+ */
 export class ContactResource extends CSCoreSDK.InstanceResource
-implements CSCoreSDK.GetEnabled<Contact> {
+  implements CSCoreSDK.GetEnabled<Contact> {
 
-    /**
-     * Resource represents one specific contact information identified by its id. It can be address, phone or email address.
-     */
-    get = (): Promise<Contact> => {
-        return CSCoreSDK.ResourceUtils.CallGet(this, null);
-    }
+  /**
+   * Resource represents one specific contact information identified by its id. It can be address, phone or email address.
+   * @returns {Promise<Contact>}
+   */
+  get = (): Promise<Contact> => {
+    return CSCoreSDK.ResourceUtils.CallGet(this, null);
+  }
 }
 
-export interface ContactList extends CSCoreSDK.ListResponse<Contact> {}
+/**
+ * @interface ContactList
+ * @extends {CSCoreSDK.ListResponse<Contact>}
+ */
+export interface ContactList extends CSCoreSDK.ListResponse<Contact> { }
 
+/**
+ * @interface Contact
+ */
 export interface Contact {
 
-    /**
-     * Contact ID
-     */
-    id: string;
+  /**
+   * Contact ID
+   */
+  id: string;
+
+  /**
+   * Type of contact. ENUM values: ADDRESS, PHONE, EMAIL, FAX.
+   */
+  type: string;
+
+  /**
+   * Contact flags
+   */
+  flags?: [string];
+
+  /**
+   * Contact address
+   */
+  address?: {
 
     /**
-     * Type of contact. ENUM values: ADDRESS, PHONE, EMAIL, FAX.
+     * Address type. ENUM values: PERMANENT_RESIDENCE, SECONDARY_RESIDENCE, COMPANY_RESIDENCE, UNKNOWN
      */
     type: string;
 
     /**
-     * Contact flags
+     * Localized name of address type.
      */
-    flags?: [string];
+    typeI18N: string;
+
+    description?: string;
+
+    street: string;
+
+    streetNumber?: string | number;
+
+    buildingApartment?: string | number;
+
+    zipCode: string;
+
+    city: string;
+
+    country: string;
+  }
+
+  /**
+   * Contact phone
+   */
+  phone?: {
 
     /**
-     * Contact address
+     * Phone type. ENUM: PRIVATE, COMPANY, UNKNOWN
      */
-    address?: {
-
-        /**
-         * Address type. ENUM values: PERMANENT_RESIDENCE, SECONDARY_RESIDENCE, COMPANY_RESIDENCE, UNKNOWN
-         */
-        type: string;
-
-        /**
-         * Localized name of address type.
-         */
-        typeI18N: string;
-
-        description?: string;
-
-        street: string;
-
-        streetNumber?: string | number;
-
-        buildingApartment?: string | number;
-
-        zipCode: string;
-
-        city: string;
-
-        country: string;
-    }
+    type: string;
 
     /**
-     * Contact phone
+     * Localized name of phone type.
      */
-    phone?: {
-
-        /**
-         * Phone type. ENUM: PRIVATE, COMPANY, UNKNOWN
-         */
-        type: string;
-
-        /**
-         * Localized name of phone type.
-         */
-        typeI18N: string;
-
-        /**
-         * Country calling code as international phone number prefix. E.g.: "0043" or "+43", "00420" or "+420", "00421" or "+421"
-         */
-        countryCallingCode: string;
-
-        /**
-         * Phone number
-         */
-        phoneNumber: string;
-    }
+    typeI18N: string;
 
     /**
-     * Primary contact email address
+     * Country calling code as international phone number prefix. E.g.: "0043" or "+43", "00420" or "+420", "00421" or "+421"
      */
-    email?: {
+    countryCallingCode: string;
 
-        /**
-         * Email type. ENUM values: PRIVATE, COMPANY, UNKNOWN
-         */
-        type: string;
+    /**
+     * Phone number
+     */
+    phoneNumber: string;
+  }
 
-        /**
-         * Localized name of email type.
-         */
-        typeI18N: string;
+  /**
+   * Primary contact email address
+   */
+  email?: {
 
-        /**
-         * Email
-         */
-        email: string;
-    }
+    /**
+     * Email type. ENUM values: PRIVATE, COMPANY, UNKNOWN
+     */
+    type: string;
+
+    /**
+     * Localized name of email type.
+     */
+    typeI18N: string;
+
+    /**
+     * Email
+     */
+    email: string;
+  }
 }

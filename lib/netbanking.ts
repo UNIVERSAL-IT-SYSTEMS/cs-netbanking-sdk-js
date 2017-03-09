@@ -1,141 +1,191 @@
-
 /// <reference types="es6-promise" />
 
 import * as CSCoreSDK from 'cs-core-sdk';
-import {AccountsResource} from './accounts/accounts';
-import {ProfileResource} from './profile/profile';
-import {CardsResource} from './cards/cards';
-import {OrdersResource} from './orders/orders';
-import {SecuritiesResource} from './securities/securities';
-import {SettingsResource} from './settings/settings';
-import {ContactsResource} from './contacts/contacts';
-import {PluginsResource} from './plugins/plugins';
-import {ContractsResource} from './contracts/contracts';
-import {ServicesResource} from './services/services';
-import {MessagesResource} from './messages/messages';
-import {TemplatesResource} from './templates/templates';
-import {PhoneNumbersResource} from './phone-numbers/phone-numbers';
-import {BudgetsResource} from './budgets/budgets';
-import {GoalsResource} from './goals/goals';
-import {PromotionsResource} from './promotions/promotions';
-import {AuthorizationLimitsResource} from './authorization-limits/authorization-limits';
-import {AuthorizationTokenResource} from './authorization-token/authorization-token';
-import {BundlesResource} from './bundles/bundles';
+import { AccountsResource } from './accounts/accounts';
+import { ProfileResource } from './profile/profile';
+import { CardsResource } from './cards/cards';
+import { OrdersResource } from './orders/orders';
+import { SecuritiesResource } from './securities/securities';
+import { SettingsResource } from './settings/settings';
+import { ContactsResource } from './contacts/contacts';
+import { PluginsResource } from './plugins/plugins';
+import { ContractsResource } from './contracts/contracts';
+import { ServicesResource } from './services/services';
+import { MessagesResource } from './messages/messages';
+import { TemplatesResource } from './templates/templates';
+import { PhoneNumbersResource } from './phone-numbers/phone-numbers';
+import { BudgetsResource } from './budgets/budgets';
+import { GoalsResource } from './goals/goals';
+import { PromotionsResource } from './promotions/promotions';
+import { AuthorizationLimitsResource } from './authorization-limits/authorization-limits';
+import { AuthorizationTokenResource } from './authorization-token/authorization-token';
+import { BundlesResource } from './bundles/bundles';
 
-var sharedClient : NetbankingClient = null;
+var sharedClient: NetbankingClient = null;
 
-/*+
+/**
  * Returns the singleton NetbankingClient
+ * @returns {NetbankingClient}
  */
-export function getClient() {
-    if (sharedClient === null) {
-        return new NetbankingClient(CSCoreSDK.config.copy(), CSCoreSDK.sharedContext);
-    }
-    
-    return sharedClient;
+export function getClient(): NetbankingClient {
+  if (sharedClient === null) {
+    return new NetbankingClient(CSCoreSDK.config.copy(), CSCoreSDK.sharedContext);
+  }
+
+  return sharedClient;
 }
 
 /**
  * Netbanking client 
+ * @extends {CSCoreSDK.WebApiClient}
  */
 export class NetbankingClient extends CSCoreSDK.WebApiClient {
-    
-    /**
-     * Creates new instance of NetbankingClient
-     * 
-     * @param config WebApiConfiguration object that configures this client
-     * @param context WebApiContext object that allows for data sharing between clients
-     */
-    constructor(config: CSCoreSDK.WebApiConfiguration, context: CSCoreSDK.WebApiContext) {
-        super(config, '/api/v3/netbanking/my');
-        this.sharedContext = context;
-    }
-    
-   /**
-    * List all accounts and get other information like balance, services, statements etc.
-    */
-    get accounts() {
-        return new AccountsResource(this.getPath() + '/accounts', this);
-    }
-    
-    /**
-    * Get information about the current user's profile and past logins.
-    */
-    get profile() {
-        return new ProfileResource(this.getPath() + '/profile', this);
-    }
-    
-    /**
-    * List all cards and other information like delivery, transactions, limits etc. 
-    */
-    get cards() {
-        return new CardsResource(this.getPath() + '/cards', this);
-    }
-    
-    /**
-    * List, update and get payments, booking date or create and update domestic payments. 
-    */
-    get orders() {
-        return new OrdersResource(this.getPath() + '/orders', this);
-    }
-    
-    get securities() {
-        return new SecuritiesResource(this.getPath() + '/securities', this);
-    }
 
-    get settings() {
-        return new SettingsResource(`${this.getPath()}/settings`, this);
-    }
+  /**
+   * Creates new instance of NetbankingClient
+   * 
+   * @param {WebApiConfiguration} config object that configures this client
+   * @param {WebApiContext} context object that allows for data sharing between clients
+   */
+  constructor(config: CSCoreSDK.WebApiConfiguration, context: CSCoreSDK.WebApiContext) {
+    super(config, '/api/v3/netbanking/my');
+    this.sharedContext = context;
+  }
 
-    get contacts() {
-        return new ContactsResource(`${this.getPath()}/contacts`, this);
-    }
+  /**
+   * List all accounts and get other information like balance, services, statements etc.
+   * @returns {AccountsResource}
+   */
+  get accounts(): AccountsResource {
+    return new AccountsResource(this.getPath() + '/accounts', this);
+  }
 
-    get plugins() {
-        return new PluginsResource(`${this.getPath()}/plugins`, this);
-    }
+  /**
+   * Get information about the current user's profile and past logins.
+   * @returns {ProfileResource}
+   */
+  get profile(): ProfileResource {
+    return new ProfileResource(this.getPath() + '/profile', this);
+  }
 
-    get contracts() {
-        return new ContractsResource(`${this.getPath()}/contracts`, this);
-    }
+  /**
+   * List all cards and other information like delivery, transactions, limits etc. 
+   * @returns {CardsResource}
+   */
+  get cards(): CardsResource {
+    return new CardsResource(this.getPath() + '/cards', this);
+  }
 
-    get services() {
-        return new ServicesResource(`${this.getPath()}/services`, this);
-    }
+  /**
+   * List, update and get payments, booking date or create and update domestic payments. 
+   * @returns {OrdersResource}
+   */
+  get orders(): OrdersResource {
+    return new OrdersResource(this.getPath() + '/orders', this);
+  }
 
-    get messages() {
-        return new MessagesResource(`${this.getPath()}/messages`, this); 
-    }
+  /**
+   * @returns {SecuritiesResource}
+   */
+  get securities(): SecuritiesResource {
+    return new SecuritiesResource(this.getPath() + '/securities', this);
+  }
 
-    get templates() {
-        return new TemplatesResource(`${this.getPath()}/templates`, this);
-    }
+  /**
+   * @returns {SettingsResource}
+   */
+  get settings(): SettingsResource {
+    return new SettingsResource(`${this.getPath()}/settings`, this);
+  }
 
-    get phoneNumbers() {
-        return new PhoneNumbersResource(`${this.getPath()}/phone-numbers`, this);
-    }
+  /**
+   * @returns {ContactsResource}
+   */
+  get contacts(): ContactsResource {
+    return new ContactsResource(`${this.getPath()}/contacts`, this);
+  }
 
-    get budgets() {
-        return new BudgetsResource(`${this.getPath()}/budgets`, this);
-    }
+  /**
+   * @returns {PluginsResource}
+   */
+  get plugins(): PluginsResource {
+    return new PluginsResource(`${this.getPath()}/plugins`, this);
+  }
 
-    get goals() {
-        return new GoalsResource(`${this.getPath()}/goals`, this);
-    }
+  /**
+   * @returns {ContractsResource}
+   */
+  get contracts(): ContractsResource {
+    return new ContractsResource(`${this.getPath()}/contracts`, this);
+  }
 
-    get promotions() {
-        return new PromotionsResource(`${this.getPath()}/promotions`, this);
-    }
+  /**
+   * @returns {ServicesResource}
+   */
+  get services(): ServicesResource {
+    return new ServicesResource(`${this.getPath()}/services`, this);
+  }
 
-    get authorizationLimits() {
-        return new AuthorizationLimitsResource(`${this.getPath()}/authorizationLimits`, this);
-    }
+  /**
+   * @returns {MessagesResource}
+   */
+  get messages(): MessagesResource {
+    return new MessagesResource(`${this.getPath()}/messages`, this);
+  }
 
-    get authorizationToken() {
-        return new AuthorizationTokenResource(`${this.getPath()}/auth/token/invalidate`, this);
-    }
+  /**
+   * @returns {TemplatesResource}
+   */
+  get templates(): TemplatesResource {
+    return new TemplatesResource(`${this.getPath()}/templates`, this);
+  }
 
-    get bundles() {
-        return new BundlesResource(`${this.getPath()}/bundles`, this);
-    }
+  /**
+   * @returns {PhoneNumbersResource}
+   */
+  get phoneNumbers(): PhoneNumbersResource {
+    return new PhoneNumbersResource(`${this.getPath()}/phone-numbers`, this);
+  }
+
+  /**
+   * @returns {BudgetsResource}
+   */
+  get budgets(): BudgetsResource {
+    return new BudgetsResource(`${this.getPath()}/budgets`, this);
+  }
+
+  /**
+   * @returns {GoalsResource}
+   */
+  get goals(): GoalsResource {
+    return new GoalsResource(`${this.getPath()}/goals`, this);
+  }
+
+  /**
+   * @returns {PromotionsResource}
+   */
+  get promotions(): PromotionsResource {
+    return new PromotionsResource(`${this.getPath()}/promotions`, this);
+  }
+
+  /**
+   * @returns {AuthorizationLimitsResource}
+   */
+  get authorizationLimits(): AuthorizationLimitsResource {
+    return new AuthorizationLimitsResource(`${this.getPath()}/authorizationLimits`, this);
+  }
+
+  /**
+   * @returns {AuthorizationTokenResource}
+   */
+  get authorizationToken(): AuthorizationTokenResource {
+    return new AuthorizationTokenResource(`${this.getPath()}/auth/token/invalidate`, this);
+  }
+
+  /**
+   * @returns {BundlesResource}
+   */
+  get bundles(): BundlesResource {
+    return new BundlesResource(`${this.getPath()}/bundles`, this);
+  }
 }
