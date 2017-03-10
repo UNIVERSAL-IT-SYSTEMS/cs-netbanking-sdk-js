@@ -1,16 +1,22 @@
 var webpack = require('webpack');
 var path = require('path');
 var fs = require('fs');
+var UnminifiedWebpackPlugin = require('unminified-webpack-plugin');
 
 var args = process.argv.slice(2);
 var nodeModules = null;
 var target;
 var libraryTarget;
 var outputFilename;
-var plugins = [];
+var plugins = [
+  new webpack.optimize.UglifyJsPlugin({compress: {warnings: false}}), 
+  new UnminifiedWebpackPlugin(),
+  new webpack.optimize.DedupePlugin(),
+];
+
 if(args.indexOf('--target-browser') != -1){
   console.log('Targeting browser');
-  outputFilename = 'cs-netbanking-sdk.sfx.js';
+  outputFilename = 'cs-netbanking-sdk.sfx.min.js';
   target = 'web';
   libraryTarget = 'var'
   nodeModules = {};
@@ -20,7 +26,7 @@ if(args.indexOf('--target-browser') != -1){
   nodeModules = {};
   target = 'node';
   libraryTarget = 'commonjs2'
-  outputFilename = 'cs-netbanking-sdk.node.js'
+  outputFilename = 'cs-netbanking-sdk.node.min.js'
   fs.readdirSync('node_modules')
     .filter(function(x) {
       return ['.bin'].indexOf(x) === -1;
