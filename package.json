@@ -1,6 +1,6 @@
 {
   "name": "cs-netbanking-sdk",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "CS Netbanking SDK for the CSAS Web Api",
   "main": "./dist/cs-netbanking-sdk.node.js",
   "types": "./dist/cs-netbanking-sdk.node.d.ts",

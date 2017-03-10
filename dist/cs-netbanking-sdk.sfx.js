@@ -47,11 +47,17 @@ var CSNetbankingSDK =
 
 	/// <reference types="es6-promise" />
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
 	var accounts_1 = __webpack_require__(2);
 	var profile_1 = __webpack_require__(13);
@@ -73,8 +79,9 @@ var CSNetbankingSDK =
 	var authorization_token_1 = __webpack_require__(59);
 	var bundles_1 = __webpack_require__(60);
 	var sharedClient = null;
-	/*+
+	/**
 	 * Returns the singleton NetbankingClient
+	 * @returns {NetbankingClient}
 	 */
 	function getClient() {
 	    if (sharedClient === null) {
@@ -85,14 +92,15 @@ var CSNetbankingSDK =
 	exports.getClient = getClient;
 	/**
 	 * Netbanking client
+	 * @extends {CSCoreSDK.WebApiClient}
 	 */
 	var NetbankingClient = (function (_super) {
 	    __extends(NetbankingClient, _super);
 	    /**
 	     * Creates new instance of NetbankingClient
 	     *
-	     * @param config WebApiConfiguration object that configures this client
-	     * @param context WebApiContext object that allows for data sharing between clients
+	     * @param {WebApiConfiguration} config object that configures this client
+	     * @param {WebApiContext} context object that allows for data sharing between clients
 	     */
 	    function NetbankingClient(config, context) {
 	        var _this = _super.call(this, config, '/api/v3/netbanking/my') || this;
@@ -102,6 +110,7 @@ var CSNetbankingSDK =
 	    Object.defineProperty(NetbankingClient.prototype, "accounts", {
 	        /**
 	         * List all accounts and get other information like balance, services, statements etc.
+	         * @returns {AccountsResource}
 	         */
 	        get: function () {
 	            return new accounts_1.AccountsResource(this.getPath() + '/accounts', this);
@@ -111,8 +120,9 @@ var CSNetbankingSDK =
 	    });
 	    Object.defineProperty(NetbankingClient.prototype, "profile", {
 	        /**
-	        * Get information about the current user's profile and past logins.
-	        */
+	         * Get information about the current user's profile and past logins.
+	         * @returns {ProfileResource}
+	         */
 	        get: function () {
 	            return new profile_1.ProfileResource(this.getPath() + '/profile', this);
 	        },
@@ -121,8 +131,9 @@ var CSNetbankingSDK =
 	    });
 	    Object.defineProperty(NetbankingClient.prototype, "cards", {
 	        /**
-	        * List all cards and other information like delivery, transactions, limits etc.
-	        */
+	         * List all cards and other information like delivery, transactions, limits etc.
+	         * @returns {CardsResource}
+	         */
 	        get: function () {
 	            return new cards_1.CardsResource(this.getPath() + '/cards', this);
 	        },
@@ -131,8 +142,9 @@ var CSNetbankingSDK =
 	    });
 	    Object.defineProperty(NetbankingClient.prototype, "orders", {
 	        /**
-	        * List, update and get payments, booking date or create and update domestic payments.
-	        */
+	         * List, update and get payments, booking date or create and update domestic payments.
+	         * @returns {OrdersResource}
+	         */
 	        get: function () {
 	            return new orders_1.OrdersResource(this.getPath() + '/orders', this);
 	        },
@@ -140,6 +152,9 @@ var CSNetbankingSDK =
 	        configurable: true
 	    });
 	    Object.defineProperty(NetbankingClient.prototype, "securities", {
+	        /**
+	         * @returns {SecuritiesResource}
+	         */
 	        get: function () {
 	            return new securities_1.SecuritiesResource(this.getPath() + '/securities', this);
 	        },
@@ -147,6 +162,9 @@ var CSNetbankingSDK =
 	        configurable: true
 	    });
 	    Object.defineProperty(NetbankingClient.prototype, "settings", {
+	        /**
+	         * @returns {SettingsResource}
+	         */
 	        get: function () {
 	            return new settings_1.SettingsResource(this.getPath() + "/settings", this);
 	        },
@@ -154,6 +172,9 @@ var CSNetbankingSDK =
 	        configurable: true
 	    });
 	    Object.defineProperty(NetbankingClient.prototype, "contacts", {
+	        /**
+	         * @returns {ContactsResource}
+	         */
 	        get: function () {
 	            return new contacts_1.ContactsResource(this.getPath() + "/contacts", this);
 	        },
@@ -161,6 +182,9 @@ var CSNetbankingSDK =
 	        configurable: true
 	    });
 	    Object.defineProperty(NetbankingClient.prototype, "plugins", {
+	        /**
+	         * @returns {PluginsResource}
+	         */
 	        get: function () {
 	            return new plugins_1.PluginsResource(this.getPath() + "/plugins", this);
 	        },
@@ -168,6 +192,9 @@ var CSNetbankingSDK =
 	        configurable: true
 	    });
 	    Object.defineProperty(NetbankingClient.prototype, "contracts", {
+	        /**
+	         * @returns {ContractsResource}
+	         */
 	        get: function () {
 	            return new contracts_1.ContractsResource(this.getPath() + "/contracts", this);
 	        },
@@ -175,6 +202,9 @@ var CSNetbankingSDK =
 	        configurable: true
 	    });
 	    Object.defineProperty(NetbankingClient.prototype, "services", {
+	        /**
+	         * @returns {ServicesResource}
+	         */
 	        get: function () {
 	            return new services_1.ServicesResource(this.getPath() + "/services", this);
 	        },
@@ -182,6 +212,9 @@ var CSNetbankingSDK =
 	        configurable: true
 	    });
 	    Object.defineProperty(NetbankingClient.prototype, "messages", {
+	        /**
+	         * @returns {MessagesResource}
+	         */
 	        get: function () {
 	            return new messages_1.MessagesResource(this.getPath() + "/messages", this);
 	        },
@@ -189,6 +222,9 @@ var CSNetbankingSDK =
 	        configurable: true
 	    });
 	    Object.defineProperty(NetbankingClient.prototype, "templates", {
+	        /**
+	         * @returns {TemplatesResource}
+	         */
 	        get: function () {
 	            return new templates_1.TemplatesResource(this.getPath() + "/templates", this);
 	        },
@@ -196,6 +232,9 @@ var CSNetbankingSDK =
 	        configurable: true
 	    });
 	    Object.defineProperty(NetbankingClient.prototype, "phoneNumbers", {
+	        /**
+	         * @returns {PhoneNumbersResource}
+	         */
 	        get: function () {
 	            return new phone_numbers_1.PhoneNumbersResource(this.getPath() + "/phone-numbers", this);
 	        },
@@ -203,6 +242,9 @@ var CSNetbankingSDK =
 	        configurable: true
 	    });
 	    Object.defineProperty(NetbankingClient.prototype, "budgets", {
+	        /**
+	         * @returns {BudgetsResource}
+	         */
 	        get: function () {
 	            return new budgets_1.BudgetsResource(this.getPath() + "/budgets", this);
 	        },
@@ -210,6 +252,9 @@ var CSNetbankingSDK =
 	        configurable: true
 	    });
 	    Object.defineProperty(NetbankingClient.prototype, "goals", {
+	        /**
+	         * @returns {GoalsResource}
+	         */
 	        get: function () {
 	            return new goals_1.GoalsResource(this.getPath() + "/goals", this);
 	        },
@@ -217,6 +262,9 @@ var CSNetbankingSDK =
 	        configurable: true
 	    });
 	    Object.defineProperty(NetbankingClient.prototype, "promotions", {
+	        /**
+	         * @returns {PromotionsResource}
+	         */
 	        get: function () {
 	            return new promotions_1.PromotionsResource(this.getPath() + "/promotions", this);
 	        },
@@ -224,6 +272,9 @@ var CSNetbankingSDK =
 	        configurable: true
 	    });
 	    Object.defineProperty(NetbankingClient.prototype, "authorizationLimits", {
+	        /**
+	         * @returns {AuthorizationLimitsResource}
+	         */
 	        get: function () {
 	            return new authorization_limits_1.AuthorizationLimitsResource(this.getPath() + "/authorizationLimits", this);
 	        },
@@ -231,6 +282,9 @@ var CSNetbankingSDK =
 	        configurable: true
 	    });
 	    Object.defineProperty(NetbankingClient.prototype, "authorizationToken", {
+	        /**
+	         * @returns {AuthorizationTokenResource}
+	         */
 	        get: function () {
 	            return new authorization_token_1.AuthorizationTokenResource(this.getPath() + "/auth/token/invalidate", this);
 	        },
@@ -238,6 +292,9 @@ var CSNetbankingSDK =
 	        configurable: true
 	    });
 	    Object.defineProperty(NetbankingClient.prototype, "bundles", {
+	        /**
+	         * @returns {BundlesResource}
+	         */
 	        get: function () {
 	            return new bundles_1.BundlesResource(this.getPath() + "/bundles", this);
 	        },
@@ -260,11 +317,17 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
 	var balance_1 = __webpack_require__(3);
 	var services_1 = __webpack_require__(4);
@@ -277,14 +340,19 @@ var CSNetbankingSDK =
 	var standing_orders_1 = __webpack_require__(11);
 	var direct_debits_1 = __webpack_require__(12);
 	/**
-	* List all accounts and get individual account instance resource
-	*/
+	 * @class AccountsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.HasInstanceResource<AccountResource>}
+	 * @implements {CSCoreSDK.PaginatedListEnabled<MainAccount>}
+	 */
 	var AccountsResource = (function (_super) {
 	    __extends(AccountsResource, _super);
 	    function AccountsResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * List all accounts
+	         * @param {AccountParameters=} params
+	         * @returns {Promise<AccountList>}
 	         */
 	        _this.list = function (params) {
 	            // transform "sort" and "order" parameters to comma separated list from array
@@ -300,8 +368,10 @@ var CSNetbankingSDK =
 	            });
 	        };
 	        /**
-	        * Get the detail of the account with a given id
-	        */
+	         * Get the detail of the account with a given id
+	         * @param {string|number} id
+	         * @returns {AccountResource}
+	         */
 	        _this.withId = function (id) {
 	            return new AccountResource(id, _this.getPath(), _this._client);
 	        };
@@ -311,15 +381,20 @@ var CSNetbankingSDK =
 	}(CSCoreSDK.Resource));
 	exports.AccountsResource = AccountsResource;
 	/**
-	* Get detail of the individual account and additional information about it
-	*/
+	 * Get detail of the individual account and additional information about it
+	 * @class AccountResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 * @implements {CSCoreSDK.GetEnabled<MainAccount>}
+	 * @implements {CSCoreSDK.UpdateEnabled<ChangeAccountSettingsRequest, ChangeAccountSettingsResponse>}
+	 */
 	var AccountResource = (function (_super) {
 	    __extends(AccountResource, _super);
 	    function AccountResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
-	        * Get account detail
-	        */
+	         * Get account detail
+	         * @returns {Promise<MainAccount>}
+	         */
 	        _this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null).then(function (response) {
 	                // add convenienxce methods
@@ -330,8 +405,10 @@ var CSNetbankingSDK =
 	            });
 	        };
 	        /**
-	        * Update account's settings.
-	        */
+	         * Update account's settings.
+	         * @param {ChangeAccountSettingsRequest} payload
+	         * @returns {Promise<ChangeAccountSettingsResponse>}
+	         */
 	        _this.update = function (payload) {
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (response) {
 	                // add convenience methods
@@ -345,8 +422,9 @@ var CSNetbankingSDK =
 	    }
 	    Object.defineProperty(AccountResource.prototype, "balance", {
 	        /**
-	        * Get information about the account's balance
-	        */
+	         * Get information about the account's balance
+	         * @returns {AccountBalanceResource}
+	         */
 	        get: function () {
 	            return new balance_1.AccountBalanceResource(this.getPath() + '/balance', this._client);
 	        },
@@ -355,8 +433,9 @@ var CSNetbankingSDK =
 	    });
 	    Object.defineProperty(AccountResource.prototype, "services", {
 	        /**
-	        * Get information about the account's services
-	        */
+	         * Get information about the account's services
+	         * @returns {AccountServicesResource}
+	         */
 	        get: function () {
 	            return new services_1.AccountServicesResource(this.getPath() + '/services', this._client);
 	        },
@@ -365,8 +444,9 @@ var CSNetbankingSDK =
 	    });
 	    Object.defineProperty(AccountResource.prototype, "reservations", {
 	        /**
-	        * Get information about the account's reservations
-	        */
+	         * Get information about the account's reservations
+	         * @returns {AccountReservationsResource}
+	         */
 	        get: function () {
 	            return new reservations_1.AccountReservationsResource(this.getPath() + '/reservations', this._client);
 	        },
@@ -375,8 +455,9 @@ var CSNetbankingSDK =
 	    });
 	    Object.defineProperty(AccountResource.prototype, "repayments", {
 	        /**
-	        * Get information about the account's repayments
-	        */
+	         * Get information about the account's repayments
+	         * @returns {AccountRepaymentsResource}
+	         */
 	        get: function () {
 	            return new repayments_1.AccountRepaymentsResource(this.getPath() + '/repayments', this._client);
 	        },
@@ -385,8 +466,9 @@ var CSNetbankingSDK =
 	    });
 	    Object.defineProperty(AccountResource.prototype, "statements", {
 	        /**
-	        * Get information about the account's statements
-	        */
+	         * Get information about the account's statements
+	         * @returns {AccountStatementsResource}
+	         */
 	        get: function () {
 	            return new statements_1.AccountStatementsResource(this.getPath() + '/statements', this._client);
 	        },
@@ -395,8 +477,9 @@ var CSNetbankingSDK =
 	    });
 	    Object.defineProperty(AccountResource.prototype, "subAccounts", {
 	        /**
-	        * Get information about the account's subaccounts
-	        */
+	         * Get information about the account's subaccounts
+	         * @returns {SubAccountsResource}
+	         */
 	        get: function () {
 	            return new subAccounts_1.SubAccountsResource(this.getPath() + '/subaccounts', this._client);
 	        },
@@ -405,8 +488,9 @@ var CSNetbankingSDK =
 	    });
 	    Object.defineProperty(AccountResource.prototype, "transactions", {
 	        /**
-	        * Get information about the account's transactions
-	        */
+	         * Get information about the account's transactions
+	         * @returns {AccountTransactionsResource}
+	         */
 	        get: function () {
 	            return new transactions_1.AccountTransactionsResource(this.getPath() + '/transactions', this._client);
 	        },
@@ -415,8 +499,9 @@ var CSNetbankingSDK =
 	    });
 	    Object.defineProperty(AccountResource.prototype, "transfer", {
 	        /**
-	        * Revolve a loan
-	        */
+	         * Revolve a loan
+	         * @returns {AccountTransferResource}
+	         */
 	        get: function () {
 	            return new transfer_1.AccountTransferResource(this.getPath() + '/transfer', this._client);
 	        },
@@ -424,6 +509,9 @@ var CSNetbankingSDK =
 	        configurable: true
 	    });
 	    Object.defineProperty(AccountResource.prototype, "standingOrders", {
+	        /**
+	         * @returns {AccountStandingOrdersResource}
+	         */
 	        get: function () {
 	            return new standing_orders_1.AccountStandingOrdersResource(this.getPath() + '/standingorders', this.getClient());
 	        },
@@ -431,6 +519,9 @@ var CSNetbankingSDK =
 	        configurable: true
 	    });
 	    Object.defineProperty(AccountResource.prototype, "directDebits", {
+	        /**
+	         * @returns {AccountDirectDebitsResource}
+	         */
 	        get: function () {
 	            return new direct_debits_1.AccountDirectDebitsResource(this.getPath() + '/directdebits', this.getClient());
 	        },
@@ -473,22 +564,32 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
 	/**
-	* Get information about the account's balance
-	*/
+	 * Get information about the account's balance
+	 * @class AccountBalanceResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.GetEnabled<AccountBalance>}
+	 */
 	var AccountBalanceResource = (function (_super) {
 	    __extends(AccountBalanceResource, _super);
 	    function AccountBalanceResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
-	        * Fetches the balance and returns them in a promise
-	        */
+	         * Fetches the balance and returns them in a promise
+	         * @returns {Promise<AccountBalance>}
+	         */
 	        _this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null);
 	        };
@@ -504,22 +605,36 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
 	/**
-	* Get information about the account's services
-	*/
+	 * Get information about the account's services
+	 * @class AccountServicesResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.PaginatedListEnabled<Service>}
+	 */
 	var AccountServicesResource = (function (_super) {
 	    __extends(AccountServicesResource, _super);
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    function AccountServicesResource(basePath, client) {
 	        var _this = _super.call(this, basePath, client) || this;
 	        /**
-	        * Fetches the services and returns them in a promise
-	        */
+	         * Fetches the services and returns them in a promise
+	         * @param {ServiceParameters=} params
+	         */
 	        _this.list = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'services', params, function (response) {
 	                // transform ISO dates to native Date objects
@@ -541,22 +656,33 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
 	/**
-	* Get information about the account's reservations
-	*/
+	 * Get information about the account's reservations
+	 * @class AccountReservationsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.PaginatedListEnabled<Reservation>}
+	 */
 	var AccountReservationsResource = (function (_super) {
 	    __extends(AccountReservationsResource, _super);
 	    function AccountReservationsResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
-	        * Fetches the reservations and returns them in a promise
-	        */
+	         * Fetches the reservations and returns them in a promise
+	         * @param {ReservationParameters=} params
+	         * @returns {Promise<ReservationList>}
+	         */
 	        _this.list = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'reservations', params, function (response) {
 	                // transform ISO dates to native Date objects
@@ -576,22 +702,36 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
 	/**
-	* Get information about the account's repayments
-	*/
+	 * Get information about the account's repayments
+	 * @class AccountRepaymentsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.ListEnabled<Repayment>}
+	 */
 	var AccountRepaymentsResource = (function (_super) {
 	    __extends(AccountRepaymentsResource, _super);
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    function AccountRepaymentsResource(basePath, client) {
 	        var _this = _super.call(this, basePath, client) || this;
 	        /**
-	        * Fetches the repayments and returns them in a promise
-	        */
+	         * Fetches the repayments and returns them in a promise
+	         * @returns {Promise<RepaymentList>}
+	         */
 	        _this.list = function () {
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'repayments', null).then(function (response) {
 	                // transform ISO dates to native Date objects
@@ -613,22 +753,33 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
 	/**
-	* Get information about the account's statements
-	*/
+	 * Get information about the account's statements
+	 * @class AccountStatementsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.PaginatedListEnabled<Statement>}
+	 */
 	var AccountStatementsResource = (function (_super) {
 	    __extends(AccountStatementsResource, _super);
 	    function AccountStatementsResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
-	        * Fetches the statements and returns them in a promise
-	        */
+	         * Fetches the statements and returns them in a promise
+	         * @param {NetbankingParameters=} params
+	         * @returns {Promise<StatementList>}
+	         */
 	        _this.list = function (params) {
 	            // transform "sort" and "order" parameters to comma separated list from array
 	            CSCoreSDK.EntityUtils.transformArrayParamsToString(params, ['sort', 'order']);
@@ -639,8 +790,10 @@ var CSNetbankingSDK =
 	            });
 	        };
 	        /**
-	        * Downloads statements file
-	        */
+	         * Downloads statements file
+	         * @param {DownloadStatementParameters} params
+	         * @returns {Promise<Uint8Array>}
+	         */
 	        _this.download = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallDownload(_this, 'signed/download', 'POST', params);
 	        };
@@ -656,22 +809,33 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
 	/**
-	* Get individual SubAccount resource
-	*/
+	 * Get individual SubAccount resource
+	 * @class SubAccountsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.HasInstanceResource<SubAccountResource>}
+	 */
 	var SubAccountsResource = (function (_super) {
 	    __extends(SubAccountsResource, _super);
 	    function SubAccountsResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
-	        * Returns individual SubAccount resource with a given id
-	        */
+	         * Returns individual SubAccount resource with a given id
+	         * @param {string|number} id
+	         * @returns {SubAccountResource}
+	         */
 	        _this.withId = function (id) {
 	            return new SubAccountResource(id, _this.getPath(), _this._client);
 	        };
@@ -681,8 +845,10 @@ var CSNetbankingSDK =
 	}(CSCoreSDK.Resource));
 	exports.SubAccountsResource = SubAccountsResource;
 	/**
-	* Get information about the subaccount
-	*/
+	 * Get information about the subaccount
+	 * @class SubAccountResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 */
 	var SubAccountResource = (function (_super) {
 	    __extends(SubAccountResource, _super);
 	    function SubAccountResource() {
@@ -690,8 +856,9 @@ var CSNetbankingSDK =
 	    }
 	    Object.defineProperty(SubAccountResource.prototype, "statements", {
 	        /**
-	        * Get information about the subaccount's statements
-	        */
+	         * Get information about the subaccount's statements
+	         * @returns {SubAccountStatementsResource}
+	         */
 	        get: function () {
 	            return new SubAccountStatementsResource(this.getPath() + '/statements', this._client);
 	        },
@@ -702,15 +869,24 @@ var CSNetbankingSDK =
 	}(CSCoreSDK.InstanceResource));
 	exports.SubAccountResource = SubAccountResource;
 	/**
-	* List all subaccount's statements
-	*/
+	 * List all subaccount's statements
+	 * @class SubAccountStatementsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.PaginatedListEnabled<Statement>}
+	 */
 	var SubAccountStatementsResource = (function (_super) {
 	    __extends(SubAccountStatementsResource, _super);
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    function SubAccountStatementsResource(basePath, client) {
 	        var _this = _super.call(this, basePath, client) || this;
 	        /**
-	        * Returns all subaccount's statements in a promise
-	        */
+	         * Returns all subaccount's statements in a promise
+	         * @param {NetbankingParameters=} params
+	         * @returns {Promise<StatementList>}
+	         */
 	        _this.list = function (params) {
 	            // transform "sort" and "order" parameters to comma separated list from array
 	            CSCoreSDK.EntityUtils.transformArrayParamsToString(params, ['sort', 'order']);
@@ -721,8 +897,10 @@ var CSNetbankingSDK =
 	            });
 	        };
 	        /**
-	        * Downloads statements file
-	        */
+	         * Downloads statements file
+	         * @param {DownloadStatementParameters} params
+	         * @returns {Promise<Uint8Array>}
+	         */
 	        _this.download = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallDownload(_this, 'download', 'POST', params);
 	        };
@@ -740,28 +918,41 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
 	/**
-	* Get individual AccountsTransactionsResource
-	*/
+	 * Get individual AccountsTransactionsResource
+	 * @class AccountTransactionsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.HasInstanceResource<AccountTransactionResource>}
+	 */
 	var AccountTransactionsResource = (function (_super) {
 	    __extends(AccountTransactionsResource, _super);
 	    function AccountTransactionsResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
-	        * Returns individual AccountsTransactionResource with a given id
-	        */
+	         * Returns individual AccountsTransactionResource with a given id
+	         * @param {AccountTransactionResource} id
+	         * @returns {AccountTransactionResource}
+	         */
 	        _this.withId = function (id) {
 	            return new AccountTransactionResource(id, _this.getPath(), _this._client);
 	        };
 	        /**
-	        * Exports transaction history into signed pdf
-	        */
+	         * Exports transaction history into signed pdf
+	         * @param {ExportTransactionsParameters} params
+	         * @returns {Promise<Uint8Array>}
+	         */
 	        _this.export = function (params) {
 	            // transform "fields" parameter to comma separated list from array
 	            CSCoreSDK.EntityUtils.transformArrayParamsToString(params, 'fields');
@@ -777,15 +968,20 @@ var CSNetbankingSDK =
 	}(CSCoreSDK.Resource));
 	exports.AccountTransactionsResource = AccountTransactionsResource;
 	/**
-	* Allows to add or change a client's personal transaction note and mark the transaction as favorite/important for one specific transaction on selected account.
-	*/
+	 * Allows to add or change a client's personal transaction note and mark the transaction as favorite/important for one specific transaction on selected account.
+	 * @class AccountTransactionResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 * @implements {CSCoreSDK.UpdateEnabled<AddNoteAndMarkTransactionRequest, AddNoteAndMarkTransactionResponse>}
+	 */
 	var AccountTransactionResource = (function (_super) {
 	    __extends(AccountTransactionResource, _super);
 	    function AccountTransactionResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
-	        * Adds, changes of marks transaction
-	        */
+	         * Adds, changes of marks transaction
+	         * @param {AddNoteAndMarkTransactionRequest} payload
+	         * @returns {Promise<AddNoteAndMarkTransactionResponse>}
+	         */
 	        _this.update = function (payload) {
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload);
 	        };
@@ -801,22 +997,37 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
 	/**
-	* Revolve a loan
-	*/
+	 * Revolve a loan
+	 * @class AccountTransferResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.UpdateEnabled<TransferRequest, TransferResponse>}
+	 */
 	var AccountTransferResource = (function (_super) {
 	    __extends(AccountTransferResource, _super);
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    function AccountTransferResource(basePath, client) {
 	        var _this = _super.call(this, basePath, client) || this;
 	        /**
-	        * Revolves the loan. Currently only REVOLVING_LOAN subtype is supported.
-	        */
+	         * Revolves the loan. Currently only REVOLVING_LOAN subtype is supported.
+	         * @param {TransferRequest} payload
+	         * @returns {Promise<TransferResponse>}
+	         */
 	        _this.update = function (payload) {
 	            // transform Date objects to ISO strings
 	            CSCoreSDK.EntityUtils.transformDatesToSimpleISO('transferDate', payload);
@@ -840,18 +1051,33 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
+	/**
+	 * @class AccountStandingOrdersResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.PaginatedListEnabled<StandingOrder>}
+	 * @implements {CSCoreSDK.HasInstanceResource<AccountStandingOrderResource>}
+	 * @implements {CSCoreSDK.CreateEnabled<CreateStandingOrderRequest, StandingOrderResponse>}
+	 */
 	var AccountStandingOrdersResource = (function (_super) {
 	    __extends(AccountStandingOrdersResource, _super);
 	    function AccountStandingOrdersResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Returns list of actual standing/sweep orders for accounts of the current user.
+	         * @param {NetbankingParameters} params
+	         * @returns {Promise<StandingOrderList>}
 	         */
 	        _this.list = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'standingOrders', params, function (response) {
@@ -864,12 +1090,16 @@ var CSNetbankingSDK =
 	        };
 	        /**
 	         * Get the resource of standing order with a given id
+	         * @param {string} id
+	         * @returns {AccountStandingOrderResource}
 	         */
 	        _this.withId = function (id) {
 	            return new AccountStandingOrderResource(id, _this.getPath(), _this.getClient());
 	        };
 	        /**
 	         * Resource for creating standing/sweep order. Once order has been signed new payments are generated and executed according its settings.
+	         * @param {CreateStandingOrderRequest} payload
+	         * @returns {Promise<StandingOrderResponse>}
 	         */
 	        _this.create = function (payload) {
 	            CSCoreSDK.EntityUtils.transformDatesToSimpleISO(['nextExecutionDate', 'lastExecutionDate', 'startDate'], payload);
@@ -885,12 +1115,19 @@ var CSNetbankingSDK =
 	    return AccountStandingOrdersResource;
 	}(CSCoreSDK.Resource));
 	exports.AccountStandingOrdersResource = AccountStandingOrdersResource;
+	/**
+	 * @class AccountStandingOrderResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 * @implements {CSCoreSDK.GetEnabled<StandingOrder>}
+	 * @implements {CSCoreSDK.DeleteEnabled<StandingOrderResponse>}
+	 */
 	var AccountStandingOrderResource = (function (_super) {
 	    __extends(AccountStandingOrderResource, _super);
 	    function AccountStandingOrderResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Returns detail of actual standing/sweep orders identified by its number.
+	         * @returns {Promise<StandingOrder>}
 	         */
 	        _this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null).then(function (response) {
@@ -901,6 +1138,7 @@ var CSNetbankingSDK =
 	        };
 	        /**
 	         * This call removes existing standing/sweep order. No more payments for the order are executed after the change has been signed.
+	         * @returns {Promise<StandingOrderResponse>}
 	         */
 	        _this.delete = function () {
 	            return CSCoreSDK.ResourceUtils.CallDelete(_this, null).then(function (response) {
@@ -936,18 +1174,37 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
+	/**
+	 * @class AccountDirectDebitsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.PaginatedListEnabled<DirectDebit>}
+	 * @implements {CSCoreSDK.HasInstanceResource<AccountDirectDebitResource>}
+	 * @implements {CSCoreSDK.CreateEnabled<DirectDebit, SignableDirectDebit>}
+	 */
 	var AccountDirectDebitsResource = (function (_super) {
 	    __extends(AccountDirectDebitsResource, _super);
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    function AccountDirectDebitsResource(basePath, client) {
 	        var _this = _super.call(this, basePath, client) || this;
 	        /**
 	         * Resource Direct Debit List represents collection of all direct debit approvals entered by user for the specified user
+	         * @param {NetbankingParameters} params
+	         * @returns {Promise<DirectDebitList>}
 	         */
 	        _this.list = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'directDebits', params, function (response) {
@@ -957,12 +1214,16 @@ var CSNetbankingSDK =
 	        };
 	        /**
 	         * Get the resource of direct debit with a given id
+	         * @param {string} id
+	         * @returns {AccountDirectDebitResource}
 	         */
 	        _this.withId = function (id) {
 	            return new AccountDirectDebitResource(id, _this.getPath(), _this.getClient());
 	        };
 	        /**
 	         * Resource for creating (or allowing) direct debit on certain account. Once signed it can be used by receiver party.
+	         * @param {DirectDebit} payload
+	         * @returns {Promise<SignableDirectDebit>}
 	         */
 	        _this.create = function (payload) {
 	            CSCoreSDK.EntityUtils.transformDatesToSimpleISO(['startDate', 'endDate'], payload);
@@ -979,12 +1240,19 @@ var CSNetbankingSDK =
 	    return AccountDirectDebitsResource;
 	}(CSCoreSDK.Resource));
 	exports.AccountDirectDebitsResource = AccountDirectDebitsResource;
+	/**
+	 * @class AccountDirectDebitResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 * @implements {CSCoreSDK.GetEnabled<DirectDebit>}
+	 * @implements {CSCoreSDK.DeleteEnabled<SignableDirectDebit>}
+	 */
 	var AccountDirectDebitResource = (function (_super) {
 	    __extends(AccountDirectDebitResource, _super);
 	    function AccountDirectDebitResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Get the single direct debits detail.
+	         * @returns {Promise<DirectDebit>}
 	         */
 	        _this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null).then(function (response) {
@@ -994,6 +1262,7 @@ var CSNetbankingSDK =
 	        };
 	        /**
 	         * Resource for deleting direct debit (permission) on certain account. Once signed no more transfers can be made by receiver party.
+	         * @returns {Promise<SignableDirectDebit>}
 	         */
 	        _this.delete = function () {
 	            return CSCoreSDK.ResourceUtils.CallDelete(_this, null).then(function (response) {
@@ -1014,22 +1283,32 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
 	var lastLogins_1 = __webpack_require__(14);
 	/**
-	* Get information about the profile and past logins.
-	*/
+	 * Get information about the profile and past logins.
+	 * @class ProfileResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.GetEnabled<Profile>}
+	 */
 	var ProfileResource = (function (_super) {
 	    __extends(ProfileResource, _super);
 	    function ProfileResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Returns information about the profile
+	         * @returns {Promise<Profile>}
 	         */
 	        _this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null).then(function (profile) {
@@ -1045,6 +1324,7 @@ var CSNetbankingSDK =
 	    Object.defineProperty(ProfileResource.prototype, "lastLogins", {
 	        /**
 	         * Returns LastLoginsResource for listing past logins
+	         * @returns {LastLoginsResource}
 	         */
 	        get: function () {
 	            return new lastLogins_1.LastLoginsResource(this.getPath() + '/logininfo', this.getClient());
@@ -1062,14 +1342,23 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
 	/**
 	 * List all past logins
+	 * @class LastLoginsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.ListEnabled<LastLoginInfo>}
 	 */
 	var LastLoginsResource = (function (_super) {
 	    __extends(LastLoginsResource, _super);
@@ -1077,6 +1366,7 @@ var CSNetbankingSDK =
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Returns promise with a list of past logins
+	         * @returns {Promise<LastLoginList>}
 	         */
 	        _this.list = function () {
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'lastlogin').then(function (response) {
@@ -1097,11 +1387,17 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
 	var delivery_1 = __webpack_require__(16);
 	var transactions_1 = __webpack_require__(17);
@@ -1111,15 +1407,21 @@ var CSNetbankingSDK =
 	var transfer_1 = __webpack_require__(21);
 	var statements_1 = __webpack_require__(22);
 	/**
-	* Represents list of payment cards (either debet or credit) for current user. Every card was issued for current user or belongs to one of his accounts.
-	*/
+	 * Represents list of payment cards (either debet or credit) for current user. Every card was issued for current user or belongs to one of his accounts.
+	 * @class CardsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.PaginatedListEnabled<Card>}
+	 * @implements {CSCoreSDK.HasInstanceResource<CardResource>}
+	 */
 	var CardsResource = (function (_super) {
 	    __extends(CardsResource, _super);
 	    function CardsResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
-	        * List all cards
-	        */
+	         * List all cards
+	         * @param {Promise<CardList>=} params
+	         * @returns {Promise<CardList>}
+	         */
 	        _this.list = function (params) {
 	            // transform "sort" and "order" parameters to comma separated list from array
 	            CSCoreSDK.EntityUtils.transformArrayParamsToString(params, ['sort', 'order']);
@@ -1134,8 +1436,10 @@ var CSNetbankingSDK =
 	            });
 	        };
 	        /**
-	        * Get a resource for card with a given id
-	        */
+	         * Get a resource for card with a given id
+	         * @param {string} id
+	         * @returns {CardResource}
+	         */
 	        _this.withId = function (id) {
 	            return new CardResource(id, _this.getPath(), _this.getClient());
 	        };
@@ -1144,13 +1448,20 @@ var CSNetbankingSDK =
 	    return CardsResource;
 	}(CSCoreSDK.Resource));
 	exports.CardsResource = CardsResource;
+	/**
+	 * @class CardResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 * @implements {CSCoreSDK.GetEnabled<Card>}
+	 * @implements {CSCoreSDK.UpdateEnabled<ChangeCardSettingsRequest, ChangeCardSettingsResponse>}
+	 */
 	var CardResource = (function (_super) {
 	    __extends(CardResource, _super);
 	    function CardResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
-	        * Get detail of the card
-	        */
+	         * Get detail of the card
+	         * @returns {Promise<Card>}
+	         */
 	        _this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null).then(function (card) {
 	                // add convenient methods to items in the list
@@ -1161,8 +1472,10 @@ var CSNetbankingSDK =
 	            });
 	        };
 	        /**
-	        * Update card's alias
-	        */
+	         * Update card's alias
+	         * @param {ChangeCardSettingsRequest} payload
+	         * @returns {Promise<ChangeCardSettingsResponse>}
+	         */
 	        _this.update = function (payload) {
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (card) {
 	                // add convenient methods to items in the list
@@ -1176,8 +1489,9 @@ var CSNetbankingSDK =
 	    }
 	    Object.defineProperty(CardResource.prototype, "delivery", {
 	        /**
-	        * Get current delivery settings
-	        */
+	         * Get current delivery settings
+	         * @returns {CardDeliveryResource}
+	         */
 	        get: function () {
 	            return new delivery_1.CardDeliveryResource(this.getPath() + '/delivery', this._client);
 	        },
@@ -1186,8 +1500,9 @@ var CSNetbankingSDK =
 	    });
 	    Object.defineProperty(CardResource.prototype, "transactions", {
 	        /**
-	        * Allows to add or change a client's personal note and mark/star the card transaction as favorite/important for one specific transaction
-	        */
+	         * Allows to add or change a client's personal note and mark/star the card transaction as favorite/important for one specific transaction
+	         * @returns {CardTransactionsResource}
+	         */
 	        get: function () {
 	            return new transactions_1.CardTransactionsResource(this.getPath() + '/transactions', this._client);
 	        },
@@ -1196,9 +1511,10 @@ var CSNetbankingSDK =
 	    });
 	    Object.defineProperty(CardResource.prototype, "actions", {
 	        /**
-	        * Issue various actions on a single card. Currently supported actions are:
-	        * reissue pin, lock card, unlock card, activate card, set automatic card replacement on, set automatic card replacement off, replacement card request
-	        */
+	         * Issue various actions on a single card. Currently supported actions are:
+	         * reissue pin, lock card, unlock card, activate card, set automatic card replacement on, set automatic card replacement off, replacement card request
+	         * @returns {CardActionsResource}
+	         */
 	        get: function () {
 	            return new actions_1.CardActionsResource(this.getPath() + '/states', this._client);
 	        },
@@ -1207,8 +1523,9 @@ var CSNetbankingSDK =
 	    });
 	    Object.defineProperty(CardResource.prototype, "limits", {
 	        /**
-	        * Get information about different limits
-	        */
+	         * Get information about different limits
+	         * @returns {CardLimitsResource}
+	         */
 	        get: function () {
 	            return new limits_1.CardLimitsResource(this.getPath() + '/card-limits', this._client);
 	        },
@@ -1217,8 +1534,9 @@ var CSNetbankingSDK =
 	    });
 	    Object.defineProperty(CardResource.prototype, "secure3d", {
 	        /**
-	        * Get the 3D secure online shopping status
-	        */
+	         * Get the 3D secure online shopping status
+	         * @returns {CardSecure3DResource}
+	         */
 	        get: function () {
 	            return new secure3D_1.CardSecure3DResource(this.getPath() + '/secure-online-shopping', this._client);
 	        },
@@ -1227,8 +1545,9 @@ var CSNetbankingSDK =
 	    });
 	    Object.defineProperty(CardResource.prototype, "transfer", {
 	        /**
-	        * Resource for paying up credit card debt
-	        */
+	         * Resource for paying up credit card debt
+	         * @returns {CardTransferResource}
+	         */
 	        get: function () {
 	            return new transfer_1.CardTransferResource(this.getPath() + '/transfer', this._client);
 	        },
@@ -1237,8 +1556,9 @@ var CSNetbankingSDK =
 	    });
 	    Object.defineProperty(CardResource.prototype, "accounts", {
 	        /**
-	        * Account resource for listing statements
-	        */
+	         * Account resource for listing statements
+	         * @returns {CardAccountsResource}
+	         */
 	        get: function () {
 	            return new statements_1.CardAccountsResource(this.getPath() + '/mainaccount', this._client);
 	        },
@@ -1271,29 +1591,40 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
 	/**
 	 * Get current delivery settings
+	 * @class CardDeliveryResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.GetEnabled<DeliveryListing>}
+	 * @implements {CSCoreSDK.UpdateEnabled<ChangeDeliverySettingsRequest, ChangeDeliverySettingsResponse>}
 	 */
-	// export class CardDeliveryResource extends CSCoreSDK.Resource
-	// implements CSCoreSDK.GetEnabled<DeliveryListing>, CSCoreSDK.UpdateEnabled<ChangeDeliverySettingsRequest, ChangeDeliverySettingsResponse> {
 	var CardDeliveryResource = (function (_super) {
 	    __extends(CardDeliveryResource, _super);
 	    function CardDeliveryResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Returns current delivery settings
+	         * @returns {Promise<DeliveryListing>}
 	         */
 	        _this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null);
 	        };
 	        /**
 	         * Change current delivery settings
+	         * @param {ChangeDeliverySettingsRequest} payload
+	         * @returns {Promise<ChangeDeliverySettingsResponse>}
 	         */
 	        _this.update = function (payload) {
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload);
@@ -1310,27 +1641,40 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
 	/**
-	* Allows to add or change a client's personal note and mark/star the card transaction as favorite/important for one specific transaction
-	*/
+	 * Allows to add or change a client's personal note and mark/star the card transaction as favorite/important for one specific transaction
+	 * @class CardTransactionsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.HasInstanceResource<CardTransactionResource>}
+	 */
 	var CardTransactionsResource = (function (_super) {
 	    __extends(CardTransactionsResource, _super);
 	    function CardTransactionsResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Returns CardTransactionResource for a given id
+	         * @param {string} id
+	         * @returns {CardTransactionResource}
 	         */
 	        _this.withId = function (id) {
 	            return new CardTransactionResource(id, _this.getPath(), _this._client);
 	        };
 	        /**
 	         * Export transactions to PDF
+	         * @param {ExportTransactionsParameters} params
+	         * @returns {Promise<Uint8Array>}
 	         */
 	        _this.export = function (params) {
 	            // transform "fields" parameter to comma separated list from array
@@ -1348,14 +1692,19 @@ var CSNetbankingSDK =
 	exports.CardTransactionsResource = CardTransactionsResource;
 	/**
 	 * Add or change a client's personal note and mark/star the card transaction as favorite/important
+	 * @class CardTransactionResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 * @implements {CSCoreSDK.UpdateEnabled<AddNoteAndMarkTransactionRequest, AddNoteAndMarkCardTransactionResponse>}
 	 */
 	var CardTransactionResource = (function (_super) {
 	    __extends(CardTransactionResource, _super);
 	    function CardTransactionResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
-	        * Adds, changes of marks transaction
-	        */
+	         * Adds, changes of marks transaction
+	         * @param {AddNoteAndMarkTransactionRequest} payload
+	         * @returns {Promise<AddNoteAndMarkCardTransactionResponse>}
+	         */
 	        _this.update = function (payload) {
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload);
 	        };
@@ -1371,14 +1720,23 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
 	/**
 	 * Issue various actions on a single card.
+	 * @class CardActionsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.UpdateEnabled<CardActionRequest, CardActionResponse>}
 	 */
 	var CardActionsResource = (function (_super) {
 	    __extends(CardActionsResource, _super);
@@ -1386,6 +1744,8 @@ var CSNetbankingSDK =
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Issues various actions on a single card
+	         * @param {CardActionRequest} payload
+	         * @returns {Promise<CardActionResponse>}
 	         */
 	        _this.update = function (payload) {
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (response) {
@@ -1406,21 +1766,32 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
 	/**
-	* Get information about different limits
-	*/
+	 * Get information about different limits
+	 * @class CardLimitsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.ListEnabled<CardLimit>}
+	 * @implements {CSCoreSDK.UpdateEnabled<ChangeCardLimitsRequest, ChangeCardLimitsResponse>}
+	 */
 	var CardLimitsResource = (function (_super) {
 	    __extends(CardLimitsResource, _super);
 	    function CardLimitsResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * List all limits
+	         * @returns {Promise<CardLimitsList>}
 	         */
 	        _this.list = function () {
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'limits').then(function (response) {
@@ -1431,6 +1802,8 @@ var CSNetbankingSDK =
 	        };
 	        /**
 	         * Update individual limits
+	         * @param {ChangeCardLimitsRequest} payload
+	         * @returns {Promise<ChangeCardLimitsResponse>}
 	         */
 	        _this.update = function (payload) {
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (response) {
@@ -1453,14 +1826,23 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
 	/**
 	 * Get the 3D secure online shopping status
+	 * @class CardSecure3DResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.GetEnabled<SecureSettings>}
 	 */
 	var CardSecure3DResource = (function (_super) {
 	    __extends(CardSecure3DResource, _super);
@@ -1468,6 +1850,7 @@ var CSNetbankingSDK =
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Returns 3D secure online shopping status
+	         * @returns {Promise<SecureSettings>}
 	         */
 	        _this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null);
@@ -1484,14 +1867,23 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
 	/**
 	 * Resource for paying up credit card debt
+	 * @class CardTransferResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.UpdateEnabled<PayUpCreditCardRequest, PayUpCreditCardResponse>}
 	 */
 	var CardTransferResource = (function (_super) {
 	    __extends(CardTransferResource, _super);
@@ -1499,6 +1891,8 @@ var CSNetbankingSDK =
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Pays up the credit card debt and returns sign info
+	         * @param {PayUpCreditCardRequest} payload
+	         * @returns {Promise<PayUpCreditCardResponse>}
 	         */
 	        _this.update = function (payload) {
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (response) {
@@ -1519,14 +1913,23 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
 	/**
 	 * Account resource for listing statements
+	 * @class CardAccountsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.HasInstanceResource<CardAccountResource>}
 	 */
 	var CardAccountsResource = (function (_super) {
 	    __extends(CardAccountsResource, _super);
@@ -1534,6 +1937,8 @@ var CSNetbankingSDK =
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Returns CardAccountResource for an account with a given id
+	         * @param {string} id
+	         * @returns {CardAccountResource}
 	         */
 	        _this.withId = function (id) {
 	            return new CardAccountResource(id, _this.getPath(), _this._client);
@@ -1545,6 +1950,8 @@ var CSNetbankingSDK =
 	exports.CardAccountsResource = CardAccountsResource;
 	/**
 	 * Indidiual account resource with a given id
+	 * @class CardAccountResource
+	 * @extends {CSCoreSDK.InstanceResource}
 	 */
 	var CardAccountResource = (function (_super) {
 	    __extends(CardAccountResource, _super);
@@ -1554,6 +1961,7 @@ var CSNetbankingSDK =
 	    Object.defineProperty(CardAccountResource.prototype, "statements", {
 	        /**
 	         * Get statements of the account
+	         * @returns {CardStatementsResource}
 	         */
 	        get: function () {
 	            return new CardStatementsResource(this.getPath() + '/statements', this._client);
@@ -1566,6 +1974,9 @@ var CSNetbankingSDK =
 	exports.CardAccountResource = CardAccountResource;
 	/**
 	 * Get statements for an account
+	 * @class CardStatementsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.PaginatedListEnabled<Statement>}
 	 */
 	var CardStatementsResource = (function (_super) {
 	    __extends(CardStatementsResource, _super);
@@ -1573,6 +1984,8 @@ var CSNetbankingSDK =
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * List all statements
+	         * @param {NetbankingParameters=} params
+	         * @returns {Promise<StatementList>}
 	         */
 	        _this.list = function (params) {
 	            // transform "sort" and "order" parameters to comma separated list from array
@@ -1585,6 +1998,8 @@ var CSNetbankingSDK =
 	        };
 	        /**
 	         * Download PDF with statements
+	         * @param {DownloadStatementParameters} params
+	         * @returns {Promise<Uint8Array>}
 	         */
 	        _this.download = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallDownload(_this, 'signed/download', 'POST', params);
@@ -1601,19 +2016,27 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
 	var bookingDate_1 = __webpack_require__(24);
 	var domestic_1 = __webpack_require__(25);
 	var limits_1 = __webpack_require__(26);
 	var mobile_1 = __webpack_require__(27);
 	/**
-	* Get information about payments orders
-	*/
+	 * Get information about payments orders
+	 * @class OrdersResource
+	 * @extends {CSCoreSDK.Resource}
+	 */
 	var OrdersResource = (function (_super) {
 	    __extends(OrdersResource, _super);
 	    function OrdersResource() {
@@ -1621,8 +2044,9 @@ var CSNetbankingSDK =
 	    }
 	    Object.defineProperty(OrdersResource.prototype, "payments", {
 	        /**
-	        * Returns PaymentsResource for listing, deleting and accessing other information about payments
-	        */
+	         * Returns PaymentsResource for listing, deleting and accessing other information about payments
+	         * @returns {PaymentsResource}
+	         */
 	        get: function () {
 	            return new PaymentsResource(this.getPath() + '/payments', this._client);
 	        },
@@ -1633,15 +2057,21 @@ var CSNetbankingSDK =
 	}(CSCoreSDK.Resource));
 	exports.OrdersResource = OrdersResource;
 	/**
-	* List payments, get individual payment and other resources
-	*/
+	 * List payments, get individual payment and other resources
+	 * @class PaymentsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.HasInstanceResource<PaymentResource>}
+	 * @implements {CSCoreSDK.PaginatedListEnabled<Payment>}
+	 */
 	var PaymentsResource = (function (_super) {
 	    __extends(PaymentsResource, _super);
 	    function PaymentsResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
-	        * List all payments
-	        */
+	         * List all payments
+	         * @param {NetbankingParameters=} params
+	         * @returns {Promise<PaymentList>}
+	         */
 	        _this.list = function (params) {
 	            // transform "sort" and "order" parameters to comma separated list from array
 	            CSCoreSDK.EntityUtils.transformArrayParamsToString(params, ['sort', 'order']);
@@ -1658,8 +2088,10 @@ var CSNetbankingSDK =
 	            });
 	        };
 	        /**
-	        * Get individual payment with a given id
-	        */
+	         * Get individual payment with a given id
+	         * @param {string|number} id
+	         * @returns {PaymentResource}
+	         */
 	        _this.withId = function (id) {
 	            return new PaymentResource(id, _this.getPath(), _this._client);
 	        };
@@ -1667,8 +2099,9 @@ var CSNetbankingSDK =
 	    }
 	    Object.defineProperty(PaymentsResource.prototype, "bookingDate", {
 	        /**
-	        * Get currently available booking date
-	        */
+	         * Get currently available booking date
+	         * @returns {PaymentBookingDateResource}
+	         */
 	        get: function () {
 	            return new bookingDate_1.PaymentBookingDateResource(this.getPath() + '/bookingdate', this._client);
 	        },
@@ -1677,8 +2110,9 @@ var CSNetbankingSDK =
 	    });
 	    Object.defineProperty(PaymentsResource.prototype, "domestic", {
 	        /**
-	        * Create domestic payment order
-	        */
+	         * Create domestic payment order
+	         * @returns {PaymentsDomesticResource}
+	         */
 	        get: function () {
 	            return new domestic_1.PaymentsDomesticResource(this.getPath() + '/domestic', this._client);
 	        },
@@ -1687,8 +2121,9 @@ var CSNetbankingSDK =
 	    });
 	    Object.defineProperty(PaymentsResource.prototype, "limits", {
 	        /**
-	        * Get remaining amounts for payment orders
-	        */
+	         * Get remaining amounts for payment orders
+	         * @returns {PaymentLimitsResource}
+	         */
 	        get: function () {
 	            return new limits_1.PaymentLimitsResource(this.getPath() + '/limits', this._client);
 	        },
@@ -1697,8 +2132,9 @@ var CSNetbankingSDK =
 	    });
 	    Object.defineProperty(PaymentsResource.prototype, "mobile", {
 	        /**
-	        * Recharging the credit available on prepaid cards provided by Vodafone, T-Mobile or O2.
-	        */
+	         * Recharging the credit available on prepaid cards provided by Vodafone, T-Mobile or O2.
+	         * @returns {PaymentMobileResource}
+	         */
 	        get: function () {
 	            return new mobile_1.PaymentMobileResource(this.getPath() + '/mobile', this._client);
 	        },
@@ -1709,15 +2145,20 @@ var CSNetbankingSDK =
 	}(CSCoreSDK.Resource));
 	exports.PaymentsResource = PaymentsResource;
 	/**
-	* Individual Payment order resource
-	*/
+	 * Individual Payment order resource
+	 * @class PaymentResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 * @implements {CSCoreSDK.GetEnabled<Payment>}
+	 * @implements {CSCoreSDK.DeleteEnabled<NetbankingEmptyResponse>}
+	 */
 	var PaymentResource = (function (_super) {
 	    __extends(PaymentResource, _super);
 	    function PaymentResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
-	        * Get detail of the payment
-	        */
+	         * Get detail of the payment
+	         * @returns {Promise<Payment>}
+	         */
 	        _this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null).then(function (payment) {
 	                // transform ISO dates to native Date objects
@@ -1728,8 +2169,9 @@ var CSNetbankingSDK =
 	            });
 	        };
 	        /**
-	        * Remove payment
-	        */
+	         * Delete payment
+	         * @returns {Promise<NetbankingEmptyResponse>}
+	         */
 	        _this.delete = function () {
 	            return CSCoreSDK.ResourceUtils.CallDelete(_this, null);
 	        };
@@ -1749,22 +2191,33 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
 	/**
-	* Get currently available booking date
-	*/
+	 * Get currently available booking date
+	 * @class PaymentBookingDateResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.UpdateEnabled<PaymentBookingDateRequest, PaymentBookingDateResponse>}
+	 */
 	var PaymentBookingDateResource = (function (_super) {
 	    __extends(PaymentBookingDateResource, _super);
 	    function PaymentBookingDateResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
-	        * Returns current available booking date based on the provided account and optional payment order category parameters
-	        */
+	         * Returns current available booking date based on the provided account and optional payment order category parameters
+	         * @param {PaymentBookingDateRequest} payload
+	         * @returns {Promise<PaymentBookingDateResponse>}
+	         */
 	        _this.update = function (payload) {
 	            // make copy of payload
 	            payload = JSON.parse(JSON.stringify(payload));
@@ -1791,22 +2244,33 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
 	/**
-	* Create domestic payment order
-	*/
+	 * Create domestic payment order
+	 * @class PaymentsDomesticResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.CreateEnabled<DomesticPaymentCreateRequest, DomesticPaymentResponse>}
+	 */
 	var PaymentsDomesticResource = (function (_super) {
 	    __extends(PaymentsDomesticResource, _super);
 	    function PaymentsDomesticResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
-	        * Creates domestic payment order and returns it in promise
-	        */
+	         * Creates domestic payment order and returns it in promise
+	         * @param {DomesticPaymentCreateRequest} payload
+	         * @returns {Promise<DomesticPaymentResponse>}
+	         */
 	        _this.create = function (payload) {
 	            // transform Date object to ISO strings
 	            CSCoreSDK.EntityUtils.transformDatesToISO('transferDate', payload);
@@ -1819,8 +2283,10 @@ var CSNetbankingSDK =
 	            });
 	        };
 	        /**
-	        * Returns PaymentDomesticResource resource for updating domestic payment
-	        */
+	         * Returns PaymentDomesticResource resource for updating domestic payment
+	         * @param {string} id
+	         * @returns {PaymentDomesticResource}
+	         */
 	        _this.withId = function (id) {
 	            return new PaymentDomesticResource(id, _this.getPath(), _this.getClient());
 	        };
@@ -1830,15 +2296,20 @@ var CSNetbankingSDK =
 	}(CSCoreSDK.Resource));
 	exports.PaymentsDomesticResource = PaymentsDomesticResource;
 	/**
-	* Update domestic payment
-	*/
+	 * Update domestic payment
+	 * @class PaymentDomesticResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 * @implements {CSCoreSDK.UpdateEnabled<DomesticPaymentUpdateRequest, DomesticPaymentResponse>}
+	 */
 	var PaymentDomesticResource = (function (_super) {
 	    __extends(PaymentDomesticResource, _super);
 	    function PaymentDomesticResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
-	        * Updates domestic payment and returns it in promise
-	        */
+	         * Updates domestic payment and returns it in promise
+	         * @param {DomesticPaymentUpdateRequest} payload
+	         * @returns {Promise<DomesticPaymentResponse>}
+	         */
 	        _this.update = function (payload) {
 	            // add ID to payload from resource id property
 	            payload.id = _this._id;
@@ -1864,22 +2335,32 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
 	/**
-	* Get remaining amounts for payment orders
-	*/
+	 * Get remaining amounts for payment orders
+	 * @class PaymentLimitsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.ListEnabled<PaymentLimit>}
+	 */
 	var PaymentLimitsResource = (function (_super) {
 	    __extends(PaymentLimitsResource, _super);
 	    function PaymentLimitsResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
-	        * List all limits for payment orders
-	        */
+	         * List all limits for payment orders
+	         * @returns {Promise<PaymentLimitsList>}
+	         */
 	        _this.list = function () {
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'remainingLimits', null);
 	        };
@@ -1895,22 +2376,37 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
 	/**
-	* Recharging the credit available on prepaid cards provided by Vodafone, T-Mobile or O2.
-	*/
+	 * Recharging the credit available on prepaid cards provided by Vodafone, T-Mobile or O2.
+	 * @class PaymentMobileResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.CreateEnabled<MobilePaymentsRequest, MobilePaymentsResponse>}
+	 */
 	var PaymentMobileResource = (function (_super) {
 	    __extends(PaymentMobileResource, _super);
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    function PaymentMobileResource(basePath, client) {
 	        var _this = _super.call(this, basePath, client) || this;
 	        /**
-	        * Recharge the credit on prepaid card
-	        */
+	         * Recharge the credit on prepaid card
+	         * @param {MobilePaymentsRequest} payload
+	         * @returns {Promise<MobilePaymentsResponse>}
+	         */
 	        _this.create = function (payload) {
 	            return CSCoreSDK.ResourceUtils.CallCreate(_this, payload).then(function (response) {
 	                // Remove signInfo from response and add SigningObject with key signing
@@ -1932,19 +2428,33 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
 	var transactions_1 = __webpack_require__(29);
+	/**
+	 * @class SecuritiesResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.PaginatedListEnabled<Security>}
+	 * @implements {CSCoreSDK.HasInstanceResource<SecurityResource>}
+	 */
 	var SecuritiesResource = (function (_super) {
 	    __extends(SecuritiesResource, _super);
 	    function SecuritiesResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Returns list of securities accounts for current user. Securities account represents virtual account which holds securities titles and its shares (funds, bonds, etc.).
+	         * @param {SecuritiesParams=} params
+	         * @returns {Promise<SecurityList>}
 	         */
 	        _this.list = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'securitiesAccounts', params, function (response) {
@@ -1957,6 +2467,8 @@ var CSNetbankingSDK =
 	        };
 	        /**
 	         * Get resource of security with a given id
+	         * @param {string} id
+	         * @returns {SecuritiesResource}
 	         */
 	        _this.withId = function (id) {
 	            return new SecurityResource(id, _this.getPath(), _this.getClient());
@@ -1966,12 +2478,19 @@ var CSNetbankingSDK =
 	    return SecuritiesResource;
 	}(CSCoreSDK.Resource));
 	exports.SecuritiesResource = SecuritiesResource;
+	/**
+	 * @class SecurityResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 * @implements {CSCoreSDK.GetEnabled<Security>}
+	 * @implements {CSCoreSDK.UpdateEnabled<SecurityRequest, SecurityResponse>}
+	 */
 	var SecurityResource = (function (_super) {
 	    __extends(SecurityResource, _super);
 	    function SecurityResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Get a single securities account with all its details. Securities account represents virtual account which holds securities titles and its shares (funds, bonds, etc.).
+	         * @returns {Promise<Security>}
 	         */
 	        _this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null).then(function (response) {
@@ -1982,6 +2501,8 @@ var CSNetbankingSDK =
 	        };
 	        /**
 	         * Allows to change a limited set of securities account-settings of one specific contract. Currently only the field alias can be changed. Change only to alias field must not be signed, but response is ready also for signing process.
+	         * @param {SecurityRequest} payload
+	         * @returns {Promise<SecurityResponse>}
 	         */
 	        _this.update = function (payload) {
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (response) {
@@ -1996,6 +2517,7 @@ var CSNetbankingSDK =
 	    Object.defineProperty(SecurityResource.prototype, "transactions", {
 	        /**
 	         * Returns security transactions resource
+	         * @returns {SecurityTransactionsResource}
 	         */
 	        get: function () {
 	            return new transactions_1.SecurityTransactionsResource(this.getPath() + "/transactions", this.getClient());
@@ -2025,24 +2547,43 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
+	/**
+	 * @class SecurityTransactionsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.HasInstanceResource<SecurityTransactionResource>}
+	 */
 	var SecurityTransactionsResource = (function (_super) {
 	    __extends(SecurityTransactionsResource, _super);
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    function SecurityTransactionsResource(basePath, client) {
 	        var _this = _super.call(this, basePath, client) || this;
 	        /**
 	         * Get resource of security transaction with a given id
+	         * @param {string} id
+	         * @returns {SecurityTransactionResource}
 	         */
 	        _this.withId = function (id) {
 	            return new SecurityTransactionResource(id, _this.getPath(), _this.getClient());
 	        };
 	        /**
 	         * Export transaction history into signed pdf.
+	         * @param {ExportTransactionsParameters} params
+	         * @return {Promise<Uint8Array>}
 	         */
 	        _this.export = function (params) {
 	            // transform "fields" parameter to comma separated list from array
@@ -2057,12 +2598,19 @@ var CSNetbankingSDK =
 	    return SecurityTransactionsResource;
 	}(CSCoreSDK.Resource));
 	exports.SecurityTransactionsResource = SecurityTransactionsResource;
+	/**
+	 * @class SecurityTransactionResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 * @implements {CSCoreSDK.UpdateEnabled<SecurityTransactionRequest, SecurityTransactionResponse>}
+	 */
 	var SecurityTransactionResource = (function (_super) {
 	    __extends(SecurityTransactionResource, _super);
 	    function SecurityTransactionResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Allows to add or change a client's personal note and mark/star the transaction as favorite/important for one specific transaction on selected product.
+	         * @param {SecurityTransactionRequest} payload
+	         * @returns {Promise<SecurityTransactionResponse>}
 	         */
 	        _this.update = function (payload) {
 	            payload.id = _this._id;
@@ -2083,24 +2631,39 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
+	/**
+	 * @class SettingsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.GetEnabled<Settings>}
+	 * @implements {CSCoreSDK.UpdateEnabled<Settings, SignableSettings>}
+	 */
 	var SettingsResource = (function (_super) {
 	    __extends(SettingsResource, _super);
 	    function SettingsResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Returns basic user settings.
+	         * @returns {Promise<Settings>}
 	         */
 	        _this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null);
 	        };
 	        /**
 	         * Change user settings. Currently only language can be changed by this endpoint.
+	         * @param {Settings} payload
+	         * @returns {Promise<SignableSettings>}
 	         */
 	        _this.update = function (payload) {
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (response) {
@@ -2120,24 +2683,39 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
+	/**
+	 * @class ContactsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.ListEnabled<Contact>}
+	 * @implements {CSCoreSDK.HasInstanceResource<ContactResource>}
+	 */
 	var ContactsResource = (function (_super) {
 	    __extends(ContactsResource, _super);
 	    function ContactsResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Resource represents list of contact information for current user. It can contain addresses, phones and email addresses.
+	         * @returns {Promise<ContactList>}
 	         */
 	        _this.list = function () {
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'contacts');
 	        };
 	        /**
 	         * Get the resource of contact with a given id
+	         * @param {string} id
+	         * @returns {ContactResource}
 	         */
 	        _this.withId = function (id) {
 	            return new ContactResource(id, _this.getPath(), _this.getClient());
@@ -2147,12 +2725,18 @@ var CSNetbankingSDK =
 	    return ContactsResource;
 	}(CSCoreSDK.Resource));
 	exports.ContactsResource = ContactsResource;
+	/**
+	 * @class ContactResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 * @implements {CSCoreSDK.GetEnabled<Contact>}
+	 */
 	var ContactResource = (function (_super) {
 	    __extends(ContactResource, _super);
 	    function ContactResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Resource represents one specific contact information identified by its id. It can be address, phone or email address.
+	         * @returns {Promise<Contact>}
 	         */
 	        _this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null);
@@ -2169,18 +2753,32 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
+	/**
+	 * @class PluginsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.PaginatedListEnabled<Plugin>}
+	 * @implements {CSCoreSDK.HasInstanceResource<PluginResource>}
+	 */
 	var PluginsResource = (function (_super) {
 	    __extends(PluginsResource, _super);
 	    function PluginsResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Returns list of available plugins for current user. Plugin is application functionality which can be enabled/disabled by user.
+	         * @param {PluginsParameters} params
+	         * @returns {Promise<PluginList>}
 	         */
 	        _this.list = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'plugins', params, function (response) {
@@ -2190,6 +2788,8 @@ var CSNetbankingSDK =
 	        };
 	        /**
 	         * Returns resource of plugin with a given id
+	         * @param {string} id
+	         * @returns {PluginResource}
 	         */
 	        _this.withId = function (id) {
 	            return new PluginResource(id, _this.getPath(), _this.getClient());
@@ -2199,12 +2799,19 @@ var CSNetbankingSDK =
 	    return PluginsResource;
 	}(CSCoreSDK.Resource));
 	exports.PluginsResource = PluginsResource;
+	/**
+	 * @class PluginResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 * @implements {CSCoreSDK.UpdateEnabled<UpdatePluginRequest, SignablePlugin>}
+	 */
 	var PluginResource = (function (_super) {
 	    __extends(PluginResource, _super);
 	    function PluginResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Activation and deactivation of the specific plugin. You can also change settlement account for given plugin and current user.
+	         * @param {UpdatePluginRequest} payload
+	         * @returns {Promise<SignablePlugin>}
 	         */
 	        _this.update = function (payload) {
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (response) {
@@ -2225,16 +2832,26 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
 	var buildings_1 = __webpack_require__(34);
 	var pensions_1 = __webpack_require__(37);
 	var insurances_1 = __webpack_require__(38);
 	var loyalty_1 = __webpack_require__(48);
+	/**
+	 * @class ContractsResource
+	 * @extends {CSCoreSDK.Resource}
+	 */
 	var ContractsResource = (function (_super) {
 	    __extends(ContractsResource, _super);
 	    function ContractsResource() {
@@ -2243,6 +2860,7 @@ var CSNetbankingSDK =
 	    Object.defineProperty(ContractsResource.prototype, "buildings", {
 	        /**
 	         * Get buildings contracts resource
+	         * @returns {BuildingsContractsResource}
 	         */
 	        get: function () {
 	            return new buildings_1.BuildingsContractsResource(this.getPath() + "/buildings", this.getClient());
@@ -2253,6 +2871,7 @@ var CSNetbankingSDK =
 	    Object.defineProperty(ContractsResource.prototype, "pensions", {
 	        /**
 	         * Get pensions contracts resource
+	         * @returns {PensionsContractsResource}
 	         */
 	        get: function () {
 	            return new pensions_1.PensionsContractsResource(this.getPath() + "/pensions", this.getClient());
@@ -2263,6 +2882,7 @@ var CSNetbankingSDK =
 	    Object.defineProperty(ContractsResource.prototype, "insurances", {
 	        /**
 	         * Get insurances contracts resource
+	         * @returns {InsurancesContractsResource}
 	         */
 	        get: function () {
 	            return new insurances_1.InsurancesContractsResource(this.getPath() + "/insurances", this.getClient());
@@ -2273,6 +2893,7 @@ var CSNetbankingSDK =
 	    Object.defineProperty(ContractsResource.prototype, "loyalty", {
 	        /**
 	         * Get loyalty contracts resource
+	         * @returns {LoyaltyContractsResource}
 	         */
 	        get: function () {
 	            return new loyalty_1.LoyaltyContractsResource(this.getPath() + "/loyalty", this.getClient());
@@ -2290,21 +2911,34 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	/// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
 	var services_1 = __webpack_require__(35);
 	var transactions_1 = __webpack_require__(36);
+	/**
+	 * @class BuildingsContractsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.HasInstanceResource<BuildingsContractResource>}
+	 * @implements {CSCoreSDK.PaginatedListEnabled<BuildingsContract>}
+	 */
 	var BuildingsContractsResource = (function (_super) {
 	    __extends(BuildingsContractsResource, _super);
 	    function BuildingsContractsResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Resource represents list of building savings for current user. It contains building savings and loans from building savings as well.
+	         * @param {BuildingsContractsParameters=} params
+	         * @returns {Promise<BuildingsContractList>}
 	         */
 	        _this.list = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'buildings', params, function (response) {
@@ -2317,6 +2951,8 @@ var CSNetbankingSDK =
 	        };
 	        /**
 	         * Get the resource of buildings contract with a given id
+	         * @param {string} id
+	         * @returns {BuildingsContractResource}
 	         */
 	        _this.withId = function (id) {
 	            return new BuildingsContractResource(id, _this.getPath(), _this.getClient());
@@ -2326,12 +2962,19 @@ var CSNetbankingSDK =
 	    return BuildingsContractsResource;
 	}(CSCoreSDK.Resource));
 	exports.BuildingsContractsResource = BuildingsContractsResource;
+	/**
+	 * @class BuildingsContractResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 * @implements {CSCoreSDK.GetEnabled<BuildingsContract>}
+	 * @implements {CSCoreSDK.UpdateEnabled<UpdateBuildingsContractRequest, UpdateBuildingsContractResponse>}
+	 */
 	var BuildingsContractResource = (function (_super) {
 	    __extends(BuildingsContractResource, _super);
 	    function BuildingsContractResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Resource represents one building saving product identified by it's identifier. It can be building saving or loan from building saving.
+	         * @returns {Promise<BuildingsContract>}
 	         */
 	        _this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null).then(function (response) {
@@ -2342,6 +2985,8 @@ var CSNetbankingSDK =
 	        };
 	        /**
 	         * Allows to change a limited set of building savings contract-settings of one specific contract. Currently only the field alias can be changed. Change only to alias field must not be signed, but response is ready also for signing process.
+	         * @param {UpdateBuildingsContractRequest} payload
+	         * @returns {Promise<UpdateBuildingsContractResponse>}
 	         */
 	        _this.update = function (payload) {
 	            payload.id = _this._id;
@@ -2357,6 +3002,7 @@ var CSNetbankingSDK =
 	    Object.defineProperty(BuildingsContractResource.prototype, "services", {
 	        /**
 	         * Get buildings contracts services resource
+	         * @returns {BuildingsContractsServicesResource}
 	         */
 	        get: function () {
 	            return new services_1.BuildingsContractsServicesResource(this.getPath() + "/services", this.getClient());
@@ -2367,6 +3013,7 @@ var CSNetbankingSDK =
 	    Object.defineProperty(BuildingsContractResource.prototype, "transactions", {
 	        /**
 	         * Get buildings contracts transactions resource
+	         * @returns {ContractsTransactionsResource}
 	         */
 	        get: function () {
 	            return new transactions_1.ContractsTransactionsResource(this.getPath().replace('/my', '/cz/my') + "/transactions", this.getClient());
@@ -2398,19 +3045,35 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	/// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
+	/**
+	 * @class BuildingsContractsServicesResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.PaginatedListEnabled<Service>}
+	 */
 	var BuildingsContractsServicesResource = (function (_super) {
 	    __extends(BuildingsContractsServicesResource, _super);
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    function BuildingsContractsServicesResource(basePath, client) {
 	        var _this = _super.call(this, basePath, client) || this;
 	        /**
 	         * Returns list of services which are connected or arranged for building saving product instance.
+	         * @param {ServiceParameters=} params
+	         * @returns {Promise<ServiceList>}
 	         */
 	        _this.list = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'services', params, function (response) {
@@ -2431,24 +3094,39 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
+	/**
+	 * @class ContractsTransactionsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.HasInstanceResource<ContractsTransactionResource>}
+	 */
 	var ContractsTransactionsResource = (function (_super) {
 	    __extends(ContractsTransactionsResource, _super);
 	    function ContractsTransactionsResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Get contract transaction resource with a given id
+	         * @param {string} id
+	         * @returns {ContractsTransactionResource}
 	         */
 	        _this.withId = function (id) {
 	            return new ContractsTransactionResource(id, _this.getPath(), _this.getClient());
 	        };
 	        /**
 	         * Export transaction history into signed pdf.
+	         * @param {ExportTransactionsParameters} params
+	         * @returns {Promise<Uint8Array>}
 	         */
 	        _this.export = function (params) {
 	            // transform "fields" parameter to comma separated list from array
@@ -2462,12 +3140,19 @@ var CSNetbankingSDK =
 	    return ContractsTransactionsResource;
 	}(CSCoreSDK.Resource));
 	exports.ContractsTransactionsResource = ContractsTransactionsResource;
+	/**
+	 * @class ContractsTransactionResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 * @implements {CSCoreSDK.UpdateEnabled<SecurityTransactionRequest, SecurityTransactionResponse>}
+	 */
 	var ContractsTransactionResource = (function (_super) {
 	    __extends(ContractsTransactionResource, _super);
 	    function ContractsTransactionResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Allows to add or change a client's personal note and mark/star the transaction as favorite/important for one specific transaction on selected product.
+	         * @param {SecurityTransactionRequest} payload
+	         * @returns {Promise<SecurityTransactionResponse>}
 	         */
 	        _this.update = function (payload) {
 	            payload.id = _this._id;
@@ -2488,20 +3173,38 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	/// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	var CSCoreSDK = __webpack_require__(1);
 	var transactions_1 = __webpack_require__(36);
+	/**
+	 * @class PensionsContractsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.PaginatedListEnabled<Pension>}
+	 * @implements {CSCoreSDK.HasInstanceResource<PensionsContractResource>}
+	 */
 	var PensionsContractsResource = (function (_super) {
 	    __extends(PensionsContractsResource, _super);
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    function PensionsContractsResource(basePath, client) {
 	        var _this = _super.call(this, basePath, client) || this;
 	        /**
 	         * Returns list of pension products which belongs to current user. This includes Pension Savings, Supplementary Pension Insurance and Supplementary Pension Savings.
+	         * @param {PensionParameters=} params
+	         * @returns {Promise<PensionList>}
 	         */
 	        _this.list = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'pensions', params, function (response) {
@@ -2514,6 +3217,8 @@ var CSNetbankingSDK =
 	        };
 	        /**
 	         * Get the resource of pension contract with a given id
+	         * @param {string} id
+	         * @returns {PensionsContractResource}
 	         */
 	        _this.withId = function (id) {
 	            return new PensionsContractResource(id, _this.getPath(), _this.getClient());
@@ -2525,12 +3230,19 @@ var CSNetbankingSDK =
 	    return PensionsContractsResource;
 	}(CSCoreSDK.Resource));
 	exports.PensionsContractsResource = PensionsContractsResource;
+	/**
+	 * @class PensionsContractResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 * @implements {CSCoreSDK.GetEnabled<Pension>}
+	 * @implements {CSCoreSDK.UpdateEnabled<UpdatePensionRequest, UpdatePensionResponse>}
+	 */
 	var PensionsContractResource = (function (_super) {
 	    __extends(PensionsContractResource, _super);
 	    function PensionsContractResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Returns detail of pension product which belongs to current user. This can be Pension Saving, Supplementary Pension Insurance and Supplementary Pension Saving.
+	         * @returns {Promise<Pension>}
 	         */
 	        _this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null).then(function (response) {
@@ -2541,6 +3253,8 @@ var CSNetbankingSDK =
 	        };
 	        /**
 	         * Allows to change a limited set of pension contract-settings of one specific contract. Currently only the field alias can be changed. Change only to alias field must not be signed, but response is ready also for signing process.
+	         * @param {UpdatePensionRequest} payload
+	         * @returns {Promise<UpdatePensionResponse>}
 	         */
 	        _this.update = function (payload) {
 	            payload.id = _this._id;
@@ -2556,6 +3270,7 @@ var CSNetbankingSDK =
 	    Object.defineProperty(PensionsContractResource.prototype, "transactions", {
 	        /**
 	         * Returns transactions resource for pension contract
+	         * @returns {ContractsTransactionsResource}
 	         */
 	        get: function () {
 	            return new transactions_1.ContractsTransactionsResource(this.getPath() + "/transactions", this.getClient());
@@ -2589,12 +3304,17 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	/// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
 	var funds_1 = __webpack_require__(39);
 	var beneficiaries_1 = __webpack_require__(40);
@@ -2605,12 +3325,20 @@ var CSNetbankingSDK =
 	var tax_benefits_1 = __webpack_require__(45);
 	var strategies_1 = __webpack_require__(46);
 	var transfer_1 = __webpack_require__(47);
+	/**
+	 * @class InsurancesContractsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.PaginatedListEnabled<Insurance>}
+	 * @implements {CSCoreSDK.HasInstanceResource<InsurancesContractResource>}
+	 */
 	var InsurancesContractsResource = (function (_super) {
 	    __extends(InsurancesContractsResource, _super);
 	    function InsurancesContractsResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Returns list of life insurances for current user.
+	         * @param {InsurancesParameters=} params
+	         * @returns {Promise<InsuranceList>}
 	         */
 	        _this.list = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'insurances', params, function (response) {
@@ -2623,6 +3351,8 @@ var CSNetbankingSDK =
 	        };
 	        /**
 	         * Get the resource of insurance contracts with a given id
+	         * @param {string} id
+	         * @returns {InsurancesContractResource}
 	         */
 	        _this.withId = function (id) {
 	            return new InsurancesContractResource(id, _this.getPath(), _this.getClient());
@@ -2632,12 +3362,19 @@ var CSNetbankingSDK =
 	    return InsurancesContractsResource;
 	}(CSCoreSDK.Resource));
 	exports.InsurancesContractsResource = InsurancesContractsResource;
+	/**
+	 * @class InsurancesContractResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 * @implements {CSCoreSDK.GetEnabled<InsuranceDetail>}
+	 * @implements {CSCoreSDK.UpdateEnabled<UpdateInsuranceRequest, UpdateInsuranceResponse>}
+	 */
 	var InsurancesContractResource = (function (_super) {
 	    __extends(InsurancesContractResource, _super);
 	    function InsurancesContractResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Returns detail of the life insurance
+	         * @returns {Promise<InsuranceDetail>}
 	         */
 	        _this.get = function () {
 	            return _this._client.callApi(_this.getPath().replace('/my', '/cz/my') + "/detail", 'GET').then(function (response) {
@@ -2648,6 +3385,8 @@ var CSNetbankingSDK =
 	        };
 	        /**
 	         * Allows to change a limited set of insurance settings of one specific contract. Currently only the field alias can be changed. Change only to alias field must not be signed, but response is ready also for signing process.
+	         * @param {UpdateInsuranceRequest} payload
+	         * @returns {Promise<UpdateInsuranceResponse>}
 	         */
 	        _this.update = function (payload) {
 	            payload.id = _this._id;
@@ -2663,6 +3402,7 @@ var CSNetbankingSDK =
 	    Object.defineProperty(InsurancesContractResource.prototype, "funds", {
 	        /**
 	         * Returns funds resource for insurance contract
+	         * @returns {InsurancesContractFundsResource}
 	         */
 	        get: function () {
 	            return new funds_1.InsurancesContractFundsResource(this.getPath() + "/funds", this.getClient());
@@ -2673,6 +3413,7 @@ var CSNetbankingSDK =
 	    Object.defineProperty(InsurancesContractResource.prototype, "beneficiaries", {
 	        /**
 	         * Returns beneficiaries resource for insurance contract
+	         * @returns {InsurancesContractBeneficiariesResource}
 	         */
 	        get: function () {
 	            return new beneficiaries_1.InsurancesContractBeneficiariesResource(this.getPath() + "/beneficiaries", this.getClient());
@@ -2683,6 +3424,7 @@ var CSNetbankingSDK =
 	    Object.defineProperty(InsurancesContractResource.prototype, "insurees", {
 	        /**
 	         * Returns insurees resource for insurance contract
+	         * @returns {InsurancesContractInsureesResource}
 	         */
 	        get: function () {
 	            return new insurees_1.InsurancesContractInsureesResource(this.getPath() + "/insurees", this.getClient());
@@ -2693,6 +3435,7 @@ var CSNetbankingSDK =
 	    Object.defineProperty(InsurancesContractResource.prototype, "payments", {
 	        /**
 	         * Returns payments resource for insurance contract
+	         * @returns {InsurancesContractPaymentsResource}
 	         */
 	        get: function () {
 	            return new payments_1.InsurancesContractPaymentsResource(this.getPath() + "/payments", this.getClient());
@@ -2703,6 +3446,7 @@ var CSNetbankingSDK =
 	    Object.defineProperty(InsurancesContractResource.prototype, "services", {
 	        /**
 	         * Returns services resource for insurance contract
+	         * @returns {InsurancesContractServicesResource}
 	         */
 	        get: function () {
 	            return new services_1.InsurancesContractServicesResource(this.getPath() + "/services", this.getClient());
@@ -2713,6 +3457,7 @@ var CSNetbankingSDK =
 	    Object.defineProperty(InsurancesContractResource.prototype, "events", {
 	        /**
 	         * Returns events resource for insurance contract
+	         * @returns {InsurancesContractEventsResource}
 	         */
 	        get: function () {
 	            return new events_1.InsurancesContractEventsResource(this.getPath() + "/events", this.getClient());
@@ -2723,6 +3468,7 @@ var CSNetbankingSDK =
 	    Object.defineProperty(InsurancesContractResource.prototype, "taxBenefits", {
 	        /**
 	         * Returns taxBenefits resource for insurance contract
+	         * @returns {InsurancesContractTaxBenefitsResource}
 	         */
 	        get: function () {
 	            return new tax_benefits_1.InsurancesContractTaxBenefitsResource(this.getPath() + "/taxBenefits", this.getClient());
@@ -2733,6 +3479,7 @@ var CSNetbankingSDK =
 	    Object.defineProperty(InsurancesContractResource.prototype, "strategies", {
 	        /**
 	         * Returns strategies resource for insurance contract
+	         * @returns {InsurancesContractStrategiesResource}
 	         */
 	        get: function () {
 	            return new strategies_1.InsurancesContractStrategiesResource(this.getPath() + "/strategies", this.getClient());
@@ -2743,6 +3490,7 @@ var CSNetbankingSDK =
 	    Object.defineProperty(InsurancesContractResource.prototype, "transfer", {
 	        /**
 	         * Returns transfer resource for insurance contract
+	         * @returns {InsurancesContractTransferResource}
 	         */
 	        get: function () {
 	            return new transfer_1.InsurancesContractTransferResource(this.getPath() + "/transfer", this.getClient());
@@ -2778,25 +3526,43 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	/// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
+	/**
+	 * @class InsurancesContractFundsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.ListEnabled<Fund>}
+	 * @implements {CSCoreSDK.UpdateEnabled<UpdateFundRequest, UpdateFundResponse>}
+	 */
 	var InsurancesContractFundsResource = (function (_super) {
 	    __extends(InsurancesContractFundsResource, _super);
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    function InsurancesContractFundsResource(basePath, client) {
 	        var _this = _super.call(this, basePath, client) || this;
 	        /**
 	         * Returns detail of distribution of capital value into funds.
+	         * @returns {Promise<FundList>}
 	         */
 	        _this.list = function () {
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'funds', null);
 	        };
 	        /**
 	         * Change the distribution of capital value into funds.
+	         * @param {UpdateFundRequest} payload
+	         * @returns {Promise<UpdateFundResponse>}
 	         */
 	        _this.update = function (payload) {
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (response) {
@@ -2818,19 +3584,35 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	/// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
+	/**
+	 * @class InsurancesContractBeneficiariesResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.ListEnabled<InsuranceBeneficiary>}
+	 * @implements {CSCoreSDK.UpdateEnabled<UpdateInsuranceBeneficiaries, UpdateInsuranceBeneficiaries>}
+	 */
 	var InsurancesContractBeneficiariesResource = (function (_super) {
 	    __extends(InsurancesContractBeneficiariesResource, _super);
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    function InsurancesContractBeneficiariesResource(basePath, client) {
 	        var _this = _super.call(this, basePath, client) || this;
 	        /**
 	         * Returns list of beneficiaries related to the insurance contract.
+	         * @returns {Promise<InsuranceBeneficiaryList>}
 	         */
 	        _this.list = function () {
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'beneficiaries', null).then(function (response) {
@@ -2840,6 +3622,8 @@ var CSNetbankingSDK =
 	        };
 	        /**
 	         * Change beneficiaries and distribution of insurance among beneficiaries.
+	         * @param {UpdateInsuranceBeneficiaries} payload
+	         * @returns {Promise<UpdateInsuranceBeneficiaries>}
 	         */
 	        _this.update = function (payload) {
 	            if (payload && Array.isArray(payload.beneficiaries)) {
@@ -2866,19 +3650,34 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	/// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
+	/**
+	 * @class InsurancesContractInsureesResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.ListEnabled<Insuree>}
+	 */
 	var InsurancesContractInsureesResource = (function (_super) {
 	    __extends(InsurancesContractInsureesResource, _super);
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    function InsurancesContractInsureesResource(basePath, client) {
 	        var _this = _super.call(this, basePath, client) || this;
 	        /**
 	         * Returns list of insurees related to the insurance contract.
+	         * @returns {Promise<InsureeList>}
 	         */
 	        _this.list = function () {
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'insurees');
@@ -2897,19 +3696,34 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	/// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
+	/**
+	 * @class InsurancesContractPaymentsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.ListEnabled<ContractPayment>}
+	 */
 	var InsurancesContractPaymentsResource = (function (_super) {
 	    __extends(InsurancesContractPaymentsResource, _super);
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    function InsurancesContractPaymentsResource(basePath, client) {
 	        var _this = _super.call(this, basePath, client) || this;
 	        /**
 	         * Returns list of life insurance payments. List contains one upcoming payment and payments history for 2 years.
+	         * @returns {Promise<ContractPaymentList>}
 	         */
 	        _this.list = function () {
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'payments').then(function (response) {
@@ -2931,19 +3745,34 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	/// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
+	/**
+	 * @class InsurancesContractServicesResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.ListEnabled<InsuranceService>}
+	 */
 	var InsurancesContractServicesResource = (function (_super) {
 	    __extends(InsurancesContractServicesResource, _super);
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    function InsurancesContractServicesResource(basePath, client) {
 	        var _this = _super.call(this, basePath, client) || this;
 	        /**
 	         * Returns list of services for the life insurance
+	         * @returns {Promise<InsuranceServiceList>}
 	         */
 	        _this.list = function () {
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'services').then(function (response) {
@@ -2955,6 +3784,8 @@ var CSNetbankingSDK =
 	        };
 	        /**
 	         * Allows activation of risk sports insurance.
+	         * @param {RiskSportsUpdateRequest} payload
+	         * @returns {Promise<ActivateRiskSportsResponse>}
 	         */
 	        _this.activateRiskSports = function (payload) {
 	            CSCoreSDK.EntityUtils.transformDatesToSimpleISO(['dateFrom', 'dateTo'], payload);
@@ -2966,6 +3797,8 @@ var CSNetbankingSDK =
 	        };
 	        /**
 	         * Allows deactivation of risk sports insurance.
+	         * @param {RiskSportsUpdateRequest} payload
+	         * @returns {Promise<DeactivateRiskSportsResponse>}
 	         */
 	        _this.deactivateRiskSports = function (payload) {
 	            CSCoreSDK.EntityUtils.transformDatesToSimpleISO(['dateFrom', 'dateTo'], payload);
@@ -2991,19 +3824,34 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	/// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
+	/**
+	 * @class InsurancesContractEventsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.ListEnabled<ContractEvent>}
+	 */
 	var InsurancesContractEventsResource = (function (_super) {
 	    __extends(InsurancesContractEventsResource, _super);
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    function InsurancesContractEventsResource(basePath, client) {
 	        var _this = _super.call(this, basePath, client) || this;
 	        /**
 	         * Returns list of events for the life insurance
+	         * @returns {Promise<ContractEventList>}
 	         */
 	        _this.list = function () {
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'events').then(function (response) {
@@ -3032,19 +3880,34 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	/// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
+	/**
+	 * @class InsurancesContractTaxBenefitsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.GetEnabled<TaxBenefit>}
+	 */
 	var InsurancesContractTaxBenefitsResource = (function (_super) {
 	    __extends(InsurancesContractTaxBenefitsResource, _super);
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    function InsurancesContractTaxBenefitsResource(basePath, client) {
 	        var _this = _super.call(this, basePath, client) || this;
 	        /**
 	         * Returns tax benefits for the life insurance
+	         * @returns {Promise<TaxBenefit>}
 	         */
 	        _this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null);
@@ -3063,19 +3926,34 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	/// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
+	/**
+	 * @class InsurancesContractStrategiesResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.ListEnabled<ContractStrategy>}
+	 */
 	var InsurancesContractStrategiesResource = (function (_super) {
 	    __extends(InsurancesContractStrategiesResource, _super);
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    function InsurancesContractStrategiesResource(basePath, client) {
 	        var _this = _super.call(this, basePath, client) || this;
 	        /**
 	         * Returns list of strategies with corresponsing funds allocation for the life insurance
+	         * @returns {Promise<ContractStrategyList>}
 	         */
 	        _this.list = function () {
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'strategies');
@@ -3094,19 +3972,35 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	/// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
+	/**
+	 * @class InsurancesContractTransferResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.UpdateEnabled<UpdateContractTrasferRequest, UpdateContractTrasferResponse>}
+	 */
 	var InsurancesContractTransferResource = (function (_super) {
 	    __extends(InsurancesContractTransferResource, _super);
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    function InsurancesContractTransferResource(basePath, client) {
 	        var _this = _super.call(this, basePath, client) || this;
 	        /**
 	         * Creates insurance transfer - premium payment, extra deposit or recommended deposit.
+	         * @param {UpdateContractTrasferRequest} payload
+	         * @returns {Promise<UpdateContractTrasferResponse>}
 	         */
 	        _this.update = function (payload) {
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload).then(function (response) {
@@ -3128,19 +4022,34 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	/// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
+	/**
+	 * @class LoyaltyContractsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.GetEnabled<Loyalty>}
+	 */
 	var LoyaltyContractsResource = (function (_super) {
 	    __extends(LoyaltyContractsResource, _super);
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    function LoyaltyContractsResource(basePath, client) {
 	        var _this = _super.call(this, basePath, client) || this;
 	        /**
 	         * Get data about iBod account of the current client.
+	         * @returns {Promise<Loyalty>}
 	         */
 	        _this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null).then(function (response) {
@@ -3162,18 +4071,35 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
+	/**
+	 * @class ServicesResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.PaginatedListEnabled<Service>}
+	 */
 	var ServicesResource = (function (_super) {
 	    __extends(ServicesResource, _super);
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    function ServicesResource(basePath, client) {
 	        var _this = _super.call(this, basePath, client) || this;
 	        /**
 	         * Returns possibly empty list of services for current user. This resource represents only services which are not bound to any product.
+	         * @param {ServiceParameters=} params
+	         * @returns {Promise<ServiceList>}
 	         */
 	        _this.list = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'services', params, function (response) {
@@ -3195,20 +4121,34 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
 	var mandatory_1 = __webpack_require__(51);
 	var attachments_1 = __webpack_require__(52);
+	/**
+	 * @class MessagesResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.PaginatedListEnabled<Message>}
+	 * @implements {CSCoreSDK.HasInstanceResource<MessageResource>}
+	 */
 	var MessagesResource = (function (_super) {
 	    __extends(MessagesResource, _super);
 	    function MessagesResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Get all messages for current user generated by bank itself. Message can be read or unread, mandatory and non-mandatory. This call might return different messages based on appId of the caller (for example, some messages might be specific to an application).
+	         * @param {MessagesParameters=} params
+	         * @returns {Promise<MessageList>}
 	         */
 	        _this.list = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'messages', params, function (response) {
@@ -3221,6 +4161,8 @@ var CSNetbankingSDK =
 	        };
 	        /**
 	         * Get the resource of message with a given id
+	         * @param {string} id
+	         * @returns {MessageResource}
 	         */
 	        _this.withId = function (id) {
 	            return new MessageResource(id, _this.getPath(), _this.getClient());
@@ -3230,6 +4172,7 @@ var CSNetbankingSDK =
 	    Object.defineProperty(MessagesResource.prototype, "mandatory", {
 	        /**
 	         * Get messages mandatory resource
+	         * @returns {MessagesMandatoryResource}
 	         */
 	        get: function () {
 	            return new mandatory_1.MessagesMandatoryResource(this.getPath() + "/mandatory", this.getClient());
@@ -3240,12 +4183,20 @@ var CSNetbankingSDK =
 	    return MessagesResource;
 	}(CSCoreSDK.Resource));
 	exports.MessagesResource = MessagesResource;
+	/**
+	 * @class MessageResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 * @implements {CSCoreSDK.GetEnabled<Message>}
+	 * @implements {CSCoreSDK.UpdateEnabled<UpdateMessageRequest, NetbankingEmptyResponse>}
+	 * @implements {CSCoreSDK.DeleteEnabled<NetbankingEmptyResponse>}
+	 */
 	var MessageResource = (function (_super) {
 	    __extends(MessageResource, _super);
 	    function MessageResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Get one specific messages for current user generated by bank itself. Message can be read or unread, mandatory and non-mandatory.
+	         * @returns {Promise<Message>}
 	         */
 	        _this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null).then(function (response) {
@@ -3256,12 +4207,15 @@ var CSNetbankingSDK =
 	        };
 	        /**
 	         * After message has been read by user it should be marked accordingly by this endpoint.
+	         * @param {UpdateMessageRequest} payload
+	         * @returns {Promise<NetbankingEmptyResponse>}
 	         */
 	        _this.update = function (payload) {
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload);
 	        };
 	        /**
 	         * Resource for deleting message by its identifier. Only read messages can be deleted.
+	         * @returns {Promise<NetbankingEmptyResponse>}
 	         */
 	        _this.delete = function () {
 	            return CSCoreSDK.ResourceUtils.CallDelete(_this, null);
@@ -3271,6 +4225,7 @@ var CSNetbankingSDK =
 	    Object.defineProperty(MessageResource.prototype, "attachments", {
 	        /**
 	         * Get messages attachments resource
+	         * @returns {MessageAttachmentsResource}
 	         */
 	        get: function () {
 	            return new attachments_1.MessageAttachmentsResource(this.getPath() + "/attachments", this.getClient());
@@ -3297,18 +4252,30 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
+	/**
+	 * @class MessagesMandatoryResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.ListEnabled<Message>}
+	 */
 	var MessagesMandatoryResource = (function (_super) {
 	    __extends(MessagesMandatoryResource, _super);
 	    function MessagesMandatoryResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Returns all mandatory messages. This call might return different messages based on appId of the caller (for example, some messages might be specific to an application). Which messages can be seen by which application can be configured on the presto server side.
+	         * @return {Promise<MandatoryMessageList>}
 	         */
 	        _this.list = function () {
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'messages').then(function (response) {
@@ -3328,18 +4295,31 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
+	/**
+	 * @class MessageAttachmentsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.HasInstanceResource<MessageAttachmentResource>}
+	 */
 	var MessageAttachmentsResource = (function (_super) {
 	    __extends(MessageAttachmentsResource, _super);
 	    function MessageAttachmentsResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Get the resource of attachments
+	         * @param {string} id
+	         * @returns {MessageAttachmentResource}
 	         */
 	        _this.withId = function (id) {
 	            return new MessageAttachmentResource(id, _this.getPath(), _this.getClient());
@@ -3349,12 +4329,17 @@ var CSNetbankingSDK =
 	    return MessageAttachmentsResource;
 	}(CSCoreSDK.Resource));
 	exports.MessageAttachmentsResource = MessageAttachmentsResource;
+	/**
+	 * @class MessageAttachmentResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 */
 	var MessageAttachmentResource = (function (_super) {
 	    __extends(MessageAttachmentResource, _super);
 	    function MessageAttachmentResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Downloads attachment file. The binary representation of an attachment file, with a “Content-Disposition” header of type attachment (including the filename), in order to instruct the browser to open a save dialog.
+	         * @returns {Promise<Uint8Array>}
 	         */
 	        _this.download = function () {
 	            return CSCoreSDK.ResourceUtils.CallDownload(_this, null, 'POST');
@@ -3371,18 +4356,32 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
+	/**
+	 * @class TemplateResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.PaginatedListEnabled<Template>}
+	 * @implements {CSCoreSDK.HasInstanceResource<TemplateResource>}
+	 */
 	var TemplatesResource = (function (_super) {
 	    __extends(TemplatesResource, _super);
 	    function TemplatesResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * List of payment templates for current user.
+	         * @param {TemplatesParameters=} params
+	         * @returns {Promise<TemplateList>}
 	         */
 	        _this.list = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallPaginatedListWithSuffix(_this, null, 'templates', params, function (response) {
@@ -3394,6 +4393,8 @@ var CSNetbankingSDK =
 	        };
 	        /**
 	         * Get resource for template with a given id
+	         * @param {string} id
+	         * @returns {TemplateResource}
 	         */
 	        _this.withId = function (id) {
 	            return new TemplateResource(id, _this.getPath(), _this.getClient());
@@ -3403,12 +4404,18 @@ var CSNetbankingSDK =
 	    return TemplatesResource;
 	}(CSCoreSDK.Resource));
 	exports.TemplatesResource = TemplatesResource;
+	/**
+	 * @class TemplateResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 * @implements {CSCoreSDK.GetEnabled<Template>}
+	 */
 	var TemplateResource = (function (_super) {
 	    __extends(TemplateResource, _super);
 	    function TemplateResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Get payment template detail
+	         * @returns {Promise<Template>}
 	         */
 	        _this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null).then(function (response) {
@@ -3431,18 +4438,36 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
+	/**
+	 * @class PhoneNumbersResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.ListEnabled<PhoneNumber>}
+	 * @implements {CSCoreSDK.CreateEnabled<PhoneNumberRequest, PhoneNumber>}
+	 * @implements {CSCoreSDK.HasInstanceResource<PhoneNumberResource>}
+	 */
 	var PhoneNumbersResource = (function (_super) {
 	    __extends(PhoneNumbersResource, _super);
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    function PhoneNumbersResource(basePath, client) {
 	        var _this = _super.call(this, basePath, client) || this;
 	        /**
 	         * Returns list of phone numbers
+	         * @returns {Promise<PhoneNumberList>}
 	         */
 	        _this.list = function () {
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'phoneNumbers').then(function (response) {
@@ -3454,6 +4479,8 @@ var CSNetbankingSDK =
 	        };
 	        /**
 	         * Creates new phone number
+	         * @param {PhoneNumberRequest} payload
+	         * @returns {Promise<PhoneNumber>}
 	         */
 	        _this.create = function (payload) {
 	            return CSCoreSDK.ResourceUtils.CallCreate(_this, payload).then(function (response) {
@@ -3463,6 +4490,8 @@ var CSNetbankingSDK =
 	        };
 	        /**
 	         * Get single phone number with a given id
+	         * @param {string} id
+	         * @returns {PhoneNumberResource}
 	         */
 	        _this.withId = function (id) {
 	            return new PhoneNumberResource(id, _this.getPath(), _this.getClient());
@@ -3474,12 +4503,20 @@ var CSNetbankingSDK =
 	    return PhoneNumbersResource;
 	}(CSCoreSDK.Resource));
 	exports.PhoneNumbersResource = PhoneNumbersResource;
+	/**
+	 * @class PhoneNumberResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 * @implements {CSCoreSDK.UpdateEnabled<PhoneNumberRequest, PhoneNumber>}
+	 * @implements {CSCoreSDK.DeleteEnabled<NetbankingEmptyResponse>}
+	 */
 	var PhoneNumberResource = (function (_super) {
 	    __extends(PhoneNumberResource, _super);
 	    function PhoneNumberResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Updates phone number
+	         * @param {PhoneNumberRequest} payload
+	         * @returns {Promise<PhoneNumber>}
 	         */
 	        _this.update = function (payload) {
 	            payload.id = _this._id;
@@ -3490,6 +4527,7 @@ var CSNetbankingSDK =
 	        };
 	        /**
 	         * Deletes phone number
+	         * @returns {Promise<NetbankingEmptyResponse>}
 	         */
 	        _this.delete = function () {
 	            return CSCoreSDK.ResourceUtils.CallDelete(_this, null);
@@ -3510,24 +4548,42 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
+	/**
+	 * @class BudgetsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.ListEnabled<Budget>}
+	 */
 	var BudgetsResource = (function (_super) {
 	    __extends(BudgetsResource, _super);
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    function BudgetsResource(basePath, client) {
 	        var _this = _super.call(this, basePath, client) || this;
 	        /**
 	         * Returns list of user's tracked categories and its limits.
+	         * @returns {Promise<BudgetList>}
 	         */
 	        _this.list = function () {
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'budgets');
 	        };
 	        /**
 	         * Set new value of tracked categories.
+	         * @param {UpdateBudgets} payload
+	         * @returns {Promise<UpdateBudgets>}
 	         */
 	        _this.update = function (payload) {
 	            return CSCoreSDK.ResourceUtils.CallUpdate(_this, payload);
@@ -3545,18 +4601,35 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
+	/**
+	 * @class GoalsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.ListEnabled<Goal>}
+	 * @implements {CSCoreSDK.UpdateEnabled<UpdateGoal, UpdateGoal>}
+	 */
 	var GoalsResource = (function (_super) {
 	    __extends(GoalsResource, _super);
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    function GoalsResource(basePath, client) {
 	        var _this = _super.call(this, basePath, client) || this;
 	        /**
 	         * Returns list of user's saving goals except of completed ones. In price, only CZK currency is supported. If user has never set any goal, the response is empty.
+	         * @returns {Promise<GoalList>}
 	         */
 	        _this.list = function () {
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'goals').then(function (response) {
@@ -3568,6 +4641,8 @@ var CSNetbankingSDK =
 	        };
 	        /**
 	         * Set new value of goals. In price, only CZK currency is supported. If completed flag is not present, false value is supposed. All goals of given client are replaced - old ones (except of completed) are deleted and these new specified are inserted.
+	         * @param {UpdateGoal} payload
+	         * @returns {Promise<UpdateGoal>}
 	         */
 	        _this.update = function (payload) {
 	            if (Array.isArray(payload.goals)) {
@@ -3603,24 +4678,39 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
+	/**
+	 * @class PromotionsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.ListEnabled<Promotion>}
+	 * @implements {CSCoreSDK.CreateEnabled<CreatePromotionRequest, CreatePromotionResponse>}
+	 */
 	var PromotionsResource = (function (_super) {
 	    __extends(PromotionsResource, _super);
 	    function PromotionsResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Returns promotion list for the current user
+	         * @returns {Promise<PromotionList>}
 	         */
 	        _this.list = function () {
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'promotions');
 	        };
 	        /**
 	         * Hide specified promotion
+	         * @param {CreatePromotionRequest} payload
+	         * @returns {Promise<CreatePromotionResponse>}
 	         */
 	        _this.create = function (payload) {
 	            return _this._client.callApi(_this.getPath().replace('promotions', 'actions'), 'POST', null, payload);
@@ -3637,18 +4727,32 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
+	/**
+	 * @class AuthorizationLimitsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.ParametrizedListEnabled<AuthorizationLimitsParams, AuthorizationLimit>}
+	 * @implements {CSCoreSDK.HasInstanceResource<AuthorizationLimitResource>}
+	 */
 	var AuthorizationLimitsResource = (function (_super) {
 	    __extends(AuthorizationLimitsResource, _super);
 	    function AuthorizationLimitsResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Return all user local specific payment order entry limits for for all user active authorization methods and channels/applications used in country.
+	         * @param {AuthorizationLimitsParams=} params
+	         * @returns {Promise<AuthorizationLimitList>}
 	         */
 	        _this.list = function (params) {
 	            return CSCoreSDK.ResourceUtils.CallListWithSuffix(_this, null, 'limits', params).then(function (response) {
@@ -3660,6 +4764,8 @@ var CSNetbankingSDK =
 	        };
 	        /**
 	         * Get the resource of authorization limit with a given id
+	         * @param {string} id
+	         * @returns {AuthorizationLimitResource}
 	         */
 	        _this.withId = function (id) {
 	            return new AuthorizationLimitResource(id, _this.getPath(), _this.getClient());
@@ -3669,12 +4775,18 @@ var CSNetbankingSDK =
 	    return AuthorizationLimitsResource;
 	}(CSCoreSDK.Resource));
 	exports.AuthorizationLimitsResource = AuthorizationLimitsResource;
+	/**
+	 * @class AuthorizationLimitResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 * @implements {CSCoreSDK.GetEnabled<AuthorizationLimit>}
+	 */
 	var AuthorizationLimitResource = (function (_super) {
 	    __extends(AuthorizationLimitResource, _super);
 	    function AuthorizationLimitResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Return local specific payment order entry limits valid for combination of user, authorization method and used channel/application. For example user could define different limits for TAC authorization via George and mobile applications.
+	         * @returns {Promise<AuthorizationLimit>}
 	         */
 	        _this.get = function () {
 	            return CSCoreSDK.ResourceUtils.CallGet(_this, null).then(function (response) {
@@ -3697,18 +4809,30 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
+	/**
+	 * @class AuthorizationTokenResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.DeleteEnabled<NetbankingEmptyResponse>}
+	 */
 	var AuthorizationTokenResource = (function (_super) {
 	    __extends(AuthorizationTokenResource, _super);
 	    function AuthorizationTokenResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
 	        /**
 	         * Invalidate authorization token.
+	         * @returns {Promise<NetbankingEmptyResponse>}
 	         */
 	        _this.delete = function () {
 	            return _this._client.callApi(_this.getPath().replace('/my', ''), 'DELETE');
@@ -3725,16 +4849,31 @@ var CSNetbankingSDK =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
+	var __extends = (this && this.__extends) || (function () {
+	    var extendStatics = Object.setPrototypeOf ||
+	        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var CSCoreSDK = __webpack_require__(1);
+	/**
+	 * @class BundlesResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.CreateEnabled<BundleCreateRequest, BundleResponse>}
+	 */
 	var BundlesResource = (function (_super) {
 	    __extends(BundlesResource, _super);
 	    function BundlesResource() {
 	        var _this = _super !== null && _super.apply(this, arguments) || this;
+	        /**
+	         * @param {BundleCreateRequest} payload
+	         * @returns {Promise<BundleResponse>}
+	         */
 	        _this.create = function (payload) {
 	            return CSCoreSDK.ResourceUtils.CallCreate(_this, payload).then(function (response) {
 	                CSCoreSDK.SigningUtils.createSigningObject(response, _this.getClient(), _this.getPath() + "/" + response.id);
@@ -3750,4 +4889,3 @@ var CSNetbankingSDK =
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=cs-netbanking-sdk.sfx.js.map

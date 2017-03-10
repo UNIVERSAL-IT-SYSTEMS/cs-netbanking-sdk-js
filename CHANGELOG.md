@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+        
+## [0.3.0] - 2017-03-10
 ### Added
   - NPM shrinkwrap
   - Missing types

@@ -1,12 +1,18 @@
 /// <reference types="es6-promise" />
 declare module 'cs-netbanking-sdk/common' {
 	import * as CSCoreSDK from 'cs-core-sdk';
+	/**
+	 * @interface Signable
+	 */
 	export interface Signable {
 	    /**
 	    * Infomation about the signing
 	    */
 	    signInfo?: SignInfo;
 	}
+	/**
+	 * @interface SignInfo
+	 */
 	export interface SignInfo {
 	    /**
 	    * State of signing process.
@@ -17,6 +23,9 @@ declare module 'cs-netbanking-sdk/common' {
 	    */
 	    signId?: string;
 	}
+	/**
+	 * @interface AccountNumber
+	 */
 	export interface AccountNumber {
 	    /**
 	    * Account number with possible prefix. Format is "XXXXXX-NNNNNNNNNN" if prefix is not null or "000000". If prefix is not provided then format is "NNNNNNNNNN" without leading zeros.
@@ -47,6 +56,9 @@ declare module 'cs-netbanking-sdk/common' {
 	    */
 	    bic?: string;
 	}
+	/**
+	 * @interface Amount
+	 */
 	export interface Amount {
 	    /**
 	    * Value of an amount. Number without decimal part.
@@ -61,8 +73,15 @@ declare module 'cs-netbanking-sdk/common' {
 	    */
 	    currency: string;
 	}
+	/**
+	 * @interface StatementList
+	 * @extends {CSCoreSDK.PaginatedListResponse<Statement>}
+	 */
 	export interface StatementList extends CSCoreSDK.PaginatedListResponse<Statement> {
 	}
+	/**
+	 * @interface Statement
+	 */
 	export interface Statement {
 	    /**
 	    * Identifier of statement in BE system.
@@ -97,6 +116,9 @@ declare module 'cs-netbanking-sdk/common' {
 	    */
 	    "cz-fileOrderNumber": string;
 	}
+	/**
+	 * @interface AddNoteAndMarkTransactionRequest
+	 */
 	export interface AddNoteAndMarkTransactionRequest {
 	    /**
 	    * Personal, user specific note for transaction. Max. 4 000 characters.
@@ -107,14 +129,26 @@ declare module 'cs-netbanking-sdk/common' {
 	    */
 	    flags?: [string];
 	}
+	/**
+	 * @interface AddNoteAndMarkTransactionResponse
+	 * @extends {Signable}
+	 */
 	export interface AddNoteAndMarkTransactionResponse extends Signable {
 	    /**
 	    * Transactions information
 	    */
 	    transaction: Transaction;
 	}
+	/**
+	 * @interface TransactionList
+	 * @extends {CSCoreSDK.PaginatedListResponse<Transaction>}
+	 * @extends {Signable}
+	 */
 	export interface TransactionList extends CSCoreSDK.PaginatedListResponse<Transaction>, Signable {
 	}
+	/**
+	 * @interface Transaction
+	 */
 	export interface Transaction {
 	    /**
 	    * Transaction identifier.
@@ -129,8 +163,16 @@ declare module 'cs-netbanking-sdk/common' {
 	    */
 	    flags?: [string];
 	}
+	/**
+	 * @interface NetbankingParameters
+	 * @extends {CSCoreSDK.Paginated}
+	 * @extends {CSCoreSDK.Sortable}
+	 */
 	export interface NetbankingParameters extends CSCoreSDK.Paginated, CSCoreSDK.Sortable {
 	}
+	/**
+	 * @interface DownloadStatementParameters
+	 */
 	export interface DownloadStatementParameters {
 	    /**
 	    * Format of statements file. Example: PDF_A4. Default: PDF_A4.
@@ -141,6 +183,9 @@ declare module 'cs-netbanking-sdk/common' {
 	    */
 	    statementId: string;
 	}
+	/**
+	 * @interface ExportTransactionsParameters
+	 */
 	export interface ExportTransactionsParameters {
 	    /**
 	    * Date from which transactions should be exported.
@@ -172,8 +217,15 @@ declare module 'cs-netbanking-sdk/common' {
 	    */
 	    showBalance?: boolean;
 	}
+	/**
+	 * @interface NetbankingEmptyResponse
+	 * @extends {CSCoreSDK.EmptyResponse}
+	 */
 	export interface NetbankingEmptyResponse extends CSCoreSDK.EmptyResponse {
 	}
+	/**
+	 * @interface Symbols
+	 */
 	export interface Symbols {
 	    /**
 	     * Standing order variable symbol.
@@ -188,6 +240,9 @@ declare module 'cs-netbanking-sdk/common' {
 	     */
 	    specificSymbol?: string;
 	}
+	/**
+	 * @interface Address
+	 */
 	export interface Address {
 	    /**
 	     * Street of the address.
@@ -224,14 +279,21 @@ declare module 'cs-netbanking-sdk/accounts/balance' {
 	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Amount } from 'cs-netbanking-sdk/common';
 	/**
-	* Get information about the account's balance
-	*/
+	 * Get information about the account's balance
+	 * @class AccountBalanceResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.GetEnabled<AccountBalance>}
+	 */
 	export class AccountBalanceResource extends CSCoreSDK.Resource implements CSCoreSDK.GetEnabled<AccountBalance> {
 	    /**
-	    * Fetches the balance and returns them in a promise
-	    */
+	     * Fetches the balance and returns them in a promise
+	     * @returns {Promise<AccountBalance>}
+	     */
 	    get: () => Promise<AccountBalance>;
 	}
+	/**
+	 * @interface AccountBalance
+	 */
 	export interface AccountBalance {
 	    /**
 	    * Account balance for Current, Saved amount for Saving, Principal Outstanding for Loan/Mortgage.
@@ -251,17 +313,32 @@ declare module 'cs-netbanking-sdk/accounts/balance' {
 declare module 'cs-netbanking-sdk/accounts/services' {
 	import * as CSCoreSDK from 'cs-core-sdk';
 	/**
-	* Get information about the account's services
-	*/
+	 * Get information about the account's services
+	 * @class AccountServicesResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.PaginatedListEnabled<Service>}
+	 */
 	export class AccountServicesResource extends CSCoreSDK.Resource implements CSCoreSDK.PaginatedListEnabled<Service> {
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
 	    /**
-	    * Fetches the services and returns them in a promise
-	    */
+	     * Fetches the services and returns them in a promise
+	     * @param {ServiceParameters=} params
+	     */
 	    list: (params?: ServiceParameters) => Promise<ServiceList>;
 	}
+	/**
+	 * @interface ServiceList
+	 * @extends {CSCoreSDK.PaginatedListResponse<Service>}
+	 */
 	export interface ServiceList extends CSCoreSDK.PaginatedListResponse<Service> {
 	}
+	/**
+	 * @interface Service
+	 */
 	export interface Service {
 	    /**
 	    * Service identifier.
@@ -284,6 +361,10 @@ declare module 'cs-netbanking-sdk/accounts/services' {
 	    */
 	    dateTo?: Date;
 	}
+	/**
+	 * @interface ServiceParameters
+	 * @extends {CSCoreSDK.Paginated}
+	 */
 	export interface ServiceParameters extends CSCoreSDK.Paginated {
 	}
 
@@ -292,16 +373,28 @@ declare module 'cs-netbanking-sdk/accounts/reservations' {
 	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Amount } from 'cs-netbanking-sdk/common';
 	/**
-	* Get information about the account's reservations
-	*/
+	 * Get information about the account's reservations
+	 * @class AccountReservationsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.PaginatedListEnabled<Reservation>}
+	 */
 	export class AccountReservationsResource extends CSCoreSDK.Resource implements CSCoreSDK.PaginatedListEnabled<Reservation> {
 	    /**
-	    * Fetches the reservations and returns them in a promise
-	    */
+	     * Fetches the reservations and returns them in a promise
+	     * @param {ReservationParameters=} params
+	     * @returns {Promise<ReservationList>}
+	     */
 	    list: (params?: ReservationParameters) => Promise<ReservationList>;
 	}
+	/**
+	 * @interface ReservationList
+	 * @extends {CSCoreSDK.PaginatedListResponse<Reservation>}
+	 */
 	export interface ReservationList extends CSCoreSDK.PaginatedListResponse<Reservation> {
 	}
+	/**
+	 * @interface Reservation
+	 */
 	export interface Reservation {
 	    /**
 	    * Type of reservation. Possible values are CASH_WITHDRAWAL, PAYMENT, CARD_PAYMENT, OTHER
@@ -340,6 +433,10 @@ declare module 'cs-netbanking-sdk/accounts/reservations' {
 	    */
 	    amountSender?: Amount;
 	}
+	/**
+	 * @interface ReservationParameters
+	 * @extends {CSCoreSDK.Paginated}
+	 */
 	export interface ReservationParameters extends CSCoreSDK.Paginated {
 	}
 
@@ -348,17 +445,32 @@ declare module 'cs-netbanking-sdk/accounts/repayments' {
 	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Amount } from 'cs-netbanking-sdk/common';
 	/**
-	* Get information about the account's repayments
-	*/
+	 * Get information about the account's repayments
+	 * @class AccountRepaymentsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.ListEnabled<Repayment>}
+	 */
 	export class AccountRepaymentsResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<Repayment> {
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
 	    /**
-	    * Fetches the repayments and returns them in a promise
-	    */
+	     * Fetches the repayments and returns them in a promise
+	     * @returns {Promise<RepaymentList>}
+	     */
 	    list: () => Promise<RepaymentList>;
 	}
+	/**
+	 * @interface RepaymentList
+	 * @extends {CSCoreSDK.PaginatedListResponse<Repayment>}
+	 */
 	export interface RepaymentList extends CSCoreSDK.PaginatedListResponse<Repayment> {
 	}
+	/**
+	 * @interface Repayment
+	 */
 	export interface Repayment {
 	    /**
 	     * Date of the repayment.
@@ -379,17 +491,24 @@ declare module 'cs-netbanking-sdk/accounts/statements' {
 	import * as CSCoreSDK from 'cs-core-sdk';
 	import { StatementList, Statement, NetbankingParameters, DownloadStatementParameters } from 'cs-netbanking-sdk/common';
 	/**
-	* Get information about the account's statements
-	*/
-	export class AccountStatementsResource extends CSCoreSDK.Resource implements CSCoreSDK.PaginatedListEnabled<Statement> {
+	 * Get information about the account's statements
+	 * @class AccountStatementsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.PaginatedListEnabled<Statement>}
+	 */
+	export class AccountStatementsResource extends CSCoreSDK.Resource implements CSCoreSDK.PaginatedListEnabled<Statement>, CSCoreSDK.ParametrizedDownloadEnabled<DownloadStatementParameters, Uint8Array> {
 	    /**
-	    * Fetches the statements and returns them in a promise
-	    */
+	     * Fetches the statements and returns them in a promise
+	     * @param {NetbankingParameters=} params
+	     * @returns {Promise<StatementList>}
+	     */
 	    list: (params?: NetbankingParameters) => Promise<StatementList>;
 	    /**
-	    * Downloads statements file
-	    */
-	    download: (params: DownloadStatementParameters) => Promise<any>;
+	     * Downloads statements file
+	     * @param {DownloadStatementParameters} params
+	     * @returns {Promise<Uint8Array>}
+	     */
+	    download: (params: DownloadStatementParameters) => Promise<Uint8Array>;
 	}
 
 }
@@ -397,36 +516,55 @@ declare module 'cs-netbanking-sdk/accounts/subAccounts' {
 	import * as CSCoreSDK from 'cs-core-sdk';
 	import { StatementList, Statement, NetbankingParameters, DownloadStatementParameters } from 'cs-netbanking-sdk/common';
 	/**
-	* Get individual SubAccount resource
-	*/
+	 * Get individual SubAccount resource
+	 * @class SubAccountsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.HasInstanceResource<SubAccountResource>}
+	 */
 	export class SubAccountsResource extends CSCoreSDK.Resource implements CSCoreSDK.HasInstanceResource<SubAccountResource> {
 	    /**
-	    * Returns individual SubAccount resource with a given id
-	    */
+	     * Returns individual SubAccount resource with a given id
+	     * @param {string|number} id
+	     * @returns {SubAccountResource}
+	     */
 	    withId: (id: string | number) => SubAccountResource;
 	}
 	/**
-	* Get information about the subaccount
-	*/
+	 * Get information about the subaccount
+	 * @class SubAccountResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 */
 	export class SubAccountResource extends CSCoreSDK.InstanceResource {
 	    /**
-	    * Get information about the subaccount's statements
-	    */
+	     * Get information about the subaccount's statements
+	     * @returns {SubAccountStatementsResource}
+	     */
 	    readonly statements: SubAccountStatementsResource;
 	}
 	/**
-	* List all subaccount's statements
-	*/
-	export class SubAccountStatementsResource extends CSCoreSDK.Resource implements CSCoreSDK.PaginatedListEnabled<Statement> {
+	 * List all subaccount's statements
+	 * @class SubAccountStatementsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.PaginatedListEnabled<Statement>}
+	 */
+	export class SubAccountStatementsResource extends CSCoreSDK.Resource implements CSCoreSDK.PaginatedListEnabled<Statement>, CSCoreSDK.ParametrizedDownloadEnabled<DownloadStatementParameters, Uint8Array> {
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
 	    /**
-	    * Returns all subaccount's statements in a promise
-	    */
+	     * Returns all subaccount's statements in a promise
+	     * @param {NetbankingParameters=} params
+	     * @returns {Promise<StatementList>}
+	     */
 	    list: (params?: NetbankingParameters) => Promise<StatementList>;
 	    /**
-	    * Downloads statements file
-	    */
-	    download: (params: DownloadStatementParameters) => Promise<any>;
+	     * Downloads statements file
+	     * @param {DownloadStatementParameters} params
+	     * @returns {Promise<Uint8Array>}
+	     */
+	    download: (params: DownloadStatementParameters) => Promise<Uint8Array>;
 	}
 
 }
@@ -434,25 +572,37 @@ declare module 'cs-netbanking-sdk/accounts/transactions' {
 	import * as CSCoreSDK from 'cs-core-sdk';
 	import { AddNoteAndMarkTransactionRequest, AddNoteAndMarkTransactionResponse, ExportTransactionsParameters } from 'cs-netbanking-sdk/common';
 	/**
-	* Get individual AccountsTransactionsResource
-	*/
-	export class AccountTransactionsResource extends CSCoreSDK.Resource implements CSCoreSDK.HasInstanceResource<AccountTransactionResource> {
+	 * Get individual AccountsTransactionsResource
+	 * @class AccountTransactionsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.HasInstanceResource<AccountTransactionResource>}
+	 */
+	export class AccountTransactionsResource extends CSCoreSDK.Resource implements CSCoreSDK.HasInstanceResource<AccountTransactionResource>, CSCoreSDK.ParametrizedExportEnabled<ExportTransactionsParameters, Uint8Array> {
 	    /**
-	    * Returns individual AccountsTransactionResource with a given id
-	    */
+	     * Returns individual AccountsTransactionResource with a given id
+	     * @param {AccountTransactionResource} id
+	     * @returns {AccountTransactionResource}
+	     */
 	    withId: (id: string | number) => AccountTransactionResource;
 	    /**
-	    * Exports transaction history into signed pdf
-	    */
-	    export: (params: ExportTransactionsParameters) => Promise<{}>;
+	     * Exports transaction history into signed pdf
+	     * @param {ExportTransactionsParameters} params
+	     * @returns {Promise<Uint8Array>}
+	     */
+	    export: (params: ExportTransactionsParameters) => Promise<Uint8Array>;
 	}
 	/**
-	* Allows to add or change a client's personal transaction note and mark the transaction as favorite/important for one specific transaction on selected account.
-	*/
+	 * Allows to add or change a client's personal transaction note and mark the transaction as favorite/important for one specific transaction on selected account.
+	 * @class AccountTransactionResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 * @implements {CSCoreSDK.UpdateEnabled<AddNoteAndMarkTransactionRequest, AddNoteAndMarkTransactionResponse>}
+	 */
 	export class AccountTransactionResource extends CSCoreSDK.InstanceResource implements CSCoreSDK.UpdateEnabled<AddNoteAndMarkTransactionRequest, AddNoteAndMarkTransactionResponse> {
 	    /**
-	    * Adds, changes of marks transaction
-	    */
+	     * Adds, changes of marks transaction
+	     * @param {AddNoteAndMarkTransactionRequest} payload
+	     * @returns {Promise<AddNoteAndMarkTransactionResponse>}
+	     */
 	    update: (payload: AddNoteAndMarkTransactionRequest) => Promise<AddNoteAndMarkTransactionResponse>;
 	}
 
@@ -461,17 +611,33 @@ declare module 'cs-netbanking-sdk/accounts/transfer' {
 	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Amount } from 'cs-netbanking-sdk/common';
 	/**
-	* Revolve a loan
-	*/
+	 * Revolve a loan
+	 * @class AccountTransferResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.UpdateEnabled<TransferRequest, TransferResponse>}
+	 */
 	export class AccountTransferResource extends CSCoreSDK.Resource implements CSCoreSDK.UpdateEnabled<TransferRequest, TransferResponse> {
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
 	    /**
-	    * Revolves the loan. Currently only REVOLVING_LOAN subtype is supported.
-	    */
+	     * Revolves the loan. Currently only REVOLVING_LOAN subtype is supported.
+	     * @param {TransferRequest} payload
+	     * @returns {Promise<TransferResponse>}
+	     */
 	    update: (payload: TransferRequest) => Promise<TransferResponse>;
 	}
+	/**
+	 * @interface TransferResponse
+	 * @extends {CSCoreSDK.Signable}
+	 */
 	export interface TransferResponse extends CSCoreSDK.Signable {
 	}
+	/**
+	 * @interface TransferRequest
+	 */
 	export interface TransferRequest {
 	    /**
 	     * Type of the transfer. Currently only REVOLVING_LOAN_DISBURSEMENT is supported.
@@ -495,32 +661,61 @@ declare module 'cs-netbanking-sdk/accounts/transfer' {
 declare module 'cs-netbanking-sdk/accounts/standing-orders' {
 	import * as CSCoreSDK from 'cs-core-sdk';
 	import { AccountNumber, Amount, NetbankingParameters, Symbols } from 'cs-netbanking-sdk/common';
+	/**
+	 * @class AccountStandingOrdersResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.PaginatedListEnabled<StandingOrder>}
+	 * @implements {CSCoreSDK.HasInstanceResource<AccountStandingOrderResource>}
+	 * @implements {CSCoreSDK.CreateEnabled<CreateStandingOrderRequest, StandingOrderResponse>}
+	 */
 	export class AccountStandingOrdersResource extends CSCoreSDK.Resource implements CSCoreSDK.PaginatedListEnabled<StandingOrder>, CSCoreSDK.HasInstanceResource<AccountStandingOrderResource>, CSCoreSDK.CreateEnabled<CreateStandingOrderRequest, StandingOrderResponse> {
 	    /**
 	     * Returns list of actual standing/sweep orders for accounts of the current user.
+	     * @param {NetbankingParameters} params
+	     * @returns {Promise<StandingOrderList>}
 	     */
 	    list: (params: NetbankingParameters) => Promise<StandingOrderList>;
 	    /**
 	     * Get the resource of standing order with a given id
+	     * @param {string} id
+	     * @returns {AccountStandingOrderResource}
 	     */
 	    withId: (id: string) => AccountStandingOrderResource;
 	    /**
 	     * Resource for creating standing/sweep order. Once order has been signed new payments are generated and executed according its settings.
+	     * @param {CreateStandingOrderRequest} payload
+	     * @returns {Promise<StandingOrderResponse>}
 	     */
 	    create: (payload: CreateStandingOrderRequest) => Promise<StandingOrderResponse>;
 	}
+	/**
+	 * @class AccountStandingOrderResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 * @implements {CSCoreSDK.GetEnabled<StandingOrder>}
+	 * @implements {CSCoreSDK.DeleteEnabled<StandingOrderResponse>}
+	 */
 	export class AccountStandingOrderResource extends CSCoreSDK.InstanceResource implements CSCoreSDK.GetEnabled<StandingOrder>, CSCoreSDK.DeleteEnabled<StandingOrderResponse> {
 	    /**
 	     * Returns detail of actual standing/sweep orders identified by its number.
+	     * @returns {Promise<StandingOrder>}
 	     */
 	    get: () => Promise<StandingOrder>;
 	    /**
 	     * This call removes existing standing/sweep order. No more payments for the order are executed after the change has been signed.
+	     * @returns {Promise<StandingOrderResponse>}
 	     */
 	    delete: () => Promise<StandingOrderResponse>;
 	}
+	/**
+	 * @interface StandingOrderList
+	 * @extends {CSCoreSDK.PaginatedListResponse<StandingOrder>}
+	 */
 	export interface StandingOrderList extends CSCoreSDK.PaginatedListResponse<StandingOrder> {
 	}
+	/**
+	 * @interface StandingOrder
+	 * @extends {CreateStandingOrderRequest}
+	 */
 	export interface StandingOrder extends CreateStandingOrderRequest {
 	    /**
 	     * Standing order respectively sweep order identifier.
@@ -570,15 +765,23 @@ declare module 'cs-netbanking-sdk/accounts/standing-orders' {
 	    flags?: [string];
 	    /**
 	     * Convience method for getting standing order detail
+	     * @returns {Promise<StandingOrder>}
 	     */
 	    get: () => Promise<StandingOrder>;
 	    /**
 	     * Conveinience method for deleting standing order
+	     * @returns {Promise<StandingOrderResponse>}
 	     */
 	    delete: () => Promise<StandingOrderResponse>;
 	}
+	/**
+	 * @interface StandingOrderResponse
+	 */
 	export interface StandingOrderResponse extends StandingOrder, CSCoreSDK.Signable {
 	}
+	/**
+	 * @interface CreateStandingOrderRequest
+	 */
 	export interface CreateStandingOrderRequest {
 	    /**
 	     * Either STANDING_ORDER (there is fixed amount specified which is transferred in defined times) or SWEEP_ORDER (there is specified limit, amount over limit/to limit is transferred in defined times).
@@ -643,33 +846,65 @@ declare module 'cs-netbanking-sdk/accounts/standing-orders' {
 declare module 'cs-netbanking-sdk/accounts/direct-debits' {
 	import * as CSCoreSDK from 'cs-core-sdk';
 	import { AccountNumber, Amount, NetbankingParameters, Symbols } from 'cs-netbanking-sdk/common';
+	/**
+	 * @class AccountDirectDebitsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.PaginatedListEnabled<DirectDebit>}
+	 * @implements {CSCoreSDK.HasInstanceResource<AccountDirectDebitResource>}
+	 * @implements {CSCoreSDK.CreateEnabled<DirectDebit, SignableDirectDebit>}
+	 */
 	export class AccountDirectDebitsResource extends CSCoreSDK.Resource implements CSCoreSDK.PaginatedListEnabled<DirectDebit>, CSCoreSDK.HasInstanceResource<AccountDirectDebitResource>, CSCoreSDK.CreateEnabled<DirectDebit, SignableDirectDebit> {
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
 	    /**
 	     * Resource Direct Debit List represents collection of all direct debit approvals entered by user for the specified user
+	     * @param {NetbankingParameters} params
+	     * @returns {Promise<DirectDebitList>}
 	     */
 	    list: (params: NetbankingParameters) => Promise<DirectDebitList>;
 	    /**
 	     * Get the resource of direct debit with a given id
+	     * @param {string} id
+	     * @returns {AccountDirectDebitResource}
 	     */
 	    withId: (id: string) => AccountDirectDebitResource;
 	    /**
 	     * Resource for creating (or allowing) direct debit on certain account. Once signed it can be used by receiver party.
+	     * @param {DirectDebit} payload
+	     * @returns {Promise<SignableDirectDebit>}
 	     */
 	    create: (payload: DirectDebit) => Promise<SignableDirectDebit>;
 	}
+	/**
+	 * @class AccountDirectDebitResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 * @implements {CSCoreSDK.GetEnabled<DirectDebit>}
+	 * @implements {CSCoreSDK.DeleteEnabled<SignableDirectDebit>}
+	 */
 	export class AccountDirectDebitResource extends CSCoreSDK.InstanceResource implements CSCoreSDK.GetEnabled<DirectDebit>, CSCoreSDK.DeleteEnabled<SignableDirectDebit> {
 	    /**
 	     * Get the single direct debits detail.
+	     * @returns {Promise<DirectDebit>}
 	     */
 	    get: () => Promise<DirectDebit>;
 	    /**
 	     * Resource for deleting direct debit (permission) on certain account. Once signed no more transfers can be made by receiver party.
+	     * @returns {Promise<SignableDirectDebit>}
 	     */
 	    delete: () => Promise<SignableDirectDebit>;
 	}
+	/**
+	 * @interface DirectDebitList
+	 * @extends {CSCoreSDK.PaginatedListResponse<DirectDebit>}
+	 */
 	export interface DirectDebitList extends CSCoreSDK.PaginatedListResponse<DirectDebit> {
 	}
+	/**
+	 * @interface DirectDebit
+	 */
 	export interface DirectDebit {
 	    /**
 	     * Order number of the direct debit approval. It is unique per approval. Several versions of an approval have the same order number.
@@ -744,6 +979,11 @@ declare module 'cs-netbanking-sdk/accounts/direct-debits' {
 	     */
 	    periodCycle: string;
 	}
+	/**
+	 * @interface SignableDirectDebit
+	 * @extends {DirectDebit}
+	 * @extends {CSCoreSDK.Signable}
+	 */
 	export interface SignableDirectDebit extends DirectDebit, CSCoreSDK.Signable {
 	}
 
@@ -762,67 +1002,103 @@ declare module 'cs-netbanking-sdk/accounts/accounts' {
 	import { AccountStandingOrdersResource } from 'cs-netbanking-sdk/accounts/standing-orders';
 	import { AccountDirectDebitsResource } from 'cs-netbanking-sdk/accounts/direct-debits';
 	/**
-	* List all accounts and get individual account instance resource
-	*/
+	 * @class AccountsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.HasInstanceResource<AccountResource>}
+	 * @implements {CSCoreSDK.PaginatedListEnabled<MainAccount>}
+	 */
 	export class AccountsResource extends CSCoreSDK.Resource implements CSCoreSDK.HasInstanceResource<AccountResource>, CSCoreSDK.PaginatedListEnabled<MainAccount> {
 	    /**
 	     * List all accounts
+	     * @param {AccountParameters=} params
+	     * @returns {Promise<AccountList>}
 	     */
 	    list: (params?: AccountParameters) => Promise<AccountList>;
 	    /**
-	    * Get the detail of the account with a given id
-	    */
+	     * Get the detail of the account with a given id
+	     * @param {string|number} id
+	     * @returns {AccountResource}
+	     */
 	    withId: (id: string | number) => AccountResource;
 	}
 	/**
-	* Get detail of the individual account and additional information about it
-	*/
+	 * Get detail of the individual account and additional information about it
+	 * @class AccountResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 * @implements {CSCoreSDK.GetEnabled<MainAccount>}
+	 * @implements {CSCoreSDK.UpdateEnabled<ChangeAccountSettingsRequest, ChangeAccountSettingsResponse>}
+	 */
 	export class AccountResource extends CSCoreSDK.InstanceResource implements CSCoreSDK.GetEnabled<MainAccount>, CSCoreSDK.UpdateEnabled<ChangeAccountSettingsRequest, ChangeAccountSettingsResponse> {
 	    /**
-	    * Get account detail
-	    */
+	     * Get account detail
+	     * @returns {Promise<MainAccount>}
+	     */
 	    get: () => Promise<MainAccount>;
 	    /**
-	    * Update account's settings.
-	    */
+	     * Update account's settings.
+	     * @param {ChangeAccountSettingsRequest} payload
+	     * @returns {Promise<ChangeAccountSettingsResponse>}
+	     */
 	    update: (payload: ChangeAccountSettingsRequest) => Promise<ChangeAccountSettingsResponse>;
 	    /**
-	    * Get information about the account's balance
-	    */
+	     * Get information about the account's balance
+	     * @returns {AccountBalanceResource}
+	     */
 	    readonly balance: AccountBalanceResource;
 	    /**
-	    * Get information about the account's services
-	    */
+	     * Get information about the account's services
+	     * @returns {AccountServicesResource}
+	     */
 	    readonly services: AccountServicesResource;
 	    /**
-	    * Get information about the account's reservations
-	    */
+	     * Get information about the account's reservations
+	     * @returns {AccountReservationsResource}
+	     */
 	    readonly reservations: AccountReservationsResource;
 	    /**
-	    * Get information about the account's repayments
-	    */
+	     * Get information about the account's repayments
+	     * @returns {AccountRepaymentsResource}
+	     */
 	    readonly repayments: AccountRepaymentsResource;
 	    /**
-	    * Get information about the account's statements
-	    */
+	     * Get information about the account's statements
+	     * @returns {AccountStatementsResource}
+	     */
 	    readonly statements: AccountStatementsResource;
 	    /**
-	    * Get information about the account's subaccounts
-	    */
+	     * Get information about the account's subaccounts
+	     * @returns {SubAccountsResource}
+	     */
 	    readonly subAccounts: SubAccountsResource;
 	    /**
-	    * Get information about the account's transactions
-	    */
+	     * Get information about the account's transactions
+	     * @returns {AccountTransactionsResource}
+	     */
 	    readonly transactions: AccountTransactionsResource;
 	    /**
-	    * Revolve a loan
-	    */
+	     * Revolve a loan
+	     * @returns {AccountTransferResource}
+	     */
 	    readonly transfer: AccountTransferResource;
+	    /**
+	     * @returns {AccountStandingOrdersResource}
+	     */
 	    readonly standingOrders: AccountStandingOrdersResource;
+	    /**
+	     * @returns {AccountDirectDebitsResource}
+	     */
 	    readonly directDebits: AccountDirectDebitsResource;
 	}
+	/**
+	 * @interface AccountList
+	 * @extends {CSCoreSDK.PaginatedListResponse<MainAccount>}
+	 */
 	export interface AccountList extends CSCoreSDK.PaginatedListResponse<MainAccount> {
 	}
+	/**
+	 * @interface MainAccount
+	 * @extends {Account}
+	 */
 	export interface MainAccount extends Account {
 	    /**
 	    * User defined account name. Max. 50 characters
@@ -874,11 +1150,14 @@ declare module 'cs-netbanking-sdk/accounts/accounts' {
 	    ownTransferReceivers?: TransferReceivers;
 	    /**
 	     * Convenience method for getting detail of the account right from the list
+	     * @returns {Promise<MainAccount>}
 	     */
 	    get: () => Promise<MainAccount>;
 	    /**
-	    * Convenience method for updating account's details
-	    */
+	     * Convenience method for updating account's details
+	     * @param {ChangeAccountSettingsRequest} payload
+	     * @returns {Promise<ChangeAccountSettingsResponse>}
+	     */
 	    update: (payload: ChangeAccountSettingsRequest) => Promise<ChangeAccountSettingsResponse>;
 	    /**
 	    * Convenience getter for getting accounts's services resource
@@ -913,12 +1192,20 @@ declare module 'cs-netbanking-sdk/accounts/accounts' {
 	    */
 	    directDebits: AccountDirectDebitsResource;
 	}
+	/**
+	 * @interface OverdraftAmount
+	 * @extends {Amount}
+	 */
 	export interface OverdraftAmount extends Amount {
 	    /**
 	    * Due date of overdraft. Only for overdrafts where automatic prolongation is not set.
 	    */
 	    dueDate?: Date;
 	}
+	/**
+	 * @interface SubAccount
+	 * @extends {Account}
+	 */
 	export interface SubAccount extends Account {
 	    /**
 	    * In case of interest rate bands this is the interest rate which applies to value over limit.
@@ -929,6 +1216,9 @@ declare module 'cs-netbanking-sdk/accounts/accounts' {
 	    */
 	    "cz-interestRateLimit"?: Amount;
 	}
+	/**
+	 * @interface Account
+	 */
 	export interface Account {
 	    /**
 	    * Unique product id
@@ -965,6 +1255,9 @@ declare module 'cs-netbanking-sdk/accounts/accounts' {
 	    */
 	    creditInterestRate: number;
 	}
+	/**
+	 * @interface Loan
+	 */
 	export interface Loan {
 	    /**
 	    * For mortgages this is the date of interest rate validity.
@@ -1015,6 +1308,9 @@ declare module 'cs-netbanking-sdk/accounts/accounts' {
 	    */
 	    nextRateDate?: Date;
 	}
+	/**
+	 * @interface Saving
+	 */
 	export interface Saving {
 	    /**
 	    * In case of interest rate bands this is the interest rate which applies to value over limit.
@@ -1053,6 +1349,9 @@ declare module 'cs-netbanking-sdk/accounts/accounts' {
 	    */
 	    "cz-extraSavingMaximumMonthly"?: Amount;
 	}
+	/**
+	 * @interface TransferReceivers
+	 */
 	export interface TransferReceivers {
 	    /**
 	    * Identifier of the account which is allowed as a transfer receiver. If id is specified then you can find it among other accounts in GET /netbanking/my/accounts response.
@@ -1063,14 +1362,26 @@ declare module 'cs-netbanking-sdk/accounts/accounts' {
 	    */
 	    accountno: AccountNumber;
 	}
+	/**
+	 * @interface ChangeAccountSettingsRequest
+	 */
 	export interface ChangeAccountSettingsRequest {
 	    /**
 	    * User defined account name. Max. 50 characters
 	    */
 	    alias?: string;
 	}
+	/**
+	 * @interface ChangeAccountSettingsResponse
+	 * @extends {MainAccount}
+	 * @extends {Signable}
+	 */
 	export interface ChangeAccountSettingsResponse extends MainAccount, Signable {
 	}
+	/**
+	 * @interface AccountParameters
+	 * @extends {NetbankingParameters}
+	 */
 	export interface AccountParameters extends NetbankingParameters {
 	    /**
 	    * Example: CURRENT.
@@ -1083,15 +1394,26 @@ declare module 'cs-netbanking-sdk/profile/lastLogins' {
 	import * as CSCoreSDK from 'cs-core-sdk';
 	/**
 	 * List all past logins
+	 * @class LastLoginsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.ListEnabled<LastLoginInfo>}
 	 */
 	export class LastLoginsResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<LastLoginInfo> {
 	    /**
 	     * Returns promise with a list of past logins
+	     * @returns {Promise<LastLoginList>}
 	     */
 	    list: () => Promise<LastLoginList>;
 	}
+	/**
+	 * @interface LastLoginList
+	 * @extends {CSCoreSDK.ListResponse<LastLoginInfo>}
+	 */
 	export interface LastLoginList extends CSCoreSDK.ListResponse<LastLoginInfo> {
 	}
+	/**
+	 * @interface LastLoginInfo
+	 */
 	export interface LastLoginInfo {
 	    /**
 	    * Channel of the last login.
@@ -1108,18 +1430,26 @@ declare module 'cs-netbanking-sdk/profile/profile' {
 	import * as CSCoreSDK from 'cs-core-sdk';
 	import { LastLoginsResource } from 'cs-netbanking-sdk/profile/lastLogins';
 	/**
-	* Get information about the profile and past logins.
-	*/
+	 * Get information about the profile and past logins.
+	 * @class ProfileResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.GetEnabled<Profile>}
+	 */
 	export class ProfileResource extends CSCoreSDK.Resource implements CSCoreSDK.GetEnabled<Profile> {
 	    /**
 	     * Returns information about the profile
+	     * @returns {Promise<Profile>}
 	     */
 	    get: () => Promise<Profile>;
 	    /**
 	     * Returns LastLoginsResource for listing past logins
+	     * @returns {LastLoginsResource}
 	     */
 	    readonly lastLogins: LastLoginsResource;
 	}
+	/**
+	 * @interface Profile
+	 */
 	export interface Profile {
 	    /**
 	    * user's first name
@@ -1161,17 +1491,27 @@ declare module 'cs-netbanking-sdk/cards/delivery' {
 	import { Signable, Address } from 'cs-netbanking-sdk/common';
 	/**
 	 * Get current delivery settings
+	 * @class CardDeliveryResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.GetEnabled<DeliveryListing>}
+	 * @implements {CSCoreSDK.UpdateEnabled<ChangeDeliverySettingsRequest, ChangeDeliverySettingsResponse>}
 	 */
-	export class CardDeliveryResource extends CSCoreSDK.Resource implements CSCoreSDK.GetEnabled<DeliveryListing> {
+	export class CardDeliveryResource extends CSCoreSDK.Resource implements CSCoreSDK.GetEnabled<DeliveryListing>, CSCoreSDK.UpdateEnabled<ChangeDeliverySettingsRequest, ChangeDeliverySettingsResponse> {
 	    /**
 	     * Returns current delivery settings
+	     * @returns {Promise<DeliveryListing>}
 	     */
 	    get: () => Promise<DeliveryListing>;
 	    /**
 	     * Change current delivery settings
+	     * @param {ChangeDeliverySettingsRequest} payload
+	     * @returns {Promise<ChangeDeliverySettingsResponse>}
 	     */
 	    update: (payload: ChangeDeliverySettingsRequest) => Promise<ChangeDeliverySettingsResponse>;
 	}
+	/**
+	 * @interface DeliveryListing
+	 */
 	export interface DeliveryListing {
 	    /**
 	    * Type of the delivery which should be set for this card. Possible values are BRANCH, OTHER_BRANCH, HOME, ADDRESS_ABROAD.
@@ -1190,6 +1530,9 @@ declare module 'cs-netbanking-sdk/cards/delivery' {
 	    */
 	    confirmations?: [Confirmation];
 	}
+	/**
+	 * @interface Confirmation
+	 */
 	export interface Confirmation {
 	    /**
 	    * Email
@@ -1200,8 +1543,16 @@ declare module 'cs-netbanking-sdk/cards/delivery' {
 	    */
 	    language: string;
 	}
+	/**
+	 * @interface ChangeDeliverySettingsResponse
+	 * @extends {DeliveryListing}
+	 * @extends {Signable}
+	 */
 	export interface ChangeDeliverySettingsResponse extends DeliveryListing, Signable {
 	}
+	/**
+	 * @interface ChangeDeliverySettingsRequest
+	 */
 	export interface ChangeDeliverySettingsRequest {
 	    /**
 	    * Indicates how a client receives their card and pin. Possible values: BRANCH, HOME, OTHER_BRANCH, ADDRESS_ABROAD.
@@ -1230,27 +1581,43 @@ declare module 'cs-netbanking-sdk/cards/transactions' {
 	import * as CSCoreSDK from 'cs-core-sdk';
 	import { AddNoteAndMarkTransactionRequest, ExportTransactionsParameters, Transaction, Signable } from 'cs-netbanking-sdk/common';
 	/**
-	* Allows to add or change a client's personal note and mark/star the card transaction as favorite/important for one specific transaction
-	*/
-	export class CardTransactionsResource extends CSCoreSDK.Resource implements CSCoreSDK.HasInstanceResource<CardTransactionResource> {
+	 * Allows to add or change a client's personal note and mark/star the card transaction as favorite/important for one specific transaction
+	 * @class CardTransactionsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.HasInstanceResource<CardTransactionResource>}
+	 */
+	export class CardTransactionsResource extends CSCoreSDK.Resource implements CSCoreSDK.HasInstanceResource<CardTransactionResource>, CSCoreSDK.ParametrizedExportEnabled<ExportTransactionsParameters, Uint8Array> {
 	    /**
 	     * Returns CardTransactionResource for a given id
+	     * @param {string} id
+	     * @returns {CardTransactionResource}
 	     */
 	    withId: (id: string) => CardTransactionResource;
 	    /**
 	     * Export transactions to PDF
+	     * @param {ExportTransactionsParameters} params
+	     * @returns {Promise<Uint8Array>}
 	     */
-	    export: (params: ExportTransactionsParameters) => Promise<any>;
+	    export: (params: ExportTransactionsParameters) => Promise<Uint8Array>;
 	}
 	/**
 	 * Add or change a client's personal note and mark/star the card transaction as favorite/important
+	 * @class CardTransactionResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 * @implements {CSCoreSDK.UpdateEnabled<AddNoteAndMarkTransactionRequest, AddNoteAndMarkCardTransactionResponse>}
 	 */
 	export class CardTransactionResource extends CSCoreSDK.InstanceResource implements CSCoreSDK.UpdateEnabled<AddNoteAndMarkTransactionRequest, AddNoteAndMarkCardTransactionResponse> {
 	    /**
-	    * Adds, changes of marks transaction
-	    */
+	     * Adds, changes of marks transaction
+	     * @param {AddNoteAndMarkTransactionRequest} payload
+	     * @returns {Promise<AddNoteAndMarkCardTransactionResponse>}
+	     */
 	    update: (payload: AddNoteAndMarkTransactionRequest) => Promise<AddNoteAndMarkCardTransactionResponse>;
 	}
+	/**
+	 * @interface AddNoteAndMarkCardTransactionResponse
+	 * @extends {Signable}
+	 */
 	export interface AddNoteAndMarkCardTransactionResponse extends Signable {
 	    cardTransaction: Transaction;
 	}
@@ -1261,15 +1628,27 @@ declare module 'cs-netbanking-sdk/cards/actions' {
 	import { Confirmation } from 'cs-netbanking-sdk/cards/delivery';
 	/**
 	 * Issue various actions on a single card.
+	 * @class CardActionsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.UpdateEnabled<CardActionRequest, CardActionResponse>}
 	 */
 	export class CardActionsResource extends CSCoreSDK.Resource implements CSCoreSDK.UpdateEnabled<CardActionRequest, CardActionResponse> {
 	    /**
 	     * Issues various actions on a single card
+	     * @param {CardActionRequest} payload
+	     * @returns {Promise<CardActionResponse>}
 	     */
 	    update: (payload: CardActionRequest) => Promise<CardActionResponse>;
 	}
+	/**
+	 * @interface CardActionResponse
+	 * @extends {CSCoreSDK.Signable}
+	 */
 	export interface CardActionResponse extends CSCoreSDK.Signable {
 	}
+	/**
+	 * @interface CardActionRequest
+	 */
 	export interface CardActionRequest {
 	    /**
 	     * Action which should be issued. Possible values are "REISSUE_PIN", "LOCK_CARD", "UNLOCK_CARD", "REPLACE_CARD", "ACTIVATE_CARD", "SET_AUTOMATIC_REPLACEMENT_ON", "SET_AUTOMATIC_REPLACEMENT_OFF".
@@ -1291,20 +1670,34 @@ declare module 'cs-netbanking-sdk/cards/limits' {
 	import { Amount } from 'cs-netbanking-sdk/common';
 	import { Confirmation } from 'cs-netbanking-sdk/cards/delivery';
 	/**
-	* Get information about different limits
-	*/
+	 * Get information about different limits
+	 * @class CardLimitsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.ListEnabled<CardLimit>}
+	 * @implements {CSCoreSDK.UpdateEnabled<ChangeCardLimitsRequest, ChangeCardLimitsResponse>}
+	 */
 	export class CardLimitsResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<CardLimit>, CSCoreSDK.UpdateEnabled<ChangeCardLimitsRequest, ChangeCardLimitsResponse> {
 	    /**
 	     * List all limits
+	     * @returns {Promise<CardLimitsList>}
 	     */
 	    list: () => Promise<CardLimitsList>;
 	    /**
 	     * Update individual limits
+	     * @param {ChangeCardLimitsRequest} payload
+	     * @returns {Promise<ChangeCardLimitsResponse>}
 	     */
 	    update: (payload: ChangeCardLimitsRequest) => Promise<ChangeCardLimitsResponse>;
 	}
+	/**
+	 * @interface CardLimitsList
+	 * @extends {CSCoreSDK.ListResponse<CardLimit>}
+	 */
 	export interface CardLimitsList extends CSCoreSDK.ListResponse<CardLimit> {
 	}
+	/**
+	 * @interface CardLimit
+	 */
 	export interface CardLimit {
 	    /**
 	    * Limit type defines ATM, POS, internet/eCommerce, total limits. Possible Values: ATM, POS, INTERNET
@@ -1331,6 +1724,10 @@ declare module 'cs-netbanking-sdk/cards/limits' {
 	    */
 	    bankLimit?: Amount;
 	}
+	/**
+	 * @interface ChangeCardLimitsResponse
+	 * @extends {CSCoreSDK.Signable}
+	 */
 	export interface ChangeCardLimitsResponse extends CSCoreSDK.Signable {
 	    /**
 	    * Card's limits
@@ -1341,6 +1738,9 @@ declare module 'cs-netbanking-sdk/cards/limits' {
 	    */
 	    confirmations?: [Confirmation];
 	}
+	/**
+	 * @interface ChangeCardLimitsRequest
+	 */
 	export interface ChangeCardLimitsRequest {
 	    /**
 	    * Card's limits
@@ -1357,13 +1757,20 @@ declare module 'cs-netbanking-sdk/cards/secure3D' {
 	import * as CSCoreSDK from 'cs-core-sdk';
 	/**
 	 * Get the 3D secure online shopping status
+	 * @class CardSecure3DResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.GetEnabled<SecureSettings>}
 	 */
 	export class CardSecure3DResource extends CSCoreSDK.Resource implements CSCoreSDK.GetEnabled<SecureSettings> {
 	    /**
 	     * Returns 3D secure online shopping status
+	     * @returns {Promise<SecureSettings>}
 	     */
 	    get: () => Promise<SecureSettings>;
 	}
+	/**
+	 * @interface SecureSettings
+	 */
 	export interface SecureSettings {
 	    /**
 	    * 3D secure functionality status. Possible Values: OK, NOT_ACTIVATED
@@ -1389,13 +1796,21 @@ declare module 'cs-netbanking-sdk/cards/transfer' {
 	import { AccountNumber, Amount } from 'cs-netbanking-sdk/common';
 	/**
 	 * Resource for paying up credit card debt
+	 * @class CardTransferResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.UpdateEnabled<PayUpCreditCardRequest, PayUpCreditCardResponse>}
 	 */
 	export class CardTransferResource extends CSCoreSDK.Resource implements CSCoreSDK.UpdateEnabled<PayUpCreditCardRequest, PayUpCreditCardResponse> {
 	    /**
 	     * Pays up the credit card debt and returns sign info
+	     * @param {PayUpCreditCardRequest} payload
+	     * @returns {Promise<PayUpCreditCardResponse>}
 	     */
 	    update: (payload: PayUpCreditCardRequest) => Promise<PayUpCreditCardResponse>;
 	}
+	/**
+	 * @interface PayUpCreditCardRequest
+	 */
 	export interface PayUpCreditCardRequest {
 	    /**
 	    * Type of the transfer. Currently only DEBT_REPAYMENT is supported.
@@ -1410,6 +1825,9 @@ declare module 'cs-netbanking-sdk/cards/transfer' {
 	    */
 	    amount: Amount;
 	}
+	/**
+	 * @interface Sender
+	 */
 	export interface Sender {
 	    /**
 	    * Identification of the source account for the transfer.
@@ -1420,6 +1838,10 @@ declare module 'cs-netbanking-sdk/cards/transfer' {
 	    */
 	    accountno: AccountNumber;
 	}
+	/**
+	 * @interface PayUpCreditCardResponse
+	 * @extends {CSCoreSDK.Signable}
+	 */
 	export interface PayUpCreditCardResponse extends CSCoreSDK.Signable {
 	}
 
@@ -1429,34 +1851,49 @@ declare module 'cs-netbanking-sdk/cards/statements' {
 	import { StatementList, Statement, NetbankingParameters, DownloadStatementParameters } from 'cs-netbanking-sdk/common';
 	/**
 	 * Account resource for listing statements
+	 * @class CardAccountsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.HasInstanceResource<CardAccountResource>}
 	 */
 	export class CardAccountsResource extends CSCoreSDK.Resource implements CSCoreSDK.HasInstanceResource<CardAccountResource> {
 	    /**
 	     * Returns CardAccountResource for an account with a given id
+	     * @param {string} id
+	     * @returns {CardAccountResource}
 	     */
 	    withId: (id: string) => CardAccountResource;
 	}
 	/**
 	 * Indidiual account resource with a given id
+	 * @class CardAccountResource
+	 * @extends {CSCoreSDK.InstanceResource}
 	 */
 	export class CardAccountResource extends CSCoreSDK.InstanceResource {
 	    /**
 	     * Get statements of the account
+	     * @returns {CardStatementsResource}
 	     */
 	    readonly statements: CardStatementsResource;
 	}
 	/**
 	 * Get statements for an account
+	 * @class CardStatementsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.PaginatedListEnabled<Statement>}
 	 */
-	export class CardStatementsResource extends CSCoreSDK.Resource implements CSCoreSDK.PaginatedListEnabled<Statement> {
+	export class CardStatementsResource extends CSCoreSDK.Resource implements CSCoreSDK.PaginatedListEnabled<Statement>, CSCoreSDK.ParametrizedDownloadEnabled<DownloadStatementParameters, Uint8Array> {
 	    /**
 	     * List all statements
+	     * @param {NetbankingParameters=} params
+	     * @returns {Promise<StatementList>}
 	     */
 	    list: (params?: NetbankingParameters) => Promise<StatementList>;
 	    /**
 	     * Download PDF with statements
+	     * @param {DownloadStatementParameters} params
+	     * @returns {Promise<Uint8Array>}
 	     */
-	    download: (params: DownloadStatementParameters) => Promise<{}>;
+	    download: (params: DownloadStatementParameters) => Promise<Uint8Array>;
 	}
 
 }
@@ -1471,59 +1908,90 @@ declare module 'cs-netbanking-sdk/cards/cards' {
 	import { CardTransferResource } from 'cs-netbanking-sdk/cards/transfer';
 	import { CardAccountsResource } from 'cs-netbanking-sdk/cards/statements';
 	/**
-	* Represents list of payment cards (either debet or credit) for current user. Every card was issued for current user or belongs to one of his accounts.
-	*/
+	 * Represents list of payment cards (either debet or credit) for current user. Every card was issued for current user or belongs to one of his accounts.
+	 * @class CardsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.PaginatedListEnabled<Card>}
+	 * @implements {CSCoreSDK.HasInstanceResource<CardResource>}
+	 */
 	export class CardsResource extends CSCoreSDK.Resource implements CSCoreSDK.PaginatedListEnabled<Card>, CSCoreSDK.HasInstanceResource<CardResource> {
 	    /**
-	    * List all cards
-	    */
+	     * List all cards
+	     * @param {Promise<CardList>=} params
+	     * @returns {Promise<CardList>}
+	     */
 	    list: (params?: NetbankingParameters) => Promise<CardList>;
 	    /**
-	    * Get a resource for card with a given id
-	    */
+	     * Get a resource for card with a given id
+	     * @param {string} id
+	     * @returns {CardResource}
+	     */
 	    withId: (id: string) => CardResource;
 	}
+	/**
+	 * @class CardResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 * @implements {CSCoreSDK.GetEnabled<Card>}
+	 * @implements {CSCoreSDK.UpdateEnabled<ChangeCardSettingsRequest, ChangeCardSettingsResponse>}
+	 */
 	export class CardResource extends CSCoreSDK.InstanceResource implements CSCoreSDK.GetEnabled<Card>, CSCoreSDK.UpdateEnabled<ChangeCardSettingsRequest, ChangeCardSettingsResponse> {
 	    /**
-	    * Get detail of the card
-	    */
+	     * Get detail of the card
+	     * @returns {Promise<Card>}
+	     */
 	    get: () => Promise<Card>;
 	    /**
-	    * Update card's alias
-	    */
+	     * Update card's alias
+	     * @param {ChangeCardSettingsRequest} payload
+	     * @returns {Promise<ChangeCardSettingsResponse>}
+	     */
 	    update: (payload: ChangeCardSettingsRequest) => Promise<ChangeCardSettingsResponse>;
 	    /**
-	    * Get current delivery settings
-	    */
+	     * Get current delivery settings
+	     * @returns {CardDeliveryResource}
+	     */
 	    readonly delivery: CardDeliveryResource;
 	    /**
-	    * Allows to add or change a client's personal note and mark/star the card transaction as favorite/important for one specific transaction
-	    */
+	     * Allows to add or change a client's personal note and mark/star the card transaction as favorite/important for one specific transaction
+	     * @returns {CardTransactionsResource}
+	     */
 	    readonly transactions: CardTransactionsResource;
 	    /**
-	    * Issue various actions on a single card. Currently supported actions are:
-	    * reissue pin, lock card, unlock card, activate card, set automatic card replacement on, set automatic card replacement off, replacement card request
-	    */
+	     * Issue various actions on a single card. Currently supported actions are:
+	     * reissue pin, lock card, unlock card, activate card, set automatic card replacement on, set automatic card replacement off, replacement card request
+	     * @returns {CardActionsResource}
+	     */
 	    readonly actions: CardActionsResource;
 	    /**
-	    * Get information about different limits
-	    */
+	     * Get information about different limits
+	     * @returns {CardLimitsResource}
+	     */
 	    readonly limits: CardLimitsResource;
 	    /**
-	    * Get the 3D secure online shopping status
-	    */
+	     * Get the 3D secure online shopping status
+	     * @returns {CardSecure3DResource}
+	     */
 	    readonly secure3d: CardSecure3DResource;
 	    /**
-	    * Resource for paying up credit card debt
-	    */
+	     * Resource for paying up credit card debt
+	     * @returns {CardTransferResource}
+	     */
 	    readonly transfer: CardTransferResource;
 	    /**
-	    * Account resource for listing statements
-	    */
+	     * Account resource for listing statements
+	     * @returns {CardAccountsResource}
+	     */
 	    readonly accounts: CardAccountsResource;
 	}
+	/**
+	 * @interface CardList
+	 * @extends {CSCoreSDK.PaginatedListResponse<Card>}
+	 */
 	export interface CardList extends CSCoreSDK.PaginatedListResponse<Card> {
 	}
+	/**
+	 * @interface Card
+	 */
 	export interface Card {
 	    /**
 	    * unique product id
@@ -1623,11 +2091,14 @@ declare module 'cs-netbanking-sdk/cards/cards' {
 	    flags?: [string];
 	    /**
 	     * Convenience method for getting detail of the card right from the list
+	     * @returns {Promise<Card>}
 	     */
 	    get: () => Promise<Card>;
 	    /**
-	    * Convenience method for updating card's settings
-	    */
+	     * Convenience method for updating card's settings
+	     * @param {ChangeCardSettingsRequest} payload
+	     * @returns {Promise<ChangeCardSettingsResponse>}
+	     */
 	    update: (payload: ChangeCardSettingsRequest) => Promise<ChangeCardSettingsResponse>;
 	    /**
 	    * Convenience getter for getting card's delivery resource
@@ -1658,6 +2129,9 @@ declare module 'cs-netbanking-sdk/cards/cards' {
 	    */
 	    accounts: CardAccountsResource;
 	}
+	/**
+	 * @interface CardAccountLimits
+	 */
 	export interface CardAccountLimits {
 	    /**
 	    * Daily ATM limit on credit line. Daily ATM limit for all credit cards issued to mainAccount.
@@ -1668,6 +2142,9 @@ declare module 'cs-netbanking-sdk/cards/cards' {
 	    */
 	    limitPOS?: Amount;
 	}
+	/**
+	 * @interface CardMainAccount
+	 */
 	export interface CardMainAccount {
 	    /**
 	    * Internal ID as reference for account provided by BE
@@ -1682,12 +2159,20 @@ declare module 'cs-netbanking-sdk/cards/cards' {
 	    */
 	    accountno: AccountNumber;
 	}
+	/**
+	 * @interface ChangeCardSettingsResponse
+	 * @extends {Card}
+	 * @extends {Signable}
+	 */
 	export interface ChangeCardSettingsResponse extends Card, Signable {
 	    /**
 	    * ID of the branch
 	    */
 	    branchId?: string;
 	}
+	/**
+	 * @interface ChangeCardSettingsRequest
+	 */
 	export interface ChangeCardSettingsRequest {
 	    /**
 	    * Alias of the card
@@ -1700,14 +2185,22 @@ declare module 'cs-netbanking-sdk/orders/bookingDate' {
 	import * as CSCoreSDK from 'cs-core-sdk';
 	import { AccountNumber } from 'cs-netbanking-sdk/common';
 	/**
-	* Get currently available booking date
-	*/
+	 * Get currently available booking date
+	 * @class PaymentBookingDateResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.UpdateEnabled<PaymentBookingDateRequest, PaymentBookingDateResponse>}
+	 */
 	export class PaymentBookingDateResource extends CSCoreSDK.Resource implements CSCoreSDK.UpdateEnabled<PaymentBookingDateRequest, PaymentBookingDateResponse> {
 	    /**
-	    * Returns current available booking date based on the provided account and optional payment order category parameters
-	    */
+	     * Returns current available booking date based on the provided account and optional payment order category parameters
+	     * @param {PaymentBookingDateRequest} payload
+	     * @returns {Promise<PaymentBookingDateResponse>}
+	     */
 	    update: (payload: PaymentBookingDateRequest) => Promise<PaymentBookingDateResponse>;
 	}
+	/**
+	 * @interface PaymentBookingDateRequest
+	 */
 	export interface PaymentBookingDateRequest {
 	    /**
 	    * Account's ID
@@ -1722,6 +2215,9 @@ declare module 'cs-netbanking-sdk/orders/bookingDate' {
 	    */
 	    priority?: string;
 	}
+	/**
+	 * @interface PaymentBookingDateResponse
+	 */
 	export interface PaymentBookingDateResponse {
 	    /**
 	    * booking date value for provided account ID and payment order.
@@ -1735,33 +2231,53 @@ declare module 'cs-netbanking-sdk/orders/domestic' {
 	import { Amount, Symbols } from 'cs-netbanking-sdk/common';
 	import { Info, Payment } from 'cs-netbanking-sdk/orders/orders';
 	/**
-	* Create domestic payment order
-	*/
+	 * Create domestic payment order
+	 * @class PaymentsDomesticResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.CreateEnabled<DomesticPaymentCreateRequest, DomesticPaymentResponse>}
+	 */
 	export class PaymentsDomesticResource extends CSCoreSDK.Resource implements CSCoreSDK.CreateEnabled<DomesticPaymentCreateRequest, DomesticPaymentResponse> {
 	    /**
-	    * Creates domestic payment order and returns it in promise
-	    */
+	     * Creates domestic payment order and returns it in promise
+	     * @param {DomesticPaymentCreateRequest} payload
+	     * @returns {Promise<DomesticPaymentResponse>}
+	     */
 	    create: (payload: DomesticPaymentCreateRequest) => Promise<DomesticPaymentResponse>;
 	    /**
-	    * Returns PaymentDomesticResource resource for updating domestic payment
-	    */
+	     * Returns PaymentDomesticResource resource for updating domestic payment
+	     * @param {string} id
+	     * @returns {PaymentDomesticResource}
+	     */
 	    withId: (id: string) => PaymentDomesticResource;
 	}
 	/**
-	* Update domestic payment
-	*/
+	 * Update domestic payment
+	 * @class PaymentDomesticResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 * @implements {CSCoreSDK.UpdateEnabled<DomesticPaymentUpdateRequest, DomesticPaymentResponse>}
+	 */
 	export class PaymentDomesticResource extends CSCoreSDK.InstanceResource implements CSCoreSDK.UpdateEnabled<DomesticPaymentUpdateRequest, DomesticPaymentResponse> {
 	    /**
-	    * Updates domestic payment and returns it in promise
-	    */
+	     * Updates domestic payment and returns it in promise
+	     * @param {DomesticPaymentUpdateRequest} payload
+	     * @returns {Promise<DomesticPaymentResponse>}
+	     */
 	    update: (payload: DomesticPaymentUpdateRequest) => Promise<DomesticPaymentResponse>;
 	}
+	/**
+	 * @interface FullDomesticPaymentUpdateRequest
+	 * @extends {DomesticPaymentUpdateRequest}
+	 */
 	export interface FullDomesticPaymentUpdateRequest extends DomesticPaymentUpdateRequest {
 	    /**
 	    * Internal identifier of payment order. Note that after signing of the order the id could change.
 	    */
 	    id: string;
 	}
+	/**
+	 * @interface DomesticPaymentUpdateRequest
+	 * @extends {DomesticPaymentCreateRequest}
+	 */
 	export interface DomesticPaymentUpdateRequest extends DomesticPaymentCreateRequest {
 	    /**
 	    * Status of the payment order (details above), State of payment order presented to user on FE). Possible values: OPEN, SPOOLED, CANCELLED, CLOSED and DELETED
@@ -1776,8 +2292,16 @@ declare module 'cs-netbanking-sdk/orders/domestic' {
 	    */
 	    stateOk?: boolean;
 	}
+	/**
+	 * @interface DomesticPaymentResponse
+	 * @extends {Payment}
+	 * @extends {CSCoreSDK.Signable}
+	 */
 	export interface DomesticPaymentResponse extends Payment, CSCoreSDK.Signable {
 	}
+	/**
+	 * @interface DomesticPaymentCreateRequest
+	 */
 	export interface DomesticPaymentCreateRequest {
 	    /**
 	    * Name of the sender
@@ -1820,6 +2344,9 @@ declare module 'cs-netbanking-sdk/orders/domestic' {
 	    */
 	    flags?: [string];
 	}
+	/**
+	 * @interface DomesticPaymentAccount
+	 */
 	export interface DomesticPaymentAccount {
 	    /**
 	    * Account number with possible prefix. Format is "XXXXXX-NNNNNNNNNN" if prefix is not null or "000000". If prefix is not provided then format is "NNNNNNNNNN" without leading zeros.
@@ -1848,16 +2375,27 @@ declare module 'cs-netbanking-sdk/orders/limits' {
 	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Amount } from 'cs-netbanking-sdk/common';
 	/**
-	* Get remaining amounts for payment orders
-	*/
+	 * Get remaining amounts for payment orders
+	 * @class PaymentLimitsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.ListEnabled<PaymentLimit>}
+	 */
 	export class PaymentLimitsResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<PaymentLimit> {
 	    /**
-	    * List all limits for payment orders
-	    */
+	     * List all limits for payment orders
+	     * @returns {Promise<PaymentLimitsList>}
+	     */
 	    list: () => Promise<PaymentLimitsList>;
 	}
+	/**
+	 * @interface PaymentLimitsList
+	 * @extends {CSCoreSDK.ListResponse<PaymentLimit>}
+	 */
 	export interface PaymentLimitsList extends CSCoreSDK.ListResponse<PaymentLimit> {
 	}
+	/**
+	 * @interface PaymentLimit
+	 */
 	export interface PaymentLimit {
 	    /**
 	    * Authorization method type for which is limit defined. ENUM: tac, tan, sms, gridCard, eok, displayCard, mToken. Other local authorization type has to be defined.
@@ -1882,15 +2420,27 @@ declare module 'cs-netbanking-sdk/orders/mobile' {
 	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Amount } from 'cs-netbanking-sdk/common';
 	/**
-	* Recharging the credit available on prepaid cards provided by Vodafone, T-Mobile or O2.
-	*/
+	 * Recharging the credit available on prepaid cards provided by Vodafone, T-Mobile or O2.
+	 * @class PaymentMobileResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.CreateEnabled<MobilePaymentsRequest, MobilePaymentsResponse>}
+	 */
 	export class PaymentMobileResource extends CSCoreSDK.Resource implements CSCoreSDK.CreateEnabled<MobilePaymentsRequest, MobilePaymentsResponse> {
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
 	    /**
-	    * Recharge the credit on prepaid card
-	    */
+	     * Recharge the credit on prepaid card
+	     * @param {MobilePaymentsRequest} payload
+	     * @returns {Promise<MobilePaymentsResponse>}
+	     */
 	    create: (payload: MobilePaymentsRequest) => Promise<MobilePaymentsResponse>;
 	}
+	/**
+	 * @interface MobilePaymentsRequest
+	 */
 	export interface MobilePaymentsRequest {
 	    /**
 	    * Type of mobile payment depending on provider of mobile services. Possible values: TOP_UP (for all operators) and INVOICE, VODAFONE_PAYMENT, MOBILE_DEPOSIT (for Vodafone).
@@ -1917,8 +2467,16 @@ declare module 'cs-netbanking-sdk/orders/mobile' {
 	    */
 	    confirmationPhoneNumber: string;
 	}
+	/**
+	 * @interface MobilePaymentsResponse
+	 * @extends {MobilePaymentsRequest}
+	 * @extends {CSCoreSDK.Signable}
+	 */
 	export interface MobilePaymentsResponse extends MobilePaymentsRequest, CSCoreSDK.Signable {
 	}
+	/**
+	 * @interface MobilePaymentSender
+	 */
 	export interface MobilePaymentSender {
 	    /**
 	    * Account number with possible prefix. Format is "XXXXXX-NNNNNNNNNN" if prefix is not null or "000000". If prefix is not provided then format is "NNNNNNNNNN" without leading zeros.
@@ -1952,58 +2510,87 @@ declare module 'cs-netbanking-sdk/orders/orders' {
 	import { PaymentMobileResource } from 'cs-netbanking-sdk/orders/mobile';
 	import { Symbols } from 'cs-netbanking-sdk/common';
 	/**
-	* Get information about payments orders
-	*/
+	 * Get information about payments orders
+	 * @class OrdersResource
+	 * @extends {CSCoreSDK.Resource}
+	 */
 	export class OrdersResource extends CSCoreSDK.Resource {
 	    /**
-	    * Returns PaymentsResource for listing, deleting and accessing other information about payments
-	    */
+	     * Returns PaymentsResource for listing, deleting and accessing other information about payments
+	     * @returns {PaymentsResource}
+	     */
 	    readonly payments: PaymentsResource;
 	}
 	/**
-	* List payments, get individual payment and other resources
-	*/
+	 * List payments, get individual payment and other resources
+	 * @class PaymentsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.HasInstanceResource<PaymentResource>}
+	 * @implements {CSCoreSDK.PaginatedListEnabled<Payment>}
+	 */
 	export class PaymentsResource extends CSCoreSDK.Resource implements CSCoreSDK.HasInstanceResource<PaymentResource>, CSCoreSDK.PaginatedListEnabled<Payment> {
 	    /**
-	    * List all payments
-	    */
+	     * List all payments
+	     * @param {NetbankingParameters=} params
+	     * @returns {Promise<PaymentList>}
+	     */
 	    list: (params?: NetbankingParameters) => Promise<PaymentList>;
 	    /**
-	    * Get individual payment with a given id
-	    */
+	     * Get individual payment with a given id
+	     * @param {string|number} id
+	     * @returns {PaymentResource}
+	     */
 	    withId: (id: string | number) => PaymentResource;
 	    /**
-	    * Get currently available booking date
-	    */
+	     * Get currently available booking date
+	     * @returns {PaymentBookingDateResource}
+	     */
 	    readonly bookingDate: PaymentBookingDateResource;
 	    /**
-	    * Create domestic payment order
-	    */
+	     * Create domestic payment order
+	     * @returns {PaymentsDomesticResource}
+	     */
 	    readonly domestic: PaymentsDomesticResource;
 	    /**
-	    * Get remaining amounts for payment orders
-	    */
+	     * Get remaining amounts for payment orders
+	     * @returns {PaymentLimitsResource}
+	     */
 	    readonly limits: PaymentLimitsResource;
 	    /**
-	    * Recharging the credit available on prepaid cards provided by Vodafone, T-Mobile or O2.
-	    */
+	     * Recharging the credit available on prepaid cards provided by Vodafone, T-Mobile or O2.
+	     * @returns {PaymentMobileResource}
+	     */
 	    readonly mobile: PaymentMobileResource;
 	}
 	/**
-	* Individual Payment order resource
-	*/
+	 * Individual Payment order resource
+	 * @class PaymentResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 * @implements {CSCoreSDK.GetEnabled<Payment>}
+	 * @implements {CSCoreSDK.DeleteEnabled<NetbankingEmptyResponse>}
+	 */
 	export class PaymentResource extends CSCoreSDK.InstanceResource implements CSCoreSDK.GetEnabled<Payment>, CSCoreSDK.DeleteEnabled<NetbankingEmptyResponse> {
 	    /**
-	    * Get detail of the payment
-	    */
+	     * Get detail of the payment
+	     * @returns {Promise<Payment>}
+	     */
 	    get: () => Promise<Payment>;
 	    /**
-	    * Remove payment
-	    */
+	     * Delete payment
+	     * @returns {Promise<NetbankingEmptyResponse>}
+	     */
 	    delete: () => Promise<NetbankingEmptyResponse>;
 	}
+	/**
+	 * @interface PaymentList
+	 * @extends {CSCoreSDK.PaginatedListResponse<Payment>}
+	 */
 	export interface PaymentList extends CSCoreSDK.PaginatedListResponse<Payment> {
 	}
+	/**
+	 * @interface Payment
+	 * @extends {CSCoreSDK.Signable}
+	 */
 	export interface Payment extends CSCoreSDK.Signable {
 	    /**
 	    * Internal identifier of payment order. Note that after signing of the order the id could change.
@@ -2106,20 +2693,29 @@ declare module 'cs-netbanking-sdk/orders/orders' {
 	    */
 	    flags?: [string];
 	    /**
-	    * Convenience method for retrieving payment's detail
-	    */
+	     * Convenience method for retrieving payment's detail
+	     * @returns {Promise<Payment>}
+	     */
 	    get: () => Promise<Payment>;
 	    /**
-	    * Convenience method for removing payment
-	    */
+	     * Convenience method for removing payment
+	     * @returns {Promise<NetbankingEmptyResponse>}
+	     */
 	    delete: () => Promise<NetbankingEmptyResponse>;
 	}
+	/**
+	 * @interface Info
+	 */
 	export interface Info {
 	    /**
 	    * Message for payee set during payment order creation. It is used to identify transaction on receiver side. Array of texts 4x35.
 	    */
 	    text4x35?: [string];
 	}
+	/**
+	 * @interface RemovePaymentOrderResponse
+	 * @extends {Signable}
+	 */
 	export interface RemovePaymentOrderResponse extends Signable {
 	}
 
@@ -2127,23 +2723,46 @@ declare module 'cs-netbanking-sdk/orders/orders' {
 declare module 'cs-netbanking-sdk/securities/transactions' {
 	import * as CSCoreSDK from 'cs-core-sdk';
 	import { ExportTransactionsParameters } from 'cs-netbanking-sdk/common';
-	export class SecurityTransactionsResource extends CSCoreSDK.Resource implements CSCoreSDK.HasInstanceResource<SecurityTransactionResource> {
+	/**
+	 * @class SecurityTransactionsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.HasInstanceResource<SecurityTransactionResource>}
+	 */
+	export class SecurityTransactionsResource extends CSCoreSDK.Resource implements CSCoreSDK.HasInstanceResource<SecurityTransactionResource>, CSCoreSDK.ParametrizedExportEnabled<ExportTransactionsParameters, Uint8Array> {
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
 	    /**
 	     * Get resource of security transaction with a given id
+	     * @param {string} id
+	     * @returns {SecurityTransactionResource}
 	     */
 	    withId: (id: string) => SecurityTransactionResource;
 	    /**
 	     * Export transaction history into signed pdf.
+	     * @param {ExportTransactionsParameters} params
+	     * @return {Promise<Uint8Array>}
 	     */
-	    export: (params: ExportTransactionsParameters) => Promise<any>;
+	    export: (params: ExportTransactionsParameters) => Promise<Uint8Array>;
 	}
+	/**
+	 * @class SecurityTransactionResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 * @implements {CSCoreSDK.UpdateEnabled<SecurityTransactionRequest, SecurityTransactionResponse>}
+	 */
 	export class SecurityTransactionResource extends CSCoreSDK.InstanceResource implements CSCoreSDK.UpdateEnabled<SecurityTransactionRequest, SecurityTransactionResponse> {
 	    /**
 	     * Allows to add or change a client's personal note and mark/star the transaction as favorite/important for one specific transaction on selected product.
+	     * @param {SecurityTransactionRequest} payload
+	     * @returns {Promise<SecurityTransactionResponse>}
 	     */
 	    update: (payload: SecurityTransactionRequest) => Promise<SecurityTransactionResponse>;
 	}
+	/**
+	 * @interface SecurityTransactionRequest
+	 */
 	export interface SecurityTransactionRequest {
 	    /**
 	     * Personal, user specific note for transaction. Max. 4 000 characters.
@@ -2154,6 +2773,10 @@ declare module 'cs-netbanking-sdk/securities/transactions' {
 	     */
 	    flags?: [string];
 	}
+	/**
+	 * @interface SecurityTransactionResponse
+	 * @extends {CSCoreSDK.Signable}
+	 */
 	export interface SecurityTransactionResponse extends CSCoreSDK.Signable {
 	    transaction: {
 	        /**
@@ -2176,32 +2799,59 @@ declare module 'cs-netbanking-sdk/securities/securities' {
 	import * as CSCoreSDK from 'cs-core-sdk';
 	import { SecurityTransactionsResource } from 'cs-netbanking-sdk/securities/transactions';
 	import { Amount } from 'cs-netbanking-sdk/common';
+	/**
+	 * @class SecuritiesResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.PaginatedListEnabled<Security>}
+	 * @implements {CSCoreSDK.HasInstanceResource<SecurityResource>}
+	 */
 	export class SecuritiesResource extends CSCoreSDK.Resource implements CSCoreSDK.PaginatedListEnabled<Security>, CSCoreSDK.HasInstanceResource<SecurityResource> {
 	    /**
 	     * Returns list of securities accounts for current user. Securities account represents virtual account which holds securities titles and its shares (funds, bonds, etc.).
+	     * @param {SecuritiesParams=} params
+	     * @returns {Promise<SecurityList>}
 	     */
 	    list: (params?: SecuritiesParams) => Promise<SecurityList>;
 	    /**
 	     * Get resource of security with a given id
+	     * @param {string} id
+	     * @returns {SecuritiesResource}
 	     */
 	    withId: (id: string) => SecurityResource;
 	}
+	/**
+	 * @class SecurityResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 * @implements {CSCoreSDK.GetEnabled<Security>}
+	 * @implements {CSCoreSDK.UpdateEnabled<SecurityRequest, SecurityResponse>}
+	 */
 	export class SecurityResource extends CSCoreSDK.InstanceResource implements CSCoreSDK.GetEnabled<Security>, CSCoreSDK.UpdateEnabled<SecurityRequest, SecurityResponse> {
 	    /**
 	     * Get a single securities account with all its details. Securities account represents virtual account which holds securities titles and its shares (funds, bonds, etc.).
+	     * @returns {Promise<Security>}
 	     */
 	    get: () => Promise<Security>;
 	    /**
 	     * Allows to change a limited set of securities account-settings of one specific contract. Currently only the field alias can be changed. Change only to alias field must not be signed, but response is ready also for signing process.
+	     * @param {SecurityRequest} payload
+	     * @returns {Promise<SecurityResponse>}
 	     */
 	    update: (payload: SecurityRequest) => Promise<SecurityResponse>;
 	    /**
 	     * Returns security transactions resource
+	     * @returns {SecurityTransactionsResource}
 	     */
 	    readonly transactions: SecurityTransactionsResource;
 	}
+	/**
+	 * @interface SecurityList
+	 * @extends {CSCoreSDK.PaginatedListResponse<Security>}
+	 */
 	export interface SecurityList extends CSCoreSDK.PaginatedListResponse<Security> {
 	}
+	/**
+	 * @interface Security
+	 */
 	export interface Security {
 	    /**
 	     * Product id
@@ -2233,13 +2883,19 @@ declare module 'cs-netbanking-sdk/securities/securities' {
 	    transactions: SecurityTransactionsResource;
 	    /**
 	     * Convenience method for getting security detail right from the list
+	     * @returns {Promise<Security>}
 	     */
 	    get: () => Promise<Security>;
 	    /**
-	    * Convenience method for updating security's details
-	    */
+	     * Convenience method for updating security's details
+	     * @param {SecurityRequest} payload
+	     * @returns {Promise<SecurityResponse>}
+	     */
 	    update: (payload: SecurityRequest) => Promise<SecurityResponse>;
 	}
+	/**
+	 * @interface SubSecAccount
+	 */
 	export interface SubSecAccount {
 	    /**
 	     * Sub Securities Account ID
@@ -2291,30 +2947,54 @@ declare module 'cs-netbanking-sdk/securities/securities' {
 	     */
 	    flags: [string];
 	}
+	/**
+	 * @interface SecuritiesParams
+	 * @extends {CSCoreSDK.Paginated}
+	 */
 	export interface SecuritiesParams extends CSCoreSDK.Paginated {
 	}
+	/**
+	 * @interface SecurityRequest
+	 */
 	export interface SecurityRequest {
 	    /**
 	     * Alias for security portfolio. Max. 50 characters.
 	     */
 	    alias?: string;
 	}
+	/**
+	 * @interface SecurityResponse
+	 * @extends {Security}
+	 * @extends {CSCoreSDK.Signable}
+	 */
 	export interface SecurityResponse extends Security, CSCoreSDK.Signable {
 	}
 
 }
 declare module 'cs-netbanking-sdk/settings/settings' {
 	import * as CSCoreSDK from 'cs-core-sdk';
+	/**
+	 * @class SettingsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.GetEnabled<Settings>}
+	 * @implements {CSCoreSDK.UpdateEnabled<Settings, SignableSettings>}
+	 */
 	export class SettingsResource extends CSCoreSDK.Resource implements CSCoreSDK.GetEnabled<Settings>, CSCoreSDK.UpdateEnabled<Settings, SignableSettings> {
 	    /**
 	     * Returns basic user settings.
+	     * @returns {Promise<Settings>}
 	     */
 	    get: () => Promise<Settings>;
 	    /**
 	     * Change user settings. Currently only language can be changed by this endpoint.
+	     * @param {Settings} payload
+	     * @returns {Promise<SignableSettings>}
 	     */
 	    update: (payload: Settings) => Promise<SignableSettings>;
 	}
+	/**
+	 * @interface Settings
+	 */
 	export interface Settings {
 	    /**
 	     * Preferred language. Possible values are cs and en.
@@ -2325,6 +3005,10 @@ declare module 'cs-netbanking-sdk/settings/settings' {
 	     */
 	    flags?: [string];
 	}
+	/**
+	 * @interface SignableSettings
+	 * @extends {CSCoreSDK.Signable}
+	 */
 	export interface SignableSettings extends CSCoreSDK.Signable {
 	    settings: Settings;
 	}
@@ -2332,24 +3016,46 @@ declare module 'cs-netbanking-sdk/settings/settings' {
 }
 declare module 'cs-netbanking-sdk/contacts/contacts' {
 	import * as CSCoreSDK from 'cs-core-sdk';
+	/**
+	 * @class ContactsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.ListEnabled<Contact>}
+	 * @implements {CSCoreSDK.HasInstanceResource<ContactResource>}
+	 */
 	export class ContactsResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<Contact>, CSCoreSDK.HasInstanceResource<ContactResource> {
 	    /**
 	     * Resource represents list of contact information for current user. It can contain addresses, phones and email addresses.
+	     * @returns {Promise<ContactList>}
 	     */
 	    list: () => Promise<ContactList>;
 	    /**
 	     * Get the resource of contact with a given id
+	     * @param {string} id
+	     * @returns {ContactResource}
 	     */
 	    withId: (id: string) => ContactResource;
 	}
+	/**
+	 * @class ContactResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 * @implements {CSCoreSDK.GetEnabled<Contact>}
+	 */
 	export class ContactResource extends CSCoreSDK.InstanceResource implements CSCoreSDK.GetEnabled<Contact> {
 	    /**
 	     * Resource represents one specific contact information identified by its id. It can be address, phone or email address.
+	     * @returns {Promise<Contact>}
 	     */
 	    get: () => Promise<Contact>;
 	}
+	/**
+	 * @interface ContactList
+	 * @extends {CSCoreSDK.ListResponse<Contact>}
+	 */
 	export interface ContactList extends CSCoreSDK.ListResponse<Contact> {
 	}
+	/**
+	 * @interface Contact
+	 */
 	export interface Contact {
 	    /**
 	     * Contact ID
@@ -2427,24 +3133,49 @@ declare module 'cs-netbanking-sdk/contacts/contacts' {
 declare module 'cs-netbanking-sdk/plugins/plugins' {
 	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Amount, AccountNumber } from 'cs-netbanking-sdk/common';
+	/**
+	 * @class PluginsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.PaginatedListEnabled<Plugin>}
+	 * @implements {CSCoreSDK.HasInstanceResource<PluginResource>}
+	 */
 	export class PluginsResource extends CSCoreSDK.Resource implements CSCoreSDK.PaginatedListEnabled<Plugin>, CSCoreSDK.HasInstanceResource<PluginResource> {
 	    /**
 	     * Returns list of available plugins for current user. Plugin is application functionality which can be enabled/disabled by user.
+	     * @param {PluginsParameters} params
+	     * @returns {Promise<PluginList>}
 	     */
 	    list: (params: PluginsParameters) => Promise<PluginList>;
 	    /**
 	     * Returns resource of plugin with a given id
+	     * @param {string} id
+	     * @returns {PluginResource}
 	     */
 	    withId: (id: string) => PluginResource;
 	}
+	/**
+	 * @class PluginResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 * @implements {CSCoreSDK.UpdateEnabled<UpdatePluginRequest, SignablePlugin>}
+	 */
 	export class PluginResource extends CSCoreSDK.InstanceResource implements CSCoreSDK.UpdateEnabled<UpdatePluginRequest, SignablePlugin> {
 	    /**
 	     * Activation and deactivation of the specific plugin. You can also change settlement account for given plugin and current user.
+	     * @param {UpdatePluginRequest} payload
+	     * @returns {Promise<SignablePlugin>}
 	     */
 	    update: (payload: UpdatePluginRequest) => Promise<SignablePlugin>;
 	}
+	/**
+	 * @interface PluginList
+	 * @extends {CSCoreSDK.PaginatedListResponse<Plugin>}
+	 */
 	export interface PluginList extends CSCoreSDK.PaginatedListResponse<Plugin> {
 	}
+	/**
+	 * @interface Plugin
+	 * @extends {UpdatePluginRequest}
+	 */
 	export interface Plugin extends UpdatePluginRequest {
 	    /**
 	     * Localized name of the plugin.
@@ -2473,6 +3204,9 @@ declare module 'cs-netbanking-sdk/plugins/plugins' {
 	        amount: Amount;
 	    }];
 	}
+	/**
+	 * @interface UpdatePluginRequest
+	 */
 	export interface UpdatePluginRequest {
 	    /**
 	     * Plugin unique identifier.
@@ -2487,20 +3221,39 @@ declare module 'cs-netbanking-sdk/plugins/plugins' {
 	     */
 	    flags?: [string];
 	}
+	/**
+	 * @interface PluginsParameters
+	 * @extends {CSCoreSDK.Paginated}
+	 */
 	export interface PluginsParameters extends CSCoreSDK.Paginated {
 	}
+	/**
+	 * @interface SignablePlugin
+	 * @extends {Plugin}
+	 * @extends {CSCoreSDK.Signable}
+	 */
 	export interface SignablePlugin extends Plugin, CSCoreSDK.Signable {
 	}
 
 }
 declare module 'cs-netbanking-sdk/contracts/buildings/services' {
-	/// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	import * as CSCoreSDK from 'cs-core-sdk';
 	import { ServiceList, Service, ServiceParameters } from 'cs-netbanking-sdk/accounts/services';
+	/**
+	 * @class BuildingsContractsServicesResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.PaginatedListEnabled<Service>}
+	 */
 	export class BuildingsContractsServicesResource extends CSCoreSDK.Resource implements CSCoreSDK.PaginatedListEnabled<Service> {
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
 	    /**
 	     * Returns list of services which are connected or arranged for building saving product instance.
+	     * @param {ServiceParameters=} params
+	     * @returns {Promise<ServiceList>}
 	     */
 	    list: (params?: ServiceParameters) => Promise<ServiceList>;
 	}
@@ -2510,60 +3263,104 @@ declare module 'cs-netbanking-sdk/contracts/transactions' {
 	import * as CSCoreSDK from 'cs-core-sdk';
 	import { SecurityTransactionRequest, SecurityTransactionResponse } from 'cs-netbanking-sdk/securities/transactions';
 	import { ExportTransactionsParameters } from 'cs-netbanking-sdk/common';
-	export class ContractsTransactionsResource extends CSCoreSDK.Resource implements CSCoreSDK.HasInstanceResource<ContractsTransactionResource> {
+	/**
+	 * @class ContractsTransactionsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.HasInstanceResource<ContractsTransactionResource>}
+	 */
+	export class ContractsTransactionsResource extends CSCoreSDK.Resource implements CSCoreSDK.HasInstanceResource<ContractsTransactionResource>, CSCoreSDK.ParametrizedExportEnabled<ExportTransactionsParameters, Uint8Array> {
 	    /**
 	     * Get contract transaction resource with a given id
+	     * @param {string} id
+	     * @returns {ContractsTransactionResource}
 	     */
 	    withId: (id: string) => ContractsTransactionResource;
 	    /**
 	     * Export transaction history into signed pdf.
+	     * @param {ExportTransactionsParameters} params
+	     * @returns {Promise<Uint8Array>}
 	     */
-	    export: (params: ExportTransactionsParameters) => Promise<any>;
+	    export: (params: ExportTransactionsParameters) => Promise<Uint8Array>;
 	}
+	/**
+	 * @class ContractsTransactionResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 * @implements {CSCoreSDK.UpdateEnabled<SecurityTransactionRequest, SecurityTransactionResponse>}
+	 */
 	export class ContractsTransactionResource extends CSCoreSDK.InstanceResource implements CSCoreSDK.UpdateEnabled<SecurityTransactionRequest, SecurityTransactionResponse> {
 	    /**
 	     * Allows to add or change a client's personal note and mark/star the transaction as favorite/important for one specific transaction on selected product.
+	     * @param {SecurityTransactionRequest} payload
+	     * @returns {Promise<SecurityTransactionResponse>}
 	     */
 	    update: (payload: SecurityTransactionRequest) => Promise<SecurityTransactionResponse>;
 	}
 
 }
 declare module 'cs-netbanking-sdk/contracts/buildings/buildings' {
-	/// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	import * as CSCoreSDK from 'cs-core-sdk';
 	import { BuildingsContractsServicesResource } from 'cs-netbanking-sdk/contracts/buildings/services';
 	import { ContractsTransactionsResource } from 'cs-netbanking-sdk/contracts/transactions';
 	import { AccountNumber, Amount } from 'cs-netbanking-sdk/common';
+	/**
+	 * @class BuildingsContractsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.HasInstanceResource<BuildingsContractResource>}
+	 * @implements {CSCoreSDK.PaginatedListEnabled<BuildingsContract>}
+	 */
 	export class BuildingsContractsResource extends CSCoreSDK.Resource implements CSCoreSDK.HasInstanceResource<BuildingsContractResource>, CSCoreSDK.PaginatedListEnabled<BuildingsContract> {
 	    /**
 	     * Resource represents list of building savings for current user. It contains building savings and loans from building savings as well.
+	     * @param {BuildingsContractsParameters=} params
+	     * @returns {Promise<BuildingsContractList>}
 	     */
 	    list: (params?: BuildingsContractsParameters) => Promise<BuildingsContractList>;
 	    /**
 	     * Get the resource of buildings contract with a given id
+	     * @param {string} id
+	     * @returns {BuildingsContractResource}
 	     */
 	    withId: (id: string) => BuildingsContractResource;
 	}
+	/**
+	 * @class BuildingsContractResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 * @implements {CSCoreSDK.GetEnabled<BuildingsContract>}
+	 * @implements {CSCoreSDK.UpdateEnabled<UpdateBuildingsContractRequest, UpdateBuildingsContractResponse>}
+	 */
 	export class BuildingsContractResource extends CSCoreSDK.InstanceResource implements CSCoreSDK.GetEnabled<BuildingsContract>, CSCoreSDK.UpdateEnabled<UpdateBuildingsContractRequest, UpdateBuildingsContractResponse> {
 	    /**
 	     * Resource represents one building saving product identified by it's identifier. It can be building saving or loan from building saving.
+	     * @returns {Promise<BuildingsContract>}
 	     */
 	    get: () => Promise<BuildingsContract>;
 	    /**
 	     * Allows to change a limited set of building savings contract-settings of one specific contract. Currently only the field alias can be changed. Change only to alias field must not be signed, but response is ready also for signing process.
+	     * @param {UpdateBuildingsContractRequest} payload
+	     * @returns {Promise<UpdateBuildingsContractResponse>}
 	     */
 	    update: (payload: UpdateBuildingsContractRequest) => Promise<UpdateBuildingsContractResponse>;
 	    /**
 	     * Get buildings contracts services resource
+	     * @returns {BuildingsContractsServicesResource}
 	     */
 	    readonly services: BuildingsContractsServicesResource;
 	    /**
 	     * Get buildings contracts transactions resource
+	     * @returns {ContractsTransactionsResource}
 	     */
 	    readonly transactions: ContractsTransactionsResource;
 	}
+	/**
+	 * @interface BuildingsContractList
+	 * @extends {CSCoreSDK.PaginatedListResponse<BuildingsContract>}
+	 */
 	export interface BuildingsContractList extends CSCoreSDK.PaginatedListResponse<BuildingsContract> {
 	}
+	/**
+	 * @interface BuildingsContract
+	 * @extends {UpdateBuildingsContractRequest}
+	 */
 	export interface BuildingsContract extends UpdateBuildingsContractRequest {
 	    /**
 	     * Building saving identifier.
@@ -2655,10 +3452,13 @@ declare module 'cs-netbanking-sdk/contracts/buildings/buildings' {
 	    flags?: [string];
 	    /**
 	     * Convenience get method for fetching contracts detail
+	     * @returns {Promise<BuildingsContract>}
 	     */
 	    get: () => Promise<BuildingsContract>;
 	    /**
 	     * Convenience update method for updating contract
+	     * @param {UpdateBuildingsContractRequest} payload
+	     * @returns {Promise<UpdateBuildingsContractResponse>}
 	     */
 	    update: (payload: UpdateBuildingsContractRequest) => Promise<UpdateBuildingsContractResponse>;
 	    /**
@@ -2670,14 +3470,26 @@ declare module 'cs-netbanking-sdk/contracts/buildings/buildings' {
 	     */
 	    transactions: ContractsTransactionsResource;
 	}
+	/**
+	 * @interface BuildingsContractsParameters
+	 * @extends {CSCoreSDK.Paginated}
+	 */
 	export interface BuildingsContractsParameters extends CSCoreSDK.Paginated {
 	}
+	/**
+	 * @interface UpdateBuildingsContractRequest
+	 */
 	export interface UpdateBuildingsContractRequest {
 	    /**
 	     * User-specific alias of the contract. Max. 50 characters.
 	     */
 	    alias?: string;
 	}
+	/**
+	 * @interface UpdateBuildingsContractResponse
+	 * @extends {BuildingsContract}
+	 * @extends {CSCoreSDK.Signable}
+	 */
 	export interface UpdateBuildingsContractResponse extends BuildingsContract, CSCoreSDK.Signable {
 	}
 
@@ -2687,33 +3499,65 @@ declare module 'cs-netbanking-sdk/contracts/pensions/pensions' {
 	import * as CSCoreSDK from 'cs-core-sdk';
 	import { ContractsTransactionsResource } from 'cs-netbanking-sdk/contracts/transactions';
 	import { Amount, Address } from 'cs-netbanking-sdk/common';
+	/**
+	 * @class PensionsContractsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.PaginatedListEnabled<Pension>}
+	 * @implements {CSCoreSDK.HasInstanceResource<PensionsContractResource>}
+	 */
 	export class PensionsContractsResource extends CSCoreSDK.Resource implements CSCoreSDK.PaginatedListEnabled<Pension>, CSCoreSDK.HasInstanceResource<PensionsContractResource> {
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
 	    /**
 	     * Returns list of pension products which belongs to current user. This includes Pension Savings, Supplementary Pension Insurance and Supplementary Pension Savings.
+	     * @param {PensionParameters=} params
+	     * @returns {Promise<PensionList>}
 	     */
 	    list: (params?: PensionParameters) => Promise<PensionList>;
 	    /**
 	     * Get the resource of pension contract with a given id
+	     * @param {string} id
+	     * @returns {PensionsContractResource}
 	     */
 	    withId: (id: string) => PensionsContractResource;
 	}
+	/**
+	 * @class PensionsContractResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 * @implements {CSCoreSDK.GetEnabled<Pension>}
+	 * @implements {CSCoreSDK.UpdateEnabled<UpdatePensionRequest, UpdatePensionResponse>}
+	 */
 	export class PensionsContractResource extends CSCoreSDK.InstanceResource implements CSCoreSDK.GetEnabled<Pension>, CSCoreSDK.UpdateEnabled<UpdatePensionRequest, UpdatePensionResponse> {
 	    /**
 	     * Returns detail of pension product which belongs to current user. This can be Pension Saving, Supplementary Pension Insurance and Supplementary Pension Saving.
+	     * @returns {Promise<Pension>}
 	     */
 	    get: () => Promise<Pension>;
 	    /**
 	     * Allows to change a limited set of pension contract-settings of one specific contract. Currently only the field alias can be changed. Change only to alias field must not be signed, but response is ready also for signing process.
+	     * @param {UpdatePensionRequest} payload
+	     * @returns {Promise<UpdatePensionResponse>}
 	     */
 	    update: (payload: UpdatePensionRequest) => Promise<UpdatePensionResponse>;
 	    /**
 	     * Returns transactions resource for pension contract
+	     * @returns {ContractsTransactionsResource}
 	     */
 	    readonly transactions: ContractsTransactionsResource;
 	}
+	/**
+	 * @interface PensionList
+	 * @extends {CSCoreSDK.PaginatedListResponse<Pension>}
+	 */
 	export interface PensionList extends CSCoreSDK.PaginatedListResponse<Pension> {
 	}
+	/**
+	 * @interface Pension
+	 * @extends {UpdatePensionRequest}
+	 */
 	export interface Pension extends UpdatePensionRequest {
 	    /**
 	     * Product unique identifier.
@@ -2883,10 +3727,13 @@ declare module 'cs-netbanking-sdk/contracts/pensions/pensions' {
 	    flags?: [string];
 	    /**
 	     * Convenience get method for fetching Pensions detail
+	     * @returns {Promise<Pension>}
 	     */
 	    get: () => Promise<Pension>;
 	    /**
 	     * Convenience update method for updating Pension
+	     * @param {UpdatePensionRequest} payload
+	     * @returns {Promise<UpdatePensionResponse>}
 	     */
 	    update: (payload: UpdatePensionRequest) => Promise<UpdatePensionResponse>;
 	    /**
@@ -2894,33 +3741,60 @@ declare module 'cs-netbanking-sdk/contracts/pensions/pensions' {
 	     */
 	    transactions: ContractsTransactionsResource;
 	}
+	/**
+	 * @interface UpdatePensionRequest
+	 */
 	export interface UpdatePensionRequest {
 	    /**
 	     * User defined account name. Max. 50 characters.
 	     */
 	    alias?: string;
 	}
+	/**
+	 * @interface UpdatePensionResponse
+	 * @extends {CSCoreSDK.Signable, Pension}
+	 */
 	export interface UpdatePensionResponse extends CSCoreSDK.Signable, Pension {
 	}
+	/**
+	 * @interface PensionParameters
+	 * @extends {CSCoreSDK.Paginated}
+	 */
 	export interface PensionParameters extends CSCoreSDK.Paginated {
 	}
 
 }
 declare module 'cs-netbanking-sdk/contracts/insurances/funds' {
-	/// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Amount } from 'cs-netbanking-sdk/common';
+	/**
+	 * @class InsurancesContractFundsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.ListEnabled<Fund>}
+	 * @implements {CSCoreSDK.UpdateEnabled<UpdateFundRequest, UpdateFundResponse>}
+	 */
 	export class InsurancesContractFundsResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<Fund>, CSCoreSDK.UpdateEnabled<UpdateFundRequest, UpdateFundResponse> {
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
 	    /**
 	     * Returns detail of distribution of capital value into funds.
+	     * @returns {Promise<FundList>}
 	     */
 	    list: () => Promise<FundList>;
 	    /**
 	     * Change the distribution of capital value into funds.
+	     * @param {UpdateFundRequest} payload
+	     * @returns {Promise<UpdateFundResponse>}
 	     */
 	    update: (payload: UpdateFundRequest) => Promise<UpdateFundResponse>;
 	}
+	/**
+	 * @interface FundList
+	 * @extends {CSCoreSDK.ListResponse<Fund>}
+	 */
 	export interface FundList extends CSCoreSDK.ListResponse<Fund> {
 	    /**
 	     * Total invested amount into all funds in CZK.
@@ -2935,6 +3809,9 @@ declare module 'cs-netbanking-sdk/contracts/insurances/funds' {
 	     */
 	    flags?: [string];
 	}
+	/**
+	 * @interface Fund
+	 */
 	export interface Fund {
 	    /**
 	     * Unique code of fund.
@@ -2957,6 +3834,9 @@ declare module 'cs-netbanking-sdk/contracts/insurances/funds' {
 	     */
 	    allocation: number;
 	}
+	/**
+	 * @interface UpdateFundRequest
+	 */
 	export interface UpdateFundRequest {
 	    funds: [{
 	        /**
@@ -2970,26 +3850,50 @@ declare module 'cs-netbanking-sdk/contracts/insurances/funds' {
 	     */
 	    investmentProgram?: string;
 	}
+	/**
+	 * @interface UpdateFundResponse
+	 * @extends {UpdateFundRequest}
+	 * @extends {CSCoreSDK.Signable}
+	 */
 	export interface UpdateFundResponse extends UpdateFundRequest, CSCoreSDK.Signable {
 	}
 
 }
 declare module 'cs-netbanking-sdk/contracts/insurances/beneficiaries' {
-	/// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	import * as CSCoreSDK from 'cs-core-sdk';
+	/**
+	 * @class InsurancesContractBeneficiariesResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.ListEnabled<InsuranceBeneficiary>}
+	 * @implements {CSCoreSDK.UpdateEnabled<UpdateInsuranceBeneficiaries, UpdateInsuranceBeneficiaries>}
+	 */
 	export class InsurancesContractBeneficiariesResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<InsuranceBeneficiary>, CSCoreSDK.UpdateEnabled<UpdateInsuranceBeneficiaries, UpdateInsuranceBeneficiaries> {
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
 	    /**
 	     * Returns list of beneficiaries related to the insurance contract.
+	     * @returns {Promise<InsuranceBeneficiaryList>}
 	     */
 	    list: () => Promise<InsuranceBeneficiaryList>;
 	    /**
 	     * Change beneficiaries and distribution of insurance among beneficiaries.
+	     * @param {UpdateInsuranceBeneficiaries} payload
+	     * @returns {Promise<UpdateInsuranceBeneficiaries>}
 	     */
 	    update: (payload: UpdateInsuranceBeneficiaries) => Promise<UpdateInsuranceBeneficiaries>;
 	}
+	/**
+	 * @interface InsuranceBeneficiaryList
+	 * @extends {CSCoreSDK.ListResponse<InsuranceBeneficiary>}
+	 */
 	export interface InsuranceBeneficiaryList extends CSCoreSDK.ListResponse<InsuranceBeneficiary> {
 	}
+	/**
+	 * @interface InsuranceBeneficiary
+	 */
 	export interface InsuranceBeneficiary {
 	    /**
 	     * Type of beneficiary
@@ -3016,24 +3920,43 @@ declare module 'cs-netbanking-sdk/contracts/insurances/beneficiaries' {
 	     */
 	    flags?: [string];
 	}
+	/**
+	 * @interface UpdateInsuranceBeneficiaries
+	 */
 	export interface UpdateInsuranceBeneficiaries {
 	    beneficiaries: [InsuranceBeneficiary];
 	}
 
 }
 declare module 'cs-netbanking-sdk/contracts/insurances/insurees' {
-	/// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Address, Amount } from 'cs-netbanking-sdk/common';
+	/**
+	 * @class InsurancesContractInsureesResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.ListEnabled<Insuree>}
+	 */
 	export class InsurancesContractInsureesResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<Insuree> {
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
 	    /**
 	     * Returns list of insurees related to the insurance contract.
+	     * @returns {Promise<InsureeList>}
 	     */
 	    list: () => Promise<InsureeList>;
 	}
+	/**
+	 * @interface InsureeList
+	 * @extends {CSCoreSDK.ListResponse<Insuree>}
+	 */
 	export interface InsureeList extends CSCoreSDK.ListResponse<Insuree> {
 	}
+	/**
+	 * @interface Insuree
+	 */
 	export interface Insuree {
 	    /**
 	     * Unique ID of the person related to the insurance contract. ID is hashed combination of contract number and birthnumber of the person: contractNumber_birthnumber.
@@ -3089,21 +4012,35 @@ declare module 'cs-netbanking-sdk/contracts/insurances/insurees' {
 
 }
 declare module 'cs-netbanking-sdk/contracts/insurances/payments' {
-	/// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Amount } from 'cs-netbanking-sdk/common';
+	/**
+	 * @class InsurancesContractPaymentsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.ListEnabled<ContractPayment>}
+	 */
 	export class InsurancesContractPaymentsResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<ContractPayment> {
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
 	    /**
 	     * Returns list of life insurance payments. List contains one upcoming payment and payments history for 2 years.
+	     * @returns {Promise<ContractPaymentList>}
 	     */
 	    list: () => Promise<ContractPaymentList>;
 	}
 	/**
 	 * List of contract payments
+	 * @interface ContractPaymentList
+	 * @extends {CSCoreSDK.ListResponse<ContractPayment>}
 	 */
 	export interface ContractPaymentList extends CSCoreSDK.ListResponse<ContractPayment> {
 	}
+	/**
+	 * @interface ContractPayment
+	 */
 	export interface ContractPayment {
 	    /**
 	     * Payment identifier. Unique for current insurance.
@@ -3149,26 +4086,46 @@ declare module 'cs-netbanking-sdk/contracts/insurances/payments' {
 
 }
 declare module 'cs-netbanking-sdk/contracts/insurances/services' {
-	/// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Amount } from 'cs-netbanking-sdk/common';
+	/**
+	 * @class InsurancesContractServicesResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.ListEnabled<InsuranceService>}
+	 */
 	export class InsurancesContractServicesResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<InsuranceService> {
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
 	    /**
 	     * Returns list of services for the life insurance
+	     * @returns {Promise<InsuranceServiceList>}
 	     */
 	    list: () => Promise<InsuranceServiceList>;
 	    /**
 	     * Allows activation of risk sports insurance.
+	     * @param {RiskSportsUpdateRequest} payload
+	     * @returns {Promise<ActivateRiskSportsResponse>}
 	     */
 	    activateRiskSports: (payload: RiskSportsUpdateRequest) => Promise<ActivateRiskSportsResponse>;
 	    /**
 	     * Allows deactivation of risk sports insurance.
+	     * @param {RiskSportsUpdateRequest} payload
+	     * @returns {Promise<DeactivateRiskSportsResponse>}
 	     */
 	    deactivateRiskSports: (payload: RiskSportsUpdateRequest) => Promise<DeactivateRiskSportsResponse>;
 	}
+	/**
+	 * @interface InsuranceServiceList
+	 * @extends {CSCoreSDK.ListResponse<InsuranceService>}
+	 */
 	export interface InsuranceServiceList extends CSCoreSDK.ListResponse<InsuranceService> {
 	}
+	/**
+	 * @interface InsuranceService
+	 */
 	export interface InsuranceService {
 	    /**
 	     * indicator for FE for grouping services to boxes. Possible values: RISK_SPORTS, SERVICE
@@ -3211,31 +4168,59 @@ declare module 'cs-netbanking-sdk/contracts/insurances/services' {
 	     */
 	    state: string;
 	}
+	/**
+	 * @interface RiskSportsUpdateRequest
+	 */
 	export interface RiskSportsUpdateRequest {
 	    dateFrom: Date;
 	    dateTo: Date;
 	    phoneNumber: string;
 	}
+	/**
+	 * @interface ActivateRiskSportsResponse
+	 * @extends {RiskSportsUpdateRequest}
+	 * @extends {CSCoreSDK.Signable}
+	 */
 	export interface ActivateRiskSportsResponse extends RiskSportsUpdateRequest, CSCoreSDK.Signable {
 	    policyNumber: string;
 	}
+	/**
+	 * @interface DeactivateRiskSportsResponse
+	 * @extends {CSCoreSDK.Signable}
+	 */
 	export interface DeactivateRiskSportsResponse extends CSCoreSDK.Signable {
 	}
 
 }
 declare module 'cs-netbanking-sdk/contracts/insurances/events' {
-	/// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Amount } from 'cs-netbanking-sdk/common';
+	/**
+	 * @class InsurancesContractEventsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.ListEnabled<ContractEvent>}
+	 */
 	export class InsurancesContractEventsResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<ContractEvent> {
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
 	    /**
 	     * Returns list of events for the life insurance
+	     * @returns {Promise<ContractEventList>}
 	     */
 	    list: () => Promise<ContractEventList>;
 	}
+	/**
+	 * @interface ContractEventList
+	 * @extends {CSCoreSDK.ListResponse<ContractEvent>}
+	 */
 	export interface ContractEventList extends CSCoreSDK.ListResponse<ContractEvent> {
 	}
+	/**
+	 * @interface ContractEvent
+	 */
 	export interface ContractEvent {
 	    /**
 	     * Insurance event number
@@ -3294,16 +4279,28 @@ declare module 'cs-netbanking-sdk/contracts/insurances/events' {
 
 }
 declare module 'cs-netbanking-sdk/contracts/insurances/tax-benefits' {
-	/// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Amount, AccountNumber } from 'cs-netbanking-sdk/common';
+	/**
+	 * @class InsurancesContractTaxBenefitsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.GetEnabled<TaxBenefit>}
+	 */
 	export class InsurancesContractTaxBenefitsResource extends CSCoreSDK.Resource implements CSCoreSDK.GetEnabled<TaxBenefit> {
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
 	    /**
 	     * Returns tax benefits for the life insurance
+	     * @returns {Promise<TaxBenefit>}
 	     */
 	    get: () => Promise<TaxBenefit>;
 	}
+	/**
+	 * @interface TaxBenefit
+	 */
 	export interface TaxBenefit {
 	    /**
 	     * Tax deductable premium.
@@ -3339,17 +4336,33 @@ declare module 'cs-netbanking-sdk/contracts/insurances/tax-benefits' {
 
 }
 declare module 'cs-netbanking-sdk/contracts/insurances/strategies' {
-	/// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	import * as CSCoreSDK from 'cs-core-sdk';
-	export class InsurancesContractStrategiesResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<any> {
+	/**
+	 * @class InsurancesContractStrategiesResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.ListEnabled<ContractStrategy>}
+	 */
+	export class InsurancesContractStrategiesResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<ContractStrategy> {
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
 	    /**
 	     * Returns list of strategies with corresponsing funds allocation for the life insurance
+	     * @returns {Promise<ContractStrategyList>}
 	     */
-	    list: () => Promise<any>;
+	    list: () => Promise<ContractStrategyList>;
 	}
+	/**
+	 * @interface ContractStrategyList
+	 * @extends {CSCoreSDK.ListResponse<ContractStrategy>}
+	 */
 	export interface ContractStrategyList extends CSCoreSDK.ListResponse<ContractStrategy> {
 	}
+	/**
+	 * @interface ContractStrategy
+	 */
 	export interface ContractStrategy {
 	    /**
 	     * Type of the chosen strategy. Possible values: CONSERVATIVE, PROGRESSIVE, BALANCED, CONTROL, ACTUAL_SETTING
@@ -3378,16 +4391,29 @@ declare module 'cs-netbanking-sdk/contracts/insurances/strategies' {
 
 }
 declare module 'cs-netbanking-sdk/contracts/insurances/transfer' {
-	/// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Amount, AccountNumber } from 'cs-netbanking-sdk/common';
+	/**
+	 * @class InsurancesContractTransferResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.UpdateEnabled<UpdateContractTrasferRequest, UpdateContractTrasferResponse>}
+	 */
 	export class InsurancesContractTransferResource extends CSCoreSDK.Resource implements CSCoreSDK.UpdateEnabled<UpdateContractTrasferRequest, UpdateContractTrasferResponse> {
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
 	    /**
 	     * Creates insurance transfer - premium payment, extra deposit or recommended deposit.
+	     * @param {UpdateContractTrasferRequest} payload
+	     * @returns {Promise<UpdateContractTrasferResponse>}
 	     */
 	    update: (payload: UpdateContractTrasferRequest) => Promise<UpdateContractTrasferResponse>;
 	}
+	/**
+	 * @interface UpdateContractTrasferRequest
+	 */
 	export interface UpdateContractTrasferRequest {
 	    /**
 	     * Type of the transfer. Possible values are PAY_PREMIUM, EXTRA_DEPOSIT, RECOMMENDED_DEPOSIT.
@@ -3402,12 +4428,15 @@ declare module 'cs-netbanking-sdk/contracts/insurances/transfer' {
 	     */
 	    sender: AccountNumber;
 	}
+	/**
+	 * @interface UpdateContractTrasferResponse
+	 * @extends {CSCoreSDK.Signable}
+	 */
 	export interface UpdateContractTrasferResponse extends CSCoreSDK.Signable {
 	}
 
 }
 declare module 'cs-netbanking-sdk/contracts/insurances/insurances' {
-	/// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	import * as CSCoreSDK from 'cs-core-sdk';
 	import { InsurancesContractFundsResource } from 'cs-netbanking-sdk/contracts/insurances/funds';
 	import { InsurancesContractBeneficiariesResource } from 'cs-netbanking-sdk/contracts/insurances/beneficiaries';
@@ -3419,64 +4448,100 @@ declare module 'cs-netbanking-sdk/contracts/insurances/insurances' {
 	import { InsurancesContractStrategiesResource } from 'cs-netbanking-sdk/contracts/insurances/strategies';
 	import { InsurancesContractTransferResource } from 'cs-netbanking-sdk/contracts/insurances/transfer';
 	import { Amount, AccountNumber } from 'cs-netbanking-sdk/common';
+	/**
+	 * @class InsurancesContractsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.PaginatedListEnabled<Insurance>}
+	 * @implements {CSCoreSDK.HasInstanceResource<InsurancesContractResource>}
+	 */
 	export class InsurancesContractsResource extends CSCoreSDK.Resource implements CSCoreSDK.PaginatedListEnabled<Insurance>, CSCoreSDK.HasInstanceResource<InsurancesContractResource> {
 	    /**
 	     * Returns list of life insurances for current user.
+	     * @param {InsurancesParameters=} params
+	     * @returns {Promise<InsuranceList>}
 	     */
 	    list: (params?: InsurancesParameters) => Promise<InsuranceList>;
 	    /**
 	     * Get the resource of insurance contracts with a given id
+	     * @param {string} id
+	     * @returns {InsurancesContractResource}
 	     */
 	    withId: (id: string) => InsurancesContractResource;
 	}
+	/**
+	 * @class InsurancesContractResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 * @implements {CSCoreSDK.GetEnabled<InsuranceDetail>}
+	 * @implements {CSCoreSDK.UpdateEnabled<UpdateInsuranceRequest, UpdateInsuranceResponse>}
+	 */
 	export class InsurancesContractResource extends CSCoreSDK.InstanceResource implements CSCoreSDK.GetEnabled<InsuranceDetail>, CSCoreSDK.UpdateEnabled<UpdateInsuranceRequest, UpdateInsuranceResponse> {
 	    /**
 	     * Returns detail of the life insurance
+	     * @returns {Promise<InsuranceDetail>}
 	     */
 	    get: () => Promise<InsuranceDetail>;
 	    /**
 	     * Allows to change a limited set of insurance settings of one specific contract. Currently only the field alias can be changed. Change only to alias field must not be signed, but response is ready also for signing process.
+	     * @param {UpdateInsuranceRequest} payload
+	     * @returns {Promise<UpdateInsuranceResponse>}
 	     */
 	    update: (payload: UpdateInsuranceRequest) => Promise<UpdateInsuranceResponse>;
 	    /**
 	     * Returns funds resource for insurance contract
+	     * @returns {InsurancesContractFundsResource}
 	     */
 	    readonly funds: InsurancesContractFundsResource;
 	    /**
 	     * Returns beneficiaries resource for insurance contract
+	     * @returns {InsurancesContractBeneficiariesResource}
 	     */
 	    readonly beneficiaries: InsurancesContractBeneficiariesResource;
 	    /**
 	     * Returns insurees resource for insurance contract
+	     * @returns {InsurancesContractInsureesResource}
 	     */
 	    readonly insurees: InsurancesContractInsureesResource;
 	    /**
 	     * Returns payments resource for insurance contract
+	     * @returns {InsurancesContractPaymentsResource}
 	     */
 	    readonly payments: InsurancesContractPaymentsResource;
 	    /**
 	     * Returns services resource for insurance contract
+	     * @returns {InsurancesContractServicesResource}
 	     */
 	    readonly services: InsurancesContractServicesResource;
 	    /**
 	     * Returns events resource for insurance contract
+	     * @returns {InsurancesContractEventsResource}
 	     */
 	    readonly events: InsurancesContractEventsResource;
 	    /**
 	     * Returns taxBenefits resource for insurance contract
+	     * @returns {InsurancesContractTaxBenefitsResource}
 	     */
 	    readonly taxBenefits: InsurancesContractTaxBenefitsResource;
 	    /**
 	     * Returns strategies resource for insurance contract
+	     * @returns {InsurancesContractStrategiesResource}
 	     */
 	    readonly strategies: InsurancesContractStrategiesResource;
 	    /**
 	     * Returns transfer resource for insurance contract
+	     * @returns {InsurancesContractTransferResource}
 	     */
 	    readonly transfer: InsurancesContractTransferResource;
 	}
+	/**
+	 * @interface InsuranceList
+	 * @extends {CSCoreSDK.PaginatedListResponse<Insurance>}
+	 */
 	export interface InsuranceList extends CSCoreSDK.PaginatedListResponse<Insurance> {
 	}
+	/**
+	 * @interface Insurance
+	 * @extends {UpdateInsuranceRequest}
+	 */
 	export interface Insurance extends UpdateInsuranceRequest {
 	    /**
 	     * Contract number.
@@ -3509,10 +4574,13 @@ declare module 'cs-netbanking-sdk/contracts/insurances/insurances' {
 	    life?: LifeDetail;
 	    /**
 	     * Convenience get method for fetching Insurance detail
+	     * @returns {Promise<InsuranceDetail>}
 	     */
 	    get: () => Promise<InsuranceDetail>;
 	    /**
 	     * Convenience update method for updating insurance
+	     * @param {UpdateInsuranceRequest} payload
+	     * @returns {Promise<UpdateInsuranceResponse>}
 	     */
 	    update: (payload: UpdateInsuranceRequest) => Promise<UpdateInsuranceResponse>;
 	    /**
@@ -3552,14 +4620,26 @@ declare module 'cs-netbanking-sdk/contracts/insurances/insurances' {
 	     */
 	    transfer: InsurancesContractTransferResource;
 	}
+	/**
+	 * @interface UpdateInsuranceRequest
+	 */
 	export interface UpdateInsuranceRequest {
 	    /**
 	     * User-specific alias of the contract. Max. 50 characters.
 	     */
 	    alias?: string;
 	}
+	/**
+	 * @interface UpdateInsuranceResponse
+	 * @extends {Insurance}
+	 * @extends {CSCoreSDK.Signable}
+	 */
 	export interface UpdateInsuranceResponse extends Insurance, CSCoreSDK.Signable {
 	}
+	/**
+	 * @interface InsuranceDetail
+	 * @extends {Insurance}
+	 */
 	export interface InsuranceDetail extends Insurance {
 	    /**
 	     * Additional description of insurance product, additional charges, index applied to insurance contract
@@ -3567,8 +4647,15 @@ declare module 'cs-netbanking-sdk/contracts/insurances/insurances' {
 	    description?: string;
 	    life?: LifeDetail;
 	}
+	/**
+	 * @interface InsurancesParameters
+	 * @extends {CSCoreSDK.Paginated}
+	 */
 	export interface InsurancesParameters extends CSCoreSDK.Paginated {
 	}
+	/**
+	 * @interface Life
+	 */
 	export interface Life {
 	    lastPremiumDate?: Date;
 	    lastPremiumPaid?: Amount;
@@ -3605,6 +4692,10 @@ declare module 'cs-netbanking-sdk/contracts/insurances/insurances' {
 	     */
 	    flags?: [string];
 	}
+	/**
+	 * @interface LifeDetail
+	 * @extends {Life}
+	 */
 	export interface LifeDetail extends Life {
 	    /**
 	     * Reason of possible contract termination
@@ -3674,15 +4765,27 @@ declare module 'cs-netbanking-sdk/contracts/insurances/insurances' {
 
 }
 declare module 'cs-netbanking-sdk/contracts/loyalty/loyalty' {
-	/// <reference path="../../../node_modules/cs-core-sdk/dist/cs-core-sdk.node.d.ts" />
 	import * as CSCoreSDK from 'cs-core-sdk';
+	/**
+	 * @class LoyaltyContractsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.GetEnabled<Loyalty>}
+	 */
 	export class LoyaltyContractsResource extends CSCoreSDK.Resource implements CSCoreSDK.GetEnabled<Loyalty> {
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
 	    /**
 	     * Get data about iBod account of the current client.
+	     * @returns {Promise<Loyalty>}
 	     */
 	    get: () => Promise<Loyalty>;
 	}
+	/**
+	 * @interface Loyalty
+	 */
 	export interface Loyalty {
 	    /**
 	     * State of the ibod account. Possible values are REGISTERED, UNREGISTERED, DEACTIVATED_FROM_FSCS.
@@ -3709,21 +4812,29 @@ declare module 'cs-netbanking-sdk/contracts/contracts' {
 	import { PensionsContractsResource } from 'cs-netbanking-sdk/contracts/pensions/pensions';
 	import { InsurancesContractsResource } from 'cs-netbanking-sdk/contracts/insurances/insurances';
 	import { LoyaltyContractsResource } from 'cs-netbanking-sdk/contracts/loyalty/loyalty';
+	/**
+	 * @class ContractsResource
+	 * @extends {CSCoreSDK.Resource}
+	 */
 	export class ContractsResource extends CSCoreSDK.Resource {
 	    /**
 	     * Get buildings contracts resource
+	     * @returns {BuildingsContractsResource}
 	     */
 	    readonly buildings: BuildingsContractsResource;
 	    /**
 	     * Get pensions contracts resource
+	     * @returns {PensionsContractsResource}
 	     */
 	    readonly pensions: PensionsContractsResource;
 	    /**
 	     * Get insurances contracts resource
+	     * @returns {InsurancesContractsResource}
 	     */
 	    readonly insurances: InsurancesContractsResource;
 	    /**
 	     * Get loyalty contracts resource
+	     * @returns {LoyaltyContractsResource}
 	     */
 	    readonly loyalty: LoyaltyContractsResource;
 	}
@@ -3732,10 +4843,21 @@ declare module 'cs-netbanking-sdk/contracts/contracts' {
 declare module 'cs-netbanking-sdk/services/services' {
 	import * as CSCoreSDK from 'cs-core-sdk';
 	import { ServiceList, Service, ServiceParameters } from 'cs-netbanking-sdk/accounts/services';
+	/**
+	 * @class ServicesResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.PaginatedListEnabled<Service>}
+	 */
 	export class ServicesResource extends CSCoreSDK.Resource implements CSCoreSDK.PaginatedListEnabled<Service> {
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
 	    /**
 	     * Returns possibly empty list of services for current user. This resource represents only services which are not bound to any product.
+	     * @param {ServiceParameters=} params
+	     * @returns {Promise<ServiceList>}
 	     */
 	    list: (params?: ServiceParameters) => Promise<ServiceList>;
 	}
@@ -3744,29 +4866,51 @@ declare module 'cs-netbanking-sdk/services/services' {
 declare module 'cs-netbanking-sdk/messages/mandatory' {
 	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Message } from 'cs-netbanking-sdk/messages/messages';
+	/**
+	 * @class MessagesMandatoryResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.ListEnabled<Message>}
+	 */
 	export class MessagesMandatoryResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<Message> {
 	    /**
 	     * Returns all mandatory messages. This call might return different messages based on appId of the caller (for example, some messages might be specific to an application). Which messages can be seen by which application can be configured on the presto server side.
+	     * @return {Promise<MandatoryMessageList>}
 	     */
 	    list: () => Promise<MandatoryMessageList>;
 	}
+	/**
+	 * @interface MandatoryMessageList
+	 * @extends {CSCoreSDK.ListResponse<Message>}
+	 */
 	export interface MandatoryMessageList extends CSCoreSDK.ListResponse<Message> {
 	}
 
 }
 declare module 'cs-netbanking-sdk/messages/attachments' {
 	import * as CSCoreSDK from 'cs-core-sdk';
+	/**
+	 * @class MessageAttachmentsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.HasInstanceResource<MessageAttachmentResource>}
+	 */
 	export class MessageAttachmentsResource extends CSCoreSDK.Resource implements CSCoreSDK.HasInstanceResource<MessageAttachmentResource> {
 	    /**
 	     * Get the resource of attachments
+	     * @param {string} id
+	     * @returns {MessageAttachmentResource}
 	     */
 	    withId: (id: string) => MessageAttachmentResource;
 	}
-	export class MessageAttachmentResource extends CSCoreSDK.InstanceResource {
+	/**
+	 * @class MessageAttachmentResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 */
+	export class MessageAttachmentResource extends CSCoreSDK.InstanceResource implements CSCoreSDK.DownloadEnabled<Uint8Array> {
 	    /**
 	     * Downloads attachment file. The binary representation of an attachment file, with a “Content-Disposition” header of type attachment (including the filename), in order to instruct the browser to open a save dialog.
+	     * @returns {Promise<Uint8Array>}
 	     */
-	    download: () => Promise<any>;
+	    download: () => Promise<Uint8Array>;
 	}
 
 }
@@ -3775,40 +4919,70 @@ declare module 'cs-netbanking-sdk/messages/messages' {
 	import { MessagesMandatoryResource } from 'cs-netbanking-sdk/messages/mandatory';
 	import { MessageAttachmentsResource } from 'cs-netbanking-sdk/messages/attachments';
 	import { NetbankingEmptyResponse } from 'cs-netbanking-sdk/common';
+	/**
+	 * @class MessagesResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.PaginatedListEnabled<Message>}
+	 * @implements {CSCoreSDK.HasInstanceResource<MessageResource>}
+	 */
 	export class MessagesResource extends CSCoreSDK.Resource implements CSCoreSDK.PaginatedListEnabled<Message>, CSCoreSDK.HasInstanceResource<MessageResource> {
 	    /**
 	     * Get all messages for current user generated by bank itself. Message can be read or unread, mandatory and non-mandatory. This call might return different messages based on appId of the caller (for example, some messages might be specific to an application).
+	     * @param {MessagesParameters=} params
+	     * @returns {Promise<MessageList>}
 	     */
 	    list: (params?: MessagesParameters) => Promise<MessageList>;
 	    /**
 	     * Get the resource of message with a given id
+	     * @param {string} id
+	     * @returns {MessageResource}
 	     */
 	    withId: (id: string) => MessageResource;
 	    /**
 	     * Get messages mandatory resource
+	     * @returns {MessagesMandatoryResource}
 	     */
 	    readonly mandatory: MessagesMandatoryResource;
 	}
+	/**
+	 * @class MessageResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 * @implements {CSCoreSDK.GetEnabled<Message>}
+	 * @implements {CSCoreSDK.UpdateEnabled<UpdateMessageRequest, NetbankingEmptyResponse>}
+	 * @implements {CSCoreSDK.DeleteEnabled<NetbankingEmptyResponse>}
+	 */
 	export class MessageResource extends CSCoreSDK.InstanceResource implements CSCoreSDK.GetEnabled<Message>, CSCoreSDK.UpdateEnabled<UpdateMessageRequest, NetbankingEmptyResponse>, CSCoreSDK.DeleteEnabled<NetbankingEmptyResponse> {
 	    /**
 	     * Get one specific messages for current user generated by bank itself. Message can be read or unread, mandatory and non-mandatory.
+	     * @returns {Promise<Message>}
 	     */
 	    get: () => Promise<Message>;
 	    /**
 	     * After message has been read by user it should be marked accordingly by this endpoint.
+	     * @param {UpdateMessageRequest} payload
+	     * @returns {Promise<NetbankingEmptyResponse>}
 	     */
 	    update: (payload: UpdateMessageRequest) => Promise<NetbankingEmptyResponse>;
 	    /**
 	     * Resource for deleting message by its identifier. Only read messages can be deleted.
+	     * @returns {Promise<NetbankingEmptyResponse>}
 	     */
 	    delete: () => Promise<NetbankingEmptyResponse>;
 	    /**
 	     * Get messages attachments resource
+	     * @returns {MessageAttachmentsResource}
 	     */
 	    readonly attachments: MessageAttachmentsResource;
 	}
+	/**
+	 * @interface MessageList
+	 * @extends {CSCoreSDK.PaginatedListResponse<Message>}
+	 */
 	export interface MessageList extends CSCoreSDK.PaginatedListResponse<Message> {
 	}
+	/**
+	 * @interface Message
+	 */
 	export interface Message {
 	    /**
 	     * Message identifier.
@@ -3849,19 +5023,31 @@ declare module 'cs-netbanking-sdk/messages/messages' {
 	    flags?: [string];
 	    /**
 	     * Convenience get method for fetching message detail
+	     * @returns {Promise<Message>}
 	     */
 	    get: () => Promise<Message>;
 	    /**
 	     * Convenience update method for updating message
+	     * @param {UpdateMessageRequest} payload
+	     * @returns {Promise<NetbankingEmptyResponse>}
 	     */
 	    update: (payload: UpdateMessageRequest) => Promise<NetbankingEmptyResponse>;
 	    /**
 	     * Convenience delete method for deleting message
+	     * @returns {Promise<NetbankingEmptyResponse>}
 	     */
 	    delete: () => Promise<NetbankingEmptyResponse>;
 	}
+	/**
+	 * @interface MessagesParameters
+	 * @extends {CSCoreSDK.Paginated}
+	 * @extends {CSCoreSDK.Sortable}
+	 */
 	export interface MessagesParameters extends CSCoreSDK.Paginated, CSCoreSDK.Sortable {
 	}
+	/**
+	 * @interface UpdateMessageRequest
+	 */
 	export interface UpdateMessageRequest {
 	    read: boolean;
 	}
@@ -3870,24 +5056,47 @@ declare module 'cs-netbanking-sdk/messages/messages' {
 declare module 'cs-netbanking-sdk/templates/templates' {
 	import * as CSCoreSDK from 'cs-core-sdk';
 	import { AccountNumber } from 'cs-netbanking-sdk/common';
+	/**
+	 * @class TemplateResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.PaginatedListEnabled<Template>}
+	 * @implements {CSCoreSDK.HasInstanceResource<TemplateResource>}
+	 */
 	export class TemplatesResource extends CSCoreSDK.Resource implements CSCoreSDK.PaginatedListEnabled<Template>, CSCoreSDK.HasInstanceResource<TemplateResource> {
 	    /**
 	     * List of payment templates for current user.
+	     * @param {TemplatesParameters=} params
+	     * @returns {Promise<TemplateList>}
 	     */
 	    list: (params?: TemplatesParameters) => Promise<TemplateList>;
 	    /**
 	     * Get resource for template with a given id
+	     * @param {string} id
+	     * @returns {TemplateResource}
 	     */
 	    withId: (id: string) => TemplateResource;
 	}
+	/**
+	 * @class TemplateResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 * @implements {CSCoreSDK.GetEnabled<Template>}
+	 */
 	export class TemplateResource extends CSCoreSDK.InstanceResource implements CSCoreSDK.GetEnabled<Template> {
 	    /**
 	     * Get payment template detail
+	     * @returns {Promise<Template>}
 	     */
 	    get: () => Promise<Template>;
 	}
+	/**
+	 * @interface TemplateList
+	 * @extends {CSCoreSDK.PaginatedListResponse<Template>}
+	 */
 	export interface TemplateList extends CSCoreSDK.PaginatedListResponse<Template> {
 	}
+	/**
+	 * @interface Template
+	 */
 	export interface Template {
 	    /**
 	     * template ID
@@ -3907,9 +5116,14 @@ declare module 'cs-netbanking-sdk/templates/templates' {
 	    receiver: AccountNumber;
 	    /**
 	     * Convenience method for fetching templates detail
+	     * @returns {Promise<Template>}
 	     */
 	    get: () => Promise<Template>;
 	}
+	/**
+	 * @interface TemplatesParameters
+	 * @extends {CSCoreSDK.Paginated}
+	 */
 	export interface TemplatesParameters extends CSCoreSDK.Paginated {
 	}
 
@@ -3917,33 +5131,66 @@ declare module 'cs-netbanking-sdk/templates/templates' {
 declare module 'cs-netbanking-sdk/phone-numbers/phone-numbers' {
 	import * as CSCoreSDK from 'cs-core-sdk';
 	import { NetbankingEmptyResponse } from 'cs-netbanking-sdk/common';
+	/**
+	 * @class PhoneNumbersResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.ListEnabled<PhoneNumber>}
+	 * @implements {CSCoreSDK.CreateEnabled<PhoneNumberRequest, PhoneNumber>}
+	 * @implements {CSCoreSDK.HasInstanceResource<PhoneNumberResource>}
+	 */
 	export class PhoneNumbersResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<PhoneNumber>, CSCoreSDK.CreateEnabled<PhoneNumberRequest, PhoneNumber>, CSCoreSDK.HasInstanceResource<PhoneNumberResource> {
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
 	    /**
 	     * Returns list of phone numbers
+	     * @returns {Promise<PhoneNumberList>}
 	     */
 	    list: () => Promise<PhoneNumberList>;
 	    /**
 	     * Creates new phone number
+	     * @param {PhoneNumberRequest} payload
+	     * @returns {Promise<PhoneNumber>}
 	     */
 	    create: (payload: PhoneNumberRequest) => Promise<PhoneNumber>;
 	    /**
 	     * Get single phone number with a given id
+	     * @param {string} id
+	     * @returns {PhoneNumberResource}
 	     */
 	    withId: (id: string) => PhoneNumberResource;
 	}
-	export class PhoneNumberResource extends CSCoreSDK.InstanceResource implements CSCoreSDK.UpdateEnabled<PhoneNumberRequest, PhoneNumber>, CSCoreSDK.DeleteEnabled<any> {
+	/**
+	 * @class PhoneNumberResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 * @implements {CSCoreSDK.UpdateEnabled<PhoneNumberRequest, PhoneNumber>}
+	 * @implements {CSCoreSDK.DeleteEnabled<NetbankingEmptyResponse>}
+	 */
+	export class PhoneNumberResource extends CSCoreSDK.InstanceResource implements CSCoreSDK.UpdateEnabled<PhoneNumberRequest, PhoneNumber>, CSCoreSDK.DeleteEnabled<NetbankingEmptyResponse> {
 	    /**
 	     * Updates phone number
+	     * @param {PhoneNumberRequest} payload
+	     * @returns {Promise<PhoneNumber>}
 	     */
 	    update: (payload: PhoneNumberRequest) => Promise<PhoneNumber>;
 	    /**
 	     * Deletes phone number
+	     * @returns {Promise<NetbankingEmptyResponse>}
 	     */
 	    delete: () => Promise<NetbankingEmptyResponse>;
 	}
+	/**
+	 * @interface PhoneNumberList
+	 * @extends {CSCoreSDK.ListResponse<PhoneNumber>}
+	 */
 	export interface PhoneNumberList extends CSCoreSDK.ListResponse<PhoneNumber> {
 	}
+	/**
+	 * @interface PhoneNumber
+	 * @extends {PhoneNumberRequest}
+	 */
 	export interface PhoneNumber extends PhoneNumberRequest {
 	    /**
 	     * Phone book entry identifier.
@@ -3951,13 +5198,19 @@ declare module 'cs-netbanking-sdk/phone-numbers/phone-numbers' {
 	    id: string;
 	    /**
 	     * Convenience method for updating Phone number
+	     * @param {PhoneNumberRequest} payload
+	     * @returns {Promise<PhoneNumber>}
 	     */
 	    update: (payload: PhoneNumberRequest) => Promise<PhoneNumber>;
 	    /**
 	     * Convenience method for deleting Phone number
+	     * @returns {Promise<NetbankingEmptyResponse>}
 	     */
 	    delete: () => Promise<NetbankingEmptyResponse>;
 	}
+	/**
+	 * @interface PhoneNumberRequest
+	 */
 	export interface PhoneNumberRequest {
 	    /**
 	     * Alias name of phone number entered by user for his better orientation in phone book.
@@ -3977,19 +5230,38 @@ declare module 'cs-netbanking-sdk/phone-numbers/phone-numbers' {
 declare module 'cs-netbanking-sdk/budgets/budgets' {
 	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Amount } from 'cs-netbanking-sdk/common';
+	/**
+	 * @class BudgetsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.ListEnabled<Budget>}
+	 */
 	export class BudgetsResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<Budget> {
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
 	    /**
 	     * Returns list of user's tracked categories and its limits.
+	     * @returns {Promise<BudgetList>}
 	     */
 	    list: () => Promise<BudgetList>;
 	    /**
 	     * Set new value of tracked categories.
+	     * @param {UpdateBudgets} payload
+	     * @returns {Promise<UpdateBudgets>}
 	     */
 	    update: (payload: UpdateBudgets) => Promise<UpdateBudgets>;
 	}
+	/**
+	 * @interface BudgetList
+	 * @extends {CSCoreSDK.ListResponse<Budget>}
+	 */
 	export interface BudgetList extends CSCoreSDK.ListResponse<Budget> {
 	}
+	/**
+	 * @interface Budget
+	 */
 	export interface Budget {
 	    category: {
 	        /**
@@ -4007,6 +5279,9 @@ declare module 'cs-netbanking-sdk/budgets/budgets' {
 	     */
 	    budget?: Amount;
 	}
+	/**
+	 * @interface UpdateBudgets
+	 */
 	export interface UpdateBudgets {
 	    budgets: [Budget];
 	}
@@ -4015,19 +5290,39 @@ declare module 'cs-netbanking-sdk/budgets/budgets' {
 declare module 'cs-netbanking-sdk/goals/goals' {
 	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Amount } from 'cs-netbanking-sdk/common';
+	/**
+	 * @class GoalsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.ListEnabled<Goal>}
+	 * @implements {CSCoreSDK.UpdateEnabled<UpdateGoal, UpdateGoal>}
+	 */
 	export class GoalsResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<Goal>, CSCoreSDK.UpdateEnabled<UpdateGoal, UpdateGoal> {
+	    /**
+	     * @param {string} basePath
+	     * @param {CSCoreSDK.WebApiClient} client
+	     */
 	    constructor(basePath: string, client: CSCoreSDK.WebApiClient);
 	    /**
 	     * Returns list of user's saving goals except of completed ones. In price, only CZK currency is supported. If user has never set any goal, the response is empty.
+	     * @returns {Promise<GoalList>}
 	     */
 	    list: () => Promise<GoalList>;
 	    /**
 	     * Set new value of goals. In price, only CZK currency is supported. If completed flag is not present, false value is supposed. All goals of given client are replaced - old ones (except of completed) are deleted and these new specified are inserted.
+	     * @param {UpdateGoal} payload
+	     * @returns {Promise<UpdateGoal>}
 	     */
 	    update: (payload: UpdateGoal) => Promise<UpdateGoal>;
 	}
+	/**
+	 * @interface GoalList
+	 * @extends {CSCoreSDK.ListResponse<Goal>}
+	 */
 	export interface GoalList extends CSCoreSDK.ListResponse<Goal> {
 	}
+	/**
+	 * @interface Goal
+	 */
 	export interface Goal {
 	    /**
 	     * Saving goal name. Must be non-empty and unique among goals of one client.
@@ -4046,6 +5341,9 @@ declare module 'cs-netbanking-sdk/goals/goals' {
 	     */
 	    completed: boolean;
 	}
+	/**
+	 * @interface UpdateGoal
+	 */
 	export interface UpdateGoal {
 	    goals: [Goal];
 	}
@@ -4053,18 +5351,34 @@ declare module 'cs-netbanking-sdk/goals/goals' {
 }
 declare module 'cs-netbanking-sdk/promotions/promotions' {
 	import * as CSCoreSDK from 'cs-core-sdk';
+	/**
+	 * @class PromotionsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.ListEnabled<Promotion>}
+	 * @implements {CSCoreSDK.CreateEnabled<CreatePromotionRequest, CreatePromotionResponse>}
+	 */
 	export class PromotionsResource extends CSCoreSDK.Resource implements CSCoreSDK.ListEnabled<Promotion>, CSCoreSDK.CreateEnabled<CreatePromotionRequest, CreatePromotionResponse> {
 	    /**
 	     * Returns promotion list for the current user
+	     * @returns {Promise<PromotionList>}
 	     */
 	    list: () => Promise<PromotionList>;
 	    /**
 	     * Hide specified promotion
+	     * @param {CreatePromotionRequest} payload
+	     * @returns {Promise<CreatePromotionResponse>}
 	     */
 	    create: (payload: CreatePromotionRequest) => Promise<CreatePromotionResponse>;
 	}
+	/**
+	 * @interface PromotionList
+	 * @extends {CSCoreSDK.ListResponse<Promotion>}
+	 */
 	export interface PromotionList extends CSCoreSDK.ListResponse<Promotion> {
 	}
+	/**
+	 * @interface Promotion
+	 */
 	export interface Promotion {
 	    /**
 	     * Id of campaign
@@ -4142,6 +5456,9 @@ declare module 'cs-netbanking-sdk/promotions/promotions' {
 	        element: string;
 	    }];
 	}
+	/**
+	 * @interface CreatePromotionRequest
+	 */
 	export interface CreatePromotionRequest {
 	    /**
 	     * Id of campaign
@@ -4152,6 +5469,9 @@ declare module 'cs-netbanking-sdk/promotions/promotions' {
 	        actionType: string;
 	    };
 	}
+	/**
+	 * @interface CreatePromotionResponse
+	 */
 	export interface CreatePromotionResponse {
 	    infoItems?: [{
 	        infoName: string;
@@ -4163,24 +5483,47 @@ declare module 'cs-netbanking-sdk/promotions/promotions' {
 declare module 'cs-netbanking-sdk/authorization-limits/authorization-limits' {
 	import * as CSCoreSDK from 'cs-core-sdk';
 	import { Amount } from 'cs-netbanking-sdk/common';
+	/**
+	 * @class AuthorizationLimitsResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.ParametrizedListEnabled<AuthorizationLimitsParams, AuthorizationLimit>}
+	 * @implements {CSCoreSDK.HasInstanceResource<AuthorizationLimitResource>}
+	 */
 	export class AuthorizationLimitsResource extends CSCoreSDK.Resource implements CSCoreSDK.ParametrizedListEnabled<AuthorizationLimitsParams, AuthorizationLimit>, CSCoreSDK.HasInstanceResource<AuthorizationLimitResource> {
 	    /**
 	     * Return all user local specific payment order entry limits for for all user active authorization methods and channels/applications used in country.
+	     * @param {AuthorizationLimitsParams=} params
+	     * @returns {Promise<AuthorizationLimitList>}
 	     */
 	    list: (params?: AuthorizationLimitsParams) => Promise<AuthorizationLimitList>;
 	    /**
 	     * Get the resource of authorization limit with a given id
+	     * @param {string} id
+	     * @returns {AuthorizationLimitResource}
 	     */
 	    withId: (id: string) => AuthorizationLimitResource;
 	}
+	/**
+	 * @class AuthorizationLimitResource
+	 * @extends {CSCoreSDK.InstanceResource}
+	 * @implements {CSCoreSDK.GetEnabled<AuthorizationLimit>}
+	 */
 	export class AuthorizationLimitResource extends CSCoreSDK.InstanceResource implements CSCoreSDK.GetEnabled<AuthorizationLimit> {
 	    /**
 	     * Return local specific payment order entry limits valid for combination of user, authorization method and used channel/application. For example user could define different limits for TAC authorization via George and mobile applications.
+	     * @returns {Promise<AuthorizationLimit>}
 	     */
 	    get: () => Promise<AuthorizationLimit>;
 	}
+	/**
+	 * @interface AuthorizationLimitList
+	 * @extends {CSCoreSDK.ListResponse<AuthorizationLimit>}
+	 */
 	export interface AuthorizationLimitList extends CSCoreSDK.ListResponse<AuthorizationLimit> {
 	}
+	/**
+	 * @interface AuthorizationLimit
+	 */
 	export interface AuthorizationLimit {
 	    /**
 	     * Internal ID for limit definition for authorization type, channel, application. If internal ID doesn't exist, ID could be generated using authorizationType, channelId and applicationId values.
@@ -4212,9 +5555,13 @@ declare module 'cs-netbanking-sdk/authorization-limits/authorization-limits' {
 	    maxBankLimit?: Amount;
 	    /**
 	     * Convenience method for fetching authorization limit detail.
+	     * @returns {Promise<AuthorizationLimit>}
 	     */
 	    get: () => Promise<AuthorizationLimit>;
 	}
+	/**
+	 * @interface AuthorizationLimitsParams
+	 */
 	export interface AuthorizationLimitsParams {
 	    /**
 	     * Channel for which limits are requested. Example: George
@@ -4226,9 +5573,15 @@ declare module 'cs-netbanking-sdk/authorization-limits/authorization-limits' {
 declare module 'cs-netbanking-sdk/authorization-token/authorization-token' {
 	import * as CSCoreSDK from 'cs-core-sdk';
 	import { NetbankingEmptyResponse } from 'cs-netbanking-sdk/common';
+	/**
+	 * @class AuthorizationTokenResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.DeleteEnabled<NetbankingEmptyResponse>}
+	 */
 	export class AuthorizationTokenResource extends CSCoreSDK.Resource implements CSCoreSDK.DeleteEnabled<NetbankingEmptyResponse> {
 	    /**
 	     * Invalidate authorization token.
+	     * @returns {Promise<NetbankingEmptyResponse>}
 	     */
 	    delete: () => Promise<NetbankingEmptyResponse>;
 	}
@@ -4237,9 +5590,21 @@ declare module 'cs-netbanking-sdk/authorization-token/authorization-token' {
 declare module 'cs-netbanking-sdk/bundles/bundles' {
 	import * as CSCoreSDK from 'cs-core-sdk';
 	import { SignInfo } from 'cs-netbanking-sdk/common';
+	/**
+	 * @class BundlesResource
+	 * @extends {CSCoreSDK.Resource}
+	 * @implements {CSCoreSDK.CreateEnabled<BundleCreateRequest, BundleResponse>}
+	 */
 	export class BundlesResource extends CSCoreSDK.Resource implements CSCoreSDK.CreateEnabled<BundleCreateRequest, BundleResponse> {
+	    /**
+	     * @param {BundleCreateRequest} payload
+	     * @returns {Promise<BundleResponse>}
+	     */
 	    create: (payload: BundleCreateRequest) => Promise<BundleResponse>;
 	}
+	/**
+	 * @interface BundleCreateRequest
+	 */
 	export interface BundleCreateRequest {
 	    /**
 	     * Name of the bundle.
@@ -4256,6 +5621,10 @@ declare module 'cs-netbanking-sdk/bundles/bundles' {
 	        };
 	    }];
 	}
+	/**
+	 * @interface BundleResponse
+	 * @extends {CSCoreSDK.Signable}
+	 */
 	export interface BundleResponse extends CSCoreSDK.Signable {
 	    /**
 	     * Bundle identifier.
@@ -4296,48 +5665,102 @@ declare module 'cs-netbanking-sdk/netbanking' {
 	import { AuthorizationLimitsResource } from 'cs-netbanking-sdk/authorization-limits/authorization-limits';
 	import { AuthorizationTokenResource } from 'cs-netbanking-sdk/authorization-token/authorization-token';
 	import { BundlesResource } from 'cs-netbanking-sdk/bundles/bundles';
+	/**
+	 * Returns the singleton NetbankingClient
+	 * @returns {NetbankingClient}
+	 */
 	export function getClient(): NetbankingClient;
 	/**
 	 * Netbanking client
+	 * @extends {CSCoreSDK.WebApiClient}
 	 */
 	export class NetbankingClient extends CSCoreSDK.WebApiClient {
 	    /**
 	     * Creates new instance of NetbankingClient
 	     *
-	     * @param config WebApiConfiguration object that configures this client
-	     * @param context WebApiContext object that allows for data sharing between clients
+	     * @param {WebApiConfiguration} config object that configures this client
+	     * @param {WebApiContext} context object that allows for data sharing between clients
 	     */
 	    constructor(config: CSCoreSDK.WebApiConfiguration, context: CSCoreSDK.WebApiContext);
 	    /**
 	     * List all accounts and get other information like balance, services, statements etc.
+	     * @returns {AccountsResource}
 	     */
 	    readonly accounts: AccountsResource;
 	    /**
-	    * Get information about the current user's profile and past logins.
-	    */
+	     * Get information about the current user's profile and past logins.
+	     * @returns {ProfileResource}
+	     */
 	    readonly profile: ProfileResource;
 	    /**
-	    * List all cards and other information like delivery, transactions, limits etc.
-	    */
+	     * List all cards and other information like delivery, transactions, limits etc.
+	     * @returns {CardsResource}
+	     */
 	    readonly cards: CardsResource;
 	    /**
-	    * List, update and get payments, booking date or create and update domestic payments.
-	    */
+	     * List, update and get payments, booking date or create and update domestic payments.
+	     * @returns {OrdersResource}
+	     */
 	    readonly orders: OrdersResource;
+	    /**
+	     * @returns {SecuritiesResource}
+	     */
 	    readonly securities: SecuritiesResource;
+	    /**
+	     * @returns {SettingsResource}
+	     */
 	    readonly settings: SettingsResource;
+	    /**
+	     * @returns {ContactsResource}
+	     */
 	    readonly contacts: ContactsResource;
+	    /**
+	     * @returns {PluginsResource}
+	     */
 	    readonly plugins: PluginsResource;
+	    /**
+	     * @returns {ContractsResource}
+	     */
 	    readonly contracts: ContractsResource;
+	    /**
+	     * @returns {ServicesResource}
+	     */
 	    readonly services: ServicesResource;
+	    /**
+	     * @returns {MessagesResource}
+	     */
 	    readonly messages: MessagesResource;
+	    /**
+	     * @returns {TemplatesResource}
+	     */
 	    readonly templates: TemplatesResource;
+	    /**
+	     * @returns {PhoneNumbersResource}
+	     */
 	    readonly phoneNumbers: PhoneNumbersResource;
+	    /**
+	     * @returns {BudgetsResource}
+	     */
 	    readonly budgets: BudgetsResource;
+	    /**
+	     * @returns {GoalsResource}
+	     */
 	    readonly goals: GoalsResource;
+	    /**
+	     * @returns {PromotionsResource}
+	     */
 	    readonly promotions: PromotionsResource;
+	    /**
+	     * @returns {AuthorizationLimitsResource}
+	     */
 	    readonly authorizationLimits: AuthorizationLimitsResource;
+	    /**
+	     * @returns {AuthorizationTokenResource}
+	     */
 	    readonly authorizationToken: AuthorizationTokenResource;
+	    /**
+	     * @returns {BundlesResource}
+	     */
 	    readonly bundles: BundlesResource;
 	}
 
