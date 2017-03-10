@@ -8,7 +8,7 @@ import { AddNoteAndMarkTransactionRequest, AddNoteAndMarkTransactionResponse, Ex
  * @implements {CSCoreSDK.HasInstanceResource<AccountTransactionResource>}
  */
 export class AccountTransactionsResource extends CSCoreSDK.Resource
-  implements CSCoreSDK.HasInstanceResource<AccountTransactionResource> {
+  implements CSCoreSDK.HasInstanceResource<AccountTransactionResource>, CSCoreSDK.ParametrizedExportEnabled<ExportTransactionsParameters, Uint8Array> {
 
   /**
    * Returns individual AccountsTransactionResource with a given id
@@ -22,9 +22,9 @@ export class AccountTransactionsResource extends CSCoreSDK.Resource
   /**
    * Exports transaction history into signed pdf
    * @param {ExportTransactionsParameters} params
-   * @returns {Promise<any>}
+   * @returns {Promise<Uint8Array>}
    */
-  export = (params: ExportTransactionsParameters): Promise<any> => {
+  export = (params: ExportTransactionsParameters): Promise<Uint8Array> => {
 
     // transform "fields" parameter to comma separated list from array
     CSCoreSDK.EntityUtils.transformArrayParamsToString(params, 'fields');

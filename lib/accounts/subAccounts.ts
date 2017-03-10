@@ -43,7 +43,7 @@ export class SubAccountResource extends CSCoreSDK.InstanceResource {
  * @implements {CSCoreSDK.PaginatedListEnabled<Statement>}
  */
 export class SubAccountStatementsResource extends CSCoreSDK.Resource
-  implements CSCoreSDK.PaginatedListEnabled<Statement> {
+  implements CSCoreSDK.PaginatedListEnabled<Statement>, CSCoreSDK.ParametrizedDownloadEnabled<DownloadStatementParameters, Uint8Array> {
 
   /**
    * @param {string} basePath
@@ -78,9 +78,9 @@ export class SubAccountStatementsResource extends CSCoreSDK.Resource
   /**
    * Downloads statements file
    * @param {DownloadStatementParameters} params
-   * @returns {Promise<any>}
+   * @returns {Promise<Uint8Array>}
    */
-  download = (params: DownloadStatementParameters): Promise<any> => {
+  download = (params: DownloadStatementParameters): Promise<Uint8Array> => {
     return CSCoreSDK.ResourceUtils.CallDownload(this, 'download', 'POST', params);
   }
 }

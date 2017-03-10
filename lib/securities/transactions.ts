@@ -7,7 +7,7 @@ import { Signable, ExportTransactionsParameters } from '../common';
  * @implements {CSCoreSDK.HasInstanceResource<SecurityTransactionResource>}
  */
 export class SecurityTransactionsResource extends CSCoreSDK.Resource
-  implements CSCoreSDK.HasInstanceResource<SecurityTransactionResource> {
+  implements CSCoreSDK.HasInstanceResource<SecurityTransactionResource>, CSCoreSDK.ParametrizedExportEnabled<ExportTransactionsParameters, Uint8Array> {
 
   /**
    * @param {string} basePath
@@ -31,9 +31,9 @@ export class SecurityTransactionsResource extends CSCoreSDK.Resource
   /**
    * Export transaction history into signed pdf. 
    * @param {ExportTransactionsParameters} params
-   * @return {Promise<any>}
+   * @return {Promise<Uint8Array>}
    */
-  export = (params: ExportTransactionsParameters): Promise<any> => {
+  export = (params: ExportTransactionsParameters): Promise<Uint8Array> => {
 
     // transform "fields" parameter to comma separated list from array
     CSCoreSDK.EntityUtils.transformArrayParamsToString(params, 'fields');

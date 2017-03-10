@@ -8,7 +8,7 @@ import { ExportTransactionsParameters } from '../common';
  * @implements {CSCoreSDK.HasInstanceResource<ContractsTransactionResource>}
  */
 export class ContractsTransactionsResource extends CSCoreSDK.Resource
-  implements CSCoreSDK.HasInstanceResource<ContractsTransactionResource> {
+  implements CSCoreSDK.HasInstanceResource<ContractsTransactionResource>, CSCoreSDK.ParametrizedExportEnabled<ExportTransactionsParameters, Uint8Array> {
 
   /**
    * Get contract transaction resource with a given id
@@ -22,9 +22,9 @@ export class ContractsTransactionsResource extends CSCoreSDK.Resource
   /**
    * Export transaction history into signed pdf. 
    * @param {ExportTransactionsParameters} params
-   * @returns {Promise<any>}
+   * @returns {Promise<Uint8Array>}
    */
-  export = (params: ExportTransactionsParameters): Promise<any> => {
+  export = (params: ExportTransactionsParameters): Promise<Uint8Array> => {
 
     // transform "fields" parameter to comma separated list from array
     CSCoreSDK.EntityUtils.transformArrayParamsToString(params, 'fields');
