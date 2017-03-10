@@ -3275,6 +3275,11 @@
       "resolved": "https://registry.npmjs.org/underscore/-/underscore-1.8.3.tgz",
       "dev": true
     },
+    "unminified-webpack-plugin": {
+      "version": "1.2.0",
+      "from": "unminified-webpack-plugin@latest",
+      "resolved": "https://registry.npmjs.org/unminified-webpack-plugin/-/unminified-webpack-plugin-1.2.0.tgz"
+    },
     "unpipe": {
       "version": "1.0.0",
       "from": "unpipe@1.0.0",
