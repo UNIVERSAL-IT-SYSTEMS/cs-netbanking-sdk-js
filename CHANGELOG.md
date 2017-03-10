@@ -1,6 +1,16 @@
 # Changelog
 
 ## [Unreleased]
+### Added
+  - NPM shrinkwrap
+  - Missing types
+  - Minification
+  - Use Download and Export from CoreSDK API query
+
+### Changed
+  - Docs wording
+  - Rewrite code comments to use jsdoc
+  - Update CoreSDK to version 0.8.0
         
 ## [0.2.0] - 2017-01-30
 ### Changed
