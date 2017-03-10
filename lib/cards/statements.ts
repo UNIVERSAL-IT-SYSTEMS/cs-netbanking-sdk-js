@@ -43,7 +43,7 @@ export class CardAccountResource extends CSCoreSDK.InstanceResource {
  * @implements {CSCoreSDK.PaginatedListEnabled<Statement>}
  */
 export class CardStatementsResource extends CSCoreSDK.Resource
-  implements CSCoreSDK.PaginatedListEnabled<Statement> {
+  implements CSCoreSDK.PaginatedListEnabled<Statement>, CSCoreSDK.ParametrizedDownloadEnabled<DownloadStatementParameters, Uint8Array> {
 
   /**
    * List all statements
@@ -67,9 +67,9 @@ export class CardStatementsResource extends CSCoreSDK.Resource
   /**
    * Download PDF with statements
    * @param {DownloadStatementParameters} params
-   * @returns {Promise<any>}
+   * @returns {Promise<Uint8Array>}
    */
-  download = (params: DownloadStatementParameters): Promise<any> => {
+  download = (params: DownloadStatementParameters): Promise<Uint8Array> => {
     return CSCoreSDK.ResourceUtils.CallDownload(this, 'signed/download', 'POST', params);
   }
 }
