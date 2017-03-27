@@ -1,7 +1,9 @@
 # Changelog
 
 ## [Unreleased]
-        
+
+- Pre-release before public release
+
 ## [0.3.0] - 2017-03-10
 ### Added
   - NPM shrinkwrap
@@ -13,12 +15,12 @@
   - Docs wording
   - Rewrite code comments to use jsdoc
   - Update CoreSDK to version 0.8.0
-        
+
 ## [0.2.0] - 2017-01-30
 ### Changed
   - Migrate to Typescript 2
   - Make changes for CI publishing
-  
+
 ### Added
   - Add sign script
 
