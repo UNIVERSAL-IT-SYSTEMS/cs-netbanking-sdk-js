@@ -1,6 +1,6 @@
 {
   "name": "cs-netbanking-sdk",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Personal banking SDK of Česká spořitelna a.s. built on top of WebAPI.",
   "main": "./dist/cs-netbanking-sdk.node.js",
   "types": "./dist/cs-netbanking-sdk.node.d.ts",

@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+        
+## [0.3.1] - 2017-03-27
 
 - Pre-release before public release
 
