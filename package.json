@@ -1,0 +1,78 @@
+{
+  "name": "cs-netbanking-sdk",
+  "version": "0.3.1",
+  "description": "Personal banking SDK of Česká spořitelna a.s. built on top of WebAPI.",
+  "main": "./dist/cs-netbanking-sdk.node.js",
+  "types": "./dist/cs-netbanking-sdk.node.d.ts",
+  "scripts": {
+    "dist": "npm run build && node node_modules/cs-core-sdk/tooling/dist",
+    "build": "node node_modules/cs-core-sdk/tooling/clean && webpack && webpack --target-browser && npm run generate-tsd",
+    "test": "npm run build && npm run test-node-run && npm run test-browser-run",
+    "test-node": "npm run build && npm run test-node-run",
+    "test-browser": "npm run build  && npm run test-browser-run",
+    "generate-tsd": "node node_modules/cs-core-sdk/tooling/generate-tsd cs-netbanking-sdk CSNetbankingSDK netbanking",
+    "test-node-run": "webpack --config ./webpack.test.config.js && jasmine ./spec/build/tests.node.js",
+    "test-browser-run": "webpack --config ./webpack.test.config.js --target-browser && node ./node_modules/karma/bin/karma start karma.conf.js --single-run",
+    "preversion": "npm run build && npm run test-node-run && npm run test-browser-run",
+    "version": "npm run dist && git add -A dist && git add CHANGELOG.md",
+    "postversion": "git push origin HEAD:master && git push --tags"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ceskasporitelna/cs-netbanking-js.git"
+  },
+  "contributors": [
+    {
+      "name": "CSAS Developers",
+      "email": "developers@csas.cz",
+      "url": "https://developers.csas.cz"
+    },
+    {
+      "name": "Petr Bažout",
+      "email": "petr.bazout@applifting.cz",
+      "url": "https://www.applifting.cz"
+    }
+  ],
+  "license": "SEE LICENSE IN LICENSE.md",
+  "bugs": {
+    "url": "https://github.com/Ceskasporitelna/cs-netbanking-js/issues"
+  },
+  "homepage": "https://developers.csas.cz",
+  "devDependencies": {
+    "@slack/client": "^3.8.1",
+    "dts-generator": "https://github.com/Applifting/dts-generator.git#compiled-with-types-option",
+    "es6-promise": "^4.0.5",
+    "jasmine": "^2.4.1",
+    "jasmine-ajax": "^3.2.0",
+    "jasmine-core": "^2.4.1",
+    "json-loader": "^0.5.3",
+    "karma": "^0.13.19",
+    "karma-chrome-launcher": "^0.2.1",
+    "karma-jasmine": "^0.3.6",
+    "karma-sourcemap-loader": "^0.3.6",
+    "karma-webpack": "^1.7.0",
+    "nock": "^2.17.0",
+    "replace": "^0.3.0",
+    "serve": "^1.4.0",
+    "shelljs": "^0.5.3",
+    "ts-loader": "^0.7.2",
+    "typescript": "^2.0.0",
+    "underscore": "^1.8.3",
+    "webpack": "^1.12.9",
+    "axios": "^0.8.1",
+    "source-map-support": "^0.3.3",
+    "standard-error": "^1.1.0",
+    "unminified-webpack-plugin": "^1.2.0",
+    "cs-core-sdk": "^1.1.1"
+  },
+  "peerDependencies": {
+    "cs-core-sdk": "^1.1.1"
+  },
+  "dependencies": {
+    "@types/es6-promise": "0.0.32",
+    "@types/jasmine": "^2.5.41",
+    "@types/nock": "^8.2.0",
+    "@types/node": "^7.0.0",
+    "@types/underscore": "^1.7.36"
+  }
+}

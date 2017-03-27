@@ -1,0 +1,7 @@
+node_modules
+jspm_packages
+build
+typings
+settings.json
+npm-debug.log
+spec/build/
