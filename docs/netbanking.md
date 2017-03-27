@@ -17,6 +17,8 @@ Before using CoreSDK in your application, you need to initialize it by providing
 
 ```
 
+You also need to authenticate the user before calling any of the netbanking client methods. Follow this [guide](https://github.com/Ceskasporitelna/cs-core-sdk-js/blob/master/docs/oauth2.md) on how to use CoreSDK to do that.
+
 ## Resources
 These resources are available on the [`NetbankingClient`](../lib/netbanking.ts).
 
