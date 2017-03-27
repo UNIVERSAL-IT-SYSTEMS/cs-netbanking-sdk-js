@@ -2,7 +2,7 @@
 
 ## [Unreleased]
 
-- Pre-release before public release
+- Pre-release before public release.
 
 ## [0.3.0] - 2017-03-10
 ### Added
