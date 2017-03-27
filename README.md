@@ -1,16 +1,19 @@
 # CSNetbankingSDK
-This SDK allows you to access information about Česká spořitelna a.s. Netbanking API [Netbanking API](http://docs.netbankingv3.apiary.io/).
+This SDK allows you to access information about Česká spořitelna a.s. Netbanking API [Netbanking API](https://developers.csas.cz/docs/netbanking-v3).
 
 # [CHANGELOG](CHANGELOG.md)
 
 # Usage
+
+Netbanking SDK has a peer dependency on [CSCoreSDK](https://github.com/Ceskasporitelna/cs-core-sdk-js).
 
 If you just want to use the SDK, there are compiled files ready to be used in the [`/dist`](./dist) folder.
 
 You can just copy these files directly from the repository or preferably, use `npm` to install it into your project:
 
 ```
-npm install https://github.com/Ceskasporitelna/cs-netbanking-sdk-js.git --save
+npm install cs-core-sdk --save
+npm install cs-netbanking-sdk --save
 ```
 
 ## Usage in browser
@@ -20,12 +23,11 @@ For usage in browser, pickup the following files from the `/dist` folder:
 * `cs-netbanking-sdk.sfx.js.map` - CSNetbankingSDK sourcemap for browsers
 
 
-Netbanking SDK is dependent on the [CSCoreSDK](https://github.com/Ceskasporitelna/cs-core-sdk-js). 
-You can find the appropriate verion of CSCoreSDK in `node_modules` of Netbanking SDK if you installed it through `npm`.
-Include the `cs-core-sdk.sfx.js` in your page **before** the `cs-netbanking-sdk.sfx.js`:
+Include the `cs-core-sdk.sfx.js` from [CSCoreSDK](https://github.com/Ceskasporitelna/cs-core-sdk-js) in your page **before** the `cs-places-sdk.sfx.js`:
+
 
 ```html
-  <script src="./node_modules/cs-netbanking-sdk/node_modules/cs-core-sdk/dist/cs-core-sdk.sfx.js"></script>
+  <script src="./node_modules/cs-core-sdk/dist/cs-core-sdk.sfx.js"></script>
   <script src="./node_modules/cs-netbanking-sdk/dist/cs-netbanking-sdk.sfx.js"></script>
 ```
 
@@ -38,7 +40,7 @@ If your environment doesn't support ES6 Promises, you can [polyfill](https://git
 For usage in node, install it through `npm` (see above). You can then require it by:
 ```javascript
 var CSNetbankingSDK = require('cs-netbanking-sdk');
-``` 
+```
 
 
 ## Configuration
@@ -83,7 +85,7 @@ This project uses the following directory structure:
 * `lib` - The SDK itself
 * `spec` - Tests for the SDK
 * `typings` - Typings used by the SDK
-* `tooling` - Commands for building and packaging 
+* `tooling` - Commands for building and packaging
 
 ## Development commands
 
@@ -93,7 +95,7 @@ This project uses the following directory structure:
 * `npm run test` - performs `build` and runs tests in node and browser.
 * `npm run test-browser` - performs tests only in browser
 * `npm run test-node` - performs tests only in node
-* `npm version [major|minor|patch]` - releases new version of the SDK. Requires write access to repository. See [npm-version](https://docs.npmjs.com/cli/version) for more details. 
+* `npm version [major|minor|patch]` - releases new version of the SDK. Requires write access to repository. See [npm-version](https://docs.npmjs.com/cli/version) for more details.
 
 
 

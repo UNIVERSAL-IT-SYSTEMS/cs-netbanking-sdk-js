@@ -12,12 +12,12 @@ You can find possible signing authorization methods in the following list:
 
 The signing is done in the following steps:
 
-##1. Create signable order
+## 1. Create signable order
 
 You can sign any call that returns signable response. Responses that are signable implement [`Signable`](https://github.com/Ceskasporiteln/cs-core-sdk-js/blob/signing-orders/lib/web-api/api-query.ts#L150) interface. Response that is signable has `signing` key that contains [`SigningObject`](https://github.com/Ceskasporiteln/cs-core-sdk-js/blob/signing-orders/lib/signing/signing-object.ts). [`SigningObject`](https://github.com/Ceskasporiteln/cs-core-sdk-js/blob/signing-orders/lib/signing/signing-object.ts) contains public `state` which shows the current state of the signing and `signId` which is an unique identifier of the signing process for that particular order. You can use function `isOpen()` to see if the object is ready to be signed.
 
 ```javascript
-    
+
     // Change card's limits. The order is signable
     CSNetbankingSDK
         .getClient()
@@ -42,26 +42,26 @@ You can sign any call that returns signable response. Responses that are signabl
 
 ```
 
-##2. Get info
+## 2. Get info
 Before you can sign the order, you need to find out which authorization methods you can use to sign the object.
 
 You have to call method `getInfo()` to get the necesarry information for the sgining on the [`SigningObject`](https://github.com/Ceskasporiteln/cs-core-sdk-js/blob/signing-orders/lib/signing/signing-object.ts).This method returns promise with [`FilledSigningObject`](https://github.com/Ceskasporiteln/cs-core-sdk-js/blob/signing-orders/lib/signing/filled-signing-object.ts).
 
 ```javascript
-    
+
     // Call getInfo method on SigningObject
     signingObject
         .getInfo()
         .then(function(response) {
-            
-            var filledSigningObject = response; 
+
+            var filledSigningObject = response;
         });
 
 ```
 
-##3. Start signing
+## 3. Start signing
 
-[`FilledSigningObject`](https://github.com/Ceskasporiteln/cs-core-sdk-js/blob/signing-orders/lib/signing/filled-signing-object.ts) extends [`SigningObject`](https://github.com/Ceskasporiteln/cs-core-sdk-js/blob/signing-orders/lib/signing/signing-object.ts) so you get all of the methods and properties like `isOpen()` from it. In addition [`FilledSigningObject`](https://github.com/Ceskasporiteln/cs-core-sdk-js/blob/signing-orders/lib/signing/filled-signing-object.ts) has `authorizationType` and `scenarios` properties. 
+[`FilledSigningObject`](https://github.com/Ceskasporiteln/cs-core-sdk-js/blob/signing-orders/lib/signing/filled-signing-object.ts) extends [`SigningObject`](https://github.com/Ceskasporiteln/cs-core-sdk-js/blob/signing-orders/lib/signing/signing-object.ts) so you get all of the methods and properties like `isOpen()` from it. In addition [`FilledSigningObject`](https://github.com/Ceskasporiteln/cs-core-sdk-js/blob/signing-orders/lib/signing/filled-signing-object.ts) has `authorizationType` and `scenarios` properties.
 
 Convenience methods are also available. For example `canBeSignedWith(authType)` which takes `authorizationType` and returns `true` or `false` based on whether or not passed `authorizationType` is available, `getPossibleAuthorizationTypes` method that returns all possible `authorizationTypes`.
 
@@ -75,17 +75,17 @@ Call one of these methods to start signing.
     filledSigningObject
         .startSigningWithTac()
         .then(function(response) {
-            
+
             var tacSigningProcess = response;
         });
 
 ```
 
-##4. Finish signing
+## 4. Finish signing
 
 [`TacSigningProcess`](https://github.com/Ceskasporiteln/cs-core-sdk-js/blob/signing-orders/lib/signing/signing-process.ts#L20), [`CaseMobileSigningProcess`](https://github.com/Ceskasporiteln/cs-core-sdk-js/blob/signing-orders/lib/signing/signing-process.ts#L32) and [`NoAuthSigningProcess`](https://github.com/Ceskasporiteln/cs-core-sdk-js/blob/signing-orders/lib/signing/signing-process.ts#L44) have two methods. First one is `cancel` that cancels the signing process and `finishSigning` which finishes the signing.
 
-`TacSigningProcess'` and `CaseMobileSigningProcess'` `finishSigning` takes `oneTimePassword` as a parameter for authorization. All of the methods return updated [`SigningObject`](https://github.com/Ceskasporiteln/cs-core-sdk-js/blob/signing-orders/lib/signing/filled-signing-object.ts). 
+`TacSigningProcess'` and `CaseMobileSigningProcess'` `finishSigning` takes `oneTimePassword` as a parameter for authorization. All of the methods return updated [`SigningObject`](https://github.com/Ceskasporiteln/cs-core-sdk-js/blob/signing-orders/lib/signing/filled-signing-object.ts).
 
 ```javascript
 
@@ -93,7 +93,7 @@ Call one of these methods to start signing.
     tacSigningProcess
         .finishSigning('1234')
         .then(function(response) {
-            var signingObject = response; 
+            var signingObject = response;
         });
 
 ```

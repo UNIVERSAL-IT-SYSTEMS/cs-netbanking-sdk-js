@@ -1,9 +1,9 @@
-#Using NetbankingSDK
+# Using NetbankingSDK
 Netbanking SDK allows you to get information user's profile, accounts, cards and orders payments from Česká spořitelna a.s.
 
 This SDK uses [ES6-promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) as its return values from asynchronous calls.
 
-##Before You Begin
+## Before You Begin
 
 Before using CoreSDK in your application, you need to initialize it by providing it your WebApiKey.
 
@@ -11,14 +11,14 @@ Before using CoreSDK in your application, you need to initialize it by providing
 
     //Set your WebApi key
     CSCoreSDK.useWebApiKey('YourApiKey');
-    
+
     //Get NetbankingClient
     var netbankingClient = CSNetbankingSDK.getClient();
-    
+
 ```
 
-##Resources
-These resources are available on the [`NetbankingClient`](../lib/netbanking.ts). 
+## Resources
+These resources are available on the [`NetbankingClient`](../lib/netbanking.ts).
 
 - ProfileResource - Get detail of the current user and information about his last logins.
 - AccountsResource - List all of current user's accounts, get detail of an individual account and additional information about it.
@@ -31,16 +31,16 @@ To get resource instances see the following code snippet.
 
     // Get netbankingClient
     var netbankingClient = CSNetbankingSDK.getClient();
-    
-    // Get ProfileResource Instance 
+
+    // Get ProfileResource Instance
     netbankingClient.profile
-    
+
     // Get AccountsResource Instance
     netbankingClient.accounts
-    
+
     // Get CardsResource Instance
     netbankingClient.cards
-    
+
     // Get Orders Instance
     netbankingClient.orders
 
@@ -53,21 +53,21 @@ To get resource instances see the following code snippet.
 Resources that supports pagination implements `PaginatedListEnabled` interface (for example [`AccountsResource`](../lib/accounts/accounts.ts)). If thats the case you can (and should) pass an object with properties `pageNumber` and `pageSize` to the `list` method. There is no SDK default pagination so if you do not pass pagination parameters then you get whatever the server decides so we strongly recommend you use pagination parameters.
 
  ```javascript
- 
+
     CSNetbankingSDK
         .getClient()
         .accounts
         .list({
-            // number of the page 
+            // number of the page
             pageNumber: 0,
-            
+
             // size of the listing
-            pageSize: 10 
+            pageSize: 10
         })
         .then(function(accounts) {
             // ...
         });
- 
+
  ```
 
 The response from this call contains `pagination` property. `Pagination` object has properties such as `pageCount`, `hasNextPage` or `hasPrevPage`. For `Pagination` definition please see [`ResponsePagination`](https://github.com/Ceskasporiteln/cs-core-sdk-js/blob/master/lib/web-api/lists.ts).
@@ -97,7 +97,7 @@ On this response you can call `nextPage` function which returns `Promise` with a
 ```javascript
 
     var accounts;
-    
+
     CSNetbankingSDK
         .getClient()
         .accounts
@@ -105,11 +105,11 @@ On this response you can call `nextPage` function which returns `Promise` with a
             pageNumber: 0,
             pageSize: 10
         }).then(function(response) => {
-            accounts = response;            
+            accounts = response;
         });
-        
+
     // Do something ...
-    
+
     accounts
         .nextPage()
         .then(function(response) => {
@@ -132,7 +132,7 @@ If you are on the second or latter page you can also call `prevPage` on the list
 
 ### Sorting
 
-Methods that support server side sorting take object with properties `sort` and `order` as a parameter. These methods' parameters interfaces extend [`Sortable`](https://github.com/Ceskasporiteln/cs-core-sdk-js/blob/master/lib/web-api/lists.ts) interface. Both `sort` and `order` parameters are optional but you obviously cannot use `order` parameter without using `sort` parameter. Available `Sort` values are dependent on individual API. `Order` can be `asc` for ascending which is also default or `desc` for descending. These parameters must be defined as array of strings. 
+Methods that support server side sorting take object with properties `sort` and `order` as a parameter. These methods' parameters interfaces extend [`Sortable`](https://github.com/Ceskasporiteln/cs-core-sdk-js/blob/master/lib/web-api/lists.ts) interface. Both `sort` and `order` parameters are optional but you obviously cannot use `order` parameter without using `sort` parameter. Available `Sort` values are dependent on individual API. `Order` can be `asc` for ascending which is also default or `desc` for descending. These parameters must be defined as array of strings.
 
 ```javascript
 
@@ -206,7 +206,7 @@ Netbanking SDK provides the following functionality:
 ## Demo
 Check out the [AngularJS demo application](https://github.com/Ceskasporiteln/csas-sdk-demo-js) for usage demonstration.
 
-##Further documentation
+## Further documentation
 Please see the documented [TypeScript definition file](../dist/cs-netbanking-sdk.sfx.d.ts) for detailed description of the functionalities provided by this SDK.
 
 This SDK communicates with Netbanking API. You can have a look at its [documentation](http://docs.netbankingv3.apiary.io/).
